@@ -1,8 +1,13 @@
 'use client';
-import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
 import BarChartComponent from './Charts/BarChartComponent';
+import { useState } from 'react';
+import MyAreaChart from './Charts/AreaChartComponent';
+import MyLineChart from './Charts/LineChartComponent';
 
 const ResponsiveChartContainer = () => {
+  const [chartType, setChartType] = useState('bar');
+
   const exampleData = [
     {
       date: 'Jul 2021',
@@ -29,6 +34,7 @@ const ResponsiveChartContainer = () => {
       count: 5,
     },
   ];
+
   return (
     <Box
       display={'flex'}
@@ -44,12 +50,25 @@ const ResponsiveChartContainer = () => {
       </Text>
       {/* TODO: Change chart types */}
       {/* TODO: Change btn styles */}
-      <Box>
-        <Button>Bar</Button>
-        <Button>Pie</Button>
-        <Button>Area</Button>
-      </Box>
-      <BarChartComponent data={exampleData} />
+      <Flex
+        justifyContent={'center'}
+        alignItems={'center'}
+        gap={4}
+        flexDirection={{
+          base: 'column',
+          lg: 'row',
+        }}
+      >
+        <Text>Change Chart Type:</Text>
+        <Box>
+          <Button onClick={() => setChartType('bar')}>Bar</Button>
+          <Button onClick={() => setChartType('line')}>Line</Button>
+          <Button onClick={() => setChartType('area')}>Area</Button>
+        </Box>
+      </Flex>
+      {chartType === 'bar' && <BarChartComponent data={exampleData} />}
+      {chartType === 'line' && <MyLineChart data={exampleData} />}
+      {chartType === 'area' && <MyAreaChart data={exampleData} />}
     </Box>
   );
 };
