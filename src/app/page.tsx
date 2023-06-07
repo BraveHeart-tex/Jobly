@@ -1,7 +1,6 @@
+import SidebarWithHeader from './components/Sidebar';
+import Sidebar from './components/Sidebar';
+
 export default function Home() {
-  return (
-    <main>
-      <h1>Hello world!</h1>
-    </main>
-  );
+  return <main></main>;
 }

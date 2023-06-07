@@ -1,6 +1,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { ChakraProviders } from './ChakraProviders';
+import SidebarWithHeader from './components/Sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang='en' data-theme={'corporate'}>
       <body className={inter.className}>
-        <ChakraProviders>{children}</ChakraProviders>
+        <ChakraProviders>
+          <SidebarWithHeader>{children}</SidebarWithHeader>
+        </ChakraProviders>
       </body>
     </html>
   );

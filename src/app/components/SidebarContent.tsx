@@ -1,0 +1,51 @@
+import {
+  Box,
+  BoxProps,
+  CloseButton,
+  Flex,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import Logo from './Logo';
+import NavItem from './Navigation/NavItem';
+import LinkItems from '../utils/NavLinks';
+
+interface SidebarProps extends BoxProps {
+  onClose: () => void;
+}
+
+const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  return (
+    <Box
+      transition='3s ease'
+      borderRight='1px'
+      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      w={{ base: 'full', md: 60 }}
+      pos='fixed'
+      h='full'
+      {...rest}
+      bg={'gray.800'}
+    >
+      <Flex
+        h='20'
+        alignItems='center'
+        mx='8'
+        justifyContent='space-between'
+        mt={3}
+      >
+        <Logo />
+        <CloseButton
+          color={'white'}
+          display={{ base: 'flex', md: 'none' }}
+          onClick={onClose}
+        />
+      </Flex>
+      {LinkItems.map((link) => (
+        <NavItem href={link.href} key={link.name} icon={link.icon}>
+          {link.name}
+        </NavItem>
+      ))}
+    </Box>
+  );
+};
+
+export default SidebarContent;

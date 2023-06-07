@@ -1,4 +1,6 @@
-import { extendTheme } from '@chakra-ui/react';
-import { theme as baseTheme } from '@saas-ui/theme-glass';
+'use client';
+import { StyleFunctionProps, extendTheme } from '@chakra-ui/react';
 
-export const theme = extendTheme({}, baseTheme);
+const theme = extendTheme({});
+
+export default theme;
