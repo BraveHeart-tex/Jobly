@@ -43,13 +43,11 @@ const ResponsiveChartContainer = () => {
       flexDirection={'column'}
       gap={4}
     >
-      <Heading>Your Applications by Month</Heading>
-      <Text>
-        This chart shows the number of applications you have submitted each
+      <Heading color={'gray.700'}>Your Applications by Month</Heading>
+      <Text color={'gray.500'}>
+        Below chart shows the number of applications you have submitted each
         month.
       </Text>
-      {/* TODO: Change chart types */}
-      {/* TODO: Change btn styles */}
       <Flex
         justifyContent={'center'}
         alignItems={'center'}
@@ -59,12 +57,39 @@ const ResponsiveChartContainer = () => {
           lg: 'row',
         }}
       >
-        <Text>Change Chart Type:</Text>
-        <Box>
-          <Button onClick={() => setChartType('bar')}>Bar</Button>
-          <Button onClick={() => setChartType('line')}>Line</Button>
-          <Button onClick={() => setChartType('area')}>Area</Button>
-        </Box>
+        <Text color={'gray.500'}>Change Chart Type:</Text>
+        <Flex gap={4}>
+          <Button
+            bg={'gray.700'}
+            color={'white'}
+            _hover={{
+              bg: 'gray.600',
+            }}
+            onClick={() => setChartType('bar')}
+          >
+            Bar
+          </Button>
+          <Button
+            bg={'gray.700'}
+            color={'white'}
+            _hover={{
+              bg: 'gray.600',
+            }}
+            onClick={() => setChartType('line')}
+          >
+            Line
+          </Button>
+          <Button
+            bg={'gray.700'}
+            color={'white'}
+            _hover={{
+              bg: 'gray.600',
+            }}
+            onClick={() => setChartType('area')}
+          >
+            Area
+          </Button>
+        </Flex>
       </Flex>
       {chartType === 'bar' && <BarChartComponent data={exampleData} />}
       {chartType === 'line' && <MyLineChart data={exampleData} />}

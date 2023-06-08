@@ -1,6 +1,9 @@
-import SidebarWithHeader from './components/Sidebar';
-import Sidebar from './components/Sidebar';
+import WelcomePageComponent from './components/WelcomePage/WelcomePage';
 
 export default function Home() {
-  return <main></main>;
+  return (
+    <main>
+      <WelcomePageComponent />
+    </main>
+  );
 }
