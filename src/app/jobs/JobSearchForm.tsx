@@ -21,10 +21,11 @@ const JobSearchForm = () => {
     <Box>
       <form
         style={{
+          padding: '1rem',
+          backgroundColor: '#edf2f7',
           borderRadius: '8px',
           boxShadow: '0 0 8px rgba(0,0,0,0.1)',
         }}
-        className='job-search-form'
       >
         <Heading
           as={'h3'}

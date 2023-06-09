@@ -74,7 +74,7 @@ const JobCard = () => {
           {/* Application Status End */}
         </SimpleGrid>
         {/* Job Card Actions */}
-        <Flex justifyContent={'space-between'}>
+        <Flex justifyContent={'space-between'} mt={1}>
           <Flex gap={2}>
             <Button
               color={'white'}
@@ -96,7 +96,7 @@ const JobCard = () => {
             </Button>
           </Flex>
           <Button
-            color={'gray.500'}
+            color={'gray.600'}
             bg={'gray.200'}
             _hover={{
               bg: 'gray.300',
