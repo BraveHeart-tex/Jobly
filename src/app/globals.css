@@ -1,3 +1,7 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+.job-search-form {
+  padding: 1rem;
+}

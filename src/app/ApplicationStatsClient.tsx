@@ -1,9 +1,10 @@
 'use client';
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import JobStatusCard from '../components/StatsPage/JobStatusCard';
-import ResponsiveChartContainer from '../components/ResponsiveChartContainer';
+import React from 'react';
+import ResponsiveChartContainer from './components/ResponsiveChartContainer';
+import JobStatusCard from './components/StatsPage/JobStatusCard';
 
-const StatsPage = () => {
+const ApplicationStatsClient = () => {
   return (
     <Box display={'flex'} flexDirection={'column'}>
       <SimpleGrid columns={{ base: 1, lg: 2, xl: 3 }} gap={4}>
@@ -16,4 +17,4 @@ const StatsPage = () => {
   );
 };
 
-export default StatsPage;
+export default ApplicationStatsClient;

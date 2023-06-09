@@ -1,9 +1,9 @@
-import WelcomePageComponent from './components/WelcomePage/WelcomePage';
+import ApplicationStatsClient from './ApplicationStatsClient';
 
 export default function Home() {
   return (
     <main>
-      <WelcomePageComponent />
+      <ApplicationStatsClient />
     </main>
   );
 }

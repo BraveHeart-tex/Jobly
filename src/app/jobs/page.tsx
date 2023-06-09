@@ -1,7 +1,8 @@
 import React from 'react';
+import JobsPageClient from './JobsPageClient';
 
 const JobsPage = () => {
-  return <div>JobsPage</div>;
+  return <JobsPageClient />;
 };
 
 export default JobsPage;
