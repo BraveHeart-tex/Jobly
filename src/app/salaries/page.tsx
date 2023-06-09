@@ -1,5 +1,11 @@
+import SalaryEstimationsClient from './SalaryEstimationsClient';
+
 const SalaryEstimationsPage = () => {
-  return <div>page</div>;
+  return (
+    <main>
+      <SalaryEstimationsClient />
+    </main>
+  );
 };
 
 export default SalaryEstimationsPage;
