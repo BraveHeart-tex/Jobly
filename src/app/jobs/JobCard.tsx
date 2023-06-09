@@ -15,8 +15,9 @@ import { GrStatusInfo } from 'react-icons/gr';
 import { FiEye } from 'react-icons/fi';
 import { Link } from '@chakra-ui/next-js';
 
-// Will take props later
+// TODO: Will take props later
 const JobCard = () => {
+  // TODO: will handle edit, delete and view details
   return (
     <Box
       position={'relative'}

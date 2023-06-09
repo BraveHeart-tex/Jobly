@@ -14,7 +14,14 @@ const JobsList = () => {
           lg: 2,
           xl: 3,
         }}
+        gap={6}
       >
+        <JobCard />
+        <JobCard />
+        <JobCard />
+        <JobCard />
+        <JobCard />
+        <JobCard />
         <JobCard />
       </SimpleGrid>
     </Box>
