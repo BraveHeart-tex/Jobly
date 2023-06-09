@@ -1,6 +1,5 @@
 'use client';
-
-import { Box, Stack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import JobsList from './JobsList';
 import JobSearchForm from './JobSearchForm';
 

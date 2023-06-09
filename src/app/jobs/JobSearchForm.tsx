@@ -1,3 +1,4 @@
+'use client';
 import {
   Box,
   Button,
@@ -20,7 +21,8 @@ const JobSearchForm = () => {
     <Box>
       <form
         style={{
-          border: '1px dotted red',
+          borderRadius: '8px',
+          boxShadow: '0 0 8px rgba(0,0,0,0.1)',
         }}
         className='job-search-form'
       >
