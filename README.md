@@ -1,3 +1,3 @@
-Jobly || Job Tracking Application
+# Jobly || Job Tracking Application
 
 - TBU
