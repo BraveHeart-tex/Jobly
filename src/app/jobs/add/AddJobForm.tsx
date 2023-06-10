@@ -83,20 +83,30 @@ const AddJobForm = () => {
             </Select>
           </FormControl>
         </InputGroup>
-        <FormControl
-          width={{
-            base: '100%',
-            xl: '50%',
-          }}
+        <InputGroup
+          display={'flex'}
+          flexDirection={{ base: 'column', lg: 'row' }}
+          gap={4}
         >
-          <FormLabel>Comments (Optional)</FormLabel>
-          <Textarea
-            borderColor={useColorModeValue('facebook.200', 'gray.600')}
-            focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-            placeholder='Optional comments for this job application.'
-            resize={'none'}
-          />
-        </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Job Location</FormLabel>
+            <Input
+              type='text'
+              placeholder={'Job Location'}
+              borderColor={useColorModeValue('facebook.200', 'gray.600')}
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Comments (Optional)</FormLabel>
+            <Textarea
+              borderColor={useColorModeValue('facebook.200', 'gray.600')}
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
+              placeholder='Optional comments for this job application.'
+              resize={'none'}
+            />
+          </FormControl>
+        </InputGroup>
         <Button
           type='submit'
           bg={useColorModeValue('facebook.500', 'gray.700')}
