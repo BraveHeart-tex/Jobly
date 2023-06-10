@@ -6,11 +6,15 @@ const AddJobsPageClient = () => {
   return (
     <Stack gap={8}>
       <Stack gap={4}>
-        <Heading as={'h1'} color={'gray.700'} textTransform={'capitalize'}>
+        <Heading
+          as={'h1'}
+          color={useColorModeValue('facebook.500', 'gray.200')}
+          textTransform={'capitalize'}
+        >
           Add a new job application
         </Heading>
         <Text
-          color={useColorModeValue('gray.500', 'gray.200')}
+          color={useColorModeValue('gray.500', 'gray.400')}
           width={{
             base: '100%',
             md: '75%',
