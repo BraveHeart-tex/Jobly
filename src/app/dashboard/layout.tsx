@@ -1,4 +1,4 @@
-import './globals.css';
+import '../globals.css';
 import { Inter } from 'next/font/google';
 import { ChakraProviders } from '../ChakraProviders';
 import SidebarWithHeader from '../components/Sidebar';
@@ -16,12 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' data-theme={'corporate'}>
-      <body className={inter.className}>
-        <ChakraProviders>
-          <SidebarWithHeader>{children}</SidebarWithHeader>
-        </ChakraProviders>
-      </body>
-    </html>
+    <ChakraProviders>
+      <SidebarWithHeader>{children}</SidebarWithHeader>
+    </ChakraProviders>
   );
 }

@@ -76,7 +76,7 @@ const SingleJobPageClient = () => {
         }}
       >
         <Link
-          href={'/jobs'}
+          href={'/dashboard/jobs'}
           _hover={{
             textDecoration: 'none',
           }}

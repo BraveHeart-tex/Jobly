@@ -13,7 +13,6 @@ import {
   useToast,
   FormControl,
   useColorModeValue,
-  useColorMode,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import { FcGoogle } from 'react-icons/fc';
@@ -24,14 +23,48 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 const LoginPageClient = () => {
+  const [loading, setIsLoading] = useState(false);
+  const toast = useToast();
   const { register, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {};
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsLoading(true);
+
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    }).then((callback: SignInResponse | undefined) => {
+      setIsLoading(false);
+
+      if (callback?.ok) {
+        toast({
+          title: 'Sign in successful.',
+          description: 'Welcome back!',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+        router.push('/dashboard');
+      }
+      if (callback?.error) {
+        toast({
+          title: 'Sign in failed, please try again.',
+          description: 'Invalid email or password.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+      }
+    });
+  };
 
   return (
     <Flex
@@ -113,6 +146,8 @@ const LoginPageClient = () => {
               size='lg'
               borderRadius='md'
               type='submit'
+              isDisabled={loading}
+              isLoading={loading}
             >
               Sign In
             </Button>
@@ -129,6 +164,8 @@ const LoginPageClient = () => {
                 })
               }
               fontSize={{ base: '15px', md: '17px', lg: '18px' }}
+              isDisabled={loading}
+              isLoading={loading}
             >
               Sign In with Google
             </Button>

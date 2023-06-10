@@ -116,7 +116,7 @@ const JobCard = () => {
             leftIcon={<FiEye />}
           >
             <Link
-              href={`/jobs/${jobId}`}
+              href={`dashboard/jobs/${jobId}`}
               _hover={{
                 textDecoration: 'none',
               }}
