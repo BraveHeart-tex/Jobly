@@ -13,13 +13,19 @@ import {
   Stack,
   useColorModeValue,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { signIn } from 'next-auth/react';
+import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const SignUpPageClient = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -29,11 +35,42 @@ const SignUpPageClient = () => {
       name: '',
       email: '',
       password: '',
-      img: '',
     },
   });
+  const toast = useToast();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {};
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    setIsLoading(true);
+    axios
+      .post('/api/user/auth/register', data)
+      .then((response) => {
+        setIsLoading(false);
+        toast({
+          title: 'Successfully signed up.',
+          description: 'We have created your account for you.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+        router.push('/auth/login');
+      })
+      .catch((error: AxiosError) => {
+        setIsLoading(false);
+        toast({
+          title: 'An error occurred.',
+          // @ts-ignore
+          description: error.response?.data.error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
     <Flex
@@ -150,6 +187,8 @@ const SignUpPageClient = () => {
               }}
               borderRadius='md'
               type='submit'
+              isLoading={isLoading}
+              isDisabled={isLoading}
             >
               Sign Up
             </Button>
@@ -161,9 +200,11 @@ const SignUpPageClient = () => {
               borderRadius='md'
               onClick={() =>
                 signIn('google', {
-                  callbackUrl: '/',
+                  callbackUrl: '/dashboard',
                 })
               }
+              isLoading={isLoading}
+              isDisabled={isLoading}
               fontSize={{ base: '15px', md: '17px', lg: '18px' }}
             >
               Sign Up with Google
