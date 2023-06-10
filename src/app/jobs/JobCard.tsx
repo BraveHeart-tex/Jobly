@@ -8,10 +8,10 @@ import {
   SimpleGrid,
   Stack,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { TfiLocationPin } from 'react-icons/tfi';
-import { BsBriefcase, BsCalendarDay } from 'react-icons/bs';
-import { GrStatusInfo } from 'react-icons/gr';
+import { BsBriefcase, BsCalendarDay, BsInfoCircle } from 'react-icons/bs';
 import { FiEye } from 'react-icons/fi';
 import { Link } from '@chakra-ui/next-js';
 
@@ -24,12 +24,16 @@ const JobCard = () => {
     <Box
       position={'relative'}
       p={4}
-      bg={'gray.100'}
+      bg={useColorModeValue('gray.100', 'gray.800')}
       boxShadow={'md'}
       rounded={'md'}
     >
       <chakra.header display={'flex'} gap={4}>
-        <Avatar name='Company Name' rounded={'sm'} bgColor={'gray.700'} />
+        <Avatar
+          name='Company Name'
+          rounded={'sm'}
+          bgColor={useColorModeValue('facebook.500', 'gray.700')}
+        />
         <Stack gap={1}>
           <Text fontWeight={'500'} fontSize={'lg'}>
             Job Title
@@ -70,7 +74,7 @@ const JobCard = () => {
           {/* Application Status Start */}
           <Box display={'flex'} gap={4} alignItems={'center'}>
             <chakra.span>
-              <GrStatusInfo />
+              <BsInfoCircle />
             </chakra.span>
             <chakra.span>Application Status</chakra.span>
           </Box>
@@ -81,9 +85,9 @@ const JobCard = () => {
           <Flex gap={2}>
             <Button
               color={'white'}
-              bgColor={'gray.700'}
+              bgColor={useColorModeValue('facebook.500', 'gray.700')}
               _hover={{
-                bgColor: 'gray.600',
+                bgColor: useColorModeValue('facebook.300', 'gray.600'),
               }}
             >
               Edit
