@@ -8,6 +8,7 @@ import {
   Input,
   Select,
   SimpleGrid,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -22,7 +23,7 @@ const JobSearchForm = () => {
       <form
         style={{
           padding: '1rem',
-          backgroundColor: '#edf2f7',
+          backgroundColor: useColorModeValue('#edf2f7', '#1A202C'),
           borderRadius: '8px',
           boxShadow: '0 0 8px rgba(0,0,0,0.1)',
         }}
@@ -30,11 +31,7 @@ const JobSearchForm = () => {
         <Heading
           as={'h3'}
           fontSize={'3xl'}
-          color={'gray.700'}
-          background={
-            'linear-gradient(90deg, rgba(66,72,74,1) 0%, rgba(33,33,33,1) 47%, rgba(66,72,74,1) 100%, rgba(0,0,0,1) 100%)'
-          }
-          backgroundClip={'text'}
+          color={useColorModeValue('facebook.500', 'gray.200')}
         >
           Job Application Search Form
         </Heading>
@@ -48,24 +45,30 @@ const JobSearchForm = () => {
           my={4}
         >
           <FormControl>
-            <FormLabel color={'gray.600'}>Job Title</FormLabel>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+              Job Title
+            </FormLabel>
             <Input
               type='text'
               placeholder='Search by job title'
-              focusBorderColor='gray.500'
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>Company</FormLabel>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+              Company
+            </FormLabel>
             <Input
               type='text'
               placeholder='Search by company name'
-              focusBorderColor='gray.500'
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>Application Status</FormLabel>
-            <Select defaultValue={'all'} focusBorderColor='gray.500'>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+              Application Status
+            </FormLabel>
+            <Select defaultValue={'all'} focusBorderColor='gray.600'>
               <option value='all'>All</option>
               <option value='interview'>Interview</option>
               <option value='declined'>Declined</option>
@@ -73,8 +76,13 @@ const JobSearchForm = () => {
             </Select>
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>Job Type</FormLabel>
-            <Select defaultValue={'all'} focusBorderColor='gray.500'>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+              Job Type
+            </FormLabel>
+            <Select
+              defaultValue={'all'}
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
+            >
               {/* TODO: CHANGE VALUES */}
               <option value='all'>All</option>
               <option value='remote'>Remote</option>
@@ -84,8 +92,13 @@ const JobSearchForm = () => {
             </Select>
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>Sort</FormLabel>
-            <Select defaultValue={'all'} focusBorderColor='gray.500'>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+              Sort
+            </FormLabel>
+            <Select
+              defaultValue={'all'}
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
+            >
               <option value='all'>All</option>
               <option value='remote'>Latest</option>
               <option value='full-time'>Oldest</option>
@@ -99,9 +112,9 @@ const JobSearchForm = () => {
             lg: '25%',
           }}
           color={'white'}
-          bg={'gray.700'}
+          bg={useColorModeValue('facebook.500', 'gray.700')}
           _hover={{
-            bg: 'gray.600',
+            bg: useColorModeValue('facebook.300', 'gray.600'),
           }}
           onClick={() => clearFilters()}
         >
