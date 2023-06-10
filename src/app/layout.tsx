@@ -2,6 +2,8 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import { ChakraProviders } from './ChakraProviders';
 import SidebarWithHeader from './components/Sidebar';
+import { ColorModeScript } from '@chakra-ui/react';
+import theme from './theme';
 
 const inter = Inter({ subsets: ['latin'] });
 

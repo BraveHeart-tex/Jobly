@@ -1,5 +1,5 @@
 'use client';
-import { Box, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import { Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import AddJobForm from './AddJobForm';
 
 const AddJobsPageClient = () => {

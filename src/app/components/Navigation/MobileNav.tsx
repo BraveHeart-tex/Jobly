@@ -11,14 +11,18 @@ import {
   Avatar,
   MenuList,
   MenuItem,
+  Switch,
+  useColorMode,
 } from '@chakra-ui/react';
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import Logo from '../Logo';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { toggleColorMode } = useColorMode();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -85,6 +89,40 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 }}
               >
                 Sign out
+              </MenuItem>
+              <MenuItem
+                display={'flex'}
+                alignItems={'center'}
+                gap={2}
+                justifyContent={'space-between'}
+                bg={'gray.700'}
+                _hover={{
+                  bg: 'gray.600',
+                }}
+              >
+                <Text>Switch to {useColorModeValue('Dark', 'Light')} Mode</Text>
+                <Switch
+                  onChange={toggleColorMode}
+                  aria-label='Toggle color mode'
+                  position={'relative'}
+                  size={'lg'}
+                  colorScheme={useColorModeValue('gray', 'yellow')}
+                >
+                  {useColorModeValue(
+                    <MoonIcon
+                      position={'absolute'}
+                      right={3}
+                      top={1.5}
+                      color={'gray.700'}
+                    />,
+                    <SunIcon
+                      position={'absolute'}
+                      left={1.5}
+                      top={1.5}
+                      color={'yellow.500'}
+                    />
+                  )}
+                </Switch>
               </MenuItem>
             </MenuList>
           </Menu>
