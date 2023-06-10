@@ -1,5 +1,5 @@
 'use client';
-import { chakra, Box } from '@chakra-ui/react';
+import { chakra, Box, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 import {
   AiOutlineClockCircle,
@@ -32,8 +32,9 @@ interface JobStatusData {
 // }
 
 const JobStatusCard = () => {
+  const { colorMode } = useColorMode();
   // FIXME: REFACTOR THIS
-  const borderBottomColor = (jobStatusData: JobStatusData) => {
+  const getBorderBottomColorByStatus = (jobStatusData: JobStatusData) => {
     if (jobStatusData.status === 'pending') {
       return 'orange.500';
     }
@@ -46,7 +47,7 @@ const JobStatusCard = () => {
   };
 
   // FIXME: REFACTOR THIS
-  const headingText = (jobStatusData: JobStatusData) => {
+  const getHeadingTextByStatus = (jobStatusData: JobStatusData) => {
     if (jobStatusData.status === 'pending') {
       return 'Pending Applications';
     }
@@ -59,7 +60,7 @@ const JobStatusCard = () => {
   };
 
   // FIXME: REFACTOR THIS
-  const icon = (jobStatusData: JobStatusData) => {
+  const getIconByStatus = (jobStatusData: JobStatusData) => {
     if (jobStatusData.status === 'pending') {
       return <AiOutlineClockCircle size={50} />;
     }
@@ -80,18 +81,24 @@ const JobStatusCard = () => {
           rounded={'md'}
           boxShadow={'md'}
           borderBottom={'4px solid'}
-          borderBottomColor={borderBottomColor(data)}
+          borderBottomColor={getBorderBottomColorByStatus(data)}
         >
           <chakra.header
             display={'flex'}
             justifyContent={'space-between'}
             alignItems={'center'}
             mb={4}
+            color={colorMode === 'light' ? 'gray.800' : 'gray.100'}
           >
             <chakra.span fontSize={'4xl'}>{data.count}</chakra.span>
-            <chakra.span>{icon(data)}</chakra.span>
+            <chakra.span>{getIconByStatus(data)}</chakra.span>
           </chakra.header>
-          <chakra.p fontSize={'lg'}>{headingText(data)}</chakra.p>
+          <chakra.p
+            fontSize={'lg'}
+            color={colorMode === 'light' ? 'gray.500' : 'gray.300'}
+          >
+            {getHeadingTextByStatus(data)}
+          </chakra.p>
         </Box>
       ))}
     </>
