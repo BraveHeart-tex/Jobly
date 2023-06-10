@@ -91,9 +91,7 @@ const JobStatusCard = () => {
             <chakra.span fontSize={'4xl'}>{data.count}</chakra.span>
             <chakra.span>{icon(data)}</chakra.span>
           </chakra.header>
-          <chakra.p fontSize={'lg'} color={'gray.500'}>
-            {headingText(data)}
-          </chakra.p>
+          <chakra.p fontSize={'lg'}>{headingText(data)}</chakra.p>
         </Box>
       ))}
     </>
