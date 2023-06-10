@@ -17,6 +17,8 @@ import { Link } from '@chakra-ui/next-js';
 
 // TODO: Will take props later
 const JobCard = () => {
+  // remove later
+  let jobId = '1';
   // TODO: will handle edit, delete and view details
   return (
     <Box
@@ -105,7 +107,7 @@ const JobCard = () => {
             leftIcon={<FiEye />}
           >
             <Link
-              href={'/jobs'}
+              href={`/jobs/${jobId}`}
               _hover={{
                 textDecoration: 'none',
               }}
