@@ -19,7 +19,7 @@ const AddJobForm = () => {
   };
   return (
     <Box
-      boxShadow={'2xl'}
+      boxShadow={'xl'}
       rounded={'lg'}
       p={8}
       bg={useColorModeValue('gray.100', 'gray.800')}
