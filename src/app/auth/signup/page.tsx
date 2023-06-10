@@ -1,7 +1,11 @@
-import React from 'react';
+import SignUpPageClient from './SignUpPageClient';
 
-const SignUpPage = () => {
-  return <div>page</div>;
+const LoginPage = () => {
+  return (
+    <main>
+      <SignUpPageClient />
+    </main>
+  );
 };
 
-export default SignUpPage;
+export default LoginPage;

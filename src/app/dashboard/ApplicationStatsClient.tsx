@@ -1,8 +1,8 @@
 'use client';
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import React from 'react';
-import ResponsiveChartContainer from './components/ResponsiveChartContainer';
-import JobStatusCard from './components/StatsPage/JobStatusCard';
+import ResponsiveChartContainer from '../components/ResponsiveChartContainer';
+import JobStatusCard from '../components/StatsPage/JobStatusCard';
 
 const ApplicationStatsClient = () => {
   return (
