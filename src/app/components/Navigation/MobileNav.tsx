@@ -17,6 +17,7 @@ import {
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import Logo from '../Logo';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { signOut } from 'next-auth/react';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
@@ -92,6 +93,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 _hover={{
                   bg: useColorModeValue('facebook.500', 'gray.600'),
                 }}
+                onClick={() => signOut()}
               >
                 Sign out
               </MenuItem>
