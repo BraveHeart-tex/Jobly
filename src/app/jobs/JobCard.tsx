@@ -46,7 +46,11 @@ const JobCard = () => {
       <hr className='divider' />
       <Stack gap={4}>
         {/* Job Card Info */}
-        <SimpleGrid columns={2} gap={4}>
+        <SimpleGrid
+          columns={2}
+          gap={4}
+          color={useColorModeValue('gray.600', 'gray.300')}
+        >
           {/* Location Info */}
           <Box display={'flex'} gap={4} alignItems={'center'}>
             <chakra.span>
@@ -103,10 +107,11 @@ const JobCard = () => {
             </Button>
           </Flex>
           <Button
-            color={'gray.600'}
-            bg={'gray.200'}
+            variant={'ghost'}
+            color={useColorModeValue('facebook.300', 'gray.400')}
             _hover={{
-              bg: 'gray.300',
+              color: useColorModeValue('facebook.500', 'gray.500'),
+              bg: useColorModeValue('gray.200', 'gray.900'),
             }}
             leftIcon={<FiEye />}
           >
