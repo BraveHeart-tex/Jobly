@@ -9,7 +9,14 @@ const AddJobsPageClient = () => {
         <Heading as={'h1'} color={'gray.700'} textTransform={'capitalize'}>
           Add a new job application
         </Heading>
-        <Text color={useColorModeValue('gray.500', 'gray.200')}>
+        <Text
+          color={useColorModeValue('gray.500', 'gray.200')}
+          width={{
+            base: '100%',
+            md: '75%',
+          }}
+          lineHeight={1.7}
+        >
           You can fill out the form below to register your job application. Your
           application will be automatically added to the list of jobs in the
           Jobs List page.
