@@ -1,4 +1,5 @@
 'use client';
+import { useColorModeValue } from '@chakra-ui/react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -18,10 +19,26 @@ const MyAreaChart = ({ data }: IAreaChartProps) => {
     <ResponsiveContainer width='100%' height={300}>
       <AreaChart data={data} margin={{ top: 50 }}>
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='date' />
-        <YAxis allowDecimals={false} />
-        <Tooltip />
-        <Area type='monotone' dataKey='count' stroke='#A0AEC0' fill='#2D3748' />
+        <XAxis
+          dataKey='date'
+          tick={{ fill: useColorModeValue('#4A5568', '#F7FAFC') }}
+        />
+        <YAxis
+          allowDecimals={false}
+          tick={{ fill: useColorModeValue('#4A5568', '#F7FAFC') }}
+        />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: useColorModeValue('#f7fafc', '#1a202c'),
+          }}
+        />
+        <Area
+          type='monotone'
+          dataKey='count'
+          name='Number of jobs applied'
+          stroke={useColorModeValue('#223B67', '#fff')}
+          fill={useColorModeValue('#385898', '#f7fafc')}
+        />
       </AreaChart>
     </ResponsiveContainer>
   );

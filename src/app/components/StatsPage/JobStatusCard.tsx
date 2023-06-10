@@ -80,6 +80,7 @@ const JobStatusCard = () => {
           p={'32px'}
           rounded={'md'}
           boxShadow={'md'}
+          bg={colorMode === 'light' ? 'gray.100' : 'gray.800'}
           borderBottom={'4px solid'}
           borderBottomColor={getBorderBottomColorByStatus(data)}
         >

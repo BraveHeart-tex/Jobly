@@ -1,4 +1,5 @@
 'use client';
+import { useColorModeValue } from '@chakra-ui/react';
 import {
   ResponsiveContainer,
   CartesianGrid,
@@ -24,15 +25,25 @@ const MyLineChart = ({ data }: IPieChartProps) => {
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
       >
         <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='date' />
-        <YAxis dataKey={'count'} />
-        <Tooltip />
+        <XAxis
+          dataKey='date'
+          tick={{ fill: useColorModeValue('#4A5568', '#F7FAFC') }}
+        />
+        <YAxis
+          dataKey={'count'}
+          tick={{ fill: useColorModeValue('#4A5568', '#F7FAFC') }}
+        />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: useColorModeValue('#f7fafc', '#1a202c'),
+          }}
+        />
         <Legend />
         <Line
           type='monotone'
           name='Number of jobs applied'
           dataKey='count'
-          stroke='#2D3748'
+          stroke={useColorModeValue('#385898', '#f7fafc')}
         />
       </LineChart>
     </ResponsiveContainer>
