@@ -24,7 +24,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       pos='fixed'
       h='full'
       {...rest}
-      bg={'gray.800'}
+      bg={useColorModeValue('facebook.500', 'gray.800')}
     >
       <Flex
         h='20'

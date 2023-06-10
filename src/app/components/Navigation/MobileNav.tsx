@@ -30,7 +30,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       height='20'
       alignItems='center'
       borderBottomWidth='1px'
-      bg={'gray.800'}
+      bg={useColorModeValue('facebook.500', 'gray.800')}
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{
         base: 'space-between',
@@ -46,9 +46,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label='open menu'
         icon={<FiMenu />}
         border={'1px'}
-        borderColor={'gray.400'}
+        borderColor={'white'}
         _hover={{
-          bg: 'gray.700',
+          bg: useColorModeValue('facebook.300', 'gray.700'),
         }}
       />
 
@@ -78,14 +78,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={'gray.700'}
-              borderColor={'blackAlpha.500'}
+              bg={useColorModeValue('facebook.600', 'gray.700')}
+              borderColor={useColorModeValue('facebook.600', 'gray.700')}
               color={'white'}
             >
               <MenuItem
-                bg={'gray.700'}
+                bg={useColorModeValue('facebook.600', 'gray.700')}
                 _hover={{
-                  bg: 'gray.600',
+                  bg: useColorModeValue('facebook.500', 'gray.600'),
                 }}
               >
                 Sign out
@@ -95,9 +95,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 alignItems={'center'}
                 gap={2}
                 justifyContent={'space-between'}
-                bg={'gray.700'}
+                bg={useColorModeValue('facebook.600', 'gray.700')}
                 _hover={{
-                  bg: 'gray.600',
+                  bg: useColorModeValue('facebook.500', 'gray.600'),
                 }}
               >
                 <Text>Switch to {useColorModeValue('Dark', 'Light')} Mode</Text>

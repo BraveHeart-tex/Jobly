@@ -1,4 +1,4 @@
-import { FlexProps, Flex, Icon } from '@chakra-ui/react';
+import { FlexProps, Flex, Icon, useColorModeValue } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { ReactNode } from 'react';
 import { IconType } from 'react-icons';
@@ -25,7 +25,7 @@ const NavItem = ({ icon, children, href }: NavItemProps) => {
         cursor='pointer'
         color={'white'}
         _hover={{
-          bg: 'gray.700',
+          bg: useColorModeValue('facebook.300', 'gray.700'),
           transform: 'translateX(12px)',
         }}
         transition={'all .3s ease'}
