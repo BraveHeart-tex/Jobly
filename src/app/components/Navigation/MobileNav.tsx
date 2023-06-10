@@ -70,7 +70,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: 'none' }}
             >
               <HStack color={'white'}>
-                <Avatar size={'sm'} name='Bora Karaca' />
+                <Avatar
+                  size={'sm'}
+                  name='Bora Karaca'
+                  color={'white'}
+                  background={useColorModeValue('facebook.300', 'gray.600')}
+                />
                 <Text fontSize='sm'>Bora Karaca</Text>
                 <Box display={{ base: 'none', md: 'flex' }}>
                   <FiChevronDown />

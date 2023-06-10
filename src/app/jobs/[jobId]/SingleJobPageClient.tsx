@@ -10,6 +10,7 @@ import {
   StatLabel,
   StatNumber,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 const SingleJobPageClient = () => {
@@ -17,10 +18,20 @@ const SingleJobPageClient = () => {
     <Box>
       <Stack>
         <Box>
-          <Heading color={'gray.700'}>Software Engineer</Heading>
-          <Text color={'gray.500'}>Some Company Inc.</Text>
+          <Heading color={useColorModeValue('facebook.500', 'gray.200')}>
+            Software Engineer
+          </Heading>
+          <Text color={useColorModeValue('gray.500', 'gray.400')}>
+            Some Company Inc.
+          </Text>
         </Box>
-        <Stack p={8} boxShadow={'md'} gap={8}>
+        <Stack
+          background={useColorModeValue('gray.100', 'gray.800')}
+          p={8}
+          boxShadow={'md'}
+          gap={8}
+          color={useColorModeValue('gray.600', 'gray.300')}
+        >
           <Stat>
             <StatLabel>Job Location</StatLabel>
             <StatNumber>Los Angeles, CA</StatNumber>
@@ -48,7 +59,7 @@ const SingleJobPageClient = () => {
                 xl: '50%',
               }}
               lineHeight={1.7}
-              color={'gray.600'}
+              color={useColorModeValue('gray.600', 'gray.400')}
             >
               &ldquo;This is a great company to work for. I really like the
               people and the culture. I hope I get the job! &rdquo;
@@ -58,13 +69,20 @@ const SingleJobPageClient = () => {
       </Stack>
       <Button
         mt={4}
-        bg={'gray.700'}
+        bg={useColorModeValue('facebook.500', 'gray.700')}
         color={'white'}
         _hover={{
-          bg: 'gray.600',
+          bg: useColorModeValue('facebook.300', 'gray.600'),
         }}
       >
-        <Link href={'/jobs'}>Back to Jobs List</Link>
+        <Link
+          href={'/jobs'}
+          _hover={{
+            textDecoration: 'none',
+          }}
+        >
+          Back to Jobs List
+        </Link>
       </Button>
     </Box>
   );
