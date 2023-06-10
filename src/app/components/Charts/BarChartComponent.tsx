@@ -1,4 +1,5 @@
 'use client';
+import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 import {
   BarChart,
   Bar,
@@ -18,10 +19,25 @@ const BarChartComponent = ({ data }: IBarChartComponentProps) => {
     <ResponsiveContainer width='100%' height={300}>
       <BarChart data={data} margin={{ top: 50 }}>
         <CartesianGrid strokeDasharray='3 3 ' />
-        <XAxis dataKey='date' />
-        <YAxis allowDecimals={false} />
-        <Tooltip />
-        <Bar dataKey='count' fill='#2D3748' barSize={75} />
+        <XAxis
+          dataKey='date'
+          tick={{ fill: useColorModeValue('#4A5568', '#F7FAFC') }}
+        />
+        <YAxis
+          allowDecimals={false}
+          tick={{ fill: useColorModeValue('#4A5568', '#F7FAFC') }}
+        />
+        <Tooltip
+          contentStyle={{
+            backgroundColor: useColorModeValue('#f7fafc', '#1a202c'),
+          }}
+        />
+        <Bar
+          dataKey='count'
+          name='Applications'
+          fill={useColorModeValue('#385898', '#f7fafc')}
+          barSize={75}
+        />
       </BarChart>
     </ResponsiveContainer>
   );
