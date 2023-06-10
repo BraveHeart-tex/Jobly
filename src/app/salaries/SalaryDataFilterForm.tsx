@@ -6,6 +6,8 @@ import {
   Select,
   Button,
   Box,
+  useColorModeValue,
+  useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -27,24 +29,33 @@ const SalaryDataFilterForm = (props: ISalaryDataFilterFormProps) => {
           my={4}
         >
           <FormControl>
-            <FormLabel color={'gray.600'}>Job Title</FormLabel>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.400')}>
+              Job Title
+            </FormLabel>
             <Input
               type='text'
               placeholder='Search by job title'
-              focusBorderColor='gray.500'
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>City / State</FormLabel>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.400')}>
+              City / State
+            </FormLabel>
             <Input
               type='text'
               placeholder='Search by city or state'
-              focusBorderColor='gray.500'
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             />
           </FormControl>
           <FormControl>
-            <FormLabel color={'gray.600'}>Sort</FormLabel>
-            <Select defaultValue={'all'} focusBorderColor='gray.500'>
+            <FormLabel color={useColorModeValue('gray.600', 'gray.400')}>
+              Sort
+            </FormLabel>
+            <Select
+              defaultValue={'all'}
+              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
+            >
               <option value='all'>All</option>
               <option value='remote'>Highest</option>
               <option value='full-time'>Lowest</option>
@@ -58,9 +69,9 @@ const SalaryDataFilterForm = (props: ISalaryDataFilterFormProps) => {
             lg: '25%',
           }}
           color={'white'}
-          bg={'gray.700'}
+          bg={useColorModeValue('facebook.500', 'gray.700')}
           _hover={{
-            bg: 'gray.600',
+            bg: useColorModeValue('facebook.300', 'gray.600'),
           }}
           onClick={() => clearFilters()}
         >

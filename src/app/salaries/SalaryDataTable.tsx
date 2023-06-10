@@ -8,7 +8,6 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot,
   useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -20,9 +19,12 @@ const SalaryDataTable = (props: ISalaryDataTableProps) => {
     <TableContainer mt={4}>
       <Table
         variant='striped'
-        colorScheme={useColorModeValue('facebook', 'white')}
+        colorScheme={useColorModeValue('facebook', 'gray')}
+        color={useColorModeValue('gray.600', 'gray.300')}
       >
-        <TableCaption>Glassdoor Salary Estimations</TableCaption>
+        <TableCaption>
+          Glassdoor Salary Estimations City and Job Title
+        </TableCaption>
         <Thead>
           <Tr>
             <Th>Job Title</Th>
