@@ -18,11 +18,21 @@ import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import Logo from '../Logo';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { signOut } from 'next-auth/react';
+import { useQuery } from 'react-query';
+import customFetch from '@/app/utils/customFetch';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { data } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: async () => {
+      const { data } = await customFetch.get('/user/currentUser');
+      return data.currentUser;
+    },
+  });
+
   const { toggleColorMode } = useColorMode();
   return (
     <Flex
@@ -72,12 +82,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             >
               <HStack color={'white'}>
                 <Avatar
+                  src={data?.image}
                   size={'sm'}
-                  name='Bora Karaca'
+                  name={data?.name}
                   color={'white'}
                   background={useColorModeValue('facebook.300', 'gray.600')}
                 />
-                <Text fontSize='sm'>Bora Karaca</Text>
+                <Text fontSize='sm'>{data?.name}</Text>
                 <Box display={{ base: 'none', md: 'flex' }}>
                   <FiChevronDown />
                 </Box>
