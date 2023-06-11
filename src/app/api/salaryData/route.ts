@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
 
   const searchParam = request.nextUrl.searchParams.get('search') || '';
 
-  const pageSize = 20;
+  const pageSize = 10;
   const pageNumber = parseInt(pageParam);
 
   const skipAmount = (pageNumber - 1) * pageSize;

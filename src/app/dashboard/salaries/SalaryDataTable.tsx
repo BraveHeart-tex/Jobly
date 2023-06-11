@@ -10,11 +10,14 @@ import {
   Td,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { SalaryEstimationDataset } from '@prisma/client';
 import React from 'react';
 
-interface ISalaryDataTableProps {}
+interface ISalaryDataTableProps {
+  data: SalaryEstimationDataset[];
+}
 
-const SalaryDataTable = (props: ISalaryDataTableProps) => {
+const SalaryDataTable = ({ data }: ISalaryDataTableProps) => {
   return (
     <TableContainer mt={4}>
       <Table
@@ -33,21 +36,14 @@ const SalaryDataTable = (props: ISalaryDataTableProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>Software Engineer</Td>
-            <Td>51.000-70.000$</Td>
-            <Td>New York, NY</Td>
-          </Tr>
-          <Tr>
-            <Td>Software Engineer</Td>
-            <Td>51.000-70.000$</Td>
-            <Td>New York, NY</Td>
-          </Tr>
-          <Tr>
-            <Td>Software Engineer</Td>
-            <Td>51.000-70.000$</Td>
-            <Td>New York, NY</Td>
-          </Tr>
+          {data &&
+            data.map((salaryEstimation) => (
+              <Tr key={salaryEstimation.id}>
+                <Td>{salaryEstimation.jobTitle}</Td>
+                <Td>{`${salaryEstimation.salary_estimate}.000`}$</Td>
+                <Td>{salaryEstimation.location}</Td>
+              </Tr>
+            ))}
         </Tbody>
       </Table>
     </TableContainer>
