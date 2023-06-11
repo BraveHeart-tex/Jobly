@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   if (!currentUser) {
     return NextResponse.json(
       {
-        error: 'Not authenticated',
+        message: 'Not authenticated',
       },
       {
         status: 401,
