@@ -14,11 +14,16 @@ import { TfiLocationPin } from 'react-icons/tfi';
 import { BsBriefcase, BsCalendarDay, BsInfoCircle } from 'react-icons/bs';
 import { FiEye } from 'react-icons/fi';
 import { Link } from '@chakra-ui/next-js';
+import { JobApplication } from '@prisma/client';
+import formatDate from '@/app/utils/formatDate';
+import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
+import JobTypeOptions from '@/app/utils/JobTypeOptions';
 
-// TODO: Will take props later
-const JobCard = () => {
-  // remove later
-  let jobId = '1';
+interface IJobCardProps {
+  jobApplication: JobApplication;
+}
+
+const JobCard = ({ jobApplication }: IJobCardProps) => {
   // TODO: will handle edit, delete and view details
   return (
     <Box
@@ -36,10 +41,10 @@ const JobCard = () => {
         />
         <Stack gap={1}>
           <Text fontWeight={'500'} fontSize={'lg'}>
-            Job Title
+            {jobApplication.jobTitle}
           </Text>
           <Text color={'gray.500'} fontSize={'sm'}>
-            Company Name
+            {jobApplication.companyName}
           </Text>
         </Stack>
       </chakra.header>
@@ -56,7 +61,7 @@ const JobCard = () => {
             <chakra.span>
               <TfiLocationPin />
             </chakra.span>
-            <chakra.span>Job Location</chakra.span>
+            <chakra.span>{jobApplication.location}</chakra.span>
           </Box>
           {/* Location Info End */}
           {/* Job Type Start */}
@@ -64,7 +69,7 @@ const JobCard = () => {
             <chakra.span>
               <BsBriefcase />
             </chakra.span>
-            <chakra.span>Job Type</chakra.span>
+            <chakra.span>{JobTypeOptions[jobApplication.jobType]}</chakra.span>
           </Box>
           {/* Job Type End */}
           {/* Created At Start */}
@@ -72,7 +77,9 @@ const JobCard = () => {
             <chakra.span>
               <BsCalendarDay />
             </chakra.span>
-            <chakra.span>Created At</chakra.span>
+            <chakra.span>
+              {formatDate(new Date(jobApplication.createdAt))}
+            </chakra.span>
           </Box>
           {/* Created At End */}
           {/* Application Status Start */}
@@ -80,7 +87,9 @@ const JobCard = () => {
             <chakra.span>
               <BsInfoCircle />
             </chakra.span>
-            <chakra.span>Application Status</chakra.span>
+            <chakra.span>
+              {ApplicationStatusOptions[jobApplication.applicationStatus]}
+            </chakra.span>
           </Box>
           {/* Application Status End */}
         </SimpleGrid>
@@ -116,7 +125,7 @@ const JobCard = () => {
             leftIcon={<FiEye />}
           >
             <Link
-              href={`dashboard/jobs/${jobId}`}
+              href={`dashboard/jobs/${jobApplication.id}`}
               _hover={{
                 textDecoration: 'none',
               }}
