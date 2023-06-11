@@ -1,5 +1,6 @@
 'use client';
 
+import customFetch from '@/app/utils/customFetch';
 import { Link } from '@chakra-ui/next-js';
 import {
   Box,
@@ -12,8 +13,23 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { useQuery } from 'react-query';
 
-const SingleJobPageClient = () => {
+interface ISingleJobPageClientProps {
+  jobId: string;
+}
+
+const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
+  const { data, isLoading } = useQuery({
+    queryKey: 'jobs',
+    queryFn: async () => {
+      const { data } = await customFetch.get(`/jobs/${jobId}`);
+      return data.job;
+    },
+  });
+
+  console.log(data);
+
   return (
     <Box>
       <Stack>

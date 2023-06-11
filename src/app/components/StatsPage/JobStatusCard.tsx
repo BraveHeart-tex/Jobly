@@ -10,6 +10,7 @@ import {
   Button,
   Heading,
   Link,
+  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 import {
@@ -109,6 +110,16 @@ const JobStatusCard = () => {
           </Link>
         </Button>
       </Flex>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <>
+        <Skeleton height={'150px'} />
+        <Skeleton height={'150px'} />
+        <Skeleton height={'150px'} />
+      </>
     );
   }
 

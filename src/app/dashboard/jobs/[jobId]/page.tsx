@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react';
 import SingleJobPageClient from './SingleJobPageClient';
 
 interface IParams {
@@ -8,7 +7,7 @@ interface IParams {
 const SingleJobPage = ({ params }: { params: IParams }) => {
   return (
     <main>
-      <SingleJobPageClient />
+      <SingleJobPageClient jobId={params.jobId} />
     </main>
   );
 };
