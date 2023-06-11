@@ -56,13 +56,11 @@ model JobApplication {
   @@index([userId])
 }
 
-model SalaryEstimateDataset {
-  id              Int      @id @default(autoincrement())
+model SalaryEstimationDataset {
+  id              Int    @id @default(autoincrement())
   jobTitle        String
-  salary_estimate String
+  salary_estimate Int
   location        String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
 }
 
 enum ApplicationStatus {
