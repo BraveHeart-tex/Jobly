@@ -16,16 +16,33 @@ import { useQuery } from 'react-query';
 import customFetch from '@/app/utils/customFetch';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import { useAppSelector } from '@/app/redux/hooks';
 
 const SalaryEstimationsClient = (): JSX.Element => {
   const colorMode = useColorMode().colorMode;
   const [currentPage, setCurrentPage] = useState(1);
+  const { searchTerm, citySearchTerm, sortTerm } = useAppSelector(
+    (state) => state.searchReducer
+  );
 
   const { data, isLoading, isFetching, refetch } = useQuery(
-    ['salaries', { page: currentPage }],
+    [
+      'salaries',
+      {
+        page: currentPage,
+        search: searchTerm,
+        city: citySearchTerm,
+        sort: sortTerm,
+      },
+    ],
     async () => {
       const response = await customFetch.get('/salaryData', {
-        params: { page: currentPage },
+        params: {
+          page: currentPage,
+          search: searchTerm,
+          city: citySearchTerm,
+          sort: sortTerm,
+        },
       });
       return response.data;
     }

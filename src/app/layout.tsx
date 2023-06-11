@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import { ChakraProviders } from './ChakraProviders';
 import QueryClientProviders from './QueryClientProviders';
+import ReduxProviders from '@/app/redux/provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang='en' data-theme={'corporate'}>
       <body className={inter.className}>
         <QueryClientProviders>
-          <ChakraProviders>{children}</ChakraProviders>
+          <ReduxProviders>
+            <ChakraProviders>{children}</ChakraProviders>
+          </ReduxProviders>
         </QueryClientProviders>
       </body>
     </html>

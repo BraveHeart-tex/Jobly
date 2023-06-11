@@ -1,3 +1,4 @@
+'use client';
 import {
   SimpleGrid,
   FormControl,
@@ -7,15 +8,26 @@ import {
   Button,
   Box,
   useColorModeValue,
-  useColorMode,
+  Flex,
 } from '@chakra-ui/react';
-import React from 'react';
+import {
+  setCitySearchTerm,
+  setSearchTerm,
+  setSortTerm,
+  clearFilters,
+} from '@/app/redux/features/search';
+import { useAppDispatch } from '@/app/redux/hooks';
+import { useForm } from 'react-hook-form';
 
-interface ISalaryDataFilterFormProps {}
+const SalaryDataFilterForm = () => {
+  const dispatch = useAppDispatch();
+  const { reset, register } = useForm();
 
-const SalaryDataFilterForm = (props: ISalaryDataFilterFormProps) => {
-  // TODO: show 30 results per page
-  const clearFilters = () => {};
+  const clearAllFilters = () => {
+    reset();
+    dispatch(clearFilters());
+  };
+
   return (
     <Box>
       <form>
@@ -33,7 +45,13 @@ const SalaryDataFilterForm = (props: ISalaryDataFilterFormProps) => {
               Job Title
             </FormLabel>
             <Input
+              {...register('searchTerm')}
               type='text'
+              onChange={(e) => {
+                setTimeout(() => {
+                  dispatch(setSearchTerm(e.target.value));
+                }, 3000);
+              }}
               placeholder='Search by job title'
               focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             />
@@ -43,6 +61,12 @@ const SalaryDataFilterForm = (props: ISalaryDataFilterFormProps) => {
               City / State
             </FormLabel>
             <Input
+              {...register('citySearchTerm')}
+              onChange={(e) => {
+                setTimeout(() => {
+                  dispatch(setCitySearchTerm(e.target.value));
+                }, 3000);
+              }}
               type='text'
               placeholder='Search by city or state'
               focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
@@ -50,33 +74,49 @@ const SalaryDataFilterForm = (props: ISalaryDataFilterFormProps) => {
           </FormControl>
           <FormControl>
             <FormLabel color={useColorModeValue('gray.600', 'gray.400')}>
-              Sort
+              Sort by Salary
             </FormLabel>
             <Select
-              defaultValue={'all'}
+              {...register('sortTerm')}
+              onChange={(e) => dispatch(setSortTerm(e.target.value))}
               focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             >
-              <option value='all'>All</option>
-              <option value='remote'>Highest</option>
-              <option value='full-time'>Lowest</option>
+              <option value='desc'>Highest</option>
+              <option value='asc'>Lowest</option>
             </Select>
           </FormControl>
         </SimpleGrid>
-        <Button
-          w={{
-            base: 'full',
-            md: '50%',
-            lg: '25%',
-          }}
-          color={'white'}
-          bg={useColorModeValue('facebook.500', 'gray.700')}
-          _hover={{
-            bg: useColorModeValue('facebook.300', 'gray.600'),
-          }}
-          onClick={() => clearFilters()}
-        >
-          Clear Filters
-        </Button>
+        <Flex gap={4}>
+          <Button
+            w={{
+              base: 'full',
+              md: '50%',
+              lg: '25%',
+            }}
+            color={'white'}
+            bg={useColorModeValue('facebook.500', 'gray.700')}
+            _hover={{
+              bg: useColorModeValue('facebook.300', 'gray.600'),
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            w={{
+              base: 'full',
+              md: '50%',
+              lg: '25%',
+            }}
+            color={'white'}
+            bg={useColorModeValue('red.500', 'gray.700')}
+            _hover={{
+              bg: useColorModeValue('facebook.300', 'gray.600'),
+            }}
+            onClick={() => clearAllFilters()}
+          >
+            Clear Filters
+          </Button>
+        </Flex>
       </form>
     </Box>
   );

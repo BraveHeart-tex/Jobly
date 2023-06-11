@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const pageParam = request.nextUrl.searchParams.get('page') || '1';
   const sortParam = request.nextUrl.searchParams.get('sort') || 'desc';
-
   const searchParam = request.nextUrl.searchParams.get('search') || '';
+  const citySearchParam = request.nextUrl.searchParams.get('city') || '';
 
   const pageSize = 10;
   const pageNumber = parseInt(pageParam);
@@ -18,6 +18,9 @@ export async function GET(request: NextRequest) {
     where: {
       jobTitle: {
         contains: searchParam,
+      },
+      location: {
+        contains: citySearchParam,
       },
     },
     orderBy: {
