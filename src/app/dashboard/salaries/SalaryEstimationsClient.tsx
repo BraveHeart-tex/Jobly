@@ -1,6 +1,5 @@
 'use client';
 import {
-  Box,
   Button,
   Flex,
   Heading,
@@ -17,13 +16,6 @@ import { useQuery } from 'react-query';
 import customFetch from '@/app/utils/customFetch';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import { SalaryEstimationDataset } from '@prisma/client';
-
-interface SalaryDataResponse {
-  data: SalaryEstimationDataset[];
-  page: number;
-  hasNextPage: boolean;
-}
 
 const SalaryEstimationsClient = (): JSX.Element => {
   const colorMode = useColorMode().colorMode;
@@ -123,7 +115,7 @@ const SalaryEstimationsClient = (): JSX.Element => {
           colorScheme='facebook'
           rightIcon={<ArrowRightIcon />}
           onClick={handleNextPage}
-          disabled={!data?.hasNextPage}
+          isDisabled={currentPage === 41}
         >
           Next
         </Button>
