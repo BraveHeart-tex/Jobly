@@ -4,44 +4,26 @@ import {
   Button,
   Flex,
   Heading,
+  Spinner,
   Text,
-  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
 import BarChartComponent from './Charts/BarChartComponent';
 import { useState } from 'react';
 import MyAreaChart from './Charts/AreaChartComponent';
 import MyLineChart from './Charts/LineChartComponent';
+import { useQuery } from 'react-query';
+import customFetch from '../utils/customFetch';
 
 const ResponsiveChartContainer = () => {
   const [chartType, setChartType] = useState('bar');
-
-  const exampleData = [
-    {
-      date: 'Jul 2021',
-      count: 1,
+  const { data, isLoading } = useQuery({
+    queryKey: 'applicationStats',
+    queryFn: async () => {
+      const { data } = await customFetch.get('/jobs/monthlyData');
+      return data.monthlyApplicationsData;
     },
-    {
-      date: 'Aug 2021',
-      count: 4,
-    },
-    {
-      date: 'Sep 2021',
-      count: 3,
-    },
-    {
-      date: 'Oct 2021',
-      count: 2,
-    },
-    {
-      date: 'Nov 2021',
-      count: 2,
-    },
-    {
-      date: 'Dec 2021',
-      count: 5,
-    },
-  ];
+  });
 
   return (
     <Box
@@ -103,9 +85,28 @@ const ResponsiveChartContainer = () => {
           </Button>
         </Flex>
       </Flex>
-      {chartType === 'bar' && <BarChartComponent data={exampleData} />}
-      {chartType === 'line' && <MyLineChart data={exampleData} />}
-      {chartType === 'area' && <MyAreaChart data={exampleData} />}
+      {isLoading ? (
+        <Flex mt={10} display={'flex'} justifyContent={'center'} gap={4}>
+          <Text color='gray.500'>Loading Chart...</Text>
+          <Spinner color='facebook.500' />
+        </Flex>
+      ) : (
+        <Box
+          width={'100%'}
+          height={'400px'}
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
+          {chartType === 'bar' ? (
+            <BarChartComponent data={data} />
+          ) : chartType === 'line' ? (
+            <MyLineChart data={data} />
+          ) : (
+            <MyAreaChart data={data} />
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
