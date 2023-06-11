@@ -9,10 +9,9 @@ interface TotalApplicationStat {
   applicationStatus: string;
 }
 
-interface DefaultStats {
-  pending: number;
-  interview: number;
-  declined: number;
+interface ApplicationStatusCount {
+  status: string;
+  count: number;
 }
 
 export async function GET(request: Request) {
@@ -37,7 +36,7 @@ export async function GET(request: Request) {
   });
 
   const totalApplicationStats =
-    mapTotalApplicationStatsToDefaultStats(applicationStats);
+    mapTotalApplicationStatsToStatusCounts(applicationStats);
 
   return NextResponse.json(
     {
@@ -49,26 +48,11 @@ export async function GET(request: Request) {
   );
 }
 
-function mapTotalApplicationStatsToDefaultStats(
+function mapTotalApplicationStatsToStatusCounts(
   totalApplicationStats: TotalApplicationStat[]
-): DefaultStats {
-  return totalApplicationStats.reduce(
-    (stats, { _count, applicationStatus }) => {
-      switch (applicationStatus) {
-        case 'PENDING':
-          stats.pending = _count.applicationStatus;
-          break;
-        case 'INTERVIEW':
-          stats.interview = _count.applicationStatus;
-          break;
-        case 'DECLINED':
-          stats.declined = _count.applicationStatus;
-          break;
-        default:
-          break;
-      }
-      return stats;
-    },
-    { pending: 0, interview: 0, declined: 0 }
-  );
+): ApplicationStatusCount[] {
+  return totalApplicationStats.map(({ _count, applicationStatus }) => ({
+    status: applicationStatus.toLowerCase(),
+    count: _count.applicationStatus,
+  }));
 }

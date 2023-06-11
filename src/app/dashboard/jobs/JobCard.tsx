@@ -24,7 +24,6 @@ interface IJobCardProps {
 }
 
 const JobCard = ({ jobApplication }: IJobCardProps) => {
-  // TODO: will handle edit, delete and view details
   return (
     <Box
       position={'relative'}

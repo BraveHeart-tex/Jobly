@@ -87,7 +87,7 @@ const ResponsiveChartContainer = () => {
       </Flex>
       {isLoading ? (
         <Flex mt={10} display={'flex'} justifyContent={'center'} gap={4}>
-          <Text color='gray.500'>Loading Chart...</Text>
+          <Text color='gray.500'>Loading Job Application Stats...</Text>
           <Spinner color='facebook.500' />
         </Flex>
       ) : (
