@@ -17,6 +17,7 @@ import { Link } from '@chakra-ui/next-js';
 import { useAppSelector } from '@/app/redux/hooks';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import DeleteJobModal from '@/app/components/Modals/DeleteJobModal';
 
 const JobsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +35,7 @@ const JobsList = () => {
     Error
   >({
     queryKey: [
-      'jobs',
+      'fetchJobs',
       {
         search: searchTerm,
         company: companySearchTerm,
@@ -180,6 +181,7 @@ const JobsList = () => {
           Next
         </Button>
       </Box>
+      <DeleteJobModal />
     </Box>
   );
 };

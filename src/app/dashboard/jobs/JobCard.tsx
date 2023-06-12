@@ -18,12 +18,15 @@ import { JobApplication } from '@prisma/client';
 import formatDate from '@/app/utils/formatDate';
 import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
 import JobTypeOptions from '@/app/utils/JobTypeOptions';
-
+import { useAppDispatch } from '@/app/redux/hooks';
+import { toggleDeleteJobModal } from '@/app/redux/features/jobs';
 interface IJobCardProps {
   jobApplication: JobApplication;
 }
 
 const JobCard = ({ jobApplication }: IJobCardProps) => {
+  const dispatch = useAppDispatch();
+
   return (
     <Box
       position={'relative'}
@@ -102,6 +105,8 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
               _hover={{
                 bgColor: useColorModeValue('facebook.300', 'gray.600'),
               }}
+              // TODO: Add EDIT Job Application Functionality
+              onClick={() => {}}
             >
               Edit
             </Button>
@@ -111,6 +116,7 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
               _hover={{
                 bgColor: 'red.600',
               }}
+              onClick={() => dispatch(toggleDeleteJobModal(jobApplication.id))}
             >
               Delete
             </Button>

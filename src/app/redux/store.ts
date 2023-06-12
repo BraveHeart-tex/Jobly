@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import searchReducer from './features/search';
+import jobsReducer from './features/jobs';
 
 export const store = configureStore({
   reducer: {
     searchReducer,
+    jobsReducer,
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

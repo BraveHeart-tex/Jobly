@@ -18,7 +18,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface IAddJobFormInputTypes {
   jobTitle: string;
@@ -31,6 +31,7 @@ interface IAddJobFormInputTypes {
 
 const AddJobForm = () => {
   const toast = useToast();
+  const queryClient = useQueryClient();
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
   const {
@@ -57,6 +58,11 @@ const AddJobForm = () => {
     mutationFn: (data: IAddJobFormInputTypes) =>
       customFetch.post('/jobs', data),
     onSuccess: () => {
+      queryClient.invalidateQueries([
+        'fetchJobs',
+        'jobStatusData',
+        'applicationStats',
+      ]);
       reset();
       toast({
         title: 'Job added successfully',
