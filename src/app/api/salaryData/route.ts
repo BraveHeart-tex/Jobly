@@ -26,7 +26,6 @@ export async function GET(request: NextRequest) {
     orderBy: {
       salary_estimate: sortParam as 'asc' | 'desc',
     },
-
     select: {
       id: true,
       jobTitle: true,

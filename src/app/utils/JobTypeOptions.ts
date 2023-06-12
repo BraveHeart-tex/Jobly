@@ -7,4 +7,18 @@ const JobTypeOptions = {
   INTERNSHIP: 'Internship',
 };
 
+export function capitalizeJobTypeParams(value: string) {
+  if (value === 'part-time' || value === 'Part-time') {
+    return 'Part-Time';
+  }
+
+  if (value === 'full-time' || value === 'Full-time') {
+    return 'Full-Time';
+  }
+
+  return value;
+}
+
+console.log(capitalizeJobTypeParams('part-time'));
+
 export default JobTypeOptions;
