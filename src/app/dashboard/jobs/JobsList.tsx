@@ -159,7 +159,7 @@ const JobsList = () => {
           <JobCard key={jobApplication.id} jobApplication={jobApplication} />
         ))}
       </SimpleGrid>
-      <Box display={'flex'} justifyContent={'center'} gap={4}>
+      <Box display={'flex'} justifyContent={'center'} gap={4} mt={4}>
         <Button
           colorScheme='facebook'
           leftIcon={<ArrowLeftIcon />}
