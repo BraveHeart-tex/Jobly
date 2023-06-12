@@ -15,8 +15,12 @@ import customFetch from '@/app/utils/customFetch';
 import { JobApplication } from '@prisma/client';
 import { Link } from '@chakra-ui/next-js';
 import { useAppSelector } from '@/app/redux/hooks';
+import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 const JobsList = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const {
     searchTerm,
     companySearchTerm,
@@ -37,11 +41,13 @@ const JobsList = () => {
         status: applicationStatus,
         jobType,
         sort: sortTerm,
+        page: currentPage,
       },
     ],
     queryFn: async () => {
       const { data } = await customFetch('/jobs', {
         params: {
+          page: currentPage,
           search: searchTerm,
           company: companySearchTerm,
           status: applicationStatus,
@@ -113,10 +119,20 @@ const JobsList = () => {
     );
   }
 
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   return (
     <Box>
       <Text fontSize={'xl'} my={3}>
-        22 Jobs Found
+        {jobApplications.length} Jobs Found
       </Text>
       <SimpleGrid
         columns={{
@@ -126,10 +142,44 @@ const JobsList = () => {
         }}
         gap={6}
       >
+        {jobApplications.length === 0 && (
+          <Box>
+            <Heading
+              color={colorMode === 'light' ? 'facebook.500' : 'gray.300'}
+              fontSize={'3xl'}
+            >
+              No jobs found.
+            </Heading>
+            <Text color={colorMode === 'light' ? 'gray.500' : 'gray.400'}>
+              Try again by changing removing any existing filters.
+            </Text>
+          </Box>
+        )}
         {jobApplications.map((jobApplication) => (
           <JobCard key={jobApplication.id} jobApplication={jobApplication} />
         ))}
       </SimpleGrid>
+      <Box display={'flex'} justifyContent={'center'} gap={4}>
+        <Button
+          colorScheme='facebook'
+          leftIcon={<ArrowLeftIcon />}
+          isDisabled={currentPage === 1}
+          onClick={handlePreviousPage}
+        >
+          Previous
+        </Button>
+        <Button
+          colorScheme='facebook'
+          rightIcon={<ArrowRightIcon />}
+          onClick={handleNextPage}
+          isDisabled={
+            jobApplications.length < itemsPerPage ||
+            jobApplications.length === 0
+          }
+        >
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 };
