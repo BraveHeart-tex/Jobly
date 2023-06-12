@@ -5,39 +5,38 @@ import {
   useColorModeValue,
   Drawer,
   DrawerContent,
-  useDisclosure,
 } from '@chakra-ui/react';
 
 import MobileNav from './Navigation/MobileNav';
 import SidebarContent from './SidebarContent';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { toggleSidebar } from '../redux/features/sidebar';
 
 export default function SidebarWithHeader({
   children,
 }: {
   children: ReactNode;
 }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useAppDispatch();
+  const { isOpen } = useAppSelector((state) => state.sidebarReducer);
   return (
     <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
-      />
+      <SidebarContent display={{ base: 'none', md: 'block' }} />
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
         placement='left'
-        onClose={onClose}
+        onClose={() => dispatch(toggleSidebar())}
         returnFocusOnClose={false}
-        onOverlayClick={onClose}
+        onOverlayClick={() => dispatch(toggleSidebar())}
         size='full'
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent />
         </DrawerContent>
       </Drawer>
       {/* mobile nav */}
-      <MobileNav onOpen={onOpen} />
+      <MobileNav />
       {/* main content */}
       <Box
         ml={{ base: 0, md: 60 }}

@@ -9,12 +9,13 @@ import {
 import Logo from './Logo';
 import NavItem from './Navigation/NavItem';
 import LinkItems from '../utils/NavLinks';
+import { toggleSidebar } from '../redux/features/sidebar';
+import { useAppDispatch } from '../redux/hooks';
 
-interface SidebarProps extends BoxProps {
-  onClose: () => void;
-}
+interface SidebarProps extends BoxProps {}
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ ...rest }: SidebarProps) => {
+  const dispatch = useAppDispatch();
   return (
     <Box
       transition='3s ease'
@@ -37,7 +38,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton
           color={'white'}
           display={{ base: 'flex', md: 'none' }}
-          onClick={onClose}
+          onClick={() => dispatch(toggleSidebar())}
         />
       </Flex>
       {LinkItems.map((link) => (

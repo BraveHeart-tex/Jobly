@@ -20,11 +20,12 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { signOut } from 'next-auth/react';
 import { useQuery } from 'react-query';
 import customFetch from '@/app/utils/customFetch';
+import { toggleSidebar } from '@/app/redux/features/sidebar';
+import { useAppDispatch } from '@/app/redux/hooks';
 
-interface MobileProps extends FlexProps {
-  onOpen: () => void;
-}
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+interface MobileProps extends FlexProps {}
+const MobileNav = ({ ...rest }: MobileProps) => {
+  const dispatch = useAppDispatch();
   const { data } = useQuery({
     queryKey: ['currentUser'],
     queryFn: async () => {
@@ -52,7 +53,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       <IconButton
         display={{ base: 'flex', md: 'none' }}
         color={'white'}
-        onClick={onOpen}
+        onClick={() => dispatch(toggleSidebar())}
         variant='outline'
         aria-label='open menu'
         icon={<FiMenu />}

@@ -2,6 +2,8 @@ import { FlexProps, Flex, Icon, useColorModeValue } from '@chakra-ui/react';
 import { Link } from '@chakra-ui/next-js';
 import { ReactNode } from 'react';
 import { IconType } from 'react-icons';
+import { closeSidebar } from '@/app/redux/features/sidebar';
+import { useAppDispatch } from '@/app/redux/hooks';
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -10,11 +12,13 @@ interface NavItemProps extends FlexProps {
 }
 
 const NavItem = ({ icon, children, href }: NavItemProps) => {
+  const dispatch = useAppDispatch();
   return (
     <Link
       href={href}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
+      onClick={() => dispatch(closeSidebar())}
     >
       <Flex
         align='center'
