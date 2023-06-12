@@ -118,12 +118,12 @@ const JobSearchForm = () => {
               {...register('applicationStatus')}
               focusBorderColor='gray.600'
             >
+              <option value=''>All</option>
               {applicationStatusOptions.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
               ))}
-              <option value=''>All</option>
             </Select>
           </FormControl>
           <FormControl>
@@ -136,12 +136,12 @@ const JobSearchForm = () => {
               defaultValue={''}
               focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
             >
+              <option value=''>All</option>
               {jobTypeOptions.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
               ))}
-              <option value=''>All</option>
             </Select>
           </FormControl>
           <FormControl>
