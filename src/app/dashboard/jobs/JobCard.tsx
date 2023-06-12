@@ -19,7 +19,10 @@ import formatDate from '@/app/utils/formatDate';
 import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
 import JobTypeOptions from '@/app/utils/JobTypeOptions';
 import { useAppDispatch } from '@/app/redux/hooks';
-import { toggleDeleteJobModal } from '@/app/redux/features/jobs';
+import {
+  toggleDeleteJobModal,
+  toggleEditJobModal,
+} from '@/app/redux/features/jobs';
 interface IJobCardProps {
   jobApplication: JobApplication;
 }
@@ -105,10 +108,15 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
               _hover={{
                 bgColor: useColorModeValue('facebook.300', 'gray.600'),
               }}
-              // TODO: Add EDIT Job Application Functionality
-              onClick={() => {}}
             >
-              Edit
+              <Link
+                _hover={{
+                  textDecoration: 'none',
+                }}
+                href={`/dashboard/jobs/${jobApplication.id}/edit`}
+              >
+                Edit
+              </Link>
             </Button>
             <Button
               color={'white'}

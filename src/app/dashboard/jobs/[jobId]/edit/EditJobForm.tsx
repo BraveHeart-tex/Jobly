@@ -16,10 +16,11 @@ import {
   FormErrorMessage,
   useToast,
 } from '@chakra-ui/react';
+import { JobApplication } from '@prisma/client';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 
-interface IAddJobFormInputTypes {
+interface IEditJobFormInputTypes {
   jobTitle: string;
   companyName: string;
   applicationStatus: string;
@@ -28,55 +29,64 @@ interface IAddJobFormInputTypes {
   comments?: string;
 }
 
-const AddJobForm = () => {
-  const toast = useToast();
+interface IEditJobModalFormProps {
+  currentJobApplication: JobApplication;
+}
+
+const EditJobModalForm = ({
+  currentJobApplication,
+}: IEditJobModalFormProps) => {
   const queryClient = useQueryClient();
+
+  const toast = useToast();
+
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
+
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<IAddJobFormInputTypes>({
+    formState: { errors },
+  } = useForm<IEditJobFormInputTypes>({
     defaultValues: {
-      jobTitle: '',
-      companyName: '',
-      applicationStatus: '',
-      jobType: '',
-      jobLocation: '',
-      comments: '',
+      jobTitle: currentJobApplication.jobTitle,
+      companyName: currentJobApplication.companyName,
+      applicationStatus:
+        ApplicationStatusOptions[currentJobApplication.applicationStatus],
+      jobType: JobTypeOptions[currentJobApplication.jobType],
+      jobLocation: currentJobApplication.location,
+      comments: currentJobApplication.comments || '',
     },
   });
 
-  const onSubmit: SubmitHandler<IAddJobFormInputTypes> = (data) => {
-    addJob(data);
+  const onSubmit: SubmitHandler<IEditJobFormInputTypes> = (data) => {
+    editJob(data);
   };
 
-  const { mutate: addJob, isLoading } = useMutation({
-    mutationFn: (data: IAddJobFormInputTypes) =>
-      customFetch.post('/jobs', data),
+  const { mutate: editJob, isLoading: isEditJobLoading } = useMutation({
+    mutationFn: async (data: IEditJobFormInputTypes) => {
+      const response = await customFetch.put(
+        `/jobs/${currentJobApplication.id}`,
+        data
+      );
+      return response;
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries([
-        'fetchJobs',
-        'jobStatusData',
-        'applicationStats',
-      ]);
-      reset();
+      queryClient.invalidateQueries('fetchJobs');
       toast({
-        title: 'Job added successfully',
+        title: 'Job application edited successfully',
         status: 'success',
-        duration: 4000,
+        duration: 5000,
         isClosable: true,
         position: 'top',
       });
     },
-    onError: (error) => {
+    onError: () => {
       toast({
-        title: 'An error occurred',
-        description: 'Unable to add job. Please try again later.',
+        title: 'Error editing job application',
+        description: 'Please try again later.',
         status: 'error',
-        duration: 4000,
+        duration: 5000,
         isClosable: true,
         position: 'top',
       });
@@ -84,12 +94,7 @@ const AddJobForm = () => {
   });
 
   return (
-    <Box
-      boxShadow={'xl'}
-      rounded={'lg'}
-      p={8}
-      bg={useColorModeValue('gray.100', 'gray.800')}
-    >
+    <Box mb={4}>
       <chakra.form
         onSubmit={handleSubmit(onSubmit)}
         display={'grid'}
@@ -156,7 +161,10 @@ const AddJobForm = () => {
         </InputGroup>
         <InputGroup
           display={'flex'}
-          flexDirection={{ base: 'column', lg: 'row' }}
+          flexDirection={{
+            base: 'column',
+            lg: 'row',
+          }}
           gap={4}
         >
           <FormControl isRequired isInvalid={Boolean(errors.applicationStatus)}>
@@ -203,7 +211,10 @@ const AddJobForm = () => {
         </InputGroup>
         <InputGroup
           display={'flex'}
-          flexDirection={{ base: 'column', lg: 'row' }}
+          flexDirection={{
+            base: 'column',
+            lg: 'row',
+          }}
           gap={4}
         >
           <FormControl isRequired isInvalid={Boolean(errors.jobLocation)}>
@@ -249,20 +260,19 @@ const AddJobForm = () => {
           _hover={{
             bg: useColorModeValue('facebook.300', 'gray.600'),
           }}
-          mt={8}
           width={{
             base: '100%',
             lg: '50%',
             xl: '25%',
           }}
-          isLoading={isLoading}
-          isDisabled={isLoading}
+          isLoading={isEditJobLoading}
+          isDisabled={isEditJobLoading}
         >
-          Add
+          Edit
         </Button>
       </chakra.form>
     </Box>
   );
 };
 
-export default AddJobForm;
+export default EditJobModalForm;
