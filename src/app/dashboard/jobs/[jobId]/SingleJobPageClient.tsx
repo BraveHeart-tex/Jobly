@@ -15,7 +15,6 @@ import {
   StatNumber,
   Text,
   useColorMode,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { JobApplication } from '@prisma/client';
 import { useQuery } from 'react-query';

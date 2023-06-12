@@ -2,12 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface SearchState {
   searchTerm: string;
+  companySearchTerm?: string;
+  applicationStatus?: string;
+  jobType?: string;
   citySearchTerm?: string;
   sortTerm?: 'asc' | 'desc';
 }
 
 const initialState: SearchState = {
   searchTerm: '',
+  companySearchTerm: '',
+  applicationStatus: '',
+  jobType: '',
   citySearchTerm: '',
   sortTerm: 'desc',
 };
@@ -25,14 +31,33 @@ const searchSlice = createSlice({
     setSortTerm(state, action) {
       state.sortTerm = action.payload;
     },
+    setCompanySearchTerm(state, action) {
+      state.companySearchTerm = action.payload;
+    },
+    setApplicationStatus(state, action) {
+      state.applicationStatus = action.payload;
+    },
+    setJobType(state, action) {
+      state.jobType = action.payload;
+    },
     clearFilters(state) {
       state.searchTerm = '';
       state.citySearchTerm = '';
       state.sortTerm = 'desc';
+      state.companySearchTerm = '';
+      state.applicationStatus = '';
+      state.jobType = '';
     },
   },
 });
 
-export const { setSearchTerm, setCitySearchTerm, setSortTerm, clearFilters } =
-  searchSlice.actions;
+export const {
+  setSearchTerm,
+  setCitySearchTerm,
+  setSortTerm,
+  clearFilters,
+  setCompanySearchTerm,
+  setApplicationStatus,
+  setJobType,
+} = searchSlice.actions;
 export default searchSlice.reducer;

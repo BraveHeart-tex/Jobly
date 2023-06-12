@@ -5,27 +5,50 @@ import {
   SimpleGrid,
   Spinner,
   Flex,
-  useColorModeValue,
   useColorMode,
-  Stack,
   Heading,
   Button,
 } from '@chakra-ui/react';
 import JobCard from './JobCard';
-import { useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import customFetch from '@/app/utils/customFetch';
 import { JobApplication } from '@prisma/client';
 import { Link } from '@chakra-ui/next-js';
+import { useAppSelector } from '@/app/redux/hooks';
 
 const JobsList = () => {
+  const {
+    searchTerm,
+    companySearchTerm,
+    applicationStatus,
+    jobType,
+    sortTerm,
+  } = useAppSelector((state) => state.searchReducer);
   const { colorMode } = useColorMode();
   const { isLoading, data: jobApplications } = useQuery<
     JobApplication[],
     Error
   >({
-    queryKey: ['jobs'],
+    queryKey: [
+      'jobs',
+      {
+        search: searchTerm,
+        company: companySearchTerm,
+        status: applicationStatus,
+        jobType,
+        sort: sortTerm,
+      },
+    ],
     queryFn: async () => {
-      const { data } = await customFetch('/jobs');
+      const { data } = await customFetch('/jobs', {
+        params: {
+          search: searchTerm,
+          company: companySearchTerm,
+          status: applicationStatus,
+          jobType,
+          sort: sortTerm,
+        },
+      });
       return data.jobApplications;
     },
   });
