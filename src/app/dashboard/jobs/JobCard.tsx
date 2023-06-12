@@ -34,7 +34,8 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
     >
       <chakra.header display={'flex'} gap={4}>
         <Avatar
-          name='Company Name'
+          name={jobApplication.companyName}
+          color={'white'}
           rounded={'sm'}
           bgColor={useColorModeValue('facebook.500', 'gray.700')}
         />
