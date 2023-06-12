@@ -1,6 +1,8 @@
 'use client';
 
+import JobTypeOptions from '@/app/utils/JobTypeOptions';
 import customFetch from '@/app/utils/customFetch';
+import formatDate from '@/app/utils/formatDate';
 import { Link } from '@chakra-ui/next-js';
 import {
   Box,
@@ -25,7 +27,7 @@ interface ISingleJobPageClientProps {
 const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
   const colorMode = useColorMode().colorMode;
   const { data, isLoading, isError } = useQuery<JobApplication>({
-    queryKey: 'singleJob',
+    queryKey: ['singleJob', jobId],
     queryFn: async () => {
       const { data } = await customFetch.get(`/jobs/${jobId}`);
       return data.job;
@@ -82,10 +84,10 @@ const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
       <Stack>
         <Box>
           <Heading color={colorMode === 'light' ? 'facebook.500' : 'gray.200'}>
-            Job Title
+            {data?.jobTitle}
           </Heading>
           <Text color={colorMode === 'light' ? 'gray.500' : 'gray.400'}>
-            Some Company Inc.
+            {data?.companyName}
           </Text>
         </Box>
         <Stack
@@ -97,15 +99,15 @@ const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
         >
           <Stat>
             <StatLabel>Job Location</StatLabel>
-            <StatNumber>Los Angeles, CA</StatNumber>
+            <StatNumber>{data?.location}</StatNumber>
           </Stat>
           <Stat>
             <StatLabel>Job Type</StatLabel>
-            <StatNumber>Remote</StatNumber>
+            <StatNumber>{JobTypeOptions[data?.jobType!]}</StatNumber>
           </Stat>
           <Stat>
             <StatLabel>Application Created At</StatLabel>
-            <StatNumber>13.03.2023</StatNumber>
+            <StatNumber>{formatDate(new Date(data?.createdAt!))}</StatNumber>
           </Stat>
           <Stat>
             <StatLabel>Application Status</StatLabel>
@@ -124,8 +126,10 @@ const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
               lineHeight={1.7}
               color={colorMode === 'light' ? 'gray.600' : 'gray.400'}
             >
-              &ldquo;This is a great company to work for. I really like the
-              people and the culture. I hope I get the job! &rdquo;
+              {data?.comments === ''
+                ? 'No comments were added for this job application'
+                : null}
+              {data?.comments && `"${data?.comments}"`}
             </Text>
           </Stat>
         </Stack>
