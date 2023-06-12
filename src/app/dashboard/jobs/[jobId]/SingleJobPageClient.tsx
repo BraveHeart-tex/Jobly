@@ -6,13 +6,16 @@ import {
   Box,
   Button,
   Heading,
+  Spinner,
   Stack,
   Stat,
   StatLabel,
   StatNumber,
   Text,
+  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { JobApplication } from '@prisma/client';
 import { useQuery } from 'react-query';
 
 interface ISingleJobPageClientProps {
@@ -20,33 +23,77 @@ interface ISingleJobPageClientProps {
 }
 
 const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
-  const { data, isLoading } = useQuery({
-    queryKey: 'jobs',
+  const colorMode = useColorMode().colorMode;
+  const { data, isLoading, isError } = useQuery<JobApplication>({
+    queryKey: 'singleJob',
     queryFn: async () => {
       const { data } = await customFetch.get(`/jobs/${jobId}`);
       return data.job;
     },
   });
 
-  console.log(data);
+  if (isError) {
+    return (
+      <Box height={'100%'} display={'flex'} flexDirection={'column'}>
+        <Heading
+          color={colorMode === 'light' ? 'facebook.500' : 'gray.200'}
+          mb={3}
+        >
+          404 Job Not Found :(
+        </Heading>
+        <Text mr={2} color={'gray.500'}>
+          No job data was found for the given id: {jobId}
+        </Text>
+        <Button
+          width={'fit-content'}
+          mt={4}
+          bg={colorMode === 'light' ? 'facebook.500' : 'gray.700'}
+          color={'white'}
+          _hover={{
+            bg: colorMode === 'light' ? 'facebook.300' : 'gray.600',
+          }}
+        >
+          <Link
+            href={'/dashboard/jobs'}
+            _hover={{
+              textDecoration: 'none',
+            }}
+          >
+            Back to Jobs List
+          </Link>
+        </Button>
+      </Box>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Box height={'100%'} display={'flex'}>
+        <Text mr={2} color={'gray.500'}>
+          Loading...
+        </Text>
+        <Spinner color='facebook.500' />
+      </Box>
+    );
+  }
 
   return (
     <Box>
       <Stack>
         <Box>
-          <Heading color={useColorModeValue('facebook.500', 'gray.200')}>
-            Software Engineer
+          <Heading color={colorMode === 'light' ? 'facebook.500' : 'gray.200'}>
+            Job Title
           </Heading>
-          <Text color={useColorModeValue('gray.500', 'gray.400')}>
+          <Text color={colorMode === 'light' ? 'gray.500' : 'gray.400'}>
             Some Company Inc.
           </Text>
         </Box>
         <Stack
-          background={useColorModeValue('gray.100', 'gray.800')}
+          background={colorMode === 'light' ? 'gray.100' : 'gray.800'}
           p={8}
           boxShadow={'md'}
           gap={8}
-          color={useColorModeValue('gray.600', 'gray.300')}
+          color={colorMode === 'light' ? 'gray.600' : 'gray.300'}
         >
           <Stat>
             <StatLabel>Job Location</StatLabel>
@@ -75,7 +122,7 @@ const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
                 xl: '50%',
               }}
               lineHeight={1.7}
-              color={useColorModeValue('gray.600', 'gray.400')}
+              color={colorMode === 'light' ? 'gray.600' : 'gray.400'}
             >
               &ldquo;This is a great company to work for. I really like the
               people and the culture. I hope I get the job! &rdquo;
@@ -84,11 +131,12 @@ const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
         </Stack>
       </Stack>
       <Button
+        width={'fit-content'}
         mt={4}
-        bg={useColorModeValue('facebook.500', 'gray.700')}
+        bg={colorMode === 'light' ? 'facebook.500' : 'gray.700'}
         color={'white'}
         _hover={{
-          bg: useColorModeValue('facebook.300', 'gray.600'),
+          bg: colorMode === 'light' ? 'facebook.300' : 'gray.600',
         }}
       >
         <Link
