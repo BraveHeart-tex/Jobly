@@ -110,7 +110,7 @@ const SingleJobPageClient = ({ jobId }: ISingleJobPageClientProps) => {
           </Stat>
           <Stat>
             <StatLabel>Application Status</StatLabel>
-            <StatNumber>Interview</StatNumber>
+            <StatNumber>{data?.applicationStatus}</StatNumber>
           </Stat>
           <Stat>
             <Heading as={'h3'} fontSize={'2xl'}>
