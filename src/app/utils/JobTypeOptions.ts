@@ -19,6 +19,4 @@ export function capitalizeJobTypeParams(value: string) {
   return value;
 }
 
-console.log(capitalizeJobTypeParams('part-time'));
-
 export default JobTypeOptions;
