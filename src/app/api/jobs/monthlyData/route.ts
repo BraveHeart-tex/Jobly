@@ -31,6 +31,9 @@ export async function GET(request: Request) {
     _count: {
       createdAt: true,
     },
+    where: {
+      userId: currentUser.id,
+    },
   });
 
   const formattedMonthlyApplications = monthlyApplications.map((entry) => ({

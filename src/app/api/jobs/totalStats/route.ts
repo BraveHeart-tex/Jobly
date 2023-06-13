@@ -33,6 +33,9 @@ export async function GET(request: Request) {
     _count: {
       applicationStatus: true,
     },
+    where: {
+      userId: currentUser.id,
+    },
   });
 
   const totalApplicationStats =
