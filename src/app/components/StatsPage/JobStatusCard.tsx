@@ -6,7 +6,6 @@ import {
   Text,
   useColorMode,
   Flex,
-  Spinner,
   Button,
   Heading,
   Link,
@@ -37,7 +36,6 @@ const JobStatusCard = () => {
   });
 
   const { colorMode } = useColorMode();
-  // FIXME: REFACTOR THIS
   const getBorderBottomColorByStatus = (
     jobStatusData: TotalJobApplicationStat
   ) => {
@@ -52,7 +50,6 @@ const JobStatusCard = () => {
     }
   };
 
-  // FIXME: REFACTOR THIS
   const getHeadingTextByStatus = (jobStatusData: TotalJobApplicationStat) => {
     if (jobStatusData.status === 'pending') {
       return 'Pending Applications';
@@ -65,7 +62,6 @@ const JobStatusCard = () => {
     }
   };
 
-  // FIXME: REFACTOR THIS
   const getIconByStatus = (jobStatusData: TotalJobApplicationStat) => {
     if (jobStatusData.status === 'pending') {
       return <AiOutlineClockCircle size={50} />;
