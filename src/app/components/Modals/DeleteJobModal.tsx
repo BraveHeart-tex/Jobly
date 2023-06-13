@@ -1,5 +1,5 @@
 'use client';
-import { toggleDeleteJobModal } from '@/app/redux/features/jobs';
+import { setIsDeleteJobModalClose } from '@/app/redux/features/jobs';
 import { useAppDispatch, useAppSelector } from '@/app/redux/hooks';
 import customFetch from '@/app/utils/customFetch';
 import {
@@ -52,7 +52,7 @@ const DeleteJobModal = () => {
         position: 'top',
       });
       queryClient.invalidateQueries('fetchJobs');
-      dispatch(toggleDeleteJobModal(null));
+      dispatch(setIsDeleteJobModalClose());
     },
     onError: (error) => {
       toast({
@@ -70,7 +70,7 @@ const DeleteJobModal = () => {
   return (
     <Modal
       isOpen={isDeleteJobModalOpen}
-      onClose={() => dispatch(toggleDeleteJobModal(null))}
+      onClose={() => dispatch(setIsDeleteJobModalClose())}
       isCentered
       size={{
         base: 'md',
@@ -132,7 +132,7 @@ const DeleteJobModal = () => {
               <Button
                 variant={'outline'}
                 mr={3}
-                onClick={() => dispatch(toggleDeleteJobModal(null))}
+                onClick={() => dispatch(setIsDeleteJobModalClose())}
               >
                 Close
               </Button>

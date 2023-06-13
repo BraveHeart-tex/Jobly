@@ -1,31 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface JobsState {
-  isEditJobModalOpen: boolean;
   isDeleteJobModalOpen: boolean;
-  selectedJobId?: number;
+  selectedJobId?: number | null;
 }
 
 const initialState: JobsState = {
-  isEditJobModalOpen: false,
   isDeleteJobModalOpen: false,
-  selectedJobId: 0,
+  selectedJobId: null,
 };
 
 const jobsSlice = createSlice({
   name: 'jobs',
   initialState,
   reducers: {
-    toggleEditJobModal(state, action) {
-      state.isEditJobModalOpen = !state.isEditJobModalOpen;
-      state.selectedJobId = action.payload;
+    setIsDeleteJobModalOpen(state, action) {
+      state.isDeleteJobModalOpen = action.payload.isOpen;
+      state.selectedJobId = action.payload.jobId;
     },
-    toggleDeleteJobModal(state, action) {
-      state.isDeleteJobModalOpen = !state.isDeleteJobModalOpen;
-      state.selectedJobId = action.payload;
+    setIsDeleteJobModalClose(state) {
+      state.isDeleteJobModalOpen = false;
     },
   },
 });
 
-export const { toggleEditJobModal, toggleDeleteJobModal } = jobsSlice.actions;
+export const { setIsDeleteJobModalOpen, setIsDeleteJobModalClose } =
+  jobsSlice.actions;
 export default jobsSlice.reducer;

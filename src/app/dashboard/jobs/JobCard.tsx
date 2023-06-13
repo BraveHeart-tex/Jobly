@@ -19,10 +19,7 @@ import formatDate from '@/app/utils/formatDate';
 import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
 import JobTypeOptions from '@/app/utils/JobTypeOptions';
 import { useAppDispatch } from '@/app/redux/hooks';
-import {
-  toggleDeleteJobModal,
-  toggleEditJobModal,
-} from '@/app/redux/features/jobs';
+import { setIsDeleteJobModalOpen } from '@/app/redux/features/jobs';
 interface IJobCardProps {
   jobApplication: JobApplication;
 }
@@ -124,7 +121,14 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
               _hover={{
                 bgColor: 'red.600',
               }}
-              onClick={() => dispatch(toggleDeleteJobModal(jobApplication.id))}
+              onClick={() =>
+                dispatch(
+                  setIsDeleteJobModalOpen({
+                    isOpen: true,
+                    jobId: jobApplication.id,
+                  })
+                )
+              }
             >
               Delete
             </Button>
