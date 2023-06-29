@@ -41,7 +41,7 @@ export default function SidebarWithHeader({
       <Box
         ml={{ base: 0, md: 60 }}
         p={{
-          base: '2rem',
+          base: '1rem',
           lg: '4rem',
         }}
       >
