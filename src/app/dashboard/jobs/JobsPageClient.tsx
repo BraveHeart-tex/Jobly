@@ -1,14 +1,12 @@
-'use client';
-import { Stack } from '@chakra-ui/react';
-import JobsList from './JobsList';
-import JobSearchForm from './JobSearchForm';
+import JobsList from "./JobsList";
+import JobSearchForm from "./JobSearchForm";
 
 const JobsPageClient = () => {
   return (
-    <Stack>
+    <div className="grid grid-cols-1 gap-2">
       <JobSearchForm />
       <JobsList />
-    </Stack>
+    </div>
   );
 };
 
