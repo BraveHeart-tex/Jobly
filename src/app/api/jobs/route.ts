@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
       },
     },
     orderBy: {
-      createdAt: sortParam as 'asc' | 'desc',
+      createdAt: sortParam as "asc" | "desc",
     },
     select: {
       id: true,

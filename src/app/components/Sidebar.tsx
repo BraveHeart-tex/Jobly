@@ -1,35 +1,27 @@
 'use client';
 import React, { ReactNode } from 'react';
-import {
-  Box,
-  useColorModeValue,
-  Drawer,
-  DrawerContent,
-} from '@chakra-ui/react';
-
+import { Box, useColorModeValue, Drawer, DrawerContent } from "@chakra-ui/react";
 import MobileNav from './Navigation/MobileNav';
 import SidebarContent from './SidebarContent';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { toggleSidebar } from '../redux/features/sidebar';
+import { Button } from "@/components/ui/button";
+import { seedData } from "../../../seed";
 
-export default function SidebarWithHeader({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function SidebarWithHeader({ children }: { children: ReactNode }) {
   const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector((state) => state.sidebarReducer);
   return (
-    <Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent display={{ base: 'none', md: 'block' }} />
+    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+      <SidebarContent display={{ base: "none", md: "block" }} />
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
-        placement='left'
+        placement="left"
         onClose={() => dispatch(toggleSidebar())}
         returnFocusOnClose={false}
         onOverlayClick={() => dispatch(toggleSidebar())}
-        size='full'
+        size="full"
       >
         <DrawerContent>
           <SidebarContent />
@@ -41,8 +33,8 @@ export default function SidebarWithHeader({
       <Box
         ml={{ base: 0, md: 60 }}
         p={{
-          base: '1rem',
-          lg: '4rem',
+          base: "1rem",
+          lg: "4rem",
         }}
       >
         {children}

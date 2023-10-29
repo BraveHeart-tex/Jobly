@@ -1,157 +1,79 @@
-'use client';
-import customFetch from '@/app/utils/customFetch';
-import {
-  chakra,
-  Box,
-  Text,
-  useColorMode,
-  Flex,
-  Button,
-  Heading,
-  Link,
-  Skeleton,
-} from '@chakra-ui/react';
-import React from 'react';
-import {
-  AiOutlineClockCircle,
-  AiOutlineDelete,
-  AiOutlineHourglass,
-} from 'react-icons/ai';
-import { useQuery } from 'react-query';
+import { getTotalJobStats } from "@/app/actions";
+import { Card } from "@/components/ui/card";
+import { StatusMappings } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import React from "react";
+import { AiOutlineClockCircle, AiOutlineDelete, AiOutlineHourglass } from "react-icons/ai";
+import { FaMoneyBill } from "react-icons/fa";
 
 interface TotalJobApplicationStat {
   status: string;
   count: number;
 }
 
-const JobStatusCard = () => {
-  const { data: totalStatsData, isLoading } = useQuery<
-    TotalJobApplicationStat[]
-  >({
-    queryKey: 'jobStatusData',
-    queryFn: async () => {
-      const { data } = await customFetch.get('/jobs/totalStats');
-      return data.totalApplicationStats;
-    },
-  });
+const JobStatusCard = async () => {
+  const result = await getTotalJobStats();
 
-  const { colorMode } = useColorMode();
-  const getBorderBottomColorByStatus = (
-    jobStatusData: TotalJobApplicationStat
-  ) => {
-    if (jobStatusData.status === 'pending') {
-      return 'orange.500';
-    }
-    if (jobStatusData.status === 'interview') {
-      return 'blue.500';
-    }
-    if (jobStatusData.status === 'rejected') {
-      return 'red.500';
-    }
-  };
-
-  const getHeadingTextByStatus = (jobStatusData: TotalJobApplicationStat) => {
-    if (jobStatusData.status === 'pending') {
-      return 'Pending Applications';
-    }
-    if (jobStatusData.status === 'interview') {
-      return 'Scheduled Interviews';
-    }
-    if (jobStatusData.status === 'rejected') {
-      return 'Declined Applications';
-    }
-  };
-
-  const getIconByStatus = (jobStatusData: TotalJobApplicationStat) => {
-    if (jobStatusData.status === 'pending') {
-      return <AiOutlineClockCircle size={50} />;
-    }
-    if (jobStatusData.status === 'interview') {
-      return <AiOutlineHourglass size={50} />;
-    }
-    if (jobStatusData.status === 'rejected') {
-      return <AiOutlineDelete size={50} />;
-    }
-  };
-
-  if (!isLoading && !totalStatsData) {
-    return (
-      <Flex flexDirection={'column'} gap={4} mt={8}>
-        <Heading
-          as={'h4'}
-          fontSize={'2xl'}
-          color={colorMode === 'light' ? 'facebook.500' : 'gray.300'}
-        >
-          No data was found to populate insight cards
-        </Heading>
-        <Text color={colorMode === 'light' ? 'gray.600' : 'gray.300'}>
-          It seems like you haven&apos;t added any of your job applications yet.
-          Click on the button below to get started.
-        </Text>
-        <Button
-          color={'white'}
-          bg={colorMode === 'light' ? 'facebook.500' : 'gray.700'}
-          _hover={{
-            bg: colorMode === 'light' ? 'facebook.300' : 'gray.600',
-          }}
-          width={'fit-content'}
-        >
-          <Link
-            href={'/dashboard/jobs/add'}
-            _hover={{
-              textDecoration: 'none',
-            }}
-          >
-            Add Your Application Information
-          </Link>
-        </Button>
-      </Flex>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <>
-        <Skeleton height={'150px'} />
-        <Skeleton height={'150px'} />
-        <Skeleton height={'150px'} />
-      </>
-    );
-  }
+  if (result.error || !result.totalApplicationStats) return null;
 
   return (
     <>
-      {totalStatsData &&
-        totalStatsData.map((data) => (
-          <Box
-            key={data.status}
-            p={'32px'}
-            rounded={'md'}
-            boxShadow={'md'}
-            bg={colorMode === 'light' ? 'gray.100' : 'gray.800'}
-            borderBottom={'4px solid'}
-            borderBottomColor={getBorderBottomColorByStatus(data)}
-          >
-            <chakra.header
-              display={'flex'}
-              justifyContent={'space-between'}
-              alignItems={'center'}
-              mb={4}
-              color={colorMode === 'light' ? 'gray.800' : 'gray.100'}
-            >
-              <chakra.span fontSize={'4xl'}>{data.count}</chakra.span>
-              <chakra.span>{getIconByStatus(data)}</chakra.span>
-            </chakra.header>
-            <chakra.p
-              fontSize={'lg'}
-              color={colorMode === 'light' ? 'gray.500' : 'gray.300'}
-            >
-              {getHeadingTextByStatus(data)}
-            </chakra.p>
-          </Box>
-        ))}
+      {result.totalApplicationStats.map((data: TotalJobApplicationStat) => (
+        <Card
+          key={data.status}
+          className={cn(
+            "rounded-md shadow-md bg-gray-100 dark:bg-gray-800 border-b-4 p-4",
+            getBorderBottomColorByStatus(data)
+          )}
+        >
+          <h2 className="flex justify-between items-center mb-4 dark:text-gray-100 text-gray-800">
+            <span className="text-3xl">{data.count}</span>
+            <span>
+              {React.createElement(getIconByStatus(data), {
+                size: 50,
+              })}
+            </span>
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400">{getHeadingTextByStatus(data)}</p>
+        </Card>
+      ))}
     </>
   );
 };
 
 export default JobStatusCard;
+
+const statusMappings: StatusMappings = {
+  pending: {
+    border: "border-b-orange-500",
+    text: "Pending Applications",
+    icon: AiOutlineClockCircle,
+  },
+  interview: {
+    border: "border-b-blue-500",
+    text: "Scheduled Interviews",
+    icon: AiOutlineHourglass,
+  },
+  rejected: {
+    border: "border-b-red-500",
+    text: "Declined Applications",
+    icon: AiOutlineDelete,
+  },
+  offer: {
+    border: "border-b-green-500",
+    text: "Offers Received",
+    icon: FaMoneyBill,
+  },
+};
+
+const getBorderBottomColorByStatus = (jobStatusData: TotalJobApplicationStat) => {
+  return statusMappings[jobStatusData.status]?.border || "";
+};
+
+const getHeadingTextByStatus = (jobStatusData: TotalJobApplicationStat) => {
+  return statusMappings[jobStatusData.status]?.text || "";
+};
+
+const getIconByStatus = (jobStatusData: TotalJobApplicationStat) => {
+  return statusMappings[jobStatusData.status]?.icon || null;
+};

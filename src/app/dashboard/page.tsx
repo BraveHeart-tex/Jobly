@@ -1,9 +1,9 @@
-import ApplicationStatsClient from './ApplicationStatsClient';
+import ApplicationStats from "./ApplicationStats";
 
 const DashboardPage = () => {
   return (
     <main>
-      <ApplicationStatsClient />
+      <ApplicationStats />
     </main>
   );
 };
