@@ -6,14 +6,30 @@ interface IPaginationControlsProps {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
   currentPage: number;
+  search: string;
+  company: string;
+  status: string;
+  jobType: string;
+  sort: string;
 }
 
-const PaginationControls = ({ currentPage, hasNextPage, hasPreviousPage }: IPaginationControlsProps) => {
+const PaginationControls = ({
+  currentPage,
+  hasNextPage,
+  hasPreviousPage,
+  search,
+  company,
+  status,
+  jobType,
+  sort,
+}: IPaginationControlsProps) => {
   return (
     <div className="flex justify-center gap-4 mt-4 select-none">
       <Link
         scroll={false}
-        href={`/dashboard/jobs?page=${currentPage - 1}`}
+        href={`/dashboard/jobs?search=${search}&company=${company}&status=${status}&jobType=${jobType}&sort=${sort}&page=${
+          currentPage - 1
+        }`}
         className={cn(
           "bg-facebook text-gray-100 flex items-center gap-2 rounded-md p-2",
           !hasPreviousPage && "opacity-50 pointer-events-none"
@@ -23,7 +39,9 @@ const PaginationControls = ({ currentPage, hasNextPage, hasPreviousPage }: IPagi
       </Link>
       <Link
         scroll={false}
-        href={`/dashboard/jobs?page=${currentPage + 1}`}
+        href={`/dashboard/jobs?search=${search}&company=${company}&status=${status}&jobType=${jobType}&sort=${sort}&page=${
+          currentPage + 1
+        }`}
         className={cn(
           "bg-facebook text-gray-100 flex items-center gap-2 rounded-md p-2",
           !hasNextPage && "opacity-50 pointer-events-none"

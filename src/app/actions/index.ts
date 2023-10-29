@@ -77,6 +77,8 @@ export const getJobApplications = async (
 ) => {
   const currentUser = await getCurrentUser();
 
+  console.log(pageNumber, searchParam, companySearchParam, statusParam, jobTypeParam, sortParam);
+
   if (!currentUser) {
     return {
       error: "You must be logged in to use this service.",
@@ -85,7 +87,7 @@ export const getJobApplications = async (
     };
   }
 
-  const pageSize = 10;
+  const pageSize = 12;
 
   const skipAmount = (pageNumber - 1) * pageSize;
 

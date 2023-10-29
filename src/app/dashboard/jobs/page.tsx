@@ -26,9 +26,14 @@ const JobsPage = async ({
 
   return (
     <div className="grid grid-cols-1 gap-2">
-      <JobSearchForm />
+      <JobSearchForm page={page} />
       <div className="mr-auto mb-2">
         <PaginationControls
+          search={search}
+          company={company}
+          status={status}
+          jobType={jobType}
+          sort={sort}
           currentPage={page}
           hasNextPage={result.hasNextPage}
           hasPreviousPage={result.hasPreviousPage}

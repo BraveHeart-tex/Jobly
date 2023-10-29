@@ -16,7 +16,7 @@ const JobCardFooter = ({ id }: IJobCardFooterProps) => {
           Edit
         </Link>
         <Link
-          className="text-gray-100 bg-destructive transition-all rounded-md px-4 font-semibold h-[35px] flex items-center justify-center"
+          className="text-gray-100 bg-destructive transition-all rounded-md px-4 font-semibold h-[35px] flex items-center justify-center hover:bg-destructive/80"
           href={`/dashboard/jobs/?deleteJob=${id}`}
           scroll={false}
         >

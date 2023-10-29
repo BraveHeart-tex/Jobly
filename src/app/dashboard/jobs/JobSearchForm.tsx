@@ -1,28 +1,43 @@
+import ClearFiltersButton from "@/app/components/ClearFiltersButton";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { revalidatePath } from "next/cache";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-const JobSearchForm = () => {
+interface IJobSearchFormProps {
+  page: number;
+}
+
+const JobSearchForm = ({ page }: IJobSearchFormProps) => {
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
 
-  const handleSumbit = async (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
     "use server";
     const data = Object.fromEntries(formData.entries());
     const { searchTerm, companySearchTerm, applicationStatus, jobType, sortTerm } = data;
-    console.log(searchTerm, companySearchTerm, applicationStatus, jobType, sortTerm);
 
-    redirect("/dashboard/jobs?test=21");
+    if (!searchTerm && !companySearchTerm && !applicationStatus && !jobType && !sortTerm) {
+      return redirect("/dashboard/jobs");
+    }
+
+    redirect(
+      `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`
+    );
   };
 
   return (
     <div>
-      <form className="p-4 rounded-md shadow-md bg-card/80 dark:bg-gray-800 grid grid-cols-1" action={handleSumbit}>
+      <form
+        className="p-4 rounded-md shadow-md bg-card/80 dark:bg-gray-800 grid grid-cols-1"
+        action={handleSubmit}
+        id="jobSearchForm"
+      >
         <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground">Job Application Search Form</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 my-4">
           <div>
@@ -95,12 +110,7 @@ const JobSearchForm = () => {
           >
             Search
           </Button>
-          <Link
-            href="/dashboard/jobs"
-            className="w-full md:w-max text-gray-50 bg-destructive rounded-md p-2 font-semibold hover:bg-destructive/80 transition-all text-center"
-          >
-            Clear Filters
-          </Link>
+          <ClearFiltersButton />
         </div>
       </form>
     </div>
