@@ -1,7 +1,7 @@
 import ResponsiveChartContainer from "../components/ResponsiveChartContainer";
 import JobStatusCard from "../components/StatsPage/JobStatusCard";
 
-const ApplicationStatsClient = () => {
+const ApplicationStats = () => {
   return (
     <div className="flex flex-col">
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -14,4 +14,4 @@ const ApplicationStatsClient = () => {
   );
 };
 
-export default ApplicationStatsClient;
+export default ApplicationStats;

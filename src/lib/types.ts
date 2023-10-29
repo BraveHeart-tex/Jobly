@@ -53,3 +53,13 @@ export type StatusMapping = {
 export type StatusMappings = {
   [status: string]: StatusMapping;
 };
+
+
+export interface FormattedMonthlyApplication {
+  date: string;
+  count: number;
+}
+
+export interface ResponseData {
+  formattedMonthlyApplications: FormattedMonthlyApplication[];
+}

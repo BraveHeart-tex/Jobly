@@ -1,7 +1,7 @@
 "use server";
 import prisma from "../libs/prismadb";
 import getCurrentUser from "./getCurrentUser";
-import { mapTotalApplicationStatsToStatusCounts } from "@/lib/utils";
+import { convertResponseData, mapTotalApplicationStatsToStatusCounts } from "@/lib/utils";
 
 export const getTotalJobStats = async () => {
   const currentUser = await getCurrentUser();
@@ -28,5 +28,38 @@ export const getTotalJobStats = async () => {
 
   return {
     totalApplicationStats,
+  };
+};
+
+export const getMonthlyChartData = async () => {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return {
+      error: "You must be logged in to use this service.",
+    };
+  }
+
+  const monthlyApplications = await prisma.jobApplication.groupBy({
+    by: ["createdAt"],
+    _count: {
+      createdAt: true,
+    },
+    where: {
+      userId: currentUser.id,
+    },
+  });
+
+  const formattedMonthlyApplications = monthlyApplications.map((entry) => ({
+    date: entry.createdAt.toISOString(),
+    count: entry._count.createdAt,
+  }));
+
+  const transformedFinalData = convertResponseData({
+    formattedMonthlyApplications,
+  });
+
+  return {
+    monthlyApplicationsData: transformedFinalData.formattedMonthlyApplications,
   };
 };

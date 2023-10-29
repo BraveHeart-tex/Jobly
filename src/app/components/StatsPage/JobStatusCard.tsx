@@ -22,7 +22,7 @@ const JobStatusCard = async () => {
         <Card
           key={data.status}
           className={cn(
-            "rounded-md shadow-md bg-gray-100 dark:bg-gray-800 border-b-4 p-4",
+            "rounded-md shadow-md bg-gray-100 dark:bg-gray-800 border-b-4 p-4 hover:bg-background transition-all duration-300 ease-in-out hover:cursor-pointer",
             getBorderBottomColorByStatus(data)
           )}
         >
