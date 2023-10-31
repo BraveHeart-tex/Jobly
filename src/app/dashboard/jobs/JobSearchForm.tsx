@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { revalidatePath } from "next/cache";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 interface IJobSearchFormProps {
@@ -30,6 +28,8 @@ const JobSearchForm = ({ page }: IJobSearchFormProps) => {
       `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`
     );
   };
+
+  let filterKey = 0;
 
   return (
     <div>
@@ -72,9 +72,9 @@ const JobSearchForm = ({ page }: IJobSearchFormProps) => {
           </div>
           <div>
             <Label htmlFor="jobType" className="text-foreground">
-              Job Type
+              Job Type {filterKey}
             </Label>
-            <Select name="jobType" defaultValue="all">
+            <Select name="jobType" defaultValue="all" key={filterKey}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>

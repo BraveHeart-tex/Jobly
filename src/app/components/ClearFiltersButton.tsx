@@ -1,18 +1,19 @@
 "use client";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const ClearFiltersButton = () => {
   return (
-    <Link
-      onClick={() => {
-        const form = document.getElementById("jobSearchForm") as HTMLFormElement;
-        form.reset();
+    <Button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        window.location.reload();
       }}
-      href="/dashboard/jobs"
-      className="w-full md:w-max text-gray-50 bg-destructive rounded-md p-2 font-semibold hover:bg-destructive/80 transition-all text-center"
+      className="font-semibold text-md"
+      variant="destructive"
     >
       Clear Filters
-    </Link>
+    </Button>
   );
 };
 export default ClearFiltersButton;
