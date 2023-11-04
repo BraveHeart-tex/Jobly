@@ -1,3 +1,4 @@
+import DeleteJobDialog from "@/components/DeleteJobDialog";
 import Link from "next/link";
 import { FiEye } from "react-icons/fi";
 
@@ -15,13 +16,7 @@ const JobCardFooter = ({ id }: IJobCardFooterProps) => {
         >
           Edit
         </Link>
-        <Link
-          className="text-gray-100 bg-destructive transition-all rounded-md px-4 font-semibold h-[35px] flex items-center justify-center hover:bg-destructive/80"
-          href={`/dashboard/jobs/?deleteJob=${id}`}
-          scroll={false}
-        >
-          Delete
-        </Link>
+        <DeleteJobDialog jobId={id} />
       </div>
       <Link
         href={`dashboard/jobs/${id}`}

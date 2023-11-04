@@ -13,6 +13,9 @@ const JobsPage = async ({
     status: string;
     jobType: string;
     sort: string;
+    deleteJob: string;
+    deleteConfirm: string;
+    jobId: string;
   };
 }) => {
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
@@ -21,12 +24,11 @@ const JobsPage = async ({
   const status = searchParams.status ? searchParams.status : "";
   const jobType = searchParams.jobType ? searchParams.jobType : "";
   const sort = searchParams.sort ? searchParams.sort : "asc";
-
   const result = await getJobApplications(page, search, company, status, jobType, sort);
 
   return (
     <div className="grid grid-cols-1 gap-2">
-      <JobSearchForm page={page} />
+      <JobSearchForm />
       <div className="mr-auto mb-2">
         <PaginationControls
           search={search}

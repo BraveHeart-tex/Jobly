@@ -1,41 +1,46 @@
-import ClearFiltersButton from "@/app/components/ClearFiltersButton";
+"use client";
+import { searchJobs } from "@/app/actions";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
-interface IJobSearchFormProps {
-  page: number;
+export interface IJobSearchFormValues {
+  searchTerm: string;
+  companySearchTerm: string;
+  applicationStatus: string;
+  jobType: string;
+  sortTerm: string;
 }
 
-const JobSearchForm = ({ page }: IJobSearchFormProps) => {
+const JobSearchForm = () => {
+  const router = useRouter();
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
+  const { handleSubmit, register, reset } = useForm({
+    defaultValues: {
+      searchTerm: "",
+      companySearchTerm: "",
+      applicationStatus: "all",
+      jobType: "all",
+      sortTerm: "desc",
+    },
+  });
 
-  const handleSubmit = async (formData: FormData) => {
-    "use server";
-    const data = Object.fromEntries(formData.entries());
-    const { searchTerm, companySearchTerm, applicationStatus, jobType, sortTerm } = data;
-
-    if (!searchTerm && !companySearchTerm && !applicationStatus && !jobType && !sortTerm) {
-      return redirect("/dashboard/jobs");
-    }
-
-    redirect(
-      `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`
-    );
+  const onSubmit = async (data: IJobSearchFormValues) => {
+    // reset();
+    await searchJobs(data);
   };
-
-  let filterKey = 0;
 
   return (
     <div>
       <form
         className="p-4 rounded-md shadow-md bg-card/80 dark:bg-gray-800 grid grid-cols-1"
-        action={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         id="jobSearchForm"
       >
         <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground">Job Application Search Form</h3>
@@ -44,19 +49,24 @@ const JobSearchForm = ({ page }: IJobSearchFormProps) => {
             <Label htmlFor="searchTerm" className="text-foreground">
               Job Title
             </Label>
-            <Input id="searchTerm" name="searchTerm" type="text" placeholder="Search by job title" />
+            <Input id="searchTerm" type="text" placeholder="Search by job title" {...register("searchTerm")} />
           </div>
           <div>
             <Label htmlFor="companySearchTerm" className="text-foreground">
               Company
             </Label>
-            <Input id="companySearchTerm" name="companySearchTerm" type="text" placeholder="Search by company name" />
+            <Input
+              id="companySearchTerm"
+              {...register("companySearchTerm")}
+              type="text"
+              placeholder="Search by company name"
+            />
           </div>
           <div>
             <Label htmlFor="applicationStatus" className="text-foreground">
               Application Status
             </Label>
-            <Select name="applicationStatus">
+            <Select {...register("applicationStatus")}>
               <SelectTrigger className="w-full" defaultValue="all">
                 <SelectValue placeholder="Application Status" />
               </SelectTrigger>
@@ -72,9 +82,9 @@ const JobSearchForm = ({ page }: IJobSearchFormProps) => {
           </div>
           <div>
             <Label htmlFor="jobType" className="text-foreground">
-              Job Type {filterKey}
+              Job Type
             </Label>
-            <Select name="jobType" defaultValue="all" key={filterKey}>
+            <Select {...register("jobType")} defaultValue="all">
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>
@@ -92,7 +102,7 @@ const JobSearchForm = ({ page }: IJobSearchFormProps) => {
             <Label htmlFor="sortTerm" className="text-foreground">
               Sort
             </Label>
-            <Select name="sortTerm" defaultValue="desc">
+            <Select {...register("sortTerm")} defaultValue="desc">
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>
@@ -110,7 +120,17 @@ const JobSearchForm = ({ page }: IJobSearchFormProps) => {
           >
             Search
           </Button>
-          <ClearFiltersButton />
+          <Button
+            type="button"
+            onClick={(e) => {
+              reset();
+              router.push("/dashboard/jobs");
+            }}
+            className="font-semibold text-md"
+            variant="destructive"
+          >
+            Clear Filters
+          </Button>
         </div>
       </form>
     </div>

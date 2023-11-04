@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { ChakraProviders } from './ChakraProviders';
 import QueryClientProviders from './QueryClientProviders';
 import ReduxProviders from '@/app/redux/provider';
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,8 +19,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' data-theme={'corporate'}>
+    <html lang="en" data-theme={"corporate"}>
       <body className={inter.className}>
+        <Toaster />
         <QueryClientProviders>
           <ReduxProviders>
             <ChakraProviders>{children}</ChakraProviders>

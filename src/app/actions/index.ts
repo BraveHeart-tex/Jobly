@@ -5,7 +5,25 @@ import ApplicationStatusOptions from "../utils/ApplicationStatusOptions";
 import JobTypeOptions, { capitalizeJobTypeParams } from "../utils/JobTypeOptions";
 import getCurrentUser from "./getCurrentUser";
 import { convertResponseData, mapTotalApplicationStatsToStatusCounts } from "@/lib/utils";
+import { redirect } from "next/navigation";
+import { IJobSearchFormValues } from "../dashboard/jobs/JobSearchForm";
+// TODO: HOF => withCurrentUser
 
+export const searchJobs = async ({
+  searchTerm,
+  companySearchTerm,
+  applicationStatus,
+  jobType,
+  sortTerm,
+}: IJobSearchFormValues) => {
+  if (!searchTerm && !companySearchTerm && !applicationStatus && !jobType && !sortTerm) {
+    return redirect("/dashboard/jobs");
+  }
+
+  redirect(
+    `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`
+  );
+};
 export const getTotalJobStats = async () => {
   const currentUser = await getCurrentUser();
 
