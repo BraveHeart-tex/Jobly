@@ -19,7 +19,7 @@ const JobCardFooter = ({ id }: IJobCardFooterProps) => {
         <DeleteJobDialog jobId={id} />
       </div>
       <Link
-        href={`dashboard/jobs/${id}`}
+        href={`/dashboard/jobs/${id}`}
         className="flex items-center gap-2 bg-transparent transition-all text-facebook dark:text-foreground"
       >
         View Details <FiEye />

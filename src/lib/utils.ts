@@ -30,6 +30,15 @@ export const monthMap: { [key: string]: string } = {
   "12": "December",
 };
 
+export function getKeyByValue(object: any, value: any) {
+  for (const key in object) {
+    if (object[key] === value) {
+      return key;
+    }
+  }
+  return null; // Return null if the value is not found in the object
+}
+
 export function convertResponseData(data: ResponseData): ResponseData {
   const formattedData: ResponseData = {
     formattedMonthlyApplications: [],
