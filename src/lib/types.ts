@@ -1,4 +1,5 @@
 import prisma from "@/app/libs/prismadb";
+import { JobApplication } from "@prisma/client";
 import { IconType } from "react-icons/lib";
 
 export interface TotalApplicationStat {
@@ -54,7 +55,6 @@ export type StatusMappings = {
   [status: string]: StatusMapping;
 };
 
-
 export interface FormattedMonthlyApplication {
   date: string;
   count: number;
@@ -63,3 +63,26 @@ export interface FormattedMonthlyApplication {
 export interface ResponseData {
   formattedMonthlyApplications: FormattedMonthlyApplication[];
 }
+
+export interface IAddJobFormInputTypes {
+  jobTitle: string;
+  companyName: string;
+  applicationStatus: string;
+  jobType: string;
+  jobLocation: string;
+  comments?: string;
+}
+
+export interface IHandleEditJobParams {
+  mode: "edit";
+  jobId: number;
+  data: JobApplication;
+}
+
+export interface IHandleCreateJobParams {
+  mode: "create";
+  jobId?: number;
+  data: JobApplication;
+}
+
+export type handleJobFormSubmitParams = IHandleEditJobParams | IHandleCreateJobParams;

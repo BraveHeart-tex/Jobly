@@ -43,7 +43,9 @@ const JobSearchForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         id="jobSearchForm"
       >
-        <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground">Job Application Search Form</h3>
+        <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">
+          Job Application Search Form
+        </h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 my-4">
           <div>
             <Label htmlFor="searchTerm" className="text-foreground">

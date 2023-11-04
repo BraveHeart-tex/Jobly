@@ -14,8 +14,10 @@ const ResponsiveChartContainer = async () => {
   }
 
   return (
-    <div className="flex justify-center items-start flex-col gap-4">
-      <h2 className="font-semibold text-foreground text-4xl text-facebook capitalize">Your Applications by Month</h2>
+    <div className="flex justify-center items-start flex-col gap-2">
+      <h2 className="font-semibold text-foreground text-4xl text-facebook-400 capitalize">
+        Your Applications by Month
+      </h2>
       <p className="text-foreground">Below chart shows the number of applications you have submitted each month.</p>
       <div className="w-full h-[400px] flex justify-center items-center">
         <BarChartComponent data={result.monthlyApplicationsData} />

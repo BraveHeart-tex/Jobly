@@ -2,6 +2,7 @@
 import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
 import JobTypeOptions from '@/app/utils/JobTypeOptions';
 import customFetch from '@/app/utils/customFetch';
+import { IAddJobFormInputTypes } from "@/lib/types";
 import {
   Button,
   FormControl,
@@ -19,14 +20,7 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 
-interface IAddJobFormInputTypes {
-  jobTitle: string;
-  companyName: string;
-  applicationStatus: string;
-  jobType: string;
-  jobLocation: string;
-  comments?: string;
-}
+
 
 const AddJobForm = () => {
   const toast = useToast();

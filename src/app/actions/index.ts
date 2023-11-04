@@ -7,6 +7,9 @@ import getCurrentUser from "./getCurrentUser";
 import { convertResponseData, mapTotalApplicationStatsToStatusCounts } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { IJobSearchFormValues } from "../dashboard/jobs/JobSearchForm";
+import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
+import { revalidatePath } from "next/cache";
+import { handleJobFormSubmitParams } from "@/lib/types";
 // TODO: HOF => withCurrentUser
 
 export const searchJobs = async ({
@@ -161,4 +164,29 @@ export const getJobApplications = async (
     hasNextPage: jobApplications.length === pageSize,
     hasPreviousPage: pageNumber > 1,
   };
+};
+
+export const handleJobFormSubmit = async ({ mode, jobId, data }: handleJobFormSubmitParams) => {
+  const processResult = async (result: any) => {
+    if (result?.error) {
+      return {
+        error: result.error,
+      };
+    } else {
+      revalidatePath("/dashboard/jobs");
+      revalidatePath("/dashboard");
+    }
+  };
+
+  if (mode === "edit") {
+    const result = await updateGeneric<JobApplication>({
+      tableName: "jobApplication",
+      data,
+      whereCondition: { id: jobId },
+    });
+    return processResult(result);
+  } else {
+    const result = await createGenericWithCurrentUser<JobApplication>({ tableName: "jobApplication", data });
+    return processResult(result);
+  }
 };
