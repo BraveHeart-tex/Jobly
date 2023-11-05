@@ -1,5 +1,5 @@
 "use server";
-import { ApplicationStatus, JobApplication, JobType } from "@prisma/client";
+import { ApplicationStatus, JobApplication, JobType, User } from "@prisma/client";
 import prisma from "../libs/prismadb";
 import ApplicationStatusOptions from "../utils/ApplicationStatusOptions";
 import JobTypeOptions, { capitalizeJobTypeParams } from "../utils/JobTypeOptions";
@@ -11,6 +11,16 @@ import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
 import { revalidatePath } from "next/cache";
 import { handleJobFormSubmitParams } from "@/lib/types";
 // TODO: HOF => withCurrentUser
+
+export const withCurrentUser = async (callback: (currentUser: User | null) => any) => {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    callback(null);
+  }
+
+  return callback(currentUser);
+};
 
 export const searchJobs = async ({
   searchTerm,
@@ -27,9 +37,7 @@ export const searchJobs = async ({
     `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`
   );
 };
-export const getTotalJobStats = async () => {
-  const currentUser = await getCurrentUser();
-
+export const getTotalJobStats = withCurrentUser(async (currentUser) => {
   if (!currentUser) {
     return {
       error: "You must be logged in to use this service.",
@@ -53,11 +61,9 @@ export const getTotalJobStats = async () => {
   return {
     totalApplicationStats,
   };
-};
+});
 
-export const getMonthlyChartData = async () => {
-  const currentUser = await getCurrentUser();
-
+export const getMonthlyChartData = withCurrentUser(async (currentUser) => {
   if (!currentUser) {
     return {
       error: "You must be logged in to use this service.",
@@ -86,85 +92,88 @@ export const getMonthlyChartData = async () => {
   return {
     monthlyApplicationsData: transformedFinalData.formattedMonthlyApplications,
   };
-};
+});
 
-export const getJobApplications = async (
-  pageNumber: number = 1,
-  searchParam: string = "",
-  companySearchParam: string = "",
-  statusParam: string = "",
-  jobTypeParam: string = "",
-  sortParam: string = "desc"
-) => {
-  const currentUser = await getCurrentUser();
+export const getJobApplications = withCurrentUser(
+  async (
+    currentUser,
+    pageNumber: number = 1,
+    searchParam: string = "",
+    companySearchParam: string = "",
+    statusParam: string = "",
+    jobTypeParam: string = "",
+    sortParam: string = "desc"
+  ) => {
+    console.log(pageNumber, searchParam, companySearchParam, statusParam, jobTypeParam, sortParam);
 
-  console.log(pageNumber, searchParam, companySearchParam, statusParam, jobTypeParam, sortParam);
+    if (!currentUser) {
+      return {
+        error: "You must be logged in to use this service.",
+        hasNextPage: false,
+        hasPreviousPage: false,
+      };
+    }
 
-  if (!currentUser) {
+    const pageSize = 12;
+
+    const skipAmount = (pageNumber - 1) * pageSize;
+
+    const mappedStatusParam = Object.entries(ApplicationStatusOptions).find(
+      ([key, value]) => value === statusParam
+    )?.[0];
+
+    const mappedJobTypeParam = Object.entries(JobTypeOptions).find(
+      ([key, value]) => value === capitalizeJobTypeParams(jobTypeParam)
+    )?.[0];
+
+    const jobApplications = await prisma.jobApplication.findMany({
+      skip: skipAmount,
+      take: pageSize,
+      where: {
+        userId: currentUser.id,
+        jobTitle: {
+          contains: searchParam,
+        },
+        companyName: {
+          contains: companySearchParam,
+        },
+        applicationStatus: {
+          equals: mappedStatusParam as ApplicationStatus,
+        },
+        jobType: {
+          equals: mappedJobTypeParam as JobType,
+        },
+      },
+      orderBy: {
+        createdAt: sortParam as "asc" | "desc",
+      },
+      select: {
+        id: true,
+        jobTitle: true,
+        companyName: true,
+        applicationStatus: true,
+        jobType: true,
+        location: true,
+        comments: true,
+        createdAt: true,
+      },
+    });
+
+    if (jobApplications.length === 0) {
+      return {
+        error: "No job applications found.",
+        hasNextPage: false,
+        hasPreviousPage: false,
+      };
+    }
+
     return {
-      error: "You must be logged in to use this service.",
-      hasNextPage: false,
-      hasPreviousPage: false,
+      jobApplications: jobApplications as JobApplication[],
+      hasNextPage: jobApplications.length === pageSize,
+      hasPreviousPage: pageNumber > 1,
     };
   }
-
-  const pageSize = 12;
-
-  const skipAmount = (pageNumber - 1) * pageSize;
-
-  const mappedStatusParam = Object.entries(ApplicationStatusOptions).find(([key, value]) => value === statusParam)?.[0];
-
-  const mappedJobTypeParam = Object.entries(JobTypeOptions).find(
-    ([key, value]) => value === capitalizeJobTypeParams(jobTypeParam)
-  )?.[0];
-
-  const jobApplications = await prisma.jobApplication.findMany({
-    skip: skipAmount,
-    take: pageSize,
-    where: {
-      userId: currentUser.id,
-      jobTitle: {
-        contains: searchParam,
-      },
-      companyName: {
-        contains: companySearchParam,
-      },
-      applicationStatus: {
-        equals: mappedStatusParam as ApplicationStatus,
-      },
-      jobType: {
-        equals: mappedJobTypeParam as JobType,
-      },
-    },
-    orderBy: {
-      createdAt: sortParam as "asc" | "desc",
-    },
-    select: {
-      id: true,
-      jobTitle: true,
-      companyName: true,
-      applicationStatus: true,
-      jobType: true,
-      location: true,
-      comments: true,
-      createdAt: true,
-    },
-  });
-
-  if (jobApplications.length === 0) {
-    return {
-      error: "No job applications found.",
-      hasNextPage: false,
-      hasPreviousPage: false,
-    };
-  }
-
-  return {
-    jobApplications: jobApplications as JobApplication[],
-    hasNextPage: jobApplications.length === pageSize,
-    hasPreviousPage: pageNumber > 1,
-  };
-};
+);
 
 export const handleJobFormSubmit = async ({ mode, jobId, data }: handleJobFormSubmitParams) => {
   const processResult = async (result: any) => {
