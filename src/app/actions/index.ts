@@ -12,15 +12,17 @@ import { revalidatePath } from "next/cache";
 import { handleJobFormSubmitParams } from "@/lib/types";
 // TODO: HOF => withCurrentUser
 
-export const withCurrentUser = async (callback: (currentUser: User | null) => any) => {
-  const currentUser = await getCurrentUser();
+export const withCurrentUser =
+  (callback: (currentUser: User | null, ...args: any[]) => any) =>
+  async (...args: any) => {
+    const currentUser = await getCurrentUser();
 
-  if (!currentUser) {
-    callback(null);
-  }
-
-  return callback(currentUser);
-};
+    if (!currentUser) {
+      return callback(null, ...args);
+    } else {
+      return callback(currentUser, ...args);
+    }
+  };
 
 export const searchJobs = async ({
   searchTerm,
@@ -97,15 +99,13 @@ export const getMonthlyChartData = withCurrentUser(async (currentUser) => {
 export const getJobApplications = withCurrentUser(
   async (
     currentUser,
-    pageNumber: number = 1,
-    searchParam: string = "",
-    companySearchParam: string = "",
-    statusParam: string = "",
-    jobTypeParam: string = "",
-    sortParam: string = "desc"
+    pageNumber = 1,
+    searchParam = "",
+    companySearchParam = "",
+    statusParam = "",
+    jobTypeParam = "",
+    sortParam = "desc"
   ) => {
-    console.log(pageNumber, searchParam, companySearchParam, statusParam, jobTypeParam, sortParam);
-
     if (!currentUser) {
       return {
         error: "You must be logged in to use this service.",
@@ -113,6 +113,8 @@ export const getJobApplications = withCurrentUser(
         hasPreviousPage: false,
       };
     }
+
+    console.log(searchParam);
 
     const pageSize = 12;
 

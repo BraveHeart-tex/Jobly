@@ -27,7 +27,8 @@ const JobsPage = async ({
   const sort = searchParams.sort ? searchParams.sort : "desc";
   const result = await getJobApplications(page, search, company, status, jobType, sort);
 
-  const hasQuery = search || company || status || jobType || sort;
+  const hasQuery =
+    searchParams.search || searchParams.company || searchParams.status || searchParams.jobType || searchParams.sort;
 
   return (
     <div className="grid grid-cols-1 gap-2">
