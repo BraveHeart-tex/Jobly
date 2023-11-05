@@ -75,3 +75,73 @@ export function convertResponseData(data: ResponseData): ResponseData {
 
   return formattedData;
 }
+
+export function deepEqual(obj1: any, obj2: any, ignoreFields?: string[]): boolean {
+  if (ignoreFields && ignoreFields.length > 0) {
+    ignoreFields.forEach((field) => {
+      if (field in obj1) delete obj1[field];
+      if (field in obj2) delete obj2[field];
+    });
+  }
+
+  if (obj1 === obj2) {
+    return true; // Same object reference, no need to compare further
+  }
+
+  if (typeof obj1 !== "object" || typeof obj2 !== "object" || obj1 === null || obj2 === null) {
+    return obj1 === obj2; // Compare primitive types
+  }
+
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) {
+    return false; // Different number of properties
+  }
+
+  for (const key of keys1) {
+    if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+      return false; // Properties don't match or deep comparison fails
+    }
+  }
+
+  return true;
+}
+
+export function deepEqualWithReduce(obj1: any, obj2: any, ignoreFields: string[] = []): boolean {
+  const cleanedObj1 = ignoreFields.reduce((o, field) => ({ ...o, [field]: undefined }), { ...obj1 });
+  const cleanedObj2 = ignoreFields.reduce((o, field) => ({ ...o, [field]: undefined }), { ...obj2 });
+
+  if (cleanedObj1 === cleanedObj2) {
+    return true;
+  }
+
+  if (
+    typeof cleanedObj1 !== "object" ||
+    typeof cleanedObj2 !== "object" ||
+    cleanedObj1 === null ||
+    cleanedObj2 === null
+  ) {
+    return cleanedObj1 === cleanedObj2;
+  }
+
+  const keys1 = Object.keys(cleanedObj1);
+  const keys2 = Object.keys(cleanedObj2);
+
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+
+  return keys1.every((key) => keys2.includes(key) && deepEqualWithReduce(cleanedObj1[key], cleanedObj2[key]));
+}
+
+export const sortByDate = (a: any, b: any, sortBy: string, direction: "asc" | "desc" = "desc") => {
+  const dateA = new Date(a[sortBy]);
+  const dateB = new Date(b[sortBy]);
+
+  if (direction === "asc") {
+    return dateA.getTime() - dateB.getTime();
+  }
+
+  return dateB.getTime() - dateA.getTime();
+};

@@ -9,8 +9,8 @@ import { Button } from "./ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
-import { cn } from "@/lib/utils";
-import { useTransition } from "react";
+import { cn, deepEqual } from "@/lib/utils";
+import { useEffect, useTransition } from "react";
 import { showErrorToast, showToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { handleJobFormSubmit } from "@/app/actions";
@@ -35,10 +35,34 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
   const form = useForm({
     mode: "onChange",
     resolver: zodResolver(JobSchema),
-    defaultValues: mode === "edit" ? initialData : undefined,
+    defaultValues:
+      mode === "edit"
+        ? initialData
+        : {
+            jobType: "FULL_TIME",
+            applicationStatus: "PENDING",
+          },
   });
 
+  useEffect(() => {
+    form.setFocus("jobTitle");
+  }, []);
+
   const onSubmit = (data: JobApplication) => {
+    if (mode === "edit") {
+      let checkPayload = { ...initialData } as any;
+
+      const isDataEqual = deepEqual(data, checkPayload, ["createdAt", "updatedAt", "userId"]);
+
+      if (isDataEqual) {
+        showErrorToast({
+          title: "Oops!",
+          description: "You haven't changed anything.",
+        });
+        return;
+      }
+    }
+
     startTransition(async () => {
       if (mode === "edit") {
         const result = await handleJobFormSubmit({ mode: "edit", data, jobId: initialData.id });
@@ -123,11 +147,11 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               <FormLabel>Job Type</FormLabel>
               <Select
                 onValueChange={(value) => form.setValue("jobType", mapJobTypes(value))}
-                defaultValue={mode === "edit" ? JobTypeOptions[initialData.jobType] : field.value}
+                value={mode === "edit" ? JobTypeOptions[initialData.jobType] : JobTypeOptions[field.value]}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select the job type" />
+                    {field.value ? <SelectValue placeholder="Select the job type" /> : "Select the job type"}
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -150,7 +174,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               <FormLabel>Application Status</FormLabel>
               <Select
                 onValueChange={(value) => form.setValue("applicationStatus", mapStatus(value))}
-                defaultValue={
+                value={
                   mode === "edit"
                     ? ApplicationStatusOptions[initialData.applicationStatus]
                     : ApplicationStatusOptions[field.value]
@@ -158,7 +182,11 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select you application status" />
+                    {field.value ? (
+                      <SelectValue placeholder="Select your application status" />
+                    ) : (
+                      "Select your application status"
+                    )}
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -202,7 +230,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
         />
         <Button
           type="submit"
-          className="bg-facebook hover:bg-facebook-600 dark:bg-primary w-full lg:w-max transition-all"
+          className="bg-facebook hover:bg-facebook-600 dark:bg-primary w-full 2xl:w-max transition-all"
         >
           {mode === "edit" ? "Update" : "Create"}
         </Button>

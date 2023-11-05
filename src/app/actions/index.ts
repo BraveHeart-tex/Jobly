@@ -94,7 +94,7 @@ export const getJobApplications = async (
   companySearchParam: string = "",
   statusParam: string = "",
   jobTypeParam: string = "",
-  sortParam: string = "asc"
+  sortParam: string = "desc"
 ) => {
   const currentUser = await getCurrentUser();
 

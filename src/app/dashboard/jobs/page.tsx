@@ -2,7 +2,6 @@ import JobsList from "./JobsList";
 import JobSearchForm from "./JobSearchForm";
 import { getJobApplications } from "@/app/actions";
 import PaginationControls from "@/app/components/PaginationControls";
-import Link from "next/link";
 import NoJobsFound from "@/components/NoJobsFound";
 
 const JobsPage = async ({
@@ -25,8 +24,11 @@ const JobsPage = async ({
   const company = searchParams.company ? searchParams.company : "";
   const status = searchParams.status ? searchParams.status : "";
   const jobType = searchParams.jobType ? searchParams.jobType : "";
-  const sort = searchParams.sort ? searchParams.sort : "asc";
+  const sort = searchParams.sort ? searchParams.sort : "desc";
   const result = await getJobApplications(page, search, company, status, jobType, sort);
+
+  const hasQuery = search || company || status || jobType || sort;
+
   return (
     <div className="grid grid-cols-1 gap-2">
       <JobSearchForm />
@@ -43,7 +45,7 @@ const JobsPage = async ({
         />
       </div>
       {result.error || !result?.jobApplications ? (
-        <NoJobsFound />
+        <NoJobsFound withQuery={hasQuery ? true : false} />
       ) : (
         <JobsList jobApplications={result.jobApplications} />
       )}

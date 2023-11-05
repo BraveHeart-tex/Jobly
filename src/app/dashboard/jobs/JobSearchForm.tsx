@@ -21,7 +21,7 @@ const JobSearchForm = () => {
   const router = useRouter();
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
-  const { handleSubmit, register, reset } = useForm({
+  const { handleSubmit, register, reset, setValue } = useForm({
     defaultValues: {
       searchTerm: "",
       companySearchTerm: "",
@@ -32,7 +32,6 @@ const JobSearchForm = () => {
   });
 
   const onSubmit = async (data: IJobSearchFormValues) => {
-    // reset();
     await searchJobs(data);
   };
 
@@ -46,7 +45,7 @@ const JobSearchForm = () => {
         <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">
           Job Application Search Form
         </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 my-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 my-4">
           <div>
             <Label htmlFor="searchTerm" className="text-foreground">
               Job Title
@@ -68,7 +67,7 @@ const JobSearchForm = () => {
             <Label htmlFor="applicationStatus" className="text-foreground">
               Application Status
             </Label>
-            <Select {...register("applicationStatus")}>
+            <Select {...register("applicationStatus")} onValueChange={(val) => setValue("applicationStatus", val)}>
               <SelectTrigger className="w-full" defaultValue="all">
                 <SelectValue placeholder="Application Status" />
               </SelectTrigger>
@@ -86,7 +85,7 @@ const JobSearchForm = () => {
             <Label htmlFor="jobType" className="text-foreground">
               Job Type
             </Label>
-            <Select {...register("jobType")} defaultValue="all">
+            <Select {...register("jobType")} defaultValue="all" onValueChange={(val) => setValue("jobType", val)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>
@@ -104,9 +103,9 @@ const JobSearchForm = () => {
             <Label htmlFor="sortTerm" className="text-foreground">
               Sort
             </Label>
-            <Select {...register("sortTerm")} defaultValue="desc">
+            <Select {...register("sortTerm")} defaultValue="desc" onValueChange={(val) => setValue("sortTerm", val)}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Job Type" />
+                <SelectValue placeholder="Sort date by" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={"desc"}>Latest</SelectItem>
@@ -125,7 +124,19 @@ const JobSearchForm = () => {
           <Button
             type="button"
             onClick={(e) => {
-              reset();
+              reset(
+                {
+                  applicationStatus: "all",
+                  companySearchTerm: "",
+                  jobType: "all",
+                  searchTerm: "",
+                  sortTerm: "desc",
+                },
+                {
+                  keepValues: false,
+                  keepDefaultValues: true,
+                }
+              );
               router.push("/dashboard/jobs");
             }}
             className="font-semibold text-md"

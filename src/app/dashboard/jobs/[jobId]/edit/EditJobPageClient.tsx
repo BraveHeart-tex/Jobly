@@ -1,6 +1,7 @@
 import { JobApplication } from "@prisma/client";
 import EditJobModalForm from "./EditJobForm";
 import Link from "next/link";
+import JobCrudForm from "@/components/JobCrudForm";
 
 interface IEditJobPageClientProps {
   jobApplication: JobApplication | null | undefined;
@@ -24,7 +25,7 @@ const EditJobPageClient = ({ jobApplication }: IEditJobPageClientProps) => {
       <h2 className="text-facebook dark:text-foreground mb-6 text-3xl">
         Editing: {jobApplication.jobTitle} at {jobApplication.companyName}
       </h2>
-      <EditJobModalForm currentJobApplication={jobApplication} />
+      <JobCrudForm mode="edit" initialData={jobApplication} formClassName="2xl:grid-cols-2" />
     </div>
   );
 };
