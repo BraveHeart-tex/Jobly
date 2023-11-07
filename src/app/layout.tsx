@@ -4,6 +4,8 @@ import { ChakraProviders } from './ChakraProviders';
 import QueryClientProviders from './QueryClientProviders';
 import ReduxProviders from '@/app/redux/provider';
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/theme-provider";
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +26,9 @@ export default function RootLayout({
         <Toaster />
         <QueryClientProviders>
           <ReduxProviders>
-            <ChakraProviders>{children}</ChakraProviders>
+            <ChakraProviders>
+              <ThemeProvider>{children}</ThemeProvider>
+            </ChakraProviders>
           </ReduxProviders>
         </QueryClientProviders>
       </body>

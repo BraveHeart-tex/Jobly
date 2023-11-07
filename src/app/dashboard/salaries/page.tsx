@@ -2,6 +2,8 @@ import SalaryDataTable from "./SalaryDataTable";
 import SalaryDataFilterForm from "./SalaryDataFilterForm";
 import Link from "next/link";
 import { searchSalaryDataset } from "@/app/actions";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { cn } from "@/lib/utils";
 
 const SalaryEstimationsPage = async ({
   searchParams,
@@ -20,7 +22,6 @@ const SalaryEstimationsPage = async ({
 
   const result = await searchSalaryDataset(page, sort, search, city);
   let data = null;
-
   if (result.salaryData) {
     data = result.salaryData;
   }
@@ -35,16 +36,29 @@ const SalaryEstimationsPage = async ({
           </p>
         </div>
         <SalaryDataFilterForm />
-        {data ? <SalaryDataTable data={data} /> : null}
-        <p className="text-foreground">Showing 10 results per page by default.</p>
-        <div className="flex gap-4 justify-center items-center">
-          <Link href="" className="bg-facebook rounded-md text-white font-semibold px-4 py-2">
-            Previous
+        <div className="flex gap-4 justify-center self-start items-center">
+          <Link
+            scroll={false}
+            href={`/dashboard/salaries?page=${parseInt(page) - 1}&sort=${sort}&search=${search}&city=${city}`}
+            className={cn(
+              "bg-facebook text-gray-100 flex items-center font-semibold gap-2 rounded-md p-2",
+              !result?.hasPreviousPage && "opacity-50 pointer-events-none"
+            )}
+          >
+            <FaArrowLeft /> Previous
           </Link>
-          <Link href="" className="bg-facebook rounded-md text-white font-semibold px-4 py-2">
-            Next
+          <Link
+            scroll={false}
+            href={`/dashboard/salaries?page=${parseInt(page) + 1}&sort=${sort}&search=${search}&city=${city}`}
+            className={cn(
+              "bg-facebook text-gray-100 flex font-semibold items-center gap-2 rounded-md p-2",
+              !result?.hasNextPage && "opacity-50 pointer-events-none"
+            )}
+          >
+            Next <FaArrowRight />
           </Link>
         </div>
+        {data ? <SalaryDataTable data={data} /> : null}
       </div>
     </main>
   );

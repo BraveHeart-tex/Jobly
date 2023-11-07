@@ -8,7 +8,7 @@ import { toggleSidebar } from '../redux/features/sidebar';
 import { Button } from "@/components/ui/button";
 import { seedData } from "../../../seed";
 
-export default function SidebarWithHeader({ children }: { children: ReactNode }) {
+export default function SidebarWithHeader({ children, username }: { children: ReactNode; username: string }) {
   const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector((state) => state.sidebarReducer);
   return (
@@ -28,7 +28,7 @@ export default function SidebarWithHeader({ children }: { children: ReactNode })
         </DrawerContent>
       </Drawer>
       {/* mobile nav */}
-      <MobileNav />
+      <MobileNav username={username} />
       {/* main content */}
       <Box
         ml={{ base: 0, md: 60 }}
