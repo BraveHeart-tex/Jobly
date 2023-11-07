@@ -9,7 +9,9 @@ import { redirect } from "next/navigation";
 import { IJobSearchFormValues } from "../dashboard/jobs/JobSearchForm";
 import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
 import { revalidatePath } from "next/cache";
+import bcrypt from "bcrypt";
 import { handleJobFormSubmitParams } from "@/lib/types";
+import { RegisterUserSchemaType } from "@/schemas/RegisterUserSchema";
 
 export const withCurrentUser =
   (callback: (currentUser: User | null, ...args: any[]) => any) =>
@@ -238,5 +240,35 @@ export const searchSalaryDataset = async (
     salaryData,
     hasNextPage: salaryData.length === pageSize,
     hasPreviousPage: pageNumber > 1,
+  };
+};
+
+export const registerUser = async (data: RegisterUserSchemaType) => {
+  const { name, email, password } = data;
+
+  const userExists = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (userExists) {
+    return {
+      error: `User already exists with the given email.`,
+    };
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  const user = await prisma.user.create({
+    data: {
+      name,
+      email,
+      hashedPassword,
+    },
+  });
+
+  return {
+    user,
   };
 };

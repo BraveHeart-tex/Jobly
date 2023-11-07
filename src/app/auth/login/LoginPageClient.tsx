@@ -77,7 +77,7 @@ const LoginPageClient = () => {
               })}
             />
             <Button
-              className="text-white bg-facebook dark:bg-gray-700 hover:bg-facebook-400 dark:hover:bg-gray-700 rounded-md font-semibold"
+              className="text-white bg-facebook text-md dark:bg-gray-700 hover:bg-facebook-400 dark:hover:bg-gray-700 rounded-md font-semibold"
               type="submit"
               disabled={loading}
             >
