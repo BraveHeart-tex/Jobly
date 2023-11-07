@@ -10,7 +10,6 @@ import { IJobSearchFormValues } from "../dashboard/jobs/JobSearchForm";
 import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
 import { revalidatePath } from "next/cache";
 import { handleJobFormSubmitParams } from "@/lib/types";
-// TODO: HOF => withCurrentUser
 
 export const withCurrentUser =
   (callback: (currentUser: User | null, ...args: any[]) => any) =>
@@ -200,4 +199,44 @@ export const handleJobFormSubmit = async ({ mode, jobId, data }: handleJobFormSu
     const result = await createGenericWithCurrentUser<JobApplication>({ tableName: "jobApplication", data });
     return processResult(result);
   }
+};
+
+export const searchSalaryDataset = async (
+  pageParam: string = "1",
+  sortParam: string = "desc",
+  searchParam: string = "",
+  citySearchParam: string = ""
+) => {
+  const pageSize = 10;
+  const pageNumber = parseInt(pageParam);
+
+  const skipAmount = (pageNumber - 1) * pageSize;
+
+  const salaryData = await prisma.salaryEstimationDataset.findMany({
+    skip: skipAmount,
+    take: pageSize,
+    where: {
+      jobTitle: {
+        contains: searchParam,
+      },
+      location: {
+        contains: citySearchParam,
+      },
+    },
+    orderBy: {
+      salary_estimate: sortParam as "asc" | "desc",
+    },
+    select: {
+      id: true,
+      jobTitle: true,
+      location: true,
+      salary_estimate: true,
+    },
+  });
+
+  return {
+    salaryData,
+    hasNextPage: salaryData.length === pageSize,
+    hasPreviousPage: pageNumber > 1,
+  };
 };
