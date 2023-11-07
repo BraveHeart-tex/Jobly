@@ -38,7 +38,7 @@ const JobSearchForm = () => {
   return (
     <div>
       <form
-        className="p-4 rounded-md shadow-md bg-card/80 dark:bg-gray-800 grid grid-cols-1"
+        className="p-4 rounded-md shadow-md bg-card/60 dark:bg-gray-800 grid grid-cols-1"
         onSubmit={handleSubmit(onSubmit)}
         id="jobSearchForm"
       >

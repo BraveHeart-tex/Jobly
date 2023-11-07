@@ -1,44 +1,15 @@
-'use client';
-import React, { ReactNode } from 'react';
-import { Box, useColorModeValue, Drawer, DrawerContent } from "@chakra-ui/react";
-import MobileNav from './Navigation/MobileNav';
-import SidebarContent from './SidebarContent';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { toggleSidebar } from '../redux/features/sidebar';
-import { Button } from "@/components/ui/button";
-import { seedData } from "../../../seed";
+import { ReactNode } from "react";
+import MobileNav from "./Navigation/MobileNav";
+import SidebarContent from "./SidebarContent";
 
 export default function SidebarWithHeader({ children, username }: { children: ReactNode; username: string }) {
-  const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state) => state.sidebarReducer);
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent display={{ base: "none", md: "block" }} />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={() => dispatch(toggleSidebar())}
-        returnFocusOnClose={false}
-        onOverlayClick={() => dispatch(toggleSidebar())}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent />
-        </DrawerContent>
-      </Drawer>
+    <div className="min-h-screen bg-gray-200 dark:bg-gray-900">
+      <SidebarContent className="hidden md:block" />
       {/* mobile nav */}
       <MobileNav username={username} />
       {/* main content */}
-      <Box
-        ml={{ base: 0, md: 60 }}
-        p={{
-          base: "1rem",
-          lg: "4rem",
-        }}
-      >
-        {children}
-      </Box>
-    </Box>
+      <div className="ml-0 md:ml-[15rem] p-4 lg:p-16">{children}</div>
+    </div>
   );
 }

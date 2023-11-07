@@ -1,6 +1,5 @@
 import "../globals.css";
 import SidebarWithHeader from "../components/Sidebar";
-import getCurrentUser from "../actions/getCurrentUser";
 import { getServerSession } from "next-auth";
 
 export const metadata = {

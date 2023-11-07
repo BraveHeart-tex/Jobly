@@ -1,28 +1,17 @@
+"use client";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { FiMenu } from "react-icons/fi";
 import Logo from "../Logo";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { BiExit, BiSolidUser } from "react-icons/bi";
-import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
+import { BiExit } from "react-icons/bi";
+import ModeToggle from "@/components/ModeToggle";
+import MobileNavigationDrawer from "@/components/MobileNavigationDrawer";
 
 const MobileNav = ({ username }: { username: string }) => {
-  const toggleSideBarButton = (
-    <Button
-      size={"icon"}
-      variant={"outline"}
-      aria-label="Open side navigation menu"
-      className="flex md:hidden border bg-transparent text-white border-white hover:bg-facebook-300 hover:dark:bg-gray-700 hover:text-white"
-      onClick={() => {}}
-    >
-      <FiMenu />
-    </Button>
-  );
-
   return (
     <div className="flex ml-0 md:ml-[15rem] px-[1rem] h-[5rem] items-center border-b bg-facebook dark:bg-gray-800 justify-between md:justify-end">
-      {toggleSideBarButton}
+      <MobileNavigationDrawer />
       <div className="block md:hidden">
         <Logo width="100px" height="100px" />
       </div>
@@ -30,6 +19,7 @@ const MobileNav = ({ username }: { username: string }) => {
       <div className="flex items-center gap-0 md:gap-6">
         <div className="flex items-center">
           <UserMenu name={username || ""} />
+          <ModeToggle />
         </div>
       </div>
     </div>
@@ -37,7 +27,6 @@ const MobileNav = ({ username }: { username: string }) => {
 };
 
 const UserMenu = ({ name }: { name: string }) => {
-  const router = useRouter();
   const firstName = name.split(" ")[0];
   const lastName = name.split(" ")[1];
 
@@ -63,7 +52,7 @@ const UserMenu = ({ name }: { name: string }) => {
               onClick={() => signOut()}
             >
               <BiExit className="w-5 h-5 text-white" size={16} />
-              <span className="cursor-pointer text-[14px]">Çıkış Yap</span>
+              <span className="cursor-pointer text-[14px]">Logout</span>
             </li>
           </div>
         </ul>

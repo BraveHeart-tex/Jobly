@@ -29,12 +29,6 @@ const SalaryEstimationsPage = async ({
   return (
     <main>
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-facebook dark:text-facebook-300 font-semibold text-4xl">Salary Estimations</h2>
-          <p className="text-foreground">
-            You can use this page to estimate your salary based on your location or job title.
-          </p>
-        </div>
         <SalaryDataFilterForm />
         <div className="flex gap-4 justify-center self-start items-center">
           <Link

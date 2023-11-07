@@ -41,7 +41,8 @@ const SalaryDataFilterForm = () => {
   };
 
   return (
-    <div className="border bg-card/40 p-4 rounded-md">
+    <div className="border bg-card/60 p-4 py-2 rounded-md">
+      <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">Salary Estimations</h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 my-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className={"grid grid-cols-1 gap-2 lg:grid-cols-3"}>
@@ -95,19 +96,19 @@ const SalaryDataFilterForm = () => {
             <div className="flex items-center gap-1 mt-2">
               <Button
                 disabled={isPending}
+                type="submit"
+                className="w-full lg:w-max text-white bg-facebook hover:bg-facebook-600 transition-all dark:bg-primary font-semibold"
+              >
+                Search
+              </Button>
+              <Button
+                disabled={isPending}
                 type="button"
-                className="w-full lg:w-max"
+                className="w-full lg:w-max font-semibold"
                 variant="destructive"
                 onClick={() => clearAllFilters()}
               >
                 Clear Filters
-              </Button>
-              <Button
-                disabled={isPending}
-                type="submit"
-                className="w-full lg:w-max text-white bg-facebook hover:bg-facebook-600 transition-all dark:bg-primary"
-              >
-                Search
               </Button>
             </div>
           </form>

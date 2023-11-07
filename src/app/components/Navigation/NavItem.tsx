@@ -1,50 +1,20 @@
-import { FlexProps, Flex, Icon, useColorModeValue } from '@chakra-ui/react';
-import { Link } from '@chakra-ui/next-js';
-import { ReactNode } from 'react';
-import { IconType } from 'react-icons';
-import { closeSidebar } from '@/app/redux/features/sidebar';
-import { useAppDispatch } from '@/app/redux/hooks';
+import Link from "next/link";
+import { ReactNode, createElement } from "react";
+import { IconType } from "react-icons";
 
-interface NavItemProps extends FlexProps {
+interface NavItemProps {
   icon: IconType;
   children: ReactNode;
   href: string;
 }
 
 const NavItem = ({ icon, children, href }: NavItemProps) => {
-  const dispatch = useAppDispatch();
   return (
-    <Link
-      href={href}
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-      onClick={() => dispatch(closeSidebar())}
-    >
-      <Flex
-        align='center'
-        p='4'
-        mx='4'
-        borderRadius='lg'
-        role='group'
-        cursor='pointer'
-        color={'white'}
-        _hover={{
-          bg: useColorModeValue('facebook.300', 'gray.700'),
-          transform: 'translateX(12px)',
-        }}
-        transition={'all .3s ease'}
-      >
-        {icon && (
-          <Icon
-            mr='4'
-            fontSize='16'
-            color={'white'}
-            _groupHover={{}}
-            as={icon}
-          />
-        )}
+    <Link href={href}>
+      <div className="flex items-center p-4 mx-4 rounded-lg cursor-pointer text-white hover:bg-facebook-400 dark:hover:bg-gray-700 dark:hover:text-white transition-all hover:translate-x-2">
+        {icon && createElement(icon, { className: "mr-4 text-md text-white" })}
         {children}
-      </Flex>
+      </div>
     </Link>
   );
 };
