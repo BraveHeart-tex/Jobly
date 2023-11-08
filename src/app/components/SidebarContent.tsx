@@ -3,15 +3,16 @@ import NavItem from "./Navigation/NavItem";
 import LinkItems from "../utils/NavLinks";
 import { cn } from "@/lib/utils";
 
-const SidebarContent = ({ className }: { className?: string }) => {
+const SidebarContent = ({ className, fromDrawer = false }: { className?: string; fromDrawer?: boolean }) => {
   return (
     <div
       className={cn(
         "fixed transition-all border-r border-r-gray-200 h-full dark:border-r-gray-700 w-full md:w-60 bg-facebook dark:bg-gray-700",
+        fromDrawer && "md:hidden block w-[300px]",
         className
       )}
     >
-      <div className="flex h-20 items-center mx-8 justify-between mt-3">
+      <div className={cn("flex h-20 items-center mx-8 justify-between mt-3", fromDrawer && "block")}>
         <Logo />
       </div>
       {LinkItems.map((link) => (
