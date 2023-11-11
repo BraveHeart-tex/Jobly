@@ -14,8 +14,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import RegisterUserSchema, { RegisterUserSchemaType } from "@/schemas/RegisterUserSchema";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaCross } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { VscError } from "react-icons/vsc";
 
 const SignUpPageClient = () => {
   const router = useRouter();
@@ -69,17 +70,18 @@ const SignUpPageClient = () => {
   };
 
   const passwordCheckList = (
-    <div className="text-sm space-y-1 flex flex-col items-start absolute 2xl:top-[51%] 2xl:left-[25%] top-0 left-0 bottom-0 bg-facebook text-white dark:bg-primary border rounded-md h-max p-4 py-2">
+    <div className="text-sm space-y-1 flex flex-col items-start absolute 2xl:top-[51%] 2xl:left-[25%] 3xl:left-[33%] 3xl:top-[53%] top-0 left-0 bottom-0 bg-facebook text-white dark:bg-gray-800 border rounded-md h-max p-4 py-2 dark:border-gray-600">
       Your password should contain:
-      <ul className="pl-4 flex flex-col gap-1">
+      <ul className="pl-4 flex flex-col gap-1 text-[15px]">
         {Object.keys(passwordRules).map((rule) => (
           <li
             key={rule}
             className={cn(
-              "flex items-center gap-2 group",
+              "flex items-center gap-2 group text-red-500",
               checkedControl(rule, form.watch("password")) && "text-green-500 valid"
             )}
           >
+            <VscError className="block group-[.valid]:hidden" />
             <FaCheck className="hidden group-[.valid]:block" /> {rule}
           </li>
         ))}
@@ -150,7 +152,7 @@ const SignUpPageClient = () => {
             />
             {selectedInput === "password" && passwordCheckList}
             <Button
-              className="text-white bg-facebook dark:bg-gray-700 hover:bg-facebook-400 text-lg dark:hover:bg-gray-700 rounded-md font-semibold"
+              className="text-white bg-facebook dark:bg-gray-700 hover:bg-facebook-400 text-lg dark:hover:bg-gray-900 rounded-md font-semibold"
               size="lg"
               type="submit"
               disabled={isPending}
@@ -161,7 +163,7 @@ const SignUpPageClient = () => {
             <div className="flex flex-col gap-4 text-foreground mt-4">
               <Button
                 variant={"outline"}
-                className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2"
+                className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2 dark:hover:bg-gray-900"
                 size="lg"
                 onClick={() =>
                   signIn("google", {
@@ -174,7 +176,7 @@ const SignUpPageClient = () => {
               </Button>
               <p className="text-center mt-4">
                 Already have an account?{" "}
-                <Link className="text-facebook-600 dark:yellow-400" href="/auth/login">
+                <Link className="text-facebook-600 dark:text-yellow-400" href="/auth/login">
                   Log In
                 </Link>
               </p>

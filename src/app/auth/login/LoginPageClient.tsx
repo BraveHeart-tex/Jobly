@@ -51,8 +51,8 @@ const LoginPageClient = () => {
       <div className="bg-white dark:bg-gray-800 p-8 rounded-md shadow-lg max-w-[400px] w-full">
         <div className="flex flex-col items-center mb-4">
           <Image src={AppLogo} alt="Jobly Logo" width={200} className="mb-2 dark:invert-1" />
-          <h2 className="text-3xl font-semibold text-center mb-2 text-facebook">Welcome!</h2>
-          <span className="text-md text-foreground">Log in to access your account</span>
+          <h2 className="text-3xl font-semibold text-center mb-2 text-facebook dark:text-foreground">Welcome!</h2>
+          <span className="text-md text-foreground dark:text-foreground/70">Log in to access your account</span>
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4">
@@ -77,7 +77,7 @@ const LoginPageClient = () => {
               })}
             />
             <Button
-              className="text-white bg-facebook text-md dark:bg-gray-700 hover:bg-facebook-400 dark:hover:bg-gray-700 rounded-md font-semibold"
+              className="text-white bg-facebook text-md dark:bg-gray-700 hover:bg-facebook-400 dark:hover:bg-gray-900 rounded-md font-semibold"
               type="submit"
               disabled={loading}
             >
@@ -86,7 +86,7 @@ const LoginPageClient = () => {
             <hr />
             <Button
               variant={"outline"}
-              className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2"
+              className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2 dark:hover:bg-gray-900"
               size="lg"
               type="button"
               onClick={() =>
