@@ -31,7 +31,7 @@ const PaginationControls = ({
           currentPage - 1
         }`}
         className={cn(
-          "bg-facebook text-gray-100 flex items-center gap-2 rounded-md p-2",
+          "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
           !hasPreviousPage && "opacity-50 pointer-events-none"
         )}
       >
@@ -43,7 +43,7 @@ const PaginationControls = ({
           currentPage + 1
         }`}
         className={cn(
-          "bg-facebook text-gray-100 flex items-center gap-2 rounded-md p-2",
+          "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
           !hasNextPage && "opacity-50 pointer-events-none"
         )}
       >

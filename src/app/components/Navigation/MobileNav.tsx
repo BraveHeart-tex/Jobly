@@ -1,6 +1,5 @@
 "use client";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { FiMenu } from "react-icons/fi";
 import Logo from "../Logo";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -33,16 +32,16 @@ const UserMenu = ({ name }: { name: string }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="hover:bg-facebook">
+        <Button variant="ghost" size="icon" className="hover:bg-facebook dark:hover:bg-gray-700">
           <span className="sr-only">Open user menu</span>
           <div className={"rounded-full bg-facebook-400 w-8 h-8 flex items-center justify-center dark:bg-gray-700"}>
             <span className="text-white text-[14px] font-semibold">{firstName[0] + lastName[0]}</span>
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent align={"end"} className="p-0 pb-2 w-[200px] bg-facebook text-white">
+      <PopoverContent align={"end"} className="p-0 pb-2 w-[200px] bg-facebook dark:bg-gray-800 text-white">
         <ul>
-          <li className="hover:bg-facebook-400 dark:border-gray-700 dark:hover:bg-gray-700 px-2 rounded-md transition-all py-2 cursor-pointer">
+          <li className="hover:bg-facebook-400 dark:border-b dark:border-b-gray-500 dark:rounded-none dark:hover:bg-gray-700 px-2 rounded-md transition-all py-2 cursor-pointer">
             <span className="font-semibold">{name || ""}</span>
           </li>
           <hr />

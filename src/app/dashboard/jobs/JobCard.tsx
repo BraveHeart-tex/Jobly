@@ -13,8 +13,8 @@ interface IJobCardProps {
 
 const JobCard = ({ jobApplication }: IJobCardProps) => {
   return (
-    <article className="relative p-6 bg-card shadow-md rounded-md flex justify-between flex-col">
-      <div className="border-b mb-2">
+    <article className="relative p-6 bg-card dark:bg-gray-800 shadow-md rounded-md flex justify-between flex-col">
+      <div className="border-b dark:border-b-gray-500 mb-2">
         <JobCardHeader companyName={jobApplication.companyName} jobTitle={jobApplication.jobTitle} />
       </div>
       <div className="grid grid-cols-1 gap-4">

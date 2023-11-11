@@ -14,6 +14,8 @@ import { useEffect, useTransition } from "react";
 import { showErrorToast, showToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { handleJobFormSubmit } from "@/app/actions";
+import { FaSpinner } from "react-icons/fa";
+import { HiPencil, HiDocumentAdd } from "react-icons/hi";
 
 interface JobCrudFormProps {
   mode: "create";
@@ -147,7 +149,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               <FormLabel>Job Type</FormLabel>
               <Select
                 onValueChange={(value) => form.setValue("jobType", mapJobTypes(value))}
-                value={mode === "edit" ? JobTypeOptions[initialData.jobType] : JobTypeOptions[field.value]}
+                value={JobTypeOptions[field.value]}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -174,11 +176,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               <FormLabel>Application Status</FormLabel>
               <Select
                 onValueChange={(value) => form.setValue("applicationStatus", mapStatus(value))}
-                value={
-                  mode === "edit"
-                    ? ApplicationStatusOptions[initialData.applicationStatus]
-                    : ApplicationStatusOptions[field.value]
-                }
+                value={ApplicationStatusOptions[field.value]}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -230,9 +228,12 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
         />
         <Button
           type="submit"
-          className="bg-facebook hover:bg-facebook-600 dark:bg-primary w-full 2xl:w-max transition-all"
+          className="bg-facebook hover:bg-facebook-600 flex items-center gap-1 dark:bg-primary w-full 2xl:w-max transition-all mt-2"
+          disabled={isPending}
         >
           {mode === "edit" ? "Update" : "Create"}
+          {mode === "edit" ? <HiPencil size={18} /> : <HiDocumentAdd size={18} />}
+          {isPending && <FaSpinner className="ml-2 h-4 w-4 animate-spin" />}
         </Button>
       </form>
     </Form>

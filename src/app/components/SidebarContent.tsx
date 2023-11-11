@@ -7,7 +7,7 @@ const SidebarContent = ({ className, fromDrawer = false }: { className?: string;
   return (
     <div
       className={cn(
-        "fixed transition-all border-r border-r-gray-200 h-full dark:border-r-gray-700 w-full md:w-60 bg-facebook dark:bg-gray-700",
+        "fixed transition-all border-r border-r-gray-200 h-full dark:border-r-gray-700 w-full md:w-60 bg-facebook dark:bg-gray-800",
         fromDrawer && "md:hidden block w-[300px]",
         className
       )}

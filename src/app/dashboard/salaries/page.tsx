@@ -35,7 +35,7 @@ const SalaryEstimationsPage = async ({
             scroll={false}
             href={`/dashboard/salaries?page=${parseInt(page) - 1}&sort=${sort}&search=${search}&city=${city}`}
             className={cn(
-              "bg-facebook text-gray-100 flex items-center font-semibold gap-2 rounded-md p-2",
+              "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
               !result?.hasPreviousPage && "opacity-50 pointer-events-none"
             )}
           >
@@ -45,7 +45,7 @@ const SalaryEstimationsPage = async ({
             scroll={false}
             href={`/dashboard/salaries?page=${parseInt(page) + 1}&sort=${sort}&search=${search}&city=${city}`}
             className={cn(
-              "bg-facebook text-gray-100 flex font-semibold items-center gap-2 rounded-md p-2",
+              "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
               !result?.hasNextPage && "opacity-50 pointer-events-none"
             )}
           >

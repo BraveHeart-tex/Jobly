@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { FaSearch } from "react-icons/fa";
+import { LuFilterX } from "react-icons/lu";
 
 interface SalaryDataFilterFormValues {
   jobTitle: string;
@@ -41,7 +43,7 @@ const SalaryDataFilterForm = () => {
   };
 
   return (
-    <div className="border bg-card/60 p-4 py-2 rounded-md">
+    <div className="border bg-card/60 dark:bg-gray-800  p-4 py-2 rounded-md">
       <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">Salary Estimations</h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 my-4">
         <Form {...form}>
@@ -93,22 +95,22 @@ const SalaryDataFilterForm = () => {
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-1 mt-2">
+            <div className="flex items-center gap-2 mt-2">
               <Button
                 disabled={isPending}
                 type="submit"
-                className="w-full lg:w-max text-white bg-facebook hover:bg-facebook-600 transition-all dark:bg-primary font-semibold"
+                className="w-full lg:w-max flex items-center gap-2 text-white bg-facebook hover:bg-facebook-600 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold"
               >
-                Search
+                <FaSearch /> Search
               </Button>
               <Button
                 disabled={isPending}
                 type="button"
-                className="w-full lg:w-max font-semibold"
+                className="w-full lg:w-max font-semibold flex items-center gap-2"
                 variant="destructive"
                 onClick={() => clearAllFilters()}
               >
-                Clear Filters
+                <LuFilterX /> Clear Filters
               </Button>
             </div>
           </form>

@@ -15,6 +15,7 @@ import { JobApplication } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { showErrorToast, showToast } from "./ui/use-toast";
+import { FaTrash } from "react-icons/fa";
 
 interface IDeleteJobDialogProps {
   jobId: number;
@@ -41,8 +42,8 @@ const DeleteJobDialog = ({ jobId }: IDeleteJobDialogProps) => {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="bg-destructive text-gray-50 font-semibold rounded-md px-2 hover:bg-destructive/80 transition-all">
-        Delete
+      <AlertDialogTrigger className="bg-destructive text-gray-50 font-semibold rounded-md px-2 hover:bg-destructive/80 transition-all flex items-center gap-2">
+        <FaTrash /> Delete
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

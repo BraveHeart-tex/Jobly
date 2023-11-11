@@ -13,7 +13,7 @@ const SalaryDataTable = ({ data }: ISalaryDataTableProps) => {
   return (
     <div className="mt-4">
       <Table>
-        <TableHeader className="bg-muted">
+        <TableHeader className="bg-muted dark:bg-gray-900">
           <TableRow>
             <TableHead>Job Title</TableHead>
             <TableHead>Average Salary Estimation</TableHead>
@@ -29,7 +29,10 @@ const SalaryDataTable = ({ data }: ISalaryDataTableProps) => {
             </TableRow>
           ) : (
             data.map((salaryData, index) => (
-              <TableRow className="even:bg-muted transition-all hover:bg-gray-300" key={index}>
+              <TableRow
+                className="even:bg-muted transition-all hover:bg-gray-300 dark:even:bg-gray-800 dark:hover:bg-gray-700"
+                key={index}
+              >
                 <TableCell>{salaryData.jobTitle}</TableCell>
                 <TableCell>${formatThousands(salaryData.salary_estimate)}</TableCell>
                 <TableCell>{salaryData.location}</TableCell>

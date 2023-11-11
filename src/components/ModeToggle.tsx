@@ -9,7 +9,7 @@ const ModeToggle = () => {
   return (
     <Button
       size="icon"
-      className="bg-transparent hover:bg-facebook-400 hover:text-white text-white  transition-all"
+      className="bg-transparent hover:bg-facebook-400 hover:text-white text-white  transition-all dark:hover:bg-gray-700"
       variant="ghost"
       onClick={() => {
         setTheme(isDarkTheme ? "light" : "dark");
@@ -19,4 +19,5 @@ const ModeToggle = () => {
     </Button>
   );
 };
+
 export default ModeToggle;

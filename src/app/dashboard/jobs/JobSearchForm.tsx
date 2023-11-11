@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { FaSearch } from "react-icons/fa";
+import { LuFilterX } from "react-icons/lu";
 
 export interface IJobSearchFormValues {
   searchTerm: string;
@@ -117,9 +119,9 @@ const JobSearchForm = () => {
         <div className="flex items-center gap-2">
           <Button
             type="submit"
-            className="w-full md:w-max text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-foreground dark:hover:bg-foreground-300 font-semibold text-md transition-all"
+            className="w-full md:w-max flex items-start gap-2 text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold text-md transition-all"
           >
-            Search
+            <FaSearch className="mt-1" /> Search
           </Button>
           <Button
             type="button"
@@ -139,10 +141,10 @@ const JobSearchForm = () => {
               );
               router.push("/dashboard/jobs");
             }}
-            className="font-semibold text-md"
+            className="font-semibold text-md flex items-center gap-2"
             variant="destructive"
           >
-            Clear Filters
+            <LuFilterX /> Clear Filters
           </Button>
         </div>
       </form>
