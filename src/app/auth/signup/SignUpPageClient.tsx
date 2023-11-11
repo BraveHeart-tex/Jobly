@@ -1,227 +1,190 @@
 'use client';
-import AppLogo from '@/app/assets/logo.svg';
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  Heading,
-  Input,
-  Link,
-  Stack,
-  useColorModeValue,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
-import { FcGoogle } from 'react-icons/fc';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import Image from 'next/image';
-import { signIn } from 'next-auth/react';
-import axios, { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import AppLogo from "@/app/assets/logo.svg";
+import { FcGoogle } from "react-icons/fc";
+import { useForm } from "react-hook-form";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { registerUser } from "@/app/actions";
+import { showErrorToast, showToast } from "@/components/ui/use-toast";
+import { useEffect, useState, useTransition } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import RegisterUserSchema, { RegisterUserSchemaType } from "@/schemas/RegisterUserSchema";
+import { FaCheck, FaCross } from "react-icons/fa";
+import { cn } from "@/lib/utils";
+import { VscError } from "react-icons/vsc";
 
 const SignUpPageClient = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-    },
-  });
-  const toast = useToast();
+  let [isPending, startTransition] = useTransition();
+  const [selectedInput, setSelectedInput] = useState("");
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsLoading(true);
-    axios
-      .post('/api/user/auth/register', data)
-      .then((response) => {
-        setIsLoading(false);
-        toast({
-          title: 'Successfully signed up.',
-          description: 'We have created your account for you.',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
+  const form = useForm<RegisterUserSchemaType>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    resolver: zodResolver(RegisterUserSchema),
+  });
+
+  const onSubmit = async (data: RegisterUserSchemaType) => {
+    startTransition(async () => {
+      const result = await registerUser(data);
+      if (result?.error) {
+        showErrorToast({
+          title: "Error",
+          description: result.error,
         });
-        router.push('/auth/login');
-      })
-      .catch((error: AxiosError) => {
-        setIsLoading(false);
-        toast({
-          title: 'An error occurred.',
-          // @ts-ignore
-          description: error.response?.data.error,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
+      } else {
+        router.push("/auth/login");
+        showToast({
+          title: "Successfully signed up.",
+          description: "Your account has been created.You can now login.",
         });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      }
+    });
   };
 
-  return (
-    <Flex
-      minH='100vh'
-      align='center'
-      justify='center'
-      bg={useColorModeValue('facebook.500', 'gray.900')}
-      p={4}
-    >
-      <Box
-        bg={useColorModeValue('white', 'gray.800')}
-        p={8}
-        borderRadius='md'
-        boxShadow='lg'
-        maxW='400px'
-        w='100%'
-      >
-        <Flex direction='column' align='center' mb={8}>
-          <Image
-            src={AppLogo}
-            alt='Jobly Logo'
-            width={200}
-            style={{
-              filter: useColorModeValue('invert(0)', 'invert(1)'),
-              marginBottom: '1rem',
-            }}
-          />
-          <Heading
-            as='h2'
-            size='xl'
-            textAlign='center'
-            mb={4}
-            color={useColorModeValue('facebook.500', 'gray.100')}
+  useEffect(() => {
+    if (selectedInput === "password") {
+    }
+  }, [selectedInput]);
+
+  const passwordRules: {
+    [key: string]: (password: string) => boolean;
+  } = {
+    "At least 8 characters": (password: string) => password.length >= 8,
+    "One lowercase letter": (password: string) => /[a-z]/.test(password),
+    "One uppercase letter": (password: string) => /[A-Z]/.test(password),
+    "One number": (password: string) => /[0-9]/.test(password),
+  };
+
+  const checkedControl = (control: string, password: string) => {
+    const ruleFunction = passwordRules[control];
+    return ruleFunction ? ruleFunction(password) : false;
+  };
+
+  const passwordCheckList = (
+    <div className="text-sm space-y-1 flex flex-col items-start absolute 2xl:top-[51%] 2xl:left-[25%] 3xl:left-[33%] 3xl:top-[53%] top-0 left-0 bottom-0 bg-facebook text-white dark:bg-gray-800 border rounded-md h-max p-4 py-2 dark:border-gray-600">
+      Your password should contain:
+      <ul className="pl-4 flex flex-col gap-1 text-[15px]">
+        {Object.keys(passwordRules).map((rule) => (
+          <li
+            key={rule}
+            className={cn(
+              "flex items-center gap-2 group text-red-500",
+              checkedControl(rule, form.watch("password")) && "text-green-500 valid"
+            )}
           >
+            <VscError className="block group-[.valid]:hidden" />
+            <FaCheck className="hidden group-[.valid]:block" /> {rule}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-facebook dark:bg-gray-900 p-4 relative">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-md shadow-lg max-w-[400px] w-full">
+        <div className="flex flex-col items-center mb-4">
+          <Image src={AppLogo} alt="Jobly Logo" width={200} className="dark:invert-1 mb-2" />
+          <h2 className="text-center mb-2 text-facebook font-semibold text-2xl dark:text-gray-100">
             Create an Account
-          </Heading>
-          <Text fontSize='sm' color={useColorModeValue('gray.500', 'gray.300')}>
-            Start your journey by creating a new account
-          </Text>
-        </Flex>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={4} color={useColorModeValue('gray.600', 'gray.300')}>
-            {/* @ts-ignore */}
-            <FormControl isInvalid={errors.name}>
-              <Input
-                id='name'
-                type='text'
-                placeholder='Full Name'
-                size='lg'
-                borderRadius='md'
-                borderColor={useColorModeValue('gray.400', 'gray.700')}
-                focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-                {...register('name', {
-                  required: 'Full name is required.',
-                })}
-              />
-              <FormErrorMessage>
-                {/* @ts-ignore */}
-                {errors.name && errors.name.message}
-              </FormErrorMessage>
-            </FormControl>
-            {/* @ts-ignore */}
-            <FormControl isInvalid={errors.email}>
-              <Input
-                id='email'
-                type='email'
-                placeholder='Email'
-                size='lg'
-                borderRadius='md'
-                borderColor={useColorModeValue('gray.400', 'gray.700')}
-                focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-                {...register('email', {
-                  required: 'A valid email is required',
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: 'Please enter a valid email.',
-                  },
-                })}
-              />
-              <FormErrorMessage>
-                {/* @ts-ignore */}
-                {errors.email && errors.email.message}
-              </FormErrorMessage>
-            </FormControl>
-            {/* @ts-ignore */}
-            <FormControl isInvalid={errors.password}>
-              <Input
-                id='password'
-                type={'password'}
-                placeholder='Password'
-                size='lg'
-                borderRadius='md'
-                borderColor={useColorModeValue('gray.400', 'gray.700')}
-                focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-                {...register('password', {
-                  required: 'Password is required.',
-                  minLength: {
-                    value: 6,
-                    message: 'Password must have at least 6 characters',
-                  },
-                })}
-              />
-              <FormErrorMessage>
-                {/* @ts-ignore */}
-                {errors.password && errors.password.message}
-              </FormErrorMessage>
-            </FormControl>
+          </h2>
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="space-y-0">
+                  <FormLabel className="text-foreground">Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="space-y-0">
+                  <FormLabel className="text-foreground">Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="example@email.com" type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="space-y-0">
+                  <FormLabel className="text-foreground">Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Your password"
+                      type="password"
+                      {...field}
+                      onFocus={() => {
+                        setSelectedInput("password");
+                      }}
+                      onBlur={() => {
+                        setSelectedInput("");
+                      }}
+                      autoComplete={"false"}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {selectedInput === "password" && passwordCheckList}
             <Button
-              size='lg'
-              color='white'
-              bg={useColorModeValue('facebook.500', 'gray.700')}
-              _hover={{
-                bg: useColorModeValue('facebook.300', 'blackAlpha.400'),
-              }}
-              borderRadius='md'
-              type='submit'
-              isLoading={isLoading}
-              isDisabled={isLoading}
+              className="text-white bg-facebook dark:bg-gray-700 hover:bg-facebook-400 text-lg dark:hover:bg-gray-900 rounded-md font-semibold"
+              size="lg"
+              type="submit"
+              disabled={isPending}
             >
               Sign Up
             </Button>
-            <Divider />
-            <Button
-              variant={'outline'}
-              leftIcon={<FcGoogle />}
-              size='lg'
-              borderRadius='md'
-              onClick={() =>
-                signIn('google', {
-                  callbackUrl: '/dashboard',
-                })
-              }
-              isLoading={isLoading}
-              isDisabled={isLoading}
-              fontSize={{ base: '15px', md: '17px', lg: '18px' }}
-            >
-              Sign Up with Google
-            </Button>
-            <Text textAlign='center' mt={4}>
-              Already have an account?{' '}
-              <Link
-                color={useColorModeValue('facebook.600', 'yellow.400')}
-                href='/auth/login'
+            <hr className="mt-4" />
+            <div className="flex flex-col gap-4 text-foreground mt-4">
+              <Button
+                variant={"outline"}
+                className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2 dark:hover:bg-gray-900"
+                size="lg"
+                onClick={() =>
+                  signIn("google", {
+                    callbackUrl: "/dashboard",
+                  })
+                }
+                disabled={isPending}
               >
-                Log In
-              </Link>
-            </Text>
-          </Stack>
-        </form>
-      </Box>
-    </Flex>
+                <FcGoogle /> Sign Up with Google
+              </Button>
+              <p className="text-center mt-4">
+                Already have an account?{" "}
+                <Link className="text-facebook-600 dark:text-yellow-400" href="/auth/login">
+                  Log In
+                </Link>
+              </p>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
 

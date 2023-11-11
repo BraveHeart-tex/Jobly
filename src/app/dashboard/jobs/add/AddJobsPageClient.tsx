@@ -1,33 +1,19 @@
-'use client';
-import { Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
-import AddJobForm from './AddJobForm';
+import JobCrudForm from "@/components/JobCrudForm";
 
 const AddJobsPageClient = () => {
   return (
-    <Stack gap={8}>
-      <Stack gap={4}>
-        <Heading
-          as={'h1'}
-          color={useColorModeValue('facebook.500', 'gray.200')}
-          textTransform={'capitalize'}
-        >
+    <div className="flex flex-col gap-4 w-full 2xl:w-[75%]">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-facebook dark:text-foreground text-4xl font-semibold capitalize">
           Add a new job application
-        </Heading>
-        <Text
-          color={useColorModeValue('gray.500', 'gray.400')}
-          width={{
-            base: '100%',
-            md: '75%',
-          }}
-          lineHeight={1.7}
-        >
-          You can fill out the form below to register your job application. Your
-          application will be automatically added to the list of jobs in the
-          Jobs List page.
-        </Text>
-      </Stack>
-      <AddJobForm />
-    </Stack>
+        </h1>
+        <p className="text-foreground/80 dark:text-foreground/70 text-md lg:text-lg font-semibold w-full lg:w-[75%]">
+          You can fill out the form below to register your job application. Your application will be automatically added
+          to the list of jobs in the Jobs List page.
+        </p>
+      </div>
+      <JobCrudForm mode="create" formClassName="2xl:grid-cols-2" />
+    </div>
   );
 };
 

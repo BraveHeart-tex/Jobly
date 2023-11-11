@@ -1,21 +1,13 @@
-import '../globals.css';
-import { ChakraProviders } from '../ChakraProviders';
-import SidebarWithHeader from '../components/Sidebar';
+import "../globals.css";
+import SidebarWithHeader from "../components/Sidebar";
+import { getServerSession } from "next-auth";
 
 export const metadata = {
-  title: 'Jobly | Dashboard',
-  description:
-    'Dashboard for Jobly where you can manage your jobs applications.',
+  title: "Jobly | Dashboard",
+  description: "Dashboard for Jobly where you can manage your jobs applications.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <ChakraProviders>
-      <SidebarWithHeader>{children}</SidebarWithHeader>
-    </ChakraProviders>
-  );
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const currentUser = await getServerSession();
+  return <SidebarWithHeader username={currentUser?.user?.name || ""}>{children}</SidebarWithHeader>;
 }

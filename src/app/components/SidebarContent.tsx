@@ -1,52 +1,26 @@
-'use client';
-import {
-  Box,
-  BoxProps,
-  CloseButton,
-  Flex,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import Logo from './Logo';
-import NavItem from './Navigation/NavItem';
-import LinkItems from '../utils/NavLinks';
-import { toggleSidebar } from '../redux/features/sidebar';
-import { useAppDispatch } from '../redux/hooks';
+import Logo from "./Logo";
+import NavItem from "./Navigation/NavItem";
+import LinkItems from "../utils/NavLinks";
+import { cn } from "@/lib/utils";
 
-interface SidebarProps extends BoxProps {}
-
-const SidebarContent = ({ ...rest }: SidebarProps) => {
-  const dispatch = useAppDispatch();
+const SidebarContent = ({ className, fromDrawer = false }: { className?: string; fromDrawer?: boolean }) => {
   return (
-    <Box
-      transition='3s ease'
-      borderRight='1px'
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
-      pos='fixed'
-      h='full'
-      {...rest}
-      bg={useColorModeValue('facebook.500', 'gray.800')}
+    <div
+      className={cn(
+        "fixed transition-all border-r border-r-gray-200 h-full dark:border-r-gray-700 w-full md:w-60 bg-facebook dark:bg-gray-800",
+        fromDrawer && "md:hidden block w-[300px]",
+        className
+      )}
     >
-      <Flex
-        h='20'
-        alignItems='center'
-        mx='8'
-        justifyContent='space-between'
-        mt={3}
-      >
+      <div className={cn("flex h-20 items-center mx-8 justify-between mt-3", fromDrawer && "block")}>
         <Logo />
-        <CloseButton
-          color={'white'}
-          display={{ base: 'flex', md: 'none' }}
-          onClick={() => dispatch(toggleSidebar())}
-        />
-      </Flex>
+      </div>
       {LinkItems.map((link) => (
         <NavItem href={link.href} key={link.name} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
-    </Box>
+    </div>
   );
 };
 

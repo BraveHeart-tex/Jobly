@@ -1,29 +1,17 @@
-'use client';
-import {
-  clearFilters,
-  setSearchTerm,
-  setCompanySearchTerm,
-  setApplicationStatus,
-  setJobType,
-  setSortTerm,
-} from '@/app/redux/features/search';
-import { useAppDispatch } from '@/app/redux/hooks';
-import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
-import JobTypeOptions from '@/app/utils/JobTypeOptions';
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Select,
-  SimpleGrid,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+"use client";
+import { searchJobs } from "@/app/actions";
+import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
+import JobTypeOptions from "@/app/utils/JobTypeOptions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { FaSearch } from "react-icons/fa";
+import { LuFilterX } from "react-icons/lu";
 
-interface IFieldValues {
+export interface IJobSearchFormValues {
   searchTerm: string;
   companySearchTerm: string;
   applicationStatus: string;
@@ -32,172 +20,135 @@ interface IFieldValues {
 }
 
 const JobSearchForm = () => {
-  const dispatch = useAppDispatch();
-
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<IFieldValues>();
-
-  const clearAllFilters = () => {
-    reset();
-    dispatch(clearFilters());
-  };
-
+  const router = useRouter();
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
+  const { handleSubmit, register, reset, setValue } = useForm({
+    defaultValues: {
+      searchTerm: "",
+      companySearchTerm: "",
+      applicationStatus: "all",
+      jobType: "all",
+      sortTerm: "desc",
+    },
+  });
 
-  const onsubmit: SubmitHandler<IFieldValues> = async (data) => {
-    dispatch(setSearchTerm(data.searchTerm));
-    dispatch(setCompanySearchTerm(data.companySearchTerm));
-    dispatch(setApplicationStatus(data.applicationStatus));
-    dispatch(setJobType(data.jobType));
-    dispatch(setSortTerm(data.sortTerm));
+  const onSubmit = async (data: IJobSearchFormValues) => {
+    await searchJobs(data);
   };
 
   return (
-    <Box>
+    <div>
       <form
-        style={{
-          padding: '1rem',
-          backgroundColor: useColorModeValue('#edf2f7', '#1A202C'),
-          borderRadius: '8px',
-          boxShadow: '0 0 8px rgba(0,0,0,0.1)',
-        }}
-        onSubmit={handleSubmit(onsubmit)}
+        className="p-4 rounded-md shadow-md bg-card/60 dark:bg-gray-800 grid grid-cols-1"
+        onSubmit={handleSubmit(onSubmit)}
+        id="jobSearchForm"
       >
-        <Heading
-          as={'h3'}
-          fontSize={'3xl'}
-          color={useColorModeValue('facebook.500', 'gray.200')}
-        >
+        <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">
           Job Application Search Form
-        </Heading>
-        <SimpleGrid
-          columns={{
-            base: 1,
-            lg: 2,
-            xl: 3,
-          }}
-          gap={4}
-          my={4}
-        >
-          <FormControl>
-            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 my-4">
+          <div>
+            <Label htmlFor="searchTerm" className="text-foreground">
               Job Title
-            </FormLabel>
-            <Input
-              id='searchTerm'
-              {...register('searchTerm')}
-              type='text'
-              placeholder='Search by job title'
-              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+            </Label>
+            <Input id="searchTerm" type="text" placeholder="Search by job title" {...register("searchTerm")} />
+          </div>
+          <div>
+            <Label htmlFor="companySearchTerm" className="text-foreground">
               Company
-            </FormLabel>
+            </Label>
             <Input
-              id='companySearchTerm'
-              {...register('companySearchTerm')}
-              type='text'
-              placeholder='Search by company name'
-              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
+              id="companySearchTerm"
+              {...register("companySearchTerm")}
+              type="text"
+              placeholder="Search by company name"
             />
-          </FormControl>
-          <FormControl>
-            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+          </div>
+          <div>
+            <Label htmlFor="applicationStatus" className="text-foreground">
               Application Status
-            </FormLabel>
-            <Select
-              defaultValue={''}
-              id='applicationStatus'
-              {...register('applicationStatus')}
-              focusBorderColor='gray.600'
-            >
-              <option value=''>All</option>
-              {applicationStatusOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
+            </Label>
+            <Select {...register("applicationStatus")} onValueChange={(val) => setValue("applicationStatus", val)}>
+              <SelectTrigger className="w-full" defaultValue="all">
+                <SelectValue placeholder="Application Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={"all"}>All</SelectItem>
+                {applicationStatusOptions.map((option) => (
+                  <SelectItem value={option} key={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+          </div>
+          <div>
+            <Label htmlFor="jobType" className="text-foreground">
               Job Type
-            </FormLabel>
-            <Select
-              id='jobType'
-              {...register('jobType')}
-              defaultValue={''}
-              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-            >
-              <option value=''>All</option>
-              {jobTypeOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
+            </Label>
+            <Select {...register("jobType")} defaultValue="all" onValueChange={(val) => setValue("jobType", val)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Job Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={"all"}>All</SelectItem>
+                {jobTypeOptions.map((option) => (
+                  <SelectItem value={option} key={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel color={useColorModeValue('gray.600', 'gray.200')}>
+          </div>
+          <div>
+            <Label htmlFor="sortTerm" className="text-foreground">
               Sort
-            </FormLabel>
-            <Select
-              id='sortTerm'
-              {...register('sortTerm')}
-              focusBorderColor={useColorModeValue('facebook.500', 'gray.500')}
-            >
-              <option value='desc'>Latest</option>
-              <option value='asc'>Oldest</option>
+            </Label>
+            <Select {...register("sortTerm")} defaultValue="desc" onValueChange={(val) => setValue("sortTerm", val)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Sort date by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value={"desc"}>Latest</SelectItem>
+                <SelectItem value={"asc"}>Oldest</SelectItem>
+              </SelectContent>
             </Select>
-          </FormControl>
-        </SimpleGrid>
-        <Box>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
           <Button
-            type='submit'
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
-            mr={{ base: 0, lg: 2 }}
-            my={{ base: 2, lg: 0 }}
-            w={{
-              base: 'full',
-              md: '50%',
-              lg: '25%',
-            }}
-            color={'white'}
-            bg={useColorModeValue('facebook.500', 'gray.700')}
-            _hover={{
-              bg: useColorModeValue('facebook.300', 'gray.600'),
-            }}
+            type="submit"
+            className="w-full md:w-max flex items-start gap-2 text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold text-md transition-all"
           >
-            Search
+            <FaSearch className="mt-1" /> Search
           </Button>
           <Button
-            w={{
-              base: 'full',
-              md: '50%',
-              lg: '25%',
+            type="button"
+            onClick={(e) => {
+              reset(
+                {
+                  applicationStatus: "all",
+                  companySearchTerm: "",
+                  jobType: "all",
+                  searchTerm: "",
+                  sortTerm: "desc",
+                },
+                {
+                  keepValues: false,
+                  keepDefaultValues: true,
+                }
+              );
+              router.push("/dashboard/jobs");
             }}
-            color={'white'}
-            bg={useColorModeValue('red.500', 'gray.800')}
-            _hover={{
-              bg: useColorModeValue('red.400', 'gray.900'),
-            }}
-            onClick={() => clearAllFilters()}
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
+            className="font-semibold text-md flex items-center gap-2"
+            variant="destructive"
           >
-            Clear Filters
+            <LuFilterX /> Clear Filters
           </Button>
-        </Box>
+        </div>
       </form>
-    </Box>
+    </div>
   );
 };
 

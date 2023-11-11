@@ -1,52 +1,47 @@
-'use client';
-import {
-  TableContainer,
-  Table,
-  TableCaption,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { SalaryEstimationDataset } from '@prisma/client';
-import React from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { SalaryEstimationDataset } from "@prisma/client";
 
 interface ISalaryDataTableProps {
   data: SalaryEstimationDataset[];
 }
 
 const SalaryDataTable = ({ data }: ISalaryDataTableProps) => {
+  const formatThousands = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
-    <TableContainer mt={4}>
-      <Table
-        variant='striped'
-        colorScheme={useColorModeValue('facebook', 'gray')}
-        color={useColorModeValue('gray.600', 'gray.300')}
-      >
-        <TableCaption>
-          Glassdoor Salary Estimations City and Job Title
-        </TableCaption>
-        <Thead>
-          <Tr>
-            <Th>Job Title</Th>
-            <Th>Avg Salary Estimation</Th>
-            <Th>City / State</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data &&
-            data.map((salaryEstimation) => (
-              <Tr key={salaryEstimation.id}>
-                <Td>{salaryEstimation.jobTitle}</Td>
-                <Td>{`${salaryEstimation.salary_estimate}.000`}$</Td>
-                <Td>{salaryEstimation.location}</Td>
-              </Tr>
-            ))}
-        </Tbody>
+    <div className="mt-4">
+      <Table>
+        <TableHeader className="bg-muted dark:bg-gray-900">
+          <TableRow>
+            <TableHead>Job Title</TableHead>
+            <TableHead>Average Salary Estimation</TableHead>
+            <TableHead>City / State</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={3} className="text-center">
+                No results found.
+              </TableCell>
+            </TableRow>
+          ) : (
+            data.map((salaryData, index) => (
+              <TableRow
+                className="even:bg-muted transition-all hover:bg-gray-300 dark:even:bg-gray-800 dark:hover:bg-gray-700"
+                key={index}
+              >
+                <TableCell>{salaryData.jobTitle}</TableCell>
+                <TableCell>${formatThousands(salaryData.salary_estimate)}</TableCell>
+                <TableCell>{salaryData.location}</TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
       </Table>
-    </TableContainer>
+    </div>
   );
 };
 
