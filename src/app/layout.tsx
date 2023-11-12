@@ -2,7 +2,6 @@ import './globals.css';
 import { Inter } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
-import AnimationRoot from "@/components/AnimationRoot";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Toaster />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AnimationRoot>{children}</AnimationRoot>
+          {children}
         </ThemeProvider>
       </body>
     </html>

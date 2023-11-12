@@ -12,6 +12,7 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcrypt";
 import { handleJobFormSubmitParams } from "@/lib/types";
 import { RegisterUserSchemaType } from "@/schemas/RegisterUserSchema";
+import { IconType } from "react-icons";
 
 export const withCurrentUser =
   (callback: (currentUser: User | null, ...args: any[]) => any) =>
@@ -271,4 +272,9 @@ export const registerUser = async (data: RegisterUserSchemaType) => {
   return {
     user,
   };
+};
+
+export const getIcon = async (link: any) => {
+  if (link.icon) return link.icon as IconType;
+  return null;
 };

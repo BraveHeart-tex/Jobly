@@ -11,7 +11,7 @@ export async function seedData() {
   await prisma.salaryEstimationDataset.deleteMany({});
   await prisma.jobApplication.deleteMany({});
 
-  Array.from({ length: 100 }).forEach(async () => {
+  Array.from({ length: 250 }).forEach(async () => {
     await prisma.salaryEstimationDataset.create({
       data: {
         jobTitle: faker.person.jobTitle(),

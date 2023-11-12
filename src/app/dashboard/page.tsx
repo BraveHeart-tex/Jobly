@@ -1,10 +1,11 @@
+import AnimationRoot from "@/app/animations/AnimationRoot";
 import ApplicationStats from "./ApplicationStats";
 
 const DashboardPage = () => {
   return (
-    <main>
+    <AnimationRoot>
       <ApplicationStats />
-    </main>
+    </AnimationRoot>
   );
 };
 

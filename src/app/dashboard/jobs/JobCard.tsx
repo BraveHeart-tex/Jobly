@@ -6,6 +6,7 @@ import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import JobCardHeader from "@/app/components/JobCardHeader";
 import JobCardFooter from "@/app/components/JobCardFooter";
+import ListAnimation from "@/app/animations/ListAnimation";
 
 interface IJobCardProps {
   jobApplication: JobApplication;
@@ -13,7 +14,7 @@ interface IJobCardProps {
 
 const JobCard = ({ jobApplication }: IJobCardProps) => {
   return (
-    <article className="relative p-6 bg-card dark:bg-gray-800 shadow-md rounded-md flex justify-between flex-col">
+    <ListAnimation className="relative p-6 bg-card dark:bg-gray-800 shadow-md rounded-md flex justify-between flex-col">
       <div className="border-b dark:border-b-gray-500 mb-2">
         <JobCardHeader companyName={jobApplication.companyName} jobTitle={jobApplication.jobTitle} />
       </div>
@@ -55,7 +56,7 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
         </div>
         <JobCardFooter id={jobApplication.id} />
       </div>
-    </article>
+    </ListAnimation>
   );
 };
 

@@ -1,10 +1,11 @@
-import LoginPageClient from './LoginPageClient';
+import AnimationRoot from "@/app/animations/AnimationRoot";
+import LoginPageClient from "./LoginPageClient";
 
 const LoginPage = () => {
   return (
-    <main>
+    <AnimationRoot>
       <LoginPageClient />
-    </main>
+    </AnimationRoot>
   );
 };
 

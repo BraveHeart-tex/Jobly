@@ -1,10 +1,11 @@
-import AddJobsPageClient from './AddJobsPageClient';
+import AnimationRoot from "@/app/animations/AnimationRoot";
+import AddJobsPageClient from "./AddJobsPageClient";
 
 const AddJobPage = () => {
   return (
-    <main>
+    <AnimationRoot>
       <AddJobsPageClient />
-    </main>
+    </AnimationRoot>
   );
 };
 

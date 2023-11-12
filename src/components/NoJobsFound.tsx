@@ -32,7 +32,7 @@ const NoJobsFound = ({ withQuery }: INoJobsFoundProps) => {
       </span>
       <Link
         href="/dashboard/jobs/add"
-        className="mt-2 bg-facebook text-white rounded-md w-max px-4 py-2 font-semibold hover:bg-facebook-600 transition-all dark:bg-primary dark:hover:bg-primary/80"
+        className="mt-2 bg-facebook dark:bg-gray-700 text-white rounded-md w-max px-4 py-2 font-semibold hover:bg-facebook-600 transition-all  dark:hover:bg-gray-600"
       >
         Get Started
       </Link>

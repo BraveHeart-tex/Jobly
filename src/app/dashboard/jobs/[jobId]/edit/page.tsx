@@ -1,6 +1,7 @@
 import { getGeneric } from "@/lib/generic";
 import EditJobPageClient from "./EditJobPageClient";
 import { JobApplication } from "@prisma/client";
+import AnimationRoot from "@/app/animations/AnimationRoot";
 
 interface IParams {
   jobId: string;
@@ -16,9 +17,9 @@ const EditJobPage = async ({ params }: { params: IParams }) => {
   const jobApplication = result?.data;
 
   return (
-    <main>
+    <AnimationRoot>
       <EditJobPageClient jobApplication={jobApplication} />
-    </main>
+    </AnimationRoot>
   );
 };
 
