@@ -4,6 +4,7 @@ import Link from "next/link";
 import { searchSalaryDataset } from "@/app/actions";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import AnimationRoot from "@/app/animations/AnimationRoot";
 
 const SalaryEstimationsPage = async ({
   searchParams,
@@ -27,7 +28,7 @@ const SalaryEstimationsPage = async ({
   }
 
   return (
-    <main>
+    <AnimationRoot>
       <div className="flex flex-col gap-6">
         <SalaryDataFilterForm />
         <div className="flex gap-4 justify-center self-start items-center">
@@ -54,7 +55,7 @@ const SalaryEstimationsPage = async ({
         </div>
         {data ? <SalaryDataTable data={data} /> : null}
       </div>
-    </main>
+    </AnimationRoot>
   );
 };
 

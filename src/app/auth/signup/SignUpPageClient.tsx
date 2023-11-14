@@ -17,6 +17,7 @@ import RegisterUserSchema, { RegisterUserSchemaType } from "@/schemas/RegisterUs
 import { FaCheck, FaCross } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 import { VscError } from "react-icons/vsc";
+import AnimationRoot from "@/app/animations/AnimationRoot";
 
 const SignUpPageClient = () => {
   const router = useRouter();
@@ -90,101 +91,103 @@ const SignUpPageClient = () => {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-facebook dark:bg-gray-900 p-4 relative">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-md shadow-lg max-w-[400px] w-full">
-        <div className="flex flex-col items-center mb-4">
-          <Image src={AppLogo} alt="Jobly Logo" width={200} className="dark:invert-1 mb-2" />
-          <h2 className="text-center mb-2 text-facebook font-semibold text-2xl dark:text-gray-100">
-            Create an Account
-          </h2>
-        </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="space-y-0">
-                  <FormLabel className="text-foreground">Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="space-y-0">
-                  <FormLabel className="text-foreground">Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="example@email.com" type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="space-y-0">
-                  <FormLabel className="text-foreground">Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Your password"
-                      type="password"
-                      {...field}
-                      onFocus={() => {
-                        setSelectedInput("password");
-                      }}
-                      onBlur={() => {
-                        setSelectedInput("");
-                      }}
-                      autoComplete={"false"}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {selectedInput === "password" && passwordCheckList}
-            <Button
-              className="text-white bg-facebook dark:bg-gray-700 hover:bg-facebook-400 text-lg dark:hover:bg-gray-900 rounded-md font-semibold"
-              size="lg"
-              type="submit"
-              disabled={isPending}
-            >
-              Sign Up
-            </Button>
-            <hr className="mt-4" />
-            <div className="flex flex-col gap-4 text-foreground mt-4">
+    <AnimationRoot>
+      <div className="flex min-h-screen items-center justify-center bg-facebook dark:bg-gray-900 p-4 relative">
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-md shadow-lg max-w-[400px] w-full">
+          <div className="flex flex-col items-center mb-4">
+            <Image src={AppLogo} alt="Jobly Logo" width={200} className="dark:invert-1 mb-2" />
+            <h2 className="text-center mb-2 text-facebook font-semibold text-2xl dark:text-gray-100">
+              Create an Account
+            </h2>
+          </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-2">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="space-y-0">
+                    <FormLabel className="text-foreground">Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="space-y-0">
+                    <FormLabel className="text-foreground">Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="example@email.com" type="email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="space-y-0">
+                    <FormLabel className="text-foreground">Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Your password"
+                        type="password"
+                        {...field}
+                        onFocus={() => {
+                          setSelectedInput("password");
+                        }}
+                        onBlur={() => {
+                          setSelectedInput("");
+                        }}
+                        autoComplete={"false"}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {selectedInput === "password" && passwordCheckList}
               <Button
-                variant={"outline"}
-                className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2 dark:hover:bg-gray-900"
+                className="text-white bg-facebook dark:bg-gray-700 hover:bg-facebook-400 text-lg dark:hover:bg-gray-900 rounded-md font-semibold"
                 size="lg"
-                onClick={() =>
-                  signIn("google", {
-                    callbackUrl: "/dashboard",
-                  })
-                }
+                type="submit"
                 disabled={isPending}
               >
-                <FcGoogle /> Sign Up with Google
+                Sign Up
               </Button>
-              <p className="text-center mt-4">
-                Already have an account?{" "}
-                <Link className="text-facebook-600 dark:text-yellow-400" href="/auth/login">
-                  Log In
-                </Link>
-              </p>
-            </div>
-          </form>
-        </Form>
+              <hr className="mt-4" />
+              <div className="flex flex-col gap-4 text-foreground mt-4">
+                <Button
+                  variant={"outline"}
+                  className="rounded-md text-[15px] md:text-[17px] lg:text-[18px] flex items-center gap-2 dark:hover:bg-gray-900"
+                  size="lg"
+                  onClick={() =>
+                    signIn("google", {
+                      callbackUrl: "/dashboard",
+                    })
+                  }
+                  disabled={isPending}
+                >
+                  <FcGoogle /> Sign Up with Google
+                </Button>
+                <p className="text-center mt-4">
+                  Already have an account?{" "}
+                  <Link className="text-facebook-600 dark:text-yellow-400" href="/auth/login">
+                    Log In
+                  </Link>
+                </p>
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
-    </div>
+    </AnimationRoot>
   );
 };
 
