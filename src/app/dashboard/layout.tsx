@@ -1,6 +1,5 @@
 import "../globals.css";
 import SidebarWithHeader from "../components/Sidebar";
-import { getServerSession } from "next-auth";
 
 export const metadata = {
   title: "Jobly | Dashboard",
@@ -8,6 +7,5 @@ export const metadata = {
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const currentUser = await getServerSession();
-  return <SidebarWithHeader username={currentUser?.user?.name || ""}>{children}</SidebarWithHeader>;
+  return <SidebarWithHeader>{children}</SidebarWithHeader>;
 }

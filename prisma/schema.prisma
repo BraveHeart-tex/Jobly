@@ -8,38 +8,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id             Int              @id @default(autoincrement())
-  name           String?
-  email          String?          @unique
-  hashedPassword String?
-  image          String?
-  emailVerified  Boolean?         @default(false)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  Account        Account[]
-  jobApplication JobApplication[]
-}
-
-model Account {
-  id                Int     @id @default(autoincrement())
-  userId            Int
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
-}
-
 model JobApplication {
   id                Int               @id @default(autoincrement())
   jobTitle          String
@@ -50,8 +18,7 @@ model JobApplication {
   comments          String?
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
-  User              User?             @relation(fields: [userId], references: [id])
-  userId            Int?
+  userId            String
 
   @@index([userId])
 }
