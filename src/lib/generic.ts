@@ -13,6 +13,7 @@ import { currentUser } from "@clerk/nextjs";
 const TABLE_MAP: TableMap = {
   jobApplication: prisma.jobApplication,
   salaryEstimationDataset: prisma.salaryEstimationDataset,
+  event: prisma.event,
 };
 
 export const getTable = async (tableName: TableName) => {

@@ -126,3 +126,45 @@
 .fc-today-button[title="Today"] {
   @apply bg-facebook dark:bg-gray-700;
 }
+
+.fc-today-button[title="This Month"] {
+  @apply bg-facebook dark:bg-gray-700;
+}
+
+.fc-popover {
+  @apply bg-background dark:bg-gray-700;
+}
+
+.fc-popover-title {
+  @apply text-facebook dark:text-gray-300;
+}
+
+.fc .fc-toolbar {
+  @apply items-start;
+}
+
+.fc-col-header-cell {
+  @apply text-facebook dark:text-gray-300 font-semibold;
+}
+
+.fc .fc-daygrid-day-frame {
+  @apply min-h-[80px] lg:min-h-[100%];
+}
+
+.fc-timegrid-slot .fc-timegrid-slot-lane {
+  @apply border-b border-border;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  @apply border border-gray-300 dark:border-gray-700;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  @apply border border-gray-300 dark:border-gray-700;
+}
+
+.fc-h-event {
+  background-color: transparent;
+  border: none;
+}

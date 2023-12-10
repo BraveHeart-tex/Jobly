@@ -1,12 +1,11 @@
-'use client';
-import ApplicationStatusOptions from '@/app/utils/ApplicationStatusOptions';
+"use client";
+import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { showErrorToast, showToast } from "@/components/ui/use-toast";
 import { updateGeneric } from "@/lib/generic";
 import { getKeyByValue } from "@/lib/utils";
 import { ApplicationStatus, JobApplication, JobType } from "@prisma/client";
@@ -14,6 +13,7 @@ import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
 import { startTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface IEditJobFormInputTypes {
   jobTitle: string;
@@ -62,15 +62,9 @@ const EditJobModalForm = ({ currentJobApplication }: IEditJobModalFormProps) => 
         whereCondition: { id: currentJobApplication.id },
       });
       if (result?.error) {
-        showErrorToast({
-          title: "Error",
-          description: "An error occurred while updating the job application. Please try again later.",
-        });
+        toast.error("An error occurred while updating the job application. Please try again later.");
       } else {
-        showToast({
-          title: "Success",
-          description: "The job application was successfully updated.",
-        });
+        toast.success("The job application was successfully updated.");
         revalidatePath("/dashboard/jobs");
         router.push("/dashboard/jobs");
       }
