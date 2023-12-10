@@ -15,14 +15,14 @@ interface IJobCardProps {
 const JobCard = ({ jobApplication }: IJobCardProps) => {
   return (
     <ListAnimation className="relative p-6 bg-card dark:bg-gray-800 shadow-md rounded-md flex justify-between flex-col">
-      <div className="border-b dark:border-b-gray-500 mb-2">
+      <div className="border-b dark:border-b-gray-500 mb-2 text-ellipsis truncate">
         <JobCardHeader companyName={jobApplication.companyName} jobTitle={jobApplication.jobTitle} />
       </div>
       <div className="grid grid-cols-1 gap-4">
         {/* Job Card Info */}
         <div className="grid grid-cols-2 gap-4 text-foreground">
           {/* Location Info */}
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center text-ellipsis truncate">
             <span>
               <TfiLocationPin />
             </span>
