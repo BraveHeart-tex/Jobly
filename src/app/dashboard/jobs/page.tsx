@@ -34,6 +34,15 @@ const JobsPage = async ({
   return (
     <AnimationRoot>
       <div className="grid grid-cols-1 gap-2">
+        <div className="flex flex-col gap-1 mb-4">
+          <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">
+            Job Application Search Form
+          </h3>
+          <p className="text-gray-500 dark:text-gray-400 text-md w-full lg:w-[70%]">
+            You can use the form below to search for job applications. You can search by job title, company name, job
+            type or application status.
+          </p>
+        </div>
         <JobSearchForm />
         <div className="mr-auto mb-2">
           <PaginationControls

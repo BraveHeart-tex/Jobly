@@ -3,6 +3,7 @@ import { searchJobs } from "@/app/actions";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
+import { FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -44,20 +45,13 @@ const JobSearchForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         id="jobSearchForm"
       >
-        <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">
-          Job Application Search Form
-        </h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 my-4">
           <div>
-            <Label htmlFor="searchTerm" className="text-foreground">
-              Job Title
-            </Label>
+            <Label htmlFor="searchTerm">Job Title</Label>
             <Input id="searchTerm" type="text" placeholder="Search by job title" {...register("searchTerm")} />
           </div>
           <div>
-            <Label htmlFor="companySearchTerm" className="text-foreground">
-              Company
-            </Label>
+            <Label htmlFor="companySearchTerm">Company</Label>
             <Input
               id="companySearchTerm"
               {...register("companySearchTerm")}
@@ -66,9 +60,7 @@ const JobSearchForm = () => {
             />
           </div>
           <div>
-            <Label htmlFor="applicationStatus" className="text-foreground">
-              Application Status
-            </Label>
+            <Label htmlFor="applicationStatus">Application Status</Label>
             <Select {...register("applicationStatus")} onValueChange={(val) => setValue("applicationStatus", val)}>
               <SelectTrigger className="w-full" defaultValue="all">
                 <SelectValue placeholder="Application Status" />
@@ -84,9 +76,7 @@ const JobSearchForm = () => {
             </Select>
           </div>
           <div>
-            <Label htmlFor="jobType" className="text-foreground">
-              Job Type
-            </Label>
+            <Label htmlFor="jobType">Job Type</Label>
             <Select {...register("jobType")} defaultValue="all" onValueChange={(val) => setValue("jobType", val)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Job Type" />
@@ -102,9 +92,7 @@ const JobSearchForm = () => {
             </Select>
           </div>
           <div>
-            <Label htmlFor="sortTerm" className="text-foreground">
-              Sort
-            </Label>
+            <Label htmlFor="sortTerm">Sort</Label>
             <Select {...register("sortTerm")} defaultValue="desc" onValueChange={(val) => setValue("sortTerm", val)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Sort date by" />
