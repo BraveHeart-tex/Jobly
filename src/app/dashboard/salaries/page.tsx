@@ -30,6 +30,12 @@ const SalaryEstimationsPage = async ({
   return (
     <AnimationRoot>
       <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">Salary Estimations</h3>
+          <p className="text-gray-500 dark:text-gray-400 text-md w-full lg:w-[75%]">
+            This page contains salary estimations from various sources. You can filter the data by using the form below.
+          </p>
+        </div>
         <SalaryDataFilterForm />
         <div className="flex gap-4 justify-center self-start items-center">
           <Link

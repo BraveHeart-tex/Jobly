@@ -27,7 +27,7 @@ const NoJobsFound = ({ withQuery }: INoJobsFoundProps) => {
       <h2 className="text-facebook dark:text-foreground font-semibold text-3xl">
         You don't have any applications yet.
       </h2>
-      <span className="text-foreground/80">
+      <span className="text-gray-500 dark:text-gray-400 text-md w-full lg:w-[70%]">
         You need to add your job application first. Click the button below to get started!
       </span>
       <Link

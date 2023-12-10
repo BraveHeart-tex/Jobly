@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -44,10 +44,9 @@ const SalaryDataFilterForm = () => {
 
   return (
     <div className="border bg-card/60 dark:bg-gray-800  p-4 py-2 rounded-md">
-      <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">Salary Estimations</h3>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 my-4">
+      <div className="grid grid-cols-1 gap-4 my-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className={"grid grid-cols-1 gap-2 lg:grid-cols-3"}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className={"grid grid-cols-1 gap-2 lg:grid-cols-3 w-full"}>
             <FormField
               control={form.control}
               name="jobTitle"
@@ -98,19 +97,19 @@ const SalaryDataFilterForm = () => {
             <div className="flex items-center gap-2 mt-2">
               <Button
                 disabled={isPending}
-                type="submit"
-                className="w-full lg:w-max flex items-center gap-2 text-white bg-facebook hover:bg-facebook-600 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold"
-              >
-                <FaSearch /> Search
-              </Button>
-              <Button
-                disabled={isPending}
                 type="button"
                 className="w-full lg:w-max font-semibold flex items-center gap-2"
                 variant="destructive"
                 onClick={() => clearAllFilters()}
               >
                 <LuFilterX /> Clear Filters
+              </Button>
+              <Button
+                disabled={isPending}
+                type="submit"
+                className="w-full lg:w-max flex items-center gap-2 text-white bg-facebook hover:bg-facebook-600 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold"
+              >
+                <FaSearch /> Search
               </Button>
             </div>
           </form>

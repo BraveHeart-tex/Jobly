@@ -7,7 +7,9 @@ const NotFoundPage = () => {
       <div className="flex justify-center items-center flex-col min-h-screen py-10 px-6">
         <div>
           <h2 className="block text-4xl font-semibold text-facebook dark:text-foreground">404 Page Not Found :(</h2>
-          <p className="text-foreground mb-6 mt-3">It looks like you found a glitch in the matrix...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-md w-full mb-6 mt-3">
+            It looks like you found a glitch in the matrix...
+          </p>
           <Button className="text-white font-semibold bg-facebook dark:bg-gray-700 hover:bg-facebook-400 dark:hover:bg-gray-600 transition-all">
             <Link href="/dashboard">Go to Dashboard</Link>
           </Button>

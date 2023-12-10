@@ -39,7 +39,7 @@ export type UpdateGenericInput<T> = {
   [key in keyof Partial<T>]: T[key];
 };
 
-export type TableName = "user" | "account" | "jobApplication" | "salaryEstimationDataset";
+export type TableName = "jobApplication" | "salaryEstimationDataset" | "event";
 
 export type CreateGenericWithCurrentUserInput<T> = {
   [key in keyof Omit<T, "id" | "createdAt" | "updatedAt" | "userId">]: T[key];

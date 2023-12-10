@@ -14,8 +14,8 @@ import { deleteGeneric } from "@/lib/generic";
 import { JobApplication } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { showErrorToast, showToast } from "./ui/use-toast";
 import { FaTrash } from "react-icons/fa";
+import { toast } from "sonner";
 
 interface IDeleteJobDialogProps {
   jobId: number;
@@ -32,9 +32,9 @@ const DeleteJobDialog = ({ jobId }: IDeleteJobDialogProps) => {
         whereCondition: { id: jobId },
       });
       if (result?.error) {
-        showErrorToast({ title: "Oops!", description: "Something went wrong. Please try again later." });
+        toast.error("An error occurred while deleting the job application. Please try again later.");
       } else {
-        showToast({ title: "Success!", description: "Job deleted successfully." });
+        toast.success("Job deleted successfully.");
         router.refresh();
       }
     });

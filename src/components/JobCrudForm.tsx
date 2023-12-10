@@ -11,11 +11,11 @@ import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import { cn, deepEqual } from "@/lib/utils";
 import { useEffect, useTransition } from "react";
-import { showErrorToast, showToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { handleJobFormSubmit } from "@/app/actions";
 import { FaSpinner } from "react-icons/fa";
 import { HiPencil, HiDocumentAdd } from "react-icons/hi";
+import { toast } from "sonner";
 
 interface JobCrudFormProps {
   mode: "create";
@@ -57,10 +57,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
       const isDataEqual = deepEqual(data, checkPayload, ["createdAt", "updatedAt", "userId"]);
 
       if (isDataEqual) {
-        showErrorToast({
-          title: "Oops!",
-          description: "You haven't changed anything.",
-        });
+        toast.error("You haven't changed anything.");
         return;
       }
     }
@@ -70,30 +67,18 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
         const result = await handleJobFormSubmit({ mode: "edit", data, jobId: initialData.id });
 
         if (result?.error) {
-          showErrorToast({
-            title: "Oops!",
-            description: "Something went wrong while updating the job application.",
-          });
+          toast.error("An error occurred while updating the job application. Please try again later.");
         } else {
-          showToast({
-            title: "Success!",
-            description: "Job application updated successfully.",
-          });
+          toast.success("The job application was successfully updated.");
           form.reset();
           router.push("/dashboard/jobs");
         }
       } else {
         const result = await handleJobFormSubmit({ mode: "create", data });
         if (result?.error) {
-          showErrorToast({
-            title: "Oops!",
-            description: "Something went wrong while creating the job application.",
-          });
+          toast.error("An error occurred while creating the job application. Please try again later.");
         } else {
-          showToast({
-            title: "Success!",
-            description: "Job application created successfully.",
-          });
+          toast.success("Job application created successfully.");
           form.reset();
           router.push("/dashboard/jobs");
         }

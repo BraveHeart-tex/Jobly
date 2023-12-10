@@ -23,7 +23,7 @@ const SingleJobPageClient = async ({ jobId }: ISingleJobPageClientProps) => {
     return (
       <div className="min-h-screen flex flex-col">
         <h2 className="text-facebook dark:text-foreground mb-3 text-2xl font-semibold">404 Job Not Found :(</h2>
-        <p className="mr-2 text-foreground">No job data was found for the given id: {jobId}</p>
+        <p className="mr-2 text-gray-500 dark:text-gray-400">No job data was found for the given id: {jobId}</p>
         <Button className="w-max mt-4 bg-facebook dark:bg-gray-700 text-white hover:bg-facebook-400 dark:hover:bg-gray-600 transition-all">
           <Link href={"/dashboard/jobs"}>Back to Jobs List</Link>
         </Button>

@@ -8,13 +8,12 @@ import {
   TableName,
   UpdateGenericInput,
 } from "./types";
-import getCurrentUser from "@/app/actions/getCurrentUser";
+import { currentUser } from "@clerk/nextjs";
 
 const TABLE_MAP: TableMap = {
-  user: prisma.user,
-  account: prisma.account,
   jobApplication: prisma.jobApplication,
   salaryEstimationDataset: prisma.salaryEstimationDataset,
+  event: prisma.event,
 };
 
 export const getTable = async (tableName: TableName) => {
@@ -92,9 +91,9 @@ export const createGenericWithCurrentUser = async <T>({
 }: IGenericParams<T> & { data: CreateGenericWithCurrentUserInput<T> }) => {
   try {
     const table = await getTable(tableName);
-    const currentUser = await getCurrentUser();
+    const user = await currentUser();
 
-    if (!currentUser) {
+    if (!user) {
       throw new Error("User not found");
     }
 
@@ -102,7 +101,7 @@ export const createGenericWithCurrentUser = async <T>({
       // @ts-ignore
       data: {
         ...data,
-        userId: currentUser.id,
+        userId: user.id,
       },
     });
 
@@ -166,7 +165,7 @@ export const getGenericListByCurrentUser = async <T>({
 }: IGenericParams<T>) => {
   try {
     const table = await getTable(tableName);
-    const currentUserResult = await getCurrentUser();
+    const currentUserResult = await currentUser();
 
     if (!currentUserResult) {
       throw new Error("User not found");
