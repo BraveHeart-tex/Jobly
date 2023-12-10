@@ -75,6 +75,7 @@
   }
 }
 
+/* FullCalendar STYLES */
 .fc-header-toolbar {
   @apply flex flex-col lg:flex-row items-start lg:items-center;
 }
