@@ -9,7 +9,7 @@ interface IJobCardFooterProps {
 
 const JobCardFooter = ({ id }: IJobCardFooterProps) => {
   return (
-    <div className="flex justify-between mt-1">
+    <div className="flex flex-wrap gap-2 justify-between mt-1">
       <div className="flex gap-2">
         <Link
           className="text-gray-100 bg-facebook dark:bg-background hover:bg-facebook-300 dark:hover:bg-background/80 transition-all rounded-md px-4 font-semibold h-[35px] flex items-center justify-center gap-2"
