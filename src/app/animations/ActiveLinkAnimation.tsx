@@ -16,8 +16,8 @@ const ActiveLinkAnimation = ({ href }: IActiveLinkAnimationProps) => {
   }
 
   return (
-    <motion.span
-      className={"absolute left-0 w-full h-1 bg-gray-300 dark:bg-gray-500 rounded-full bottom-0"}
+    <motion.div
+      className={"absolute inset-0 w-full bg-facebook-700 dark:bg-gray-900 rounded-md"}
       layoutId="underline"
     />
   );
