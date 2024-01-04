@@ -1,3 +1,4 @@
+import MotionDiv from "@/app/animations/MotionDiv";
 import Link from "next/link";
 
 interface INoJobsFoundProps {
@@ -7,7 +8,13 @@ interface INoJobsFoundProps {
 const NoJobsFound = ({ withQuery }: INoJobsFoundProps) => {
   if (withQuery) {
     return (
-      <div className="flex flex-col gap-1">
+      <MotionDiv
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.3, type: "tween" }}
+        className="flex flex-col gap-1"
+      >
         <h2 className="text-facebook dark:text-foreground font-semibold text-3xl capitalize">
           No Applications Found for Your Search
         </h2>
@@ -18,7 +25,7 @@ const NoJobsFound = ({ withQuery }: INoJobsFoundProps) => {
         >
           Add a new Application
         </Link>
-      </div>
+      </MotionDiv>
     );
   }
 
