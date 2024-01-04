@@ -11,7 +11,7 @@ const JobsList = async ({ jobApplications }: IJobsListProps) => {
     <div className="grid grid-cols-1 2xl:grid-cols-2 3xl:grid-cols-4 gap-6">
       <AnimateListPresence>
         {jobApplications.map((jobApplication, index) => (
-          <JobCard key={jobApplication.id + "@" + index} jobApplication={jobApplication} />
+          <JobCard key={jobApplication.id + index} jobApplication={jobApplication} />
         ))}
       </AnimateListPresence>
     </div>
