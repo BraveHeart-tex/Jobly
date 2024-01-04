@@ -30,7 +30,13 @@ const NoJobsFound = ({ withQuery }: INoJobsFoundProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <MotionDiv
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.3, type: "tween" }}
+      className="flex flex-col gap-1"
+    >
       <h2 className="text-facebook dark:text-foreground font-semibold text-3xl">
         You don't have any applications yet.
       </h2>
@@ -43,7 +49,7 @@ const NoJobsFound = ({ withQuery }: INoJobsFoundProps) => {
       >
         Get Started
       </Link>
-    </div>
+    </MotionDiv>
   );
 };
 
