@@ -20,7 +20,6 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
       // @ts-ignore
       transition={{ duration: 0.5, type: "just" }}
       exit={{ opacity: 0, y: 20 }}
-      key={jobApplication.id}
       layoutId={`job-card-${jobApplication.id}`}
       className="relative p-6 bg-card dark:bg-gray-800 shadow-md rounded-md flex justify-between flex-col"
     >

@@ -9,11 +9,11 @@ interface IJobsListProps {
 const JobsList = async ({ jobApplications }: IJobsListProps) => {
   return (
     <div className="grid grid-cols-1 2xl:grid-cols-2 3xl:grid-cols-4 gap-6">
-      {jobApplications.map((jobApplication, index) => (
-        <AnimateListPresence key={jobApplication.id}>
-          <JobCard jobApplication={jobApplication} />
-        </AnimateListPresence>
-      ))}
+      <AnimateListPresence>
+        {jobApplications.map((jobApplication, index) => (
+          <JobCard key={jobApplication.id + "@" + index} jobApplication={jobApplication} />
+        ))}
+      </AnimateListPresence>
     </div>
   );
 };
