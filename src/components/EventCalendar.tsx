@@ -13,7 +13,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { FormEvent, useRef, useState, useTransition } from "react";
+import { FormEvent, useEffect, useRef, useState, useTransition } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useGenericConfirm } from "@/app/contexts/GenericConfirmContext";
 import { FiEdit, FiX } from "react-icons/fi";
@@ -97,7 +97,6 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       });
 
       if (!result?.error) {
-        console.log(result);
       }
     });
   };
@@ -157,7 +156,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <div className="flex items-center justify-between text-[16px] bg-facebook w-full rounded-md text-white dark:bg-gray-700 transition-all hover:bg-facebook-600 dark:hover:bg-gray-500 p-1">
+          <div className="flex items-center justify-between text-[16px] bg-facebook w-full rounded-md text-white dark:bg-gray-700 transition-all hover:bg-facebook-600 dark:hover:bg-gray-500 p-1 truncate">
             <i>{eventInfo.event.title}</i>
             <div className="ml-auto items-center gap-1 hidden lg:flex">
               <EventControlItems eventInfo={eventInfo} />
