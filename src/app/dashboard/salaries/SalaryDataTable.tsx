@@ -11,7 +11,7 @@ const SalaryDataTable = ({ data }: ISalaryDataTableProps) => {
   };
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 border border-secondary rounded-md">
       <Table>
         <TableHeader className="bg-muted dark:bg-gray-900">
           <TableRow>

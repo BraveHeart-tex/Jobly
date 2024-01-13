@@ -97,19 +97,19 @@ const SalaryDataFilterForm = () => {
             <div className="flex items-center gap-2 mt-2">
               <Button
                 disabled={isPending}
+                type="submit"
+                className="w-full lg:w-max flex items-center gap-2 text-white bg-facebook hover:bg-facebook-600 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold"
+              >
+                <FaSearch /> {isPending ? "Searching..." : "Search"}
+              </Button>
+              <Button
+                disabled={isPending}
                 type="button"
                 className="w-full lg:w-max font-semibold flex items-center gap-2"
                 variant="destructive"
                 onClick={() => clearAllFilters()}
               >
                 <LuFilterX /> Clear Filters
-              </Button>
-              <Button
-                disabled={isPending}
-                type="submit"
-                className="w-full lg:w-max flex items-center gap-2 text-white bg-facebook hover:bg-facebook-600 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold"
-              >
-                <FaSearch /> Search
               </Button>
             </div>
           </form>
