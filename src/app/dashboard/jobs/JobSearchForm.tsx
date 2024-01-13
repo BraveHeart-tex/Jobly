@@ -3,13 +3,13 @@ import { searchJobs } from "@/app/actions";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
-import { FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaSpinner } from "react-icons/fa";
 import { LuFilterX } from "react-icons/lu";
 
 export interface IJobSearchFormValues {
@@ -22,6 +22,7 @@ export interface IJobSearchFormValues {
 
 const JobSearchForm = () => {
   const router = useRouter();
+  let [isPending, startTransition] = useTransition();
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
   const { handleSubmit, register, reset, setValue } = useForm({
@@ -35,7 +36,9 @@ const JobSearchForm = () => {
   });
 
   const onSubmit = async (data: IJobSearchFormValues) => {
-    await searchJobs(data);
+    startTransition(async () => {
+      await searchJobs(data);
+    });
   };
 
   return (
@@ -108,11 +111,22 @@ const JobSearchForm = () => {
           <Button
             type="submit"
             className="w-full md:w-max flex items-start gap-2 text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold text-md transition-all"
+            disabled={isPending}
           >
-            <FaSearch className="mt-1" /> Search
+            {isPending ? (
+              <span className="flex items-center gap-2">
+                <FaSpinner className="animate-spin" />
+                Searching
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                <FaSearch /> Search
+              </span>
+            )}
           </Button>
           <Button
             type="button"
+            disabled={isPending}
             onClick={(e) => {
               reset(
                 {
