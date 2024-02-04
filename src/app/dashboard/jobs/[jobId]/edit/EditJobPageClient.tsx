@@ -1,6 +1,8 @@
 import { JobApplication } from "@prisma/client";
 import Link from "next/link";
 import JobCrudForm from "@/components/JobCrudForm";
+import { Button } from "@/components/ui/button";
+import { FaArrowLeft } from "react-icons/fa";
 
 interface IEditJobPageClientProps {
   jobApplication: JobApplication | null | undefined;
@@ -9,13 +11,20 @@ interface IEditJobPageClientProps {
 const EditJobPageClient = ({ jobApplication }: IEditJobPageClientProps) => {
   if (!jobApplication) {
     return (
-      <div>
-        <h2 className="mr-4 text-facebook dark:text-foreground font-semibold text-3xl">404 Job Not Found</h2>
-        <p className="mt-3 text-foreground">It seems that the job application you are looking for does not exist.</p>
-        <Link className="capitalize text-facebook dark:text-foreground font-semibold text-3xl" href={"/dashboard/jobs"}>
-          Go back to jobs list
-        </Link>
-      </div>
+      <article>
+        <div className="flex flex-col">
+          <h2 className=" block scroll-m-20 text-4xl font-bold tracking-tight lg:text-4xl text-facebook dark:text-foreground capitalize">
+            404 Job Not Found
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            It seems that the job application you are looking for does not exist.
+          </p>
+        </div>
+        <Button className="w-max mt-2 text-lg bg-facebook dark:bg-gray-700 text-white hover:bg-facebook-400 dark:hover:bg-gray-600 transition-all">
+          <FaArrowLeft className="mr-2" />
+          <Link href={"/dashboard/jobs"}>Back to Jobs List</Link>
+        </Button>
+      </article>
     );
   }
 
