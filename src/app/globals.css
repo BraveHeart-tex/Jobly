@@ -81,7 +81,7 @@
 }
 
 .fc-toolbar-title {
-  @apply text-facebook dark:text-gray-400;
+  @apply text-facebook dark:text-gray-400 font-bold;
 }
 
 .fc-button[title="Day view"] {

@@ -92,7 +92,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       <div
         className={cn(
           showLabels &&
-            "text-facebook hover:bg-muted flex cursor-pointer items-center gap-2 rounded-md px-1 py-2 transition-all dark:text-gray-300 dark:hover:bg-gray-800"
+            "text-facebook hover:bg-muted flex cursor-pointer items-center gap-2 h-full rounded-md px-1 py-2 transition-all dark:text-gray-300 dark:hover:bg-gray-800"
         )}
         onClick={onClick}
       >
@@ -132,7 +132,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <div className="bg-facebook hover:bg-facebook-600 flex w-full items-center justify-between truncate rounded-md p-1 text-[16px] text-white transition-all dark:bg-gray-700 dark:hover:bg-gray-500">
+          <div className="bg-facebook hover:bg-facebook-600 h-full flex w-full items-center justify-between truncate rounded-md p-1 text-[16px] text-white transition-all dark:bg-gray-700 dark:hover:bg-gray-500">
             <i>{eventInfo.event.title}</i>
             <div className="ml-auto hidden items-center gap-1 lg:flex">
               <EventControlItems eventInfo={eventInfo} />
@@ -163,14 +163,14 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       });
 
       if (!result?.error) {
+        toast.success("Event updated successfully.");
+        setShowForm(false);
+        setSelectedEventId(null);
         const updatedEvents = events.map((event) =>
           event.id === parseInt(selectedEventId!) ? { ...event, title } : event
         );
 
         setEvents(updatedEvents);
-        setShowForm(false);
-        toast.success("Event updated successfully.");
-        setSelectedEventId(null);
       }
     };
 
