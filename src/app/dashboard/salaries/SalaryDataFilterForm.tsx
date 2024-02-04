@@ -43,7 +43,7 @@ const SalaryDataFilterForm = () => {
   };
 
   return (
-    <div className="border bg-card/60 dark:bg-gray-800  p-4 py-2 rounded-md">
+    <div className="border dark:border-0 bg-card/60 dark:bg-gray-800 p-4 py-2 rounded-md">
       <div className="grid grid-cols-1 gap-4 my-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className={"grid grid-cols-1 gap-2 lg:grid-cols-3 w-full"}>

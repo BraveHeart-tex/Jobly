@@ -7,7 +7,7 @@ const MobileNavigationDrawer = () => {
     <Sheet>
       <SheetTrigger
         aria-label="Open side navigation menu"
-        className="flex md:hidden border bg-transparent text-white border-white hover:bg-facebook-300 hover:dark:bg-gray-700 hover:text-white p-2 rounded-md"
+        className="flex md:hidden border dark:border-0 bg-transparent text-white border-white hover:bg-facebook-300 hover:dark:bg-gray-700 hover:text-white p-2 rounded-md"
       >
         <FiMenu />
       </SheetTrigger>
