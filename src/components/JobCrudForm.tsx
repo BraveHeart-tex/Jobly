@@ -217,7 +217,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
           disabled={isPending}
           name="submit job application form"
         >
-          {mode === "edit" ? <HiPencil size={18} /> : <HiDocumentAdd size={18} />}
+          {!isPending && mode === "edit" ? <HiPencil size={18} /> : <HiDocumentAdd size={18} />}
           {isPending && <FaSpinner className="ml-2 h-4 w-4 animate-spin" />}
           {mode === "edit" ? "Update" : "Create"}
         </Button>

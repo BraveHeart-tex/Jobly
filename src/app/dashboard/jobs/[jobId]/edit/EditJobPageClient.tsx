@@ -1,5 +1,4 @@
 import { JobApplication } from "@prisma/client";
-import EditJobModalForm from "./EditJobForm";
 import Link from "next/link";
 import JobCrudForm from "@/components/JobCrudForm";
 
