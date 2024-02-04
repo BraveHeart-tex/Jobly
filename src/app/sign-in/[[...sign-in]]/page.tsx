@@ -21,7 +21,7 @@ export default function Page() {
             <span className="text-md text-gray-200 dark:text-foreground/70">Log in to access your account</span>
           </div>
         </div>
-        <div className="dark:bg-gray-900 bg-card flex items-center justify-center">
+        <div className="dark:bg-gray-900 bg-card flex items-center justify-center min-h-[500px]">
           <SignIn />
         </div>
       </MotionDiv>
