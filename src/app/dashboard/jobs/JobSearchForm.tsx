@@ -3,8 +3,8 @@ import { searchJobs } from "@/app/actions";
 import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
 import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -25,7 +25,7 @@ const JobSearchForm = () => {
   let [isPending, startTransition] = useTransition();
   const applicationStatusOptions = Object.values(ApplicationStatusOptions);
   const jobTypeOptions = Object.values(JobTypeOptions);
-  const { handleSubmit, register, reset, setValue } = useForm({
+  const form = useForm({
     defaultValues: {
       searchTerm: "",
       companySearchTerm: "",
@@ -43,113 +43,160 @@ const JobSearchForm = () => {
 
   return (
     <div>
-      <form
-        className="p-4 rounded-md shadow-md bg-card/60 dark:bg-gray-800 grid grid-cols-1"
-        onSubmit={handleSubmit(onSubmit)}
-        id="jobSearchForm"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 my-4">
-          <div>
-            <Label htmlFor="searchTerm">Job Title</Label>
-            <Input id="searchTerm" type="text" placeholder="Search by job title" {...register("searchTerm")} />
-          </div>
-          <div>
-            <Label htmlFor="companySearchTerm">Company</Label>
-            <Input
-              id="companySearchTerm"
-              {...register("companySearchTerm")}
-              type="text"
-              placeholder="Search by company name"
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="p-4 rounded-md shadow-md bg-card/60 dark:bg-gray-800 grid grid-cols-1"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 my-4">
+            <FormField
+              control={form.control}
+              name="searchTerm"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Title</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="companySearchTerm"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="applicationStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Application Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value || "All"}
+                    value={field.value || "All"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={field.value} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={"all"}>All</SelectItem>
+                      {applicationStatusOptions.map((option) => (
+                        <SelectItem value={option} key={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="jobType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Job Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value || "all"}
+                    value={field.value || "all"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="All" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={"all"}>All</SelectItem>
+                      {jobTypeOptions.map((option) => (
+                        <SelectItem value={option} key={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="sortTerm"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sort</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value || "desc"}
+                    value={field.value || "desc"}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sort date by" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={"desc"}>Latest</SelectItem>
+                      <SelectItem value={"asc"}>Oldest</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
             />
           </div>
-          <div>
-            <Label htmlFor="applicationStatus">Application Status</Label>
-            <Select {...register("applicationStatus")} onValueChange={(val) => setValue("applicationStatus", val)}>
-              <SelectTrigger className="w-full" defaultValue="all">
-                <SelectValue placeholder="Application Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={"all"}>All</SelectItem>
-                {applicationStatusOptions.map((option) => (
-                  <SelectItem value={option} key={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex items-center gap-2">
+            <Button
+              type="submit"
+              className="w-full md:w-max flex items-start gap-2 text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold text-md transition-all"
+              disabled={isPending}
+            >
+              {isPending ? (
+                <span className="flex items-center gap-2">
+                  <FaSpinner className="animate-spin" />
+                  Searching
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <FaSearch /> Search
+                </span>
+              )}
+            </Button>
+            <Button
+              type="button"
+              disabled={isPending}
+              onClick={(e) => {
+                form.reset(
+                  {
+                    applicationStatus: "all",
+                    companySearchTerm: "",
+                    jobType: "all",
+                    searchTerm: "",
+                    sortTerm: "desc",
+                  },
+                  {
+                    keepDefaultValues: true,
+                  }
+                );
+                router.push("/dashboard/jobs");
+              }}
+              className="font-semibold text-md flex items-center gap-2"
+              variant="destructive"
+            >
+              <LuFilterX /> Clear Filters
+            </Button>
           </div>
-          <div>
-            <Label htmlFor="jobType">Job Type</Label>
-            <Select {...register("jobType")} defaultValue="all" onValueChange={(val) => setValue("jobType", val)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Job Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={"all"}>All</SelectItem>
-                {jobTypeOptions.map((option) => (
-                  <SelectItem value={option} key={option}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="sortTerm">Sort</Label>
-            <Select {...register("sortTerm")} defaultValue="desc" onValueChange={(val) => setValue("sortTerm", val)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Sort date by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={"desc"}>Latest</SelectItem>
-                <SelectItem value={"asc"}>Oldest</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            type="submit"
-            className="w-full md:w-max flex items-start gap-2 text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold text-md transition-all"
-            disabled={isPending}
-          >
-            {isPending ? (
-              <span className="flex items-center gap-2">
-                <FaSpinner className="animate-spin" />
-                Searching
-              </span>
-            ) : (
-              <span className="flex items-center gap-2">
-                <FaSearch /> Search
-              </span>
-            )}
-          </Button>
-          <Button
-            type="button"
-            disabled={isPending}
-            onClick={(e) => {
-              reset(
-                {
-                  applicationStatus: "all",
-                  companySearchTerm: "",
-                  jobType: "all",
-                  searchTerm: "",
-                  sortTerm: "desc",
-                },
-                {
-                  keepValues: false,
-                  keepDefaultValues: true,
-                }
-              );
-              router.push("/dashboard/jobs");
-            }}
-            className="font-semibold text-md flex items-center gap-2"
-            variant="destructive"
-          >
-            <LuFilterX /> Clear Filters
-          </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
 };
