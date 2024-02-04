@@ -14,7 +14,7 @@ const NavItem = ({ icon, children, href }: NavItemProps) => {
   return (
     <Link
       href={href}
-      className="relative flex items-center p-4 mx-4 rounded-lg cursor-pointer text-white hover:bg-facebook-400 dark:hover:bg-gray-700 dark:hover:text-white transition-all hover:translate-x-2"
+      className="relative flex items-center p-4 mx-4 rounded-lg cursor-pointer text-white hover:bg-facebook-400 dark:hover:bg-gray-700 dark:hover:text-white transition-all"
     >
       <ActiveLinkAnimation href={href} />
       <span className="relative flex items-center">
