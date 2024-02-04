@@ -22,9 +22,15 @@ const EditJobPageClient = ({ jobApplication }: IEditJobPageClientProps) => {
 
   return (
     <div>
-      <h2 className="text-facebook dark:text-foreground mb-6 text-3xl">
-        Editing: {jobApplication.jobTitle} at {jobApplication.companyName}
-      </h2>
+      <div className="flex flex-col gap-1 mb-4">
+        <h2 className="text-facebook font-bold dark:text-foreground scroll-m-20 text-4xl tracking-tight lg:text-4xl capitalize">
+          Editing: {jobApplication.jobTitle} at {jobApplication.companyName}
+        </h2>
+        <p className="text-muted-foreground text-lg">
+          You can use the form below to edit the job application details. Once you are done, click the "Update" button
+          to save the changes.
+        </p>
+      </div>
       <JobCrudForm mode="edit" initialData={jobApplication} formClassName="2xl:grid-cols-2" />
     </div>
   );

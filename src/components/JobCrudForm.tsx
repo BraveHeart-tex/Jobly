@@ -215,10 +215,11 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
           type="submit"
           className="bg-facebook hover:bg-facebook-600 flex items-center gap-1 dark:bg-primary w-full 2xl:w-max transition-all mt-2"
           disabled={isPending}
+          name="submit job application form"
         >
-          {mode === "edit" ? "Update" : "Create"}
           {mode === "edit" ? <HiPencil size={18} /> : <HiDocumentAdd size={18} />}
           {isPending && <FaSpinner className="ml-2 h-4 w-4 animate-spin" />}
+          {mode === "edit" ? "Update" : "Create"}
         </Button>
       </form>
     </Form>

@@ -214,32 +214,46 @@ export const searchSalaryDataset = async (
 
   const skipAmount = (pageNumber - 1) * pageSize;
 
-  const salaryData = await prisma.salaryEstimationDataset.findMany({
-    skip: skipAmount,
-    take: pageSize,
-    where: {
-      jobTitle: {
-        contains: searchParam,
+  const [salaryData, salaryDataCount] = await Promise.all([
+    prisma.salaryEstimationDataset.findMany({
+      skip: skipAmount,
+      take: pageSize,
+      where: {
+        jobTitle: {
+          contains: searchParam,
+        },
+        location: {
+          contains: citySearchParam,
+        },
       },
-      location: {
-        contains: citySearchParam,
+      orderBy: {
+        salary_estimate: sortParam as "asc" | "desc",
       },
-    },
-    orderBy: {
-      salary_estimate: sortParam as "asc" | "desc",
-    },
-    select: {
-      id: true,
-      jobTitle: true,
-      location: true,
-      salary_estimate: true,
-    },
-  });
+      select: {
+        id: true,
+        jobTitle: true,
+        location: true,
+        salary_estimate: true,
+      },
+    }),
+    prisma.salaryEstimationDataset.count({
+      where: {
+        jobTitle: {
+          contains: searchParam,
+        },
+        location: {
+          contains: citySearchParam,
+        },
+      },
+    }),
+  ]);
 
   return {
     salaryData,
     hasNextPage: salaryData.length === pageSize,
     hasPreviousPage: pageNumber > 1,
+    currentPage: pageNumber,
+    totalPages: Math.ceil(salaryDataCount / pageSize),
   };
 };
 

@@ -31,13 +31,16 @@ const SalaryEstimationsPage = async ({
     <AnimationRoot>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <h3 className="text-2xl lg:text-3xl text-facebook dark:text-foreground font-semibold">Salary Estimations</h3>
-          <p className="text-gray-500 dark:text-gray-400 text-md w-full lg:w-[75%]">
+          <h3 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-4xl text-facebook dark:text-foreground">
+            Salary Estimations
+          </h3>
+          <p className="text-muted-foreground text-lg w-full lg:w-[75%]">
             This page contains salary estimations from various sources. You can filter the data by using the form below.
           </p>
         </div>
         <SalaryDataFilterForm />
-        <div className="flex gap-4 justify-center self-start items-center">
+        {data ? <SalaryDataTable data={data} /> : null}
+        <div className="flex gap-4 w-full justify-center self-start items-center">
           <Link
             scroll={false}
             href={`/dashboard/salaries?page=${parseInt(page) - 1}&sort=${sort}&search=${search}&city=${city}`}
@@ -48,6 +51,9 @@ const SalaryEstimationsPage = async ({
           >
             <FaArrowLeft /> Previous
           </Link>
+          <p className="text-muted-foreground">
+            Page {page} of {result?.totalPages}
+          </p>
           <Link
             scroll={false}
             href={`/dashboard/salaries?page=${parseInt(page) + 1}&sort=${sort}&search=${search}&city=${city}`}
@@ -59,7 +65,6 @@ const SalaryEstimationsPage = async ({
             Next <FaArrowRight />
           </Link>
         </div>
-        {data ? <SalaryDataTable data={data} /> : null}
       </div>
     </AnimationRoot>
   );

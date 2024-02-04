@@ -22,9 +22,12 @@ const SingleJobPageClient = async ({ jobId }: ISingleJobPageClientProps) => {
   if (!jobApplication.data || jobApplication.error) {
     return (
       <div className="min-h-screen flex flex-col">
-        <h2 className="text-facebook dark:text-foreground mb-3 text-2xl font-semibold">404 Job Not Found :(</h2>
-        <p className="mr-2 text-gray-500 dark:text-gray-400">No job data was found for the given id: {jobId}</p>
-        <Button className="w-max mt-4 bg-facebook dark:bg-gray-700 text-white hover:bg-facebook-400 dark:hover:bg-gray-600 transition-all">
+        <h2 className="scroll-m-20 text-4xl mb-2 font-bold tracking-tight lg:text-4xl text-facebook dark:text-foreground capitalize">
+          404 Job Not Found :(
+        </h2>
+        <p className="mr-2 text-muted-foreground text-lg">No job data was found for your search...</p>
+        <Button className="w-max mt-2 text-lg bg-facebook dark:bg-gray-700 text-white hover:bg-facebook-400 dark:hover:bg-gray-600 transition-all">
+          <FaArrowLeft className="mr-2" />
           <Link href={"/dashboard/jobs"}>Back to Jobs List</Link>
         </Button>
       </div>
@@ -69,13 +72,13 @@ const SingleJobPageClient = async ({ jobId }: ISingleJobPageClientProps) => {
         <div className="flex items-center gap-2 mt-4">
           <Button variant="outline">
             <Link href={"/dashboard/jobs"} className="flex items-center gap-2">
-              <FaArrowLeft />
               Back to Jobs List
             </Link>
           </Button>
           <Button className="w-max bg-facebook h-9 px-4 py-2 dark:bg-gray-700 text-white hover:bg-facebook-400 dark:hover:bg-gray-600 transition-all">
             <Link href={`/dashboard/jobs/${jobId}/edit`} className="flex items-center gap-2">
-              Edit <FaPencilAlt />
+              <FaPencilAlt />
+              Edit
             </Link>
           </Button>
         </div>

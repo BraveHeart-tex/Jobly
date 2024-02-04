@@ -22,7 +22,7 @@ const ResponsiveChartContainer = async () => {
       transition={{ duration: 0.3, type: "tween" }}
       className="flex justify-center items-start flex-col gap-2"
     >
-      <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-4xl text-facebook dark:text-foreground capitalize">
+      <h2 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-4xl text-facebook dark:text-foreground capitalize">
         Your Applications by Month
       </h2>
       <p className="text-muted-foreground text-lg">

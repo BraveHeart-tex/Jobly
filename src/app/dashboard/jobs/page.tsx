@@ -35,7 +35,7 @@ const JobsPage = async ({
     <AnimationRoot>
       <div className="grid grid-cols-1 gap-2">
         <div className="flex flex-col gap-1 mb-4">
-          <h3 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-4xl text-facebook dark:text-foreground">
+          <h3 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-4xl text-facebook dark:text-foreground">
             Job Application Search Form
           </h3>
           <p className="text-muted-foreground text-lg w-full lg:w-[70%]">
