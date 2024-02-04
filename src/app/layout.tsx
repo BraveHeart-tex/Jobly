@@ -20,9 +20,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="en" data-theme={"corporate"}>
         <body className={inter.className}>
           <GenericConfirmContextProvider>
-            <SonnerToaster />
-            <GenericConfirmDialog />
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <SonnerToaster />
+              <GenericConfirmDialog />
               {children}
             </ThemeProvider>
           </GenericConfirmContextProvider>
