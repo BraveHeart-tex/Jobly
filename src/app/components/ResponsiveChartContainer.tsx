@@ -22,10 +22,10 @@ const ResponsiveChartContainer = async () => {
       transition={{ duration: 0.3, type: "tween" }}
       className="flex justify-center items-start flex-col gap-2"
     >
-      <h2 className="font-semibold text-4xl text-facebook-500 dark:text-foreground capitalize">
+      <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-4xl text-facebook dark:text-foreground capitalize">
         Your Applications by Month
       </h2>
-      <p className="text-gray-500 dark:text-gray-400 text-md">
+      <p className="text-muted-foreground text-lg">
         Below chart shows the number of applications you have submitted each month.
       </p>
       <div className="w-full h-[400px] flex justify-center items-center">

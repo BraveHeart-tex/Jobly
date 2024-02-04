@@ -34,7 +34,7 @@ const JobStatusCard = async () => {
               })}
             </span>
           </h2>
-          <p className="text-gray-500 dark:text-gray-400">{getHeadingTextByStatus(data)}</p>
+          <p className="text-muted-foreground text-lg">{getHeadingTextByStatus(data)}</p>
         </Card>
       ))}
     </>
