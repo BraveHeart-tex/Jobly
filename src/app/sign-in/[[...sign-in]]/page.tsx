@@ -14,7 +14,7 @@ export default function Page() {
         transition={{ duration: 0.5, type: "tween" }}
         className="bg-facebook dark:bg-gray-800 lg:rounded-md lg:shadow-lg max-w-[1200px] grid grid-cols-1 lg:grid-cols-2 w-full"
       >
-        <div className="flex flex-col lg:items-start p-4 lg:p-8 items-center h-max lg:h-auto">
+        <div className="flex flex-col lg:items-start p-4 lg:p-8 items-center justify-center h-full lg:h-auto">
           <Image src={AppLogo} alt="Jobly Logo" width={200} className="mb-2 dark:invert invert-[1]" />
           <div className="flex flex-col gap-1 lg:mt-auto">
             <h2 className="text-3xl font-semibold mb-2 text-gray-50 dark:text-foreground">Welcome!</h2>
