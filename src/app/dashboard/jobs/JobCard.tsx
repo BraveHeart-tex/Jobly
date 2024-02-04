@@ -17,6 +17,7 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
     <MotionDiv
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      // @ts-ignore
       transition={{ duration: 0.5, type: "just" }}
       key={jobApplication.id}
       exit={{ opacity: 0, y: 20 }}
