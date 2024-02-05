@@ -14,7 +14,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { FormEvent, useState, useTransition } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useGenericConfirm } from "@/app/contexts/GenericConfirmContext";
-import { FiEdit, FiX } from "react-icons/fi";
+import { FiEdit, FiTrash } from "react-icons/fi";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { createGenericWithCurrentUser, deleteGeneric, updateGeneric } from "@/lib/generic";
@@ -92,7 +92,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       <div
         className={cn(
           showLabels &&
-            "text-facebook hover:bg-muted flex cursor-pointer items-center gap-2 h-full rounded-md px-1 py-2 transition-all dark:text-gray-300 dark:hover:bg-gray-800"
+            "text-facebook font-semibold hover:bg-muted flex cursor-pointer items-center gap-2 h-full rounded-md px-1 py-2 transition-all dark:text-gray-300 dark:hover:bg-gray-800"
         )}
         onClick={onClick}
       >
@@ -107,7 +107,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       setSelectedEventId(eventInfo.event.id);
     });
 
-    const deleteItem = createControlItem(<FiX className="cursor-pointer" />, "Delete", (e) => {
+    const deleteItem = createControlItem(<FiTrash className="cursor-pointer" />, "Delete", (e) => {
       e.stopPropagation();
       showGenericConfirm({
         title: "Delete Event",
@@ -134,13 +134,10 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         <PopoverTrigger asChild>
           <div className="bg-facebook hover:bg-facebook-600 h-full flex w-full items-center justify-between truncate rounded-md p-1 text-[16px] text-white transition-all dark:bg-gray-700 dark:hover:bg-gray-500">
             <i>{eventInfo.event.title}</i>
-            <div className="ml-auto hidden items-center gap-1 lg:flex">
-              <EventControlItems eventInfo={eventInfo} />
-            </div>
           </div>
         </PopoverTrigger>
-        <PopoverContent className="lg:hidden dark:bg-gray-700">
-          <div className="flex items-center gap-1 lg:hidden">
+        <PopoverContent className="dark:bg-gray-700">
+          <div className="flex items-center gap-1">
             <EventControlItems eventInfo={eventInfo} showLabels />
           </div>
         </PopoverContent>
@@ -148,38 +145,35 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
     );
   }
 
+  const showError = (message: string) => {
+    toast.error(message);
+  };
+
+  const updateEvent = async (title: string) => {
+    const result = await updateGeneric<Event>({
+      tableName: "event",
+      data: { title },
+      whereCondition: { id: parseInt(selectedEventId!) },
+    });
+
+    if (!result?.error) {
+      toast.success("Event updated successfully.");
+      setSelectedEventId(null);
+
+      const updatedEvents = events.map((event) =>
+        event.id === parseInt(selectedEventId!) ? { ...event, title } : event
+      );
+
+      setEvents(updatedEvents);
+    } else {
+      showError("An error occurred while updating the event. Please try again.");
+      setSelectedEventId(null);
+      setShowForm(false);
+    }
+  };
+
   const handleFormSubmit = (e: FormEvent, title: string) => {
     e.preventDefault();
-
-    const showError = (message: string) => {
-      toast.error(message);
-    };
-
-    const updateEvent = async () => {
-      const result = await updateGeneric<Event>({
-        tableName: "event",
-        data: { title },
-        whereCondition: { id: parseInt(selectedEventId!) },
-      });
-
-      if (!result?.error) {
-        toast.success("Event updated successfully.");
-        setShowForm(false);
-        setTimeout(() => {
-          setSelectedEventId(null);
-        });
-
-        const updatedEvents = events.map((event) =>
-          event.id === parseInt(selectedEventId!) ? { ...event, title } : event
-        );
-
-        setEvents(updatedEvents);
-      } else {
-        showError("An error occurred while updating the event. Please try again.");
-        setSelectedEventId(null);
-        setShowForm(false);
-      }
-    };
 
     if (selectedEventId) {
       if (!title) {
@@ -187,7 +181,8 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         return;
       }
 
-      startTransition(updateEvent);
+      setShowForm(false);
+      startTransition(() => updateEvent(title));
     } else {
       if (!title || !selectInfo) {
         showError("Please enter a title for the event.");
@@ -242,7 +237,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         contentHeight={800}
       />
       <Dialog
-        open={showForm && selectedEventId !== null}
+        open={showForm}
         onOpenChange={(open) => {
           setShowForm(open);
 
