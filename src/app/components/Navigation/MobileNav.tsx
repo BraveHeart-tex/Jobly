@@ -2,7 +2,7 @@
 import Logo from "../Logo";
 import ModeToggle from "@/components/ModeToggle";
 import MobileNavigationDrawer from "@/components/MobileNavigationDrawer";
-import { UserButton, useClerk } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
 
@@ -16,15 +16,13 @@ const MobileNav = () => {
         <Logo width="100px" height="100px" />
       </div>
 
-      <div className="flex items-center gap-0 md:gap-6">
-        <div className="flex items-center">
-          <UserButton
-            appearance={{
-              baseTheme: theme === "dark" ? dark : undefined,
-            }}
-          />
-          <ModeToggle />
-        </div>
+      <div className="flex items-center gap-0 md:gap-2">
+        <UserButton
+          appearance={{
+            baseTheme: theme === "dark" ? dark : undefined,
+          }}
+        />
+        <ModeToggle />
       </div>
     </div>
   );

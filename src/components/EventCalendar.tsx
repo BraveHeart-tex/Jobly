@@ -165,12 +165,19 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       if (!result?.error) {
         toast.success("Event updated successfully.");
         setShowForm(false);
-        setSelectedEventId(null);
+        setTimeout(() => {
+          setSelectedEventId(null);
+        });
+
         const updatedEvents = events.map((event) =>
           event.id === parseInt(selectedEventId!) ? { ...event, title } : event
         );
 
         setEvents(updatedEvents);
+      } else {
+        showError("An error occurred while updating the event. Please try again.");
+        setSelectedEventId(null);
+        setShowForm(false);
       }
     };
 
@@ -235,7 +242,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         contentHeight={800}
       />
       <Dialog
-        open={showForm}
+        open={showForm && selectedEventId !== null}
         onOpenChange={(open) => {
           setShowForm(open);
 
