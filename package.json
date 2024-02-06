@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.2.0",
+    "@playwright/test": "^1.41.2",
     "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",

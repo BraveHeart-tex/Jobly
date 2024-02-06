@@ -17,8 +17,12 @@ export default function Page() {
         <div className="flex flex-col lg:items-start p-4 lg:p-8 items-center justify-center h-full lg:h-auto">
           <Image src={AppLogo} alt="Jobly Logo" width={200} className="mb-2 dark:invert invert-[1]" />
           <div className="flex flex-col gap-1 lg:mt-auto">
-            <h2 className="text-3xl font-semibold mb-2 text-gray-50 dark:text-foreground">Welcome!</h2>
-            <span className="text-md text-gray-200 dark:text-foreground/70">Log in to access your account</span>
+            <h2 className="text-3xl font-semibold mb-2 text-gray-50 dark:text-foreground" data-testid="sign-in-title">
+              Welcome!
+            </h2>
+            <span className="text-md text-gray-200 dark:text-foreground/70" data-testid="sign-in-message">
+              Log in to access your account
+            </span>
           </div>
         </div>
         <div className="dark:bg-gray-900 bg-card flex items-center justify-center min-h-[500px]">
