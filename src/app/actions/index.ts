@@ -1,15 +1,14 @@
 "use server";
 import { ApplicationStatus, JobApplication, JobType } from "@prisma/client";
-import prisma from "../libs/prismadb";
-import ApplicationStatusOptions from "../utils/ApplicationStatusOptions";
-import JobTypeOptions, { capitalizeJobTypeParams } from "../utils/JobTypeOptions";
+import prisma from "@/app/libs/prismadb";
+import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
+import JobTypeOptions, { capitalizeJobTypeParams } from "@/app/utils/JobTypeOptions";
 import { convertResponseData, mapTotalApplicationStatsToStatusCounts } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { IJobSearchFormValues } from "../dashboard/jobs/JobSearchForm";
+import { IJobSearchFormValues } from "@/app/dashboard/jobs/JobSearchForm";
 import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
 import { revalidatePath } from "next/cache";
 import { handleJobFormSubmitParams } from "@/lib/types";
-import { IconType } from "react-icons";
 import { currentUser as getCurrentUser } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/dist/types/server";
 
@@ -255,9 +254,4 @@ export const searchSalaryDataset = async (
     currentPage: pageNumber,
     totalPages: Math.ceil(salaryDataCount / pageSize),
   };
-};
-
-export const getIcon = async (link: any) => {
-  if (link.icon) return link.icon as IconType;
-  return null;
 };
