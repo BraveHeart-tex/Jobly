@@ -7,9 +7,10 @@ interface IEventCalendarFormProps {
   handleFormSubmit: (e: React.FormEvent<HTMLFormElement>, title: string) => void;
   onCancelClick: () => void;
   selectedEventId: string | null;
+  loading: boolean;
 }
 
-const EventCalendarForm = ({ handleFormSubmit, onCancelClick, selectedEventId }: IEventCalendarFormProps) => {
+const EventCalendarForm = ({ handleFormSubmit, onCancelClick, selectedEventId, loading }: IEventCalendarFormProps) => {
   const [title, setTitle] = useState("");
   return (
     <form onSubmit={(e) => handleFormSubmit(e, title)}>
@@ -20,6 +21,7 @@ const EventCalendarForm = ({ handleFormSubmit, onCancelClick, selectedEventId }:
           <Button
             type="button"
             variant="secondary"
+            disabled={loading}
             onClick={() => {
               onCancelClick();
             }}
@@ -28,6 +30,7 @@ const EventCalendarForm = ({ handleFormSubmit, onCancelClick, selectedEventId }:
           </Button>
           <Button
             type="submit"
+            disabled={loading}
             className="bg-facebook hover:bg-facebook-600 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
           >
             {selectedEventId ? "Update" : "Add"}

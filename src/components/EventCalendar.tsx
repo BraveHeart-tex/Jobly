@@ -1,18 +1,10 @@
 "use client";
-import {
-  DateSelectArg,
-  EventAddArg,
-  EventChangeArg,
-  EventContentArg,
-  EventRemoveArg,
-  EventSourceInput,
-} from "@fullcalendar/core";
+import { DateSelectArg, EventChangeArg, EventContentArg, EventRemoveArg, EventSourceInput } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FormEvent, useState, useTransition } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { useGenericConfirm } from "@/app/contexts/GenericConfirmContext";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -32,25 +24,13 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const { showGenericConfirm } = useGenericConfirm();
 
+  // when user clicks on a date, Show selected date in form
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     setShowForm(true);
     setSelectInfo(selectInfo);
   };
 
-  const handleEventAdd = (data: EventAddArg) => {
-    startTransition(async () => {
-      await createGenericWithCurrentUser<Event>({
-        tableName: "event",
-        data: {
-          title: data.event.title,
-          start: data.event.start || new Date(),
-          end: data.event.end || new Date(),
-          allDay: data.event.allDay,
-        },
-      });
-    });
-  };
-
+  // update event on db
   const handleEventChange = (data: EventChangeArg) => {
     startTransition(async () => {
       await updateGeneric<Event>({
@@ -68,6 +48,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
     });
   };
 
+  // delete event from db
   const handleEventRemove = (data: EventRemoveArg) => {
     startTransition(async () => {
       await deleteGeneric<Event>({
@@ -81,6 +62,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
     });
   };
 
+  // Render event control items
   const EventControlItems = ({
     eventInfo,
     showLabels = false,
@@ -101,12 +83,14 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       </div>
     );
 
+    // Edit Popover Item
     const editItem = createControlItem(<FiEdit className="cursor-pointer" />, "Edit", (e) => {
       e.stopPropagation();
       setShowForm(true);
       setSelectedEventId(eventInfo.event.id);
     });
 
+    // Delete Popover Item
     const deleteItem = createControlItem(<FiTrash className="cursor-pointer" />, "Delete", (e) => {
       e.stopPropagation();
       showGenericConfirm({
@@ -115,6 +99,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         primaryActionLabel: "Delete",
         primaryAction: () => {
           eventInfo.event.remove();
+          setEvents(events.filter((event) => event.id !== parseInt(eventInfo.event.id)));
         },
       });
     });
@@ -128,6 +113,8 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
 
     return showLabels ? <div className="flex w-full flex-col gap-1">{Content}</div> : Content;
   };
+
+  // Render Popover for edit and delete
   function renderEventContent(eventInfo: EventContentArg) {
     return (
       <Popover>
@@ -149,6 +136,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
     toast.error(message);
   };
 
+  // Update event on db and calendar
   const updateEvent = async (title: string) => {
     const result = await updateGeneric<Event>({
       tableName: "event",
@@ -158,23 +146,25 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
 
     if (!result?.error) {
       toast.success("Event updated successfully.");
-      setSelectedEventId(null);
 
       const updatedEvents = events.map((event) =>
         event.id === parseInt(selectedEventId!) ? { ...event, title } : event
       );
 
       setEvents(updatedEvents);
+      setSelectedEventId(null);
     } else {
-      showError("An error occurred while updating the event. Please try again.");
+      showError("An error occurred while updating the event. Please try again later.");
       setSelectedEventId(null);
       setShowForm(false);
     }
   };
 
+  // Handle form submit for adding and updating event
   const handleFormSubmit = (e: FormEvent, title: string) => {
     e.preventDefault();
 
+    // Update event
     if (selectedEventId) {
       if (!title) {
         showError("Please enter a title for the event.");
@@ -190,18 +180,44 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       }
 
       const calendarApi = selectInfo.view.calendar;
-      calendarApi.unselect(); // clear date selection
 
-      calendarApi.addEvent({
-        id: uuidv4(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
+      // Add event to db and calendar
+      startTransition(async () => {
+        const response = await createGenericWithCurrentUser<Event>({
+          tableName: "event",
+          data: {
+            title,
+            start: new Date(selectInfo.startStr),
+            end: new Date(selectInfo.endStr),
+            allDay: selectInfo.allDay,
+          },
+        });
+
+        if (response?.error) {
+          setShowForm(false);
+          return showError("An error occurred while adding the event. Please try again later.");
+        }
+
+        if (response?.data) {
+          // Add event to calendar
+          calendarApi.addEvent({
+            id: response.data.id.toString(),
+            title,
+            start: selectInfo.startStr,
+            end: selectInfo.endStr,
+            allDay: selectInfo.allDay,
+          });
+
+          // Update events state
+          setEvents([...events, response.data]);
+
+          setShowForm(false);
+          toast.success("Event added successfully.");
+
+          // Clear selected date
+          calendarApi.unselect();
+        }
       });
-
-      setShowForm(false);
-      toast.success("Event added successfully.");
     }
 
     setSelectedEventId(null);
@@ -209,6 +225,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
 
   return (
     <>
+      <pre className="max-h-[300px] overflow-auto">{JSON.stringify(events, null, 2)}</pre>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
@@ -231,7 +248,6 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         weekends={weekendsVisible}
         select={handleDateSelect}
         eventContent={renderEventContent}
-        eventAdd={handleEventAdd}
         eventChange={handleEventChange}
         eventRemove={handleEventRemove}
         contentHeight={800}
@@ -258,6 +274,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
             </DialogDescription>
           </DialogHeader>
           <EventCalendarForm
+            loading={isPending}
             handleFormSubmit={handleFormSubmit}
             onCancelClick={() => {
               setShowForm(false);
