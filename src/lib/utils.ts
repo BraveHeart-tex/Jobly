@@ -30,15 +30,6 @@ export const monthMap: { [key: string]: string } = {
   "12": "December",
 };
 
-export function getKeyByValue(object: any, value: any) {
-  for (const key in object) {
-    if (object[key] === value) {
-      return key;
-    }
-  }
-  return null; // Return null if the value is not found in the object
-}
-
 export function convertResponseData(data: ResponseData): ResponseData {
   const formattedData: ResponseData = {
     formattedMonthlyApplications: [],
@@ -106,33 +97,6 @@ export function deepEqual(obj1: any, obj2: any, ignoreFields?: string[]): boolea
   }
 
   return true;
-}
-
-export function deepEqualWithReduce(obj1: any, obj2: any, ignoreFields: string[] = []): boolean {
-  const cleanedObj1 = ignoreFields.reduce((o, field) => ({ ...o, [field]: undefined }), { ...obj1 });
-  const cleanedObj2 = ignoreFields.reduce((o, field) => ({ ...o, [field]: undefined }), { ...obj2 });
-
-  if (cleanedObj1 === cleanedObj2) {
-    return true;
-  }
-
-  if (
-    typeof cleanedObj1 !== "object" ||
-    typeof cleanedObj2 !== "object" ||
-    cleanedObj1 === null ||
-    cleanedObj2 === null
-  ) {
-    return cleanedObj1 === cleanedObj2;
-  }
-
-  const keys1 = Object.keys(cleanedObj1);
-  const keys2 = Object.keys(cleanedObj2);
-
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-
-  return keys1.every((key) => keys2.includes(key) && deepEqualWithReduce(cleanedObj1[key], cleanedObj2[key]));
 }
 
 export const sortByDate = (a: any, b: any, sortBy: string, direction: "asc" | "desc" = "desc") => {
