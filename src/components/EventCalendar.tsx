@@ -225,7 +225,6 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
 
   return (
     <>
-      <pre className="max-h-[300px] overflow-auto">{JSON.stringify(events, null, 2)}</pre>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         headerToolbar={{
