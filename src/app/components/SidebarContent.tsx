@@ -1,5 +1,5 @@
-import Logo from "./Logo";
-import NavItem from "./Navigation/NavItem";
+import Logo from "@/app/components/Logo";
+import NavItem from "@/app/components/NavItem";
 import LinkItems from "../utils/NavLinks";
 import { cn } from "@/lib/utils";
 

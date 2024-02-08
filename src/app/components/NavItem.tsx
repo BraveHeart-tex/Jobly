@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ReactNode, createElement } from "react";
 import { IconType } from "react-icons";
-import ActiveLinkAnimation from "../../animations/ActiveLinkAnimation";
+import ActiveLinkAnimation from "@/app/animations/ActiveLinkAnimation";
 
 interface NavItemProps {
   icon: IconType;
