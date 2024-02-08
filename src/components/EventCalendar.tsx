@@ -13,7 +13,7 @@ import { createGenericWithCurrentUser, deleteGeneric, updateGeneric } from "@/li
 import { Event } from "@prisma/client";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import EventCalendarForm from "./EventCalendarForm";
+import EventCalendarForm from "@/components/EventCalendarForm";
 
 const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
   let [isPending, startTransition] = useTransition();
