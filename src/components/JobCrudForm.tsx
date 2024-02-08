@@ -7,9 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import JobTypeOptions from "@/app/utils/JobTypeOptions";
-import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
-import { cn, deepEqual } from "@/lib/utils";
+import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, cn, deepEqual } from "@/lib/utils";
 import { useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { handleJobFormSubmit } from "@/app/actions";
@@ -48,7 +46,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
 
   useEffect(() => {
     form.setFocus("jobTitle");
-  }, []);
+  }, [form]);
 
   const onSubmit = (data: JobApplication) => {
     if (mode === "edit") {
@@ -78,24 +76,26 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
         if (result?.error) {
           toast.error("An error occurred while creating the job application. Please try again later.");
         } else {
+          router.push("/dashboard/jobs");
           toast.success("Job application created successfully.");
           form.reset();
-          router.push("/dashboard/jobs");
         }
       }
     });
   };
 
   const mapStatus = (status: string) => {
-    return Object.entries(ApplicationStatusOptions).find(([key, value]) => value === status)?.[0] as ApplicationStatus;
+    return Object.entries(APPLICATION_STATUS_OPTIONS).find(
+      ([key, value]) => value === status
+    )?.[0] as ApplicationStatus;
   };
 
   const mapJobTypes = (jobType: string) => {
-    return Object.entries(JobTypeOptions).find(([key, value]) => value === jobType)?.[0] as JobType;
+    return Object.entries(JOB_TYPE_OPTIONS).find(([key, value]) => value === jobType)?.[0] as JobType;
   };
 
-  const applicationStatusOptions = Object.values(ApplicationStatusOptions);
-  const jobTypeOptions = Object.values(JobTypeOptions);
+  const applicationStatusOptions = Object.values(APPLICATION_STATUS_OPTIONS);
+  const jobTypeOptions = Object.values(JOB_TYPE_OPTIONS);
 
   return (
     <Form {...form}>
@@ -134,7 +134,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               <FormLabel>Job Type</FormLabel>
               <Select
                 onValueChange={(value) => form.setValue("jobType", mapJobTypes(value))}
-                value={JobTypeOptions[field.value]}
+                value={JOB_TYPE_OPTIONS[field.value]}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -161,7 +161,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
               <FormLabel>Application Status</FormLabel>
               <Select
                 onValueChange={(value) => form.setValue("applicationStatus", mapStatus(value))}
-                value={ApplicationStatusOptions[field.value]}
+                value={APPLICATION_STATUS_OPTIONS[field.value]}
               >
                 <FormControl>
                   <SelectTrigger>

@@ -1,12 +1,10 @@
 import { TfiLocationPin } from "react-icons/tfi";
 import { BsBriefcase, BsCalendarDay, BsInfoCircle } from "react-icons/bs";
 import { JobApplication } from "@prisma/client";
-import formatDate from "@/app/utils/formatDate";
-import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
-import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import JobCardHeader from "@/app/components/JobCardHeader";
 import JobCardFooter from "@/app/components/JobCardFooter";
 import MotionDiv from "@/app/animations/MotionDiv";
+import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, formatDate } from "@/lib/utils";
 
 interface IJobCardProps {
   jobApplication: JobApplication;
@@ -43,7 +41,7 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
             <span>
               <BsBriefcase />
             </span>
-            <span>{JobTypeOptions[jobApplication.jobType]}</span>
+            <span>{JOB_TYPE_OPTIONS[jobApplication.jobType]}</span>
           </div>
           {/* Job Type End */}
           {/* Created At Start */}
@@ -59,7 +57,7 @@ const JobCard = ({ jobApplication }: IJobCardProps) => {
             <span>
               <BsInfoCircle />
             </span>
-            <span>{ApplicationStatusOptions[jobApplication.applicationStatus]}</span>
+            <span>{APPLICATION_STATUS_OPTIONS[jobApplication.applicationStatus]}</span>
           </div>
           {/* Application Status End */}
         </div>

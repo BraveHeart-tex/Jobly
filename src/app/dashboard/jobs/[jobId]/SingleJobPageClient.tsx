@@ -1,8 +1,7 @@
-import JobTypeOptions from "@/app/utils/JobTypeOptions";
-import formatDate from "@/app/utils/formatDate";
 import AnimationRoot from "@/app/animations/AnimationRoot";
 import { Button } from "@/components/ui/button";
 import { getGeneric } from "@/lib/generic";
+import { JOB_TYPE_OPTIONS, formatDate } from "@/lib/utils";
 import { JobApplication } from "@prisma/client";
 import Link from "next/link";
 import { FaArrowLeft, FaPencilAlt } from "react-icons/fa";
@@ -53,7 +52,7 @@ const SingleJobPageClient = async ({ jobId }: ISingleJobPageClientProps) => {
             </div>
             <div>
               <h3 className="text-2xl font-semibold text-facebook dark:text-foreground">Job Type</h3>
-              <div>{JobTypeOptions[jobType!]}</div>
+              <div>{JOB_TYPE_OPTIONS[jobType!]}</div>
             </div>
             <div>
               <h3 className="text-2xl font-semibold text-facebook dark:text-foreground">Application Date</h3>

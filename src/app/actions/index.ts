@@ -1,9 +1,13 @@
 "use server";
 import { ApplicationStatus, JobApplication, JobType } from "@prisma/client";
 import prisma from "@/app/libs/prismadb";
-import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
-import JobTypeOptions, { capitalizeJobTypeParams } from "@/app/utils/JobTypeOptions";
-import { convertResponseData, mapTotalApplicationStatsToStatusCounts } from "@/lib/utils";
+import {
+  APPLICATION_STATUS_OPTIONS,
+  JOB_TYPE_OPTIONS,
+  capitalizeJobTypeParams,
+  convertResponseData,
+  mapTotalApplicationStatsToStatusCounts,
+} from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { IJobSearchFormValues } from "@/app/dashboard/jobs/JobSearchForm";
 import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
@@ -120,11 +124,11 @@ export const getJobApplications = withCurrentUser(
 
     const skipAmount = (pageNumber - 1) * pageSize;
 
-    const mappedStatusParam = Object.entries(ApplicationStatusOptions).find(
+    const mappedStatusParam = Object.entries(APPLICATION_STATUS_OPTIONS).find(
       ([key, value]) => value === statusParam
     )?.[0];
 
-    const mappedJobTypeParam = Object.entries(JobTypeOptions).find(
+    const mappedJobTypeParam = Object.entries(JOB_TYPE_OPTIONS).find(
       ([key, value]) => value === capitalizeJobTypeParams(jobTypeParam)
     )?.[0];
 

@@ -1,6 +1,9 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ApplicationStatusCount, ResponseData, TotalApplicationStat } from "./types";
+import { FiTrendingUp, FiPhoneCall, FiCalendar } from "react-icons/fi";
+import { BiDollar } from "react-icons/bi";
+import { BsClipboardPlus } from "react-icons/bs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,7 +18,7 @@ export function mapTotalApplicationStatsToStatusCounts(
   }));
 }
 
-export const monthMap: { [key: string]: string } = {
+export const MONTH_MAP: { [key: string]: string } = {
   "01": "January",
   "02": "February",
   "03": "March",
@@ -39,7 +42,7 @@ export function convertResponseData(data: ResponseData): ResponseData {
 
   for (const application of data.formattedMonthlyApplications) {
     const date = new Date(application.date);
-    const month = `${monthMap[String(date.getMonth() + 1).padStart(2, "0")]}`;
+    const month = `${MONTH_MAP[String(date.getMonth() + 1).padStart(2, "0")]}`;
     const year = `${date.getFullYear()}`;
 
     const formattedDate = `${month} ${year}`;
@@ -109,3 +112,47 @@ export const sortByDate = (a: any, b: any, sortBy: string, direction: "asc" | "d
 
   return dateB.getTime() - dateA.getTime();
 };
+
+export const APPLICATION_STATUS_OPTIONS = {
+  PENDING: "Pending",
+  REJECTED: "Rejected",
+  INTERVIEW: "Interview",
+  OFFER: "Offer",
+};
+
+export const formatDate = (date: Date) => {
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export const JOB_TYPE_OPTIONS = {
+  FULL_TIME: "Full-Time",
+  PART_TIME: "Part-Time",
+  CONTRACT: "Contract",
+  TEMPORARY: "Temporary",
+  VOLUNTEER: "Volunteer",
+  INTERNSHIP: "Internship",
+};
+
+export function capitalizeJobTypeParams(value: string) {
+  if (value === "part-time" || value === "Part-time") {
+    return "Part-Time";
+  }
+
+  if (value === "full-time" || value === "Full-time") {
+    return "Full-Time";
+  }
+
+  return value;
+}
+
+export const LINK_ITEMS = [
+  { name: "Application Stats", href: "/dashboard", icon: FiTrendingUp },
+  { name: "Jobs List", href: "/dashboard/jobs", icon: FiPhoneCall },
+  { name: "Planner", href: "/dashboard/planner", icon: FiCalendar },
+  { name: "Salary Estimations", href: "/dashboard/salaries", icon: BiDollar },
+  { name: "Add Job Info", href: "/dashboard/jobs/add", icon: BsClipboardPlus },
+];

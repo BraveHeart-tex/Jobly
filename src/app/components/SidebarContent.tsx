@@ -1,7 +1,6 @@
 import Logo from "@/app/components/Logo";
 import NavItem from "@/app/components/NavItem";
-import LinkItems from "../utils/NavLinks";
-import { cn } from "@/lib/utils";
+import { LINK_ITEMS, cn } from "@/lib/utils";
 
 const SidebarContent = ({ className, fromDrawer = false }: { className?: string; fromDrawer?: boolean }) => {
   return (
@@ -15,7 +14,7 @@ const SidebarContent = ({ className, fromDrawer = false }: { className?: string;
       <div className={cn("flex h-20 items-center mx-8 justify-between mt-3", fromDrawer && "block")}>
         <Logo />
       </div>
-      {LinkItems.map((link) => (
+      {LINK_ITEMS.map((link) => (
         <NavItem href={link.href} key={link.name} icon={link.icon}>
           {link.name}
         </NavItem>

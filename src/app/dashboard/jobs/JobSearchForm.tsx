@@ -1,11 +1,10 @@
 "use client";
 import { searchJobs } from "@/app/actions";
-import ApplicationStatusOptions from "@/app/utils/ApplicationStatusOptions";
-import JobTypeOptions from "@/app/utils/JobTypeOptions";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -23,8 +22,8 @@ export interface IJobSearchFormValues {
 const JobSearchForm = () => {
   const router = useRouter();
   let [isPending, startTransition] = useTransition();
-  const applicationStatusOptions = Object.values(ApplicationStatusOptions);
-  const jobTypeOptions = Object.values(JobTypeOptions);
+  const applicationStatusOptions = Object.values(APPLICATION_STATUS_OPTIONS);
+  const jobTypeOptions = Object.values(JOB_TYPE_OPTIONS);
   const form = useForm({
     defaultValues: {
       searchTerm: "",
