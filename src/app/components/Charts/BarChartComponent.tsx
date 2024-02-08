@@ -6,7 +6,6 @@ interface IBarChartComponentProps {
 }
 
 const BarChartComponent = ({ data }: IBarChartComponentProps) => {
-  // TODO: Handle empty state
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data} margin={{ top: 50 }}>
