@@ -1,6 +1,6 @@
-import { getMonthlyChartData } from "../actions";
-import MotionDiv from "../animations/MotionDiv";
-import BarChartComponent from "./Charts/BarChartComponent";
+import { getMonthlyChartData } from "@/app/actions";
+import MotionDiv from "@/app/animations/MotionDiv";
+import BarChartComponent from "./BarChartComponent";
 import NoJobsFound from "@/components/NoJobsFound";
 
 const ResponsiveChartContainer = async () => {
