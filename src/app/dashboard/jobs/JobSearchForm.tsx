@@ -156,6 +156,7 @@ const JobSearchForm = () => {
           <div className="flex items-center gap-2">
             <Button
               type="submit"
+              name="Search for Jobs"
               className="w-full md:w-max flex items-start gap-2 text-gray-50 bg-facebook hover:bg-facebook-300 dark:bg-gray-700 dark:hover:bg-gray-600 font-semibold text-md transition-all"
               disabled={isPending}
             >
@@ -172,6 +173,7 @@ const JobSearchForm = () => {
             </Button>
             <Button
               type="button"
+              name="Clear Filters"
               disabled={isPending}
               onClick={(e) => {
                 form.reset(
