@@ -84,14 +84,14 @@ const JobSearchForm = () => {
                     value={field.value || "All"}
                   >
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={field.value} />
+                      <SelectTrigger name="Job Application Status">
+                        <SelectValue placeholder={field.value} aria-label="All Application Status" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value={"all"}>All</SelectItem>
                       {applicationStatusOptions.map((option) => (
-                        <SelectItem value={option} key={option}>
+                        <SelectItem aria-label={option} value={option} key={option}>
                           {option}
                         </SelectItem>
                       ))}
@@ -112,8 +112,8 @@ const JobSearchForm = () => {
                     value={field.value || "all"}
                   >
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="All" />
+                      <SelectTrigger name="Job Type">
+                        <SelectValue placeholder="All" aria-label="All Job Types" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -140,7 +140,7 @@ const JobSearchForm = () => {
                     value={field.value || "desc"}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger name="Sort direction of job applicaiton date">
                         <SelectValue placeholder="Sort date by" />
                       </SelectTrigger>
                     </FormControl>
