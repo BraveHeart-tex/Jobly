@@ -81,7 +81,7 @@ const SalaryDataFilterForm = () => {
                   <FormLabel>Sort Salary By</FormLabel>
                   <Select onValueChange={(value) => form.setValue("sortTerm", value)} value={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger name="Sort Salary By">
                         {field.value ? <SelectValue placeholder="Sort salaries by" /> : "Sort salaries by"}
                       </SelectTrigger>
                     </FormControl>
@@ -98,6 +98,7 @@ const SalaryDataFilterForm = () => {
               <Button
                 disabled={isPending}
                 type="submit"
+                name="Search for Salaries"
                 className="w-full lg:w-max flex items-center gap-2 text-white bg-facebook hover:bg-facebook-600 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all font-semibold"
               >
                 <FaSearch /> {isPending ? "Searching..." : "Search"}
@@ -105,6 +106,7 @@ const SalaryDataFilterForm = () => {
               <Button
                 disabled={isPending}
                 type="button"
+                name="Clear Filters"
                 className="w-full lg:w-max font-semibold flex items-center gap-2"
                 variant="destructive"
                 onClick={() => clearAllFilters()}
