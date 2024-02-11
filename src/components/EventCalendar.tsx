@@ -242,6 +242,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
           today: "Today",
           week: "Week",
         }}
+        longPressDelay={500}
         dayMaxEvents={true}
         events={events as EventSourceInput}
         weekends={weekendsVisible}
