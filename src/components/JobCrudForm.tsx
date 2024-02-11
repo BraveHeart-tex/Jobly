@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, cn, deepEqual } from "@/lib/utils";
-import { useEffect, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { handleJobFormSubmit } from "@/app/actions";
 import { FaSpinner } from "react-icons/fa";
@@ -133,7 +133,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
                 value={JOB_TYPE_OPTIONS[field.value]}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger name="Select the job type">
                     {field.value ? <SelectValue placeholder="Select the job type" /> : "Select the job type"}
                   </SelectTrigger>
                 </FormControl>
@@ -160,7 +160,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
                 value={APPLICATION_STATUS_OPTIONS[field.value]}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger name="Select your job application status">
                     {field.value ? (
                       <SelectValue placeholder="Select your application status" />
                     ) : (
@@ -211,7 +211,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
           type="submit"
           className="bg-facebook hover:bg-facebook-600 flex items-center gap-1 dark:bg-primary w-full 2xl:w-max transition-all mt-2"
           disabled={isPending}
-          name="submit job application form"
+          name="Sumbit job application form"
         >
           {isPending ? (
             <FaSpinner size={18} className="animate-spin" />
