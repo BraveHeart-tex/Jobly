@@ -1,13 +1,15 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 interface IActiveLinkAnimationProps {
   href: string;
+  className?: string;
 }
 
-const ActiveLinkAnimation = ({ href }: IActiveLinkAnimationProps) => {
+const ActiveLinkAnimation = ({ href, className }: IActiveLinkAnimationProps) => {
   const pathName = usePathname();
   const isActive = pathName === href;
 
@@ -17,7 +19,7 @@ const ActiveLinkAnimation = ({ href }: IActiveLinkAnimationProps) => {
 
   return (
     <motion.div
-      className={"absolute inset-0 w-full bg-facebook-700 dark:bg-gray-900 rounded-md"}
+      className={cn("absolute inset-0 w-full bg-facebook-700 dark:bg-gray-900 rounded-md", className)}
       layoutId="underline"
     />
   );

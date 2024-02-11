@@ -150,9 +150,9 @@ export function capitalizeJobTypeParams(value: string) {
 }
 
 export const LINK_ITEMS = [
-  { name: "Application Stats", href: "/dashboard", icon: FiTrendingUp },
-  { name: "Jobs List", href: "/dashboard/jobs", icon: FiPhoneCall },
-  { name: "Planner", href: "/dashboard/planner", icon: FiCalendar },
-  { name: "Salary Estimations", href: "/dashboard/salaries", icon: BiDollar },
-  { name: "Add Job Info", href: "/dashboard/jobs/add", icon: BsClipboardPlus },
+  { name: "Application Stats", href: "/dashboard", icon: FiTrendingUp, order: 1 },
+  { name: "Jobs List", href: "/dashboard/jobs", icon: FiPhoneCall, order: 2 },
+  { name: "Planner", href: "/dashboard/planner", icon: FiCalendar, order: 5 },
+  { name: "Salary Estimations", href: "/dashboard/salaries", icon: BiDollar, order: 4 },
+  { name: "Add Job Info", href: "/dashboard/jobs/add", icon: BsClipboardPlus, order: 3 },
 ];
