@@ -44,10 +44,6 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
           },
   });
 
-  useEffect(() => {
-    form.setFocus("jobTitle");
-  }, [form]);
-
   const onSubmit = (data: JobApplication) => {
     if (mode === "edit") {
       let checkPayload = { ...initialData } as any;
