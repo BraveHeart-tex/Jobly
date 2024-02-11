@@ -19,7 +19,6 @@ test("should navigate to sign up page", async ({ page }) => {
   await page.goto("http://localhost:3000/sign-in");
   const signUp = page.locator("[data-localization-key='signIn.start.actionLink']");
   await signUp.click();
-  console.log(page.url());
   await page.waitForURL("http://localhost:3000/sign-up?redirect_url=http%3A%2F%2Flocalhost%3A3000%2Fdashboard");
 
   expect(page.url()).toBe("http://localhost:3000/sign-up");

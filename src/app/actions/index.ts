@@ -62,8 +62,6 @@ export const getTotalJobStats = withCurrentUser(async (currentUser) => {
 
   const totalApplicationStats = mapTotalApplicationStatsToStatusCounts(applicationStats);
 
-  console.log(totalApplicationStats);
-
   return {
     totalApplicationStats,
   };
@@ -117,8 +115,6 @@ export const getJobApplications = withCurrentUser(
         hasPreviousPage: false,
       };
     }
-
-    console.log(searchParam);
 
     const pageSize = 12;
 
