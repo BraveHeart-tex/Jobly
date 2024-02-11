@@ -4,7 +4,7 @@ import { createElement } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const MobileNavigaiton = () => {
+const MobileNavigation = () => {
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href;
@@ -41,4 +41,4 @@ const MobileNavigaiton = () => {
     </div>
   );
 };
-export default MobileNavigaiton;
+export default MobileNavigation;

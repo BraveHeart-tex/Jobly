@@ -1,6 +1,6 @@
 import "../globals.css";
 import SidebarWithHeader from "../components/Sidebar";
-import MobileNavigaiton from "@/components/MobileNavigaiton";
+import MobileNavigation from "@/components/MobileNavigation";
 
 export const metadata = {
   title: "Jobly | Dashboard",
@@ -11,7 +11,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <SidebarWithHeader>
       {children}
-      <MobileNavigaiton />
+      <MobileNavigation />
     </SidebarWithHeader>
   );
 }
