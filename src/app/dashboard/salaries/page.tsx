@@ -35,7 +35,7 @@ const SalaryEstimationsPage = async ({
             Salary Estimations
           </h3>
           <p className="text-muted-foreground text-lg w-full lg:w-[75%]">
-            This page contains salary estimations from various sources. You can filter the data by using the form below.
+            Explore salary estimates from multiple sources. Use the form below to filter the data.
           </p>
         </div>
         <SalaryDataFilterForm />
