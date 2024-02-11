@@ -8,8 +8,8 @@ const AddJobsPageClient = () => {
           Add a new job application
         </h1>
         <p className="text-muted-foreground text-lg w-full lg:w-[75%]">
-          You can fill out the form below to register your job application. Your application will be automatically added
-          to the list of jobs in the Jobs List page.
+          Register your job application by filling out the form below. It will be automatically added to the Jobs List
+          page.
         </p>
       </div>
       <JobCrudForm mode="create" formClassName="2xl:grid-cols-3 w-full" />

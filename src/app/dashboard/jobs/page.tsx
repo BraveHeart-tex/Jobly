@@ -39,8 +39,7 @@ const JobsPage = async ({
             Job Application Search Form
           </h3>
           <p className="text-muted-foreground text-lg w-full lg:w-[70%]">
-            You can use the form below to search for job applications. You can search by job title, company name, job
-            type or application status.
+            Use the form below to search for your registered job applications.
           </p>
         </div>
         <JobSearchForm />
