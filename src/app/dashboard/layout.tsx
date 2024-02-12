@@ -12,7 +12,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
     <SidebarWithHeader>
       <MobileNavigation />
       {/* Padding Bottom is the same height as the height of the mobile navigation menu  */}
-      <main className="pb-16">{children}</main>
+      <main className="pb-16 lg:pb-0">{children}</main>
     </SidebarWithHeader>
   );
 }
