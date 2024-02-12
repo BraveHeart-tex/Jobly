@@ -10,8 +10,9 @@ export const metadata = {
 export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarWithHeader>
-      {children}
       <MobileNavigation />
+      {/* Padding Bottom is the same height as the height of the mobile navigation menu  */}
+      <main className="pb-16">{children}</main>
     </SidebarWithHeader>
   );
 }
