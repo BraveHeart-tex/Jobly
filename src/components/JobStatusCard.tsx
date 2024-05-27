@@ -22,11 +22,11 @@ const JobStatusCard = async () => {
         <Card
           key={data.status}
           className={cn(
-            "rounded-md shadow-md bg-gray-100 dark:bg-gray-800 border-b-4 p-4 hover:bg-background transition-all duration-300 ease-in-out hover:cursor-pointer",
-            getBorderBottomColorByStatus(data)
+            "rounded-md shadow-md bg-card border-b-4 p-4 hover:bg-opacity-95 transition-all duration-300 ease-in-out hover:cursor-pointer",
+            getBorderBottomColorByStatus(data),
           )}
         >
-          <h2 className="flex justify-between items-center mb-4 dark:text-gray-100 text-gray-800">
+          <h2 className="flex justify-between items-center mb-4 text-foreground/90">
             <span className="text-3xl">{data.count}</span>
             <span>
               {React.createElement(getIconByStatus(data), {
