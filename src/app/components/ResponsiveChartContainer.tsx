@@ -25,7 +25,7 @@ const ResponsiveChartContainer = async () => {
       <h2 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-4xl text-facebook dark:text-foreground capitalize">
         Your Applications by Month
       </h2>
-      <p className="text-muted-foreground text-lg">
+      <p className="text-muted-foreground">
         Below chart shows the number of applications you have submitted each month.
       </p>
       <div className="w-full h-[400px] flex justify-center items-center">

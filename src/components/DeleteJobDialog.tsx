@@ -43,7 +43,7 @@ const DeleteJobDialog = ({ jobId }: IDeleteJobDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger
-        className="bg-destructive text-gray-50 font-semibold rounded-md px-2 hover:bg-destructive/80 transition-all flex items-center gap-2"
+        className="bg-destructive hover:bg-destructive/80 flex items-center gap-2 rounded-md px-2 font-semibold text-gray-50 transition-all"
         name={"Delete job application with id : " + jobId}
       >
         <FaTrash /> Delete
@@ -60,7 +60,7 @@ const DeleteJobDialog = ({ jobId }: IDeleteJobDialogProps) => {
         <AlertDialogFooter>
           <AlertDialogCancel className="text-foreground font-semibold">Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-facebook dark:bg-primary font-semibold hover:bg-facebook-400 transition-all dark:hover:bg-primary/80"
+            className="bg-facebook dark:bg-primary hover:bg-facebook-400 dark:hover:bg-primary/80 font-semibold transition-all"
             onClick={() => {
               deleteJob();
             }}

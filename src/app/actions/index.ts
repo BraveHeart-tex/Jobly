@@ -14,19 +14,6 @@ import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
 import { revalidatePath } from "next/cache";
 import { handleJobFormSubmitParams } from "@/lib/types";
 import { currentUser as getCurrentUser } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/dist/types/server";
-
-export const withCurrentUser =
-  (callback: (currentUser: User | null, ...args: any[]) => any) =>
-  async (...args: any) => {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser) {
-      return callback(null, ...args);
-    } else {
-      return callback(currentUser, ...args);
-    }
-  };
 
 export const searchJobs = async ({
   searchTerm,
@@ -40,10 +27,13 @@ export const searchJobs = async ({
   }
 
   redirect(
-    `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`
+    `/dashboard/jobs?search=${searchTerm}&company=${companySearchTerm}&status=${applicationStatus}&jobType=${jobType}&sort=${sortTerm}&page=1`,
   );
 };
-export const getTotalJobStats = withCurrentUser(async (currentUser) => {
+
+export const getTotalJobStats = async () => {
+  const currentUser = await getCurrentUser();
+
   if (!currentUser) {
     return {
       error: "You must be logged in to use this service.",
@@ -65,9 +55,10 @@ export const getTotalJobStats = withCurrentUser(async (currentUser) => {
   return {
     totalApplicationStats,
   };
-});
+};
 
-export const getMonthlyChartData = withCurrentUser(async (currentUser) => {
+export const getMonthlyChartData = async () => {
+  const currentUser = await getCurrentUser();
   if (!currentUser) {
     return {
       error: "You must be logged in to use this service.",
@@ -96,86 +87,84 @@ export const getMonthlyChartData = withCurrentUser(async (currentUser) => {
   return {
     monthlyApplicationsData: transformedFinalData.formattedMonthlyApplications,
   };
-});
+};
 
-export const getJobApplications = withCurrentUser(
-  async (
-    currentUser,
-    pageNumber = 1,
-    searchParam = "",
-    companySearchParam = "",
-    statusParam = "",
-    jobTypeParam = "",
-    sortParam = "desc"
-  ) => {
-    if (!currentUser) {
-      return {
-        error: "You must be logged in to use this service.",
-        hasNextPage: false,
-        hasPreviousPage: false,
-      };
-    }
-
-    const pageSize = 12;
-
-    const skipAmount = (pageNumber - 1) * pageSize;
-
-    const mappedStatusParam = Object.entries(APPLICATION_STATUS_OPTIONS).find(
-      ([key, value]) => value === statusParam
-    )?.[0];
-
-    const mappedJobTypeParam = Object.entries(JOB_TYPE_OPTIONS).find(
-      ([key, value]) => value === capitalizeJobTypeParams(jobTypeParam)
-    )?.[0];
-
-    const jobApplications = await prisma.jobApplication.findMany({
-      skip: skipAmount,
-      take: pageSize,
-      where: {
-        userId: currentUser.id,
-        jobTitle: {
-          contains: searchParam,
-        },
-        companyName: {
-          contains: companySearchParam,
-        },
-        applicationStatus: {
-          equals: mappedStatusParam as ApplicationStatus,
-        },
-        jobType: {
-          equals: mappedJobTypeParam as JobType,
-        },
-      },
-      orderBy: {
-        createdAt: sortParam as "asc" | "desc",
-      },
-      select: {
-        id: true,
-        jobTitle: true,
-        companyName: true,
-        applicationStatus: true,
-        jobType: true,
-        location: true,
-        comments: true,
-        createdAt: true,
-      },
-    });
-
-    if (jobApplications.length === 0) {
-      return {
-        error: "No job applications found.",
-        hasNextPage: false,
-        hasPreviousPage: false,
-      };
-    }
-
+export const getJobApplications = async (
+  pageNumber = 1,
+  searchParam = "",
+  companySearchParam = "",
+  statusParam = "",
+  jobTypeParam = "",
+  sortParam = "desc",
+) => {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
     return {
-      jobApplications: jobApplications as JobApplication[],
-      hasNextPage: jobApplications.length === pageSize,
-      hasPreviousPage: pageNumber > 1,
+      error: "You must be logged in to use this service.",
+      hasNextPage: false,
+      hasPreviousPage: false,
     };
   }
-);
+
+  const pageSize = 12;
+
+  const skipAmount = (pageNumber - 1) * pageSize;
+
+  const mappedStatusParam = Object.entries(APPLICATION_STATUS_OPTIONS).find(
+    ([key, value]) => value === statusParam,
+  )?.[0];
+
+  const mappedJobTypeParam = Object.entries(JOB_TYPE_OPTIONS).find(
+    ([key, value]) => value === capitalizeJobTypeParams(jobTypeParam),
+  )?.[0];
+
+  const jobApplications = await prisma.jobApplication.findMany({
+    skip: skipAmount,
+    take: pageSize,
+    where: {
+      userId: currentUser.id,
+      jobTitle: {
+        contains: searchParam,
+      },
+      companyName: {
+        contains: companySearchParam,
+      },
+      applicationStatus: {
+        equals: mappedStatusParam as ApplicationStatus,
+      },
+      jobType: {
+        equals: mappedJobTypeParam as JobType,
+      },
+    },
+    orderBy: {
+      createdAt: sortParam as "asc" | "desc",
+    },
+    select: {
+      id: true,
+      jobTitle: true,
+      companyName: true,
+      applicationStatus: true,
+      jobType: true,
+      location: true,
+      comments: true,
+      createdAt: true,
+    },
+  });
+
+  if (jobApplications.length === 0) {
+    return {
+      error: "No job applications found.",
+      hasNextPage: false,
+      hasPreviousPage: false,
+    };
+  }
+
+  return {
+    jobApplications: jobApplications as JobApplication[],
+    hasNextPage: jobApplications.length === pageSize,
+    hasPreviousPage: pageNumber > 1,
+  };
+};
 
 export const handleJobFormSubmit = async ({ mode, jobId, data }: handleJobFormSubmitParams) => {
   const processResult = async (result: any) => {
@@ -206,7 +195,7 @@ export const searchSalaryDataset = async (
   pageParam: string = "1",
   sortParam: string = "desc",
   searchParam: string = "",
-  citySearchParam: string = ""
+  citySearchParam: string = "",
 ) => {
   const pageSize = 10;
   const pageNumber = parseInt(pageParam);
