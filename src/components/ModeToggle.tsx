@@ -11,8 +11,7 @@ const ModeToggle = () => {
       size="icon"
       name="color-mode-toggle"
       aria-label="Toggle color mode between light and dark mode"
-      className="bg-transparent hover:bg-facebook-400 hover:text-white text-white  transition-all dark:hover:bg-gray-700"
-      variant="ghost"
+      variant="outline"
       onClick={() => {
         setTheme(isDarkTheme ? "light" : "dark");
       }}

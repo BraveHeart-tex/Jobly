@@ -1,0 +1,477 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "5",
+  "dialect": "mysql",
+  "tables": {
+    "Application": {
+      "name": "Application",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "autoincrement": false,
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jobId": {
+          "autoincrement": false,
+          "name": "jobId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "coverLetter": {
+          "autoincrement": false,
+          "name": "coverLetter",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resume": {
+          "autoincrement": false,
+          "name": "resume",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": "'pending'",
+          "autoincrement": false,
+          "name": "status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "appliedAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "appliedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Application_id": {
+          "name": "Application_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "jobId": {
+          "name": "jobId",
+          "columns": [
+            "jobId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Company": {
+      "name": "Company",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "website": {
+          "autoincrement": false,
+          "name": "website",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "industry": {
+          "autoincrement": false,
+          "name": "industry",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location": {
+          "autoincrement": false,
+          "name": "location",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "logo": {
+          "autoincrement": false,
+          "name": "logo",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "autoincrement": false,
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Company_id": {
+          "name": "Company_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "Job": {
+      "name": "Job",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "companyId": {
+          "autoincrement": false,
+          "name": "companyId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "autoincrement": false,
+          "name": "title",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "autoincrement": false,
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location": {
+          "autoincrement": false,
+          "name": "location",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salaryRange": {
+          "autoincrement": false,
+          "name": "salaryRange",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employmentType": {
+          "autoincrement": false,
+          "name": "employmentType",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isAnonymous": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "isAnonymous",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "Job_id": {
+          "name": "Job_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "companyId": {
+          "name": "companyId",
+          "columns": [
+            "companyId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "JobSkill": {
+      "name": "JobSkill",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hobId": {
+          "autoincrement": false,
+          "name": "hobId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skillName": {
+          "autoincrement": false,
+          "name": "skillName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobSkill_id": {
+          "name": "JobSkill_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "hobId": {
+          "name": "hobId",
+          "columns": [
+            "hobId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "UserProfile": {
+      "name": "UserProfile",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "autoincrement": false,
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio": {
+          "autoincrement": false,
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "experience": {
+          "autoincrement": false,
+          "name": "experience",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "education": {
+          "autoincrement": false,
+          "name": "education",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "linkedin": {
+          "autoincrement": false,
+          "name": "linkedin",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "github": {
+          "autoincrement": false,
+          "name": "github",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "autoincrement": false,
+          "name": "image",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "createdAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "default": "(now())",
+          "autoincrement": false,
+          "name": "updatedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserProfile_id": {
+          "name": "UserProfile_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "UserSkill": {
+      "name": "UserSkill",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "autoincrement": false,
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "skillName": {
+          "autoincrement": false,
+          "name": "skillName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserSkill_id": {
+          "name": "UserSkill_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {
+      "Application": {
+        "columns": {
+          "appliedAt": {
+            "isDefaultAnExpression": true
+          }
+        }
+      },
+      "Company": {
+        "columns": {
+          "createdAt": {
+            "isDefaultAnExpression": true
+          },
+          "updatedAt": {
+            "isDefaultAnExpression": true
+          }
+        }
+      },
+      "Job": {
+        "columns": {
+          "createdAt": {
+            "isDefaultAnExpression": true
+          },
+          "updatedAt": {
+            "isDefaultAnExpression": true
+          }
+        }
+      },
+      "UserProfile": {
+        "columns": {
+          "createdAt": {
+            "isDefaultAnExpression": true
+          },
+          "updatedAt": {
+            "isDefaultAnExpression": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -17,12 +17,7 @@ const ActiveLinkAnimation = ({ href, className }: IActiveLinkAnimationProps) => 
     return null;
   }
 
-  return (
-    <motion.div
-      className={cn("absolute inset-0 w-full bg-facebook-700 dark:bg-gray-900 rounded-md", className)}
-      layoutId="underline"
-    />
-  );
+  return <motion.div className={cn("absolute inset-0 w-full bg-primary rounded-md", className)} layoutId="underline" />;
 };
 
 export default ActiveLinkAnimation;

@@ -4,7 +4,7 @@ import SidebarContent from "@/app/components/SidebarContent";
 
 export default async function SidebarWithHeader({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/50">
       <SidebarContent className="hidden lg:block" />
       {/* mobile nav */}
       <MobileNav />
