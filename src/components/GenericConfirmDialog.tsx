@@ -1,44 +1,139 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useGenericConfirm } from "@/app/contexts/GenericConfirmContext";
-import { useTransition } from "react";
+import { useEffect, useRef, useTransition } from "react";
+import { useGenericConfirmStore } from "@/store/genericConfirmStore";
+import { Button } from "@/components/ui/button";
+import { useMediaQuery } from "usehooks-ts";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 
 const GenericConfirmDialog = () => {
-  let [isPending, startTransition] = useTransition();
-  const { visible, cleanUp, title, message, customElement, primaryActionLabel, callPrimaryAction } =
-    useGenericConfirm();
+  const {
+    visible,
+    cleanUp,
+    title,
+    message,
+    primaryActionLabel,
+    secondaryActionLabel,
+    callPrimaryAction,
+    callSecondaryAction,
+    loading,
+  } = useGenericConfirmStore((state) => state);
+  const actionRef = useRef<HTMLButtonElement | null>(null);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  let [, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (visible && actionRef?.current) {
+      actionRef?.current?.focus();
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (visible && event.key === "Enter" && actionRef.current) {
+        actionRef.current.click();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [visible]);
+
+  if (isMobile) {
+    return (
+      <Drawer
+        open={visible}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) {
+            cleanUp();
+          }
+        }}
+      >
+        <DrawerContent>
+          <DrawerHeader className="text-left">
+            <DrawerTitle>{title}</DrawerTitle>
+            <DrawerDescription>{message}</DrawerDescription>
+          </DrawerHeader>
+          <DrawerFooter className="pt-2">
+            {primaryActionLabel && (
+              <Button
+                disabled={loading}
+                loading={loading}
+                onClick={() => {
+                  startTransition(async () => {
+                    callPrimaryAction();
+                  });
+                }}
+              >
+                {primaryActionLabel}
+              </Button>
+            )}
+            <Button
+              disabled={loading}
+              variant="ghost"
+              onClick={() => {
+                callSecondaryAction();
+                cleanUp();
+              }}
+            >
+              {secondaryActionLabel}
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
 
   return (
     <AlertDialog open={visible}>
       <AlertDialogContent onEscapeKeyDown={cleanUp}>
         <AlertDialogHeader className="text-left">
-          <AlertDialogTitle className="text-facebook dark:text-gray-200">{title} </AlertDialogTitle>
+          <AlertDialogTitle>{title} </AlertDialogTitle>
           <AlertDialogDescription>{message}</AlertDialogDescription>
-          {customElement}
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={cleanUp}>Cancel</AlertDialogCancel>
-          {primaryActionLabel && (
-            <AlertDialogAction
-              className="bg-facebook hover:bg-facebook-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
+          <div className="flex flex-row items-center gap-1">
+            <Button
+              disabled={loading}
+              variant="outline"
               onClick={() => {
-                startTransition(async () => {
-                  await callPrimaryAction();
-                });
+                callSecondaryAction();
+                cleanUp();
               }}
             >
-              {primaryActionLabel}
-            </AlertDialogAction>
-          )}
+              {secondaryActionLabel}
+            </Button>
+            {primaryActionLabel && (
+              <Button
+                onClick={() => {
+                  callPrimaryAction();
+                }}
+                disabled={loading}
+                loading={loading}
+                tabIndex={0}
+                ref={actionRef}
+              >
+                {primaryActionLabel}
+              </Button>
+            )}
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
