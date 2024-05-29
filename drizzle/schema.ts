@@ -1,7 +1,7 @@
 import { mysqlTable, index, primaryKey, int, text, varchar, datetime, tinyint } from "drizzle-orm/mysql-core";
 import { sql } from "drizzle-orm";
 
-export const Application = mysqlTable(
+export const application = mysqlTable(
   "Application",
   {
     id: int("id").autoincrement().notNull(),
@@ -20,7 +20,7 @@ export const Application = mysqlTable(
   },
 );
 
-export const Company = mysqlTable(
+export const company = mysqlTable(
   "Company",
   {
     id: int("id").autoincrement().notNull(),
@@ -40,7 +40,7 @@ export const Company = mysqlTable(
   },
 );
 
-export const Job = mysqlTable(
+export const job = mysqlTable(
   "Job",
   {
     id: int("id").autoincrement().notNull(),
@@ -62,7 +62,7 @@ export const Job = mysqlTable(
   },
 );
 
-export const JobSkill = mysqlTable(
+export const jobSkill = mysqlTable(
   "JobSkill",
   {
     id: int("id").autoincrement().notNull(),
@@ -77,7 +77,7 @@ export const JobSkill = mysqlTable(
   },
 );
 
-export const UserProfile = mysqlTable(
+export const userProfile = mysqlTable(
   "UserProfile",
   {
     id: int("id").autoincrement().notNull(),
@@ -98,7 +98,7 @@ export const UserProfile = mysqlTable(
   },
 );
 
-export const UserSkill = mysqlTable(
+export const userSkill = mysqlTable(
   "UserSkill",
   {
     id: int("id").autoincrement().notNull(),
