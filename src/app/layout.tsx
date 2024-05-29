@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import GenericConfirmDialog from "@/components/GenericConfirmDialog";
-import { GenericConfirmContextProvider } from "./contexts/GenericConfirmContext";
 import SonnerToaster from "@/components/SonnerToaster";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,13 +18,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en" data-theme={"corporate"}>
         <body className={inter.className}>
-          <GenericConfirmContextProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <SonnerToaster />
-              <GenericConfirmDialog />
-              {children}
-            </ThemeProvider>
-          </GenericConfirmContextProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SonnerToaster />
+            <GenericConfirmDialog />
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

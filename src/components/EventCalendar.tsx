@@ -5,7 +5,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FormEvent, useState, useTransition } from "react";
-import { useGenericConfirm } from "@/app/contexts/GenericConfirmContext";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
@@ -14,6 +13,7 @@ import { Event } from "@prisma/client";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import EventCalendarForm from "@/components/EventCalendarForm";
+import { useGenericConfirmStore } from "@/store/genericConfirmStore";
 
 const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
   let [isPending, startTransition] = useTransition();
@@ -22,7 +22,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
   const [showForm, setShowForm] = useState(false);
   const [events, setEvents] = useState(userEvents);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
-  const { showGenericConfirm } = useGenericConfirm();
+  const showGenericConfirm = useGenericConfirmStore((state) => state.showConfirm);
 
   // when user clicks on a date, Show selected date in form
   const handleDateSelect = (selectInfo: DateSelectArg) => {
@@ -74,7 +74,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       <div
         className={cn(
           showLabels &&
-            "text-facebook font-semibold hover:bg-muted flex cursor-pointer items-center gap-2 h-full rounded-md px-1 py-2 transition-all dark:text-gray-300 dark:hover:bg-gray-800"
+            "text-facebook font-semibold hover:bg-muted flex cursor-pointer items-center gap-2 h-full rounded-md px-1 py-2 transition-all dark:text-gray-300 dark:hover:bg-gray-800",
         )}
         onClick={onClick}
       >
@@ -97,7 +97,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
         title: "Delete Event",
         message: `Are you sure you want to delete the event: ${eventInfo.event.title}? This action cannot be undone.`,
         primaryActionLabel: "Delete",
-        primaryAction: () => {
+        onConfirm: () => {
           eventInfo.event.remove();
           setEvents(events.filter((event) => event.id !== parseInt(eventInfo.event.id)));
         },
@@ -148,7 +148,7 @@ const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
       toast.success("Event updated successfully.");
 
       const updatedEvents = events.map((event) =>
-        event.id === parseInt(selectedEventId!) ? { ...event, title } : event
+        event.id === parseInt(selectedEventId!) ? { ...event, title } : event,
       );
 
       setEvents(updatedEvents);
