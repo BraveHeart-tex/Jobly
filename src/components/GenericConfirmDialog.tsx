@@ -118,7 +118,7 @@ const GenericConfirmDialog = () => {
                 cleanUp();
               }}
             >
-              {secondaryActionLabel}
+              {secondaryActionLabel || "Cancel"}
             </Button>
             {primaryActionLabel && (
               <Button
