@@ -1,5 +1,5 @@
 import "../globals.css";
-import SidebarWithHeader from "../components/Sidebar";
+import SidebarWithHeader from "../../components/Sidebar";
 import MobileNavigation from "@/components/MobileNavigation";
 
 export const metadata = {

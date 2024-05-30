@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, cn, deepEqual } from "@/lib/utils";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { handleJobFormSubmit } from "@/app/actions";
+import { handleJobFormSubmit } from "../../actions";
 import { FaSpinner } from "react-icons/fa";
 import { HiPencil, HiDocumentAdd } from "react-icons/hi";
 import { toast } from "sonner";
@@ -82,7 +82,7 @@ const JobCrudForm = ({ mode, initialData, formClassName }: JobCrudFormPropsUnion
 
   const mapStatus = (status: string) => {
     return Object.entries(APPLICATION_STATUS_OPTIONS).find(
-      ([key, value]) => value === status
+      ([key, value]) => value === status,
     )?.[0] as ApplicationStatus;
   };
 

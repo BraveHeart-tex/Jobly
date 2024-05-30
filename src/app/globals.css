@@ -156,3 +156,55 @@ body {
   background-color: transparent;
   border: none;
 }
+
+/**
+ * Custom Clerk Login Page
+ */
+
+.cl-card {
+  @apply bg-card w-full mx-auto ml-2 shadow-none;
+}
+
+.cl-headerTitle {
+  @apply text-primary;
+}
+
+.cl-headerSubtitle {
+  @apply text-muted-foreground w-full;
+}
+
+.cl-socialButtonsBlockButton__google {
+  @apply bg-background hover:bg-opacity-80 tracking-normal;
+}
+
+.cl-formButtonPrimary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/80;
+}
+
+.cl-dividerLine {
+  @apply bg-primary;
+}
+
+.cl-dividerText {
+  @apply text-muted-foreground;
+}
+
+.cl-formFieldLabel {
+  @apply text-muted-foreground;
+}
+
+.cl-footerActionText {
+  @apply text-muted-foreground;
+}
+
+.cl-formFieldInfoText__password {
+  @apply text-muted-foreground;
+}
+
+.cl-formFieldSuccessText {
+  @apply text-green-500;
+}
+
+.cl-footerActionLink {
+  @apply text-primary pointer-events-auto;
+}

@@ -1,4 +1,4 @@
-import AnimationRoot from "@/app/animations/AnimationRoot";
+import AnimationRoot from "@/components/animations/AnimationRoot";
 import { Button } from "@/components/ui/button";
 import { getGeneric } from "@/lib/generic";
 import { JOB_TYPE_OPTIONS, formatDate } from "@/lib/utils";

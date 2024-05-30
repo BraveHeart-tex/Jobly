@@ -32,7 +32,7 @@ const PaginationControls = ({
         }`}
         className={cn(
           "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
-          !hasPreviousPage && "opacity-50 pointer-events-none"
+          !hasPreviousPage && "opacity-50 pointer-events-none",
         )}
       >
         <FaArrowLeft /> Previous
@@ -44,7 +44,7 @@ const PaginationControls = ({
         }`}
         className={cn(
           "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
-          !hasNextPage && "opacity-50 pointer-events-none"
+          !hasNextPage && "opacity-50 pointer-events-none",
         )}
       >
         Next <FaArrowRight />

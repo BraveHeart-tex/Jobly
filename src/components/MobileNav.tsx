@@ -1,5 +1,5 @@
 "use client";
-import Logo from "@/app/components/Logo";
+import Logo from "@/components/Logo";
 import ModeToggle from "@/components/ModeToggle";
 import { UserButton } from "@clerk/nextjs";
 import { useTheme } from "next-themes";

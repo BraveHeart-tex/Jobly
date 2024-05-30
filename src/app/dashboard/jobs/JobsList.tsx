@@ -1,6 +1,6 @@
 import { JobApplication } from "@prisma/client";
 import JobCard from "./JobCard";
-import AnimateListPresence from "@/app/animations/AnimateListPresence";
+import AnimateListPresence from "@/components/animations/AnimateListPresence";
 
 interface IJobsListProps {
   jobApplications: JobApplication[];

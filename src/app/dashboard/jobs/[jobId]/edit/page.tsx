@@ -1,7 +1,7 @@
 import { getGeneric } from "@/lib/generic";
 import EditJobPageClient from "./EditJobPageClient";
 import { JobApplication } from "@prisma/client";
-import AnimationRoot from "@/app/animations/AnimationRoot";
+import AnimationRoot from "@/components/animations/AnimationRoot";
 
 interface IParams {
   jobId: string;

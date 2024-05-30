@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/app/libs/prismadb";
+import prisma from "../../libs/prismadb";
 import {
   CreateGenericInput,
   CreateGenericWithCurrentUserInput,
@@ -75,8 +75,8 @@ export const deleteGeneric = async <T>({
       ? // @ts-ignore
         await table.delete({ where: whereCondition })
       : isMany
-      ? await table.deleteMany()
-      : null;
+        ? await table.deleteMany()
+        : null;
 
     return result ? { data: result as T } : null;
   } catch (error) {

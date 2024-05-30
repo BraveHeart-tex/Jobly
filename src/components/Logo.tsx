@@ -1,4 +1,4 @@
-import AppLogo from "@/app/assets/logo.svg";
+import AppLogo from "../../assets/logo.svg";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 

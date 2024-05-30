@@ -1,4 +1,4 @@
-import AnimationRoot from "@/app/animations/AnimationRoot";
+import AnimationRoot from "@/components/animations/AnimationRoot";
 import EventCalendar from "@/components/EventCalendar";
 import { getGenericListByCurrentUser } from "@/lib/generic";
 import { Event } from "@prisma/client";

@@ -1,4 +1,4 @@
-import { getTotalJobStats } from "@/app/actions";
+import { getTotalJobStats } from "../../actions";
 import { Card } from "@/components/ui/card";
 import { StatusMappings } from "@/lib/types";
 import { cn } from "@/lib/utils";

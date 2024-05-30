@@ -1,4 +1,4 @@
-import prisma from "@/app/libs/prismadb";
+import prisma from "../../libs/prismadb";
 import { JobApplication } from "@prisma/client";
 import { IconType } from "react-icons/lib";
 

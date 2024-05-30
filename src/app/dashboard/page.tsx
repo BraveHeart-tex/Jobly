@@ -1,4 +1,4 @@
-import AnimationRoot from "@/app/animations/AnimationRoot";
+import AnimationRoot from "@/components/animations/AnimationRoot";
 import ApplicationStats from "./ApplicationStats";
 
 const DashboardPage = () => {

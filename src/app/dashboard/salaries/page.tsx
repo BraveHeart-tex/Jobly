@@ -1,10 +1,10 @@
 import SalaryDataTable from "./SalaryDataTable";
 import SalaryDataFilterForm from "./SalaryDataFilterForm";
 import Link from "next/link";
-import { searchSalaryDataset } from "@/app/actions";
+import { searchSalaryDataset } from "../../../../actions";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import AnimationRoot from "@/app/animations/AnimationRoot";
+import AnimationRoot from "@/components/animations/AnimationRoot";
 
 const SalaryEstimationsPage = async ({
   searchParams,
@@ -46,7 +46,7 @@ const SalaryEstimationsPage = async ({
             href={`/dashboard/salaries?page=${parseInt(page) - 1}&sort=${sort}&search=${search}&city=${city}`}
             className={cn(
               "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
-              !result?.hasPreviousPage && "opacity-50 pointer-events-none"
+              !result?.hasPreviousPage && "opacity-50 pointer-events-none",
             )}
           >
             <FaArrowLeft /> Previous
@@ -59,7 +59,7 @@ const SalaryEstimationsPage = async ({
             href={`/dashboard/salaries?page=${parseInt(page) + 1}&sort=${sort}&search=${search}&city=${city}`}
             className={cn(
               "bg-facebook dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-100 flex items-center gap-2 rounded-md p-2",
-              !result?.hasNextPage && "opacity-50 pointer-events-none"
+              !result?.hasNextPage && "opacity-50 pointer-events-none",
             )}
           >
             Next <FaArrowRight />

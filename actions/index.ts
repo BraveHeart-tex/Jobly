@@ -1,6 +1,6 @@
 "use server";
 import { ApplicationStatus, JobApplication, JobType } from "@prisma/client";
-import prisma from "@/app/libs/prismadb";
+import prisma from "../libs/prismadb";
 import {
   APPLICATION_STATUS_OPTIONS,
   JOB_TYPE_OPTIONS,

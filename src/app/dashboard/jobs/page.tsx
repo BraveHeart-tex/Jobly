@@ -1,9 +1,9 @@
 import JobsList from "./JobsList";
 import JobSearchForm from "./JobSearchForm";
-import { getJobApplications } from "@/app/actions";
-import PaginationControls from "@/app/components/PaginationControls";
+import { getJobApplications } from "../../../../actions";
+import PaginationControls from "@/components/PaginationControls";
 import NoJobsFound from "@/components/NoJobsFound";
-import AnimationRoot from "@/app/animations/AnimationRoot";
+import AnimationRoot from "@/components/animations/AnimationRoot";
 
 const JobsPage = async ({
   searchParams,

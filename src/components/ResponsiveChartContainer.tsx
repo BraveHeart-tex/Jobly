@@ -1,5 +1,5 @@
-import { getMonthlyChartData } from "@/app/actions";
-import MotionDiv from "@/app/animations/MotionDiv";
+import { getMonthlyChartData } from "../../actions";
+import MotionDiv from "@/components/animations/MotionDiv";
 import BarChartComponent from "./BarChartComponent";
 import NoJobsFound from "@/components/NoJobsFound";
 
