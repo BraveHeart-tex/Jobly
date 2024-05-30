@@ -1,2 +1,2 @@
 import { relations } from "drizzle-orm/relations";
-import {} from "./schema";
+import {} from "@/data-access/database/schema";

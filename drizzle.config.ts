@@ -1,9 +1,8 @@
 import { defineConfig } from "drizzle-kit";
-import type { Config } from "drizzle-kit";
 
 export default defineConfig({
-  schema: "./lib/database/schema.ts",
   dialect: "mysql",
+  schema: "./lib/database/schema.ts",
   out: "./drizzle",
   dbCredentials: {
     host: process.env.DATABASE_HOST!,
@@ -12,4 +11,4 @@ export default defineConfig({
     port: 3306,
     database: process.env.DATABASE_NAME!,
   },
-}) satisfies Config;
+});

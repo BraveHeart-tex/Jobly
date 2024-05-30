@@ -9,3 +9,5 @@ const poolConnection = mysql.createPool({
 });
 
 const db = drizzle(poolConnection);
+
+export default db;

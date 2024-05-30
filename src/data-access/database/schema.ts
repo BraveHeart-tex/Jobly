@@ -1,5 +1,5 @@
 import { mysqlTable, index, primaryKey, int, text, varchar, datetime, tinyint } from "drizzle-orm/mysql-core";
-import { sql } from "drizzle-orm";
+import { InferInsertModel, sql } from "drizzle-orm";
 
 export const application = mysqlTable(
   "Application",
@@ -61,6 +61,8 @@ export const job = mysqlTable(
     };
   },
 );
+
+export type JobInsertModel = InferInsertModel<typeof job>;
 
 export const jobSkill = mysqlTable(
   "JobSkill",
