@@ -1,10 +1,12 @@
-import { company, job } from "@/data-access/database/schema";
+import { company, job } from "@/data-access/database";
 import { faker } from "@faker-js/faker";
 import dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 
 dotenv.config();
+
+// TODO: Refactor this to handle connection closure
 
 // @ts-ignore
 const connection = await mysql.createConnection({

@@ -1,7 +1,6 @@
 {
   "name": "jobly",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,6 +23,7 @@
     "@fullcalendar/react": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
     "@hookform/resolvers": "^3.3.2",
+    "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@prisma/client": "^5.7.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
