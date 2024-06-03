@@ -12,6 +12,9 @@ export const user = mysqlTable(
     })
       .unique()
       .notNull(),
+    firstName: varchar("firstName", { length: 255 }).notNull(),
+    lastName: varchar("lastName", { length: 255 }).notNull(),
+    hashedPassword: varchar("hashedPassword", { length: 255 }).notNull(),
   },
   (table) => {
     return {
@@ -86,7 +89,7 @@ export const company = mysqlTable(
     bio: text("bio"),
     website: varchar("website", { length: 512 }),
     followerCount: int("followerCount").default(0),
-    industry: varchar("industry", { length: 256 }),
+    industry: varchar("industry", { length: 255 }),
     address: varchar("address", { length: 512 }),
     foundedYear: varchar("foundedYear", { length: 50 }),
     employeeCount: varchar("employeeCount", { length: 50 }),
@@ -113,7 +116,7 @@ export const job = mysqlTable(
       .references(() => company.id),
     title: varchar("title", { length: 512 }).notNull(),
     description: text("description"),
-    location: varchar("location", { length: 256 }),
+    location: varchar("location", { length: 255 }),
     workType: mysqlEnum("workType", ["office", "remote", "hybrid", "other"]).default("office"),
     salaryRange: varchar("salaryRange", { length: 50 }),
     employmentType: mysqlEnum("employmentType", [
@@ -181,9 +184,9 @@ export const userProfile = mysqlTable(
       .notNull()
       .references(() => user.id),
     bio: text("bio"),
-    linkedin: varchar("linkedin", { length: 256 }),
-    github: varchar("github", { length: 256 }),
-    portfolio: varchar("portfolio", { length: 256 }),
+    linkedin: varchar("linkedin", { length: 255 }),
+    github: varchar("github", { length: 255 }),
+    portfolio: varchar("portfolio", { length: 255 }),
     image: varchar("image", { length: 512 }),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
     updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
@@ -338,7 +341,7 @@ export const userViewsJob = mysqlTable(
   "UserViewsJob",
   {
     id: int("id").autoincrement().notNull(),
-    viewedUserId: int("viewedUserId")
+    viewerUserId: int("viewerUserId")
       .notNull()
       .references(() => user.id),
     viewedJobId: int("viewedJobId")
@@ -348,8 +351,103 @@ export const userViewsJob = mysqlTable(
   (table) => {
     return {
       UserViewsJob_id: primaryKey({ columns: [table.id], name: "UserViewsJob_id" }),
-      viewedUserId: index("viewedUserId").on(table.viewedUserId),
+      viewerUserId: index("viewerUserId").on(table.viewerUserId),
       viewedJobId: index("viewedJobId").on(table.viewedJobId),
+    };
+  },
+);
+
+export const resume = mysqlTable(
+  "Resume",
+  {
+    id: int("id").autoincrement().notNull(),
+    title: varchar("title", { length: 512 }).notNull(),
+    userId: int("userId")
+      .references(() => user.id)
+      .notNull(),
+    language: varchar("language", { length: 100 }).notNull(),
+    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
+  },
+  (table) => {
+    return {
+      Resume_id: primaryKey({ columns: [table.id], name: "Resume_id" }),
+      userId: index("userId").on(table.userId),
+    };
+  },
+);
+
+export const section = mysqlTable(
+  "Section",
+  {
+    id: int("id").autoincrement().notNull(),
+    name: varchar("name", { length: 100 }).notNull(),
+    displayOrder: int("displayOrder").notNull(),
+  },
+  (table) => {
+    return {
+      Section_id: primaryKey({ columns: [table.id], name: "Section_id" }),
+    };
+  },
+);
+
+export const field = mysqlTable(
+  "Field",
+  {
+    id: int("id").autoincrement().notNull(),
+    sectionId: int("sectionId")
+      .references(() => section.id)
+      .notNull(),
+    name: varchar("name", { length: 100 }).notNull(),
+    dataType: varchar("dataType", { length: 100 }).notNull(),
+  },
+  (table) => {
+    return {
+      Field_id: primaryKey({ columns: [table.id], name: "Field_id" }),
+      sectionId: index("sectionId").on(table.sectionId),
+    };
+  },
+);
+
+export const userSection = mysqlTable(
+  "UserSection",
+  {
+    id: int("id").autoincrement().notNull(),
+    resumeId: int("resumeId")
+      .references(() => resume.id)
+      .notNull(),
+    sectionId: int("sectionId")
+      .references(() => section.id)
+      .notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
+    displayOrder: int("displayOrder").notNull(),
+  },
+  (table) => {
+    return {
+      UserSection_id: primaryKey({ columns: [table.id], name: "UserSection_id" }),
+      resumeId: index("resumeId").on(table.resumeId),
+      sectionId: index("sectionId").on(table.sectionId),
+    };
+  },
+);
+
+export const userField = mysqlTable(
+  "UserField",
+  {
+    id: int("id").autoincrement().notNull(),
+    userSectionId: int("userSectionId")
+      .references(() => userSection.id)
+      .notNull(),
+    fieldId: int("fieldId")
+      .references(() => field.id)
+      .notNull(),
+    label: varchar("label", { length: 255 }).notNull(),
+  },
+  (table) => {
+    return {
+      UserField_id: primaryKey({ columns: [table.id], name: "UserField_id" }),
+      userSectionId: index("userSectionId").on(table.userSectionId),
+      fieldId: index("fieldId").on(table.fieldId),
     };
   },
 );
