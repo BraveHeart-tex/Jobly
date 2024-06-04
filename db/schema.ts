@@ -4,9 +4,7 @@ import { relations, sql } from "drizzle-orm";
 export const user = mysqlTable(
   "User",
   {
-    id: varchar("id", {
-      length: 255,
-    }).primaryKey(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     email: varchar("email", {
       length: 255,
     })
@@ -30,11 +28,11 @@ export const session = mysqlTable(
     id: varchar("id", {
       length: 255,
     }).primaryKey(),
-    userId: varchar("user_id", {
-      length: 255,
-    })
+    userId: int("user_id")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     expiresAt: datetime("expires_at").notNull(),
   },
   (table) => {
@@ -51,7 +49,9 @@ export const application = mysqlTable(
     id: int("id").autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     jobId: int("jobId")
       .notNull()
       .references(() => job.id),
@@ -113,7 +113,9 @@ export const job = mysqlTable(
     id: int("id").autoincrement().notNull(),
     companyId: int("companyId")
       .notNull()
-      .references(() => company.id),
+      .references(() => company.id, {
+        onDelete: "cascade",
+      }),
     title: varchar("title", { length: 512 }).notNull(),
     description: text("description"),
     location: varchar("location", { length: 255 }),
@@ -158,7 +160,9 @@ export const jobSkill = mysqlTable(
     id: int("id").autoincrement().notNull(),
     jobId: int("jobId")
       .notNull()
-      .references(() => job.id),
+      .references(() => job.id, {
+        onDelete: "cascade",
+      }),
     skillName: varchar("skillName", { length: 100 }).notNull(),
   },
   (table) => {
@@ -182,7 +186,9 @@ export const userProfile = mysqlTable(
     id: int("id").autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     bio: text("bio"),
     linkedin: varchar("linkedin", { length: 255 }),
     github: varchar("github", { length: 255 }),
@@ -199,74 +205,15 @@ export const userProfile = mysqlTable(
   },
 );
 
-export const education = mysqlTable(
-  "Education",
-  {
-    id: int("id").autoincrement().notNull(),
-    userProfileId: int("userProfileId")
-      .notNull()
-      .references(() => userProfile.id),
-    institution: varchar("institution", { length: 255 }).notNull(),
-    degree: varchar("degree", { length: 255 }).notNull(),
-    fieldOfStudy: varchar("fieldOfStudy", { length: 255 }),
-    startDate: datetime("startDate", { mode: "string" }).notNull(),
-    endDate: datetime("endDate", { mode: "string" }),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
-  },
-  (table) => {
-    return {
-      userProfileId: index("userProfileId").on(table.userProfileId),
-      Education_id: primaryKey({ columns: [table.id], name: "Education_id" }),
-    };
-  },
-);
-
-export const experience = mysqlTable(
-  "Experience",
-  {
-    id: int("id").autoincrement().notNull(),
-    userProfileId: int("userProfileId")
-      .notNull()
-      .references(() => userProfile.id),
-    description: text("description").notNull(),
-    startDate: datetime("startDate", { mode: "string" }).notNull(),
-    endDate: datetime("endDate", { mode: "string" }),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
-  },
-  (table) => {
-    return {
-      userProfileId: index("userProfileId").on(table.userProfileId),
-      Experience_id: primaryKey({ columns: [table.id], name: "Experience_id" }),
-    };
-  },
-);
-
-export const userSkill = mysqlTable(
-  "UserSkill",
-  {
-    id: int("id").autoincrement().notNull(),
-    userId: int("userId")
-      .notNull()
-      .references(() => user.id),
-    skillName: varchar("skillName", { length: 100 }).notNull(),
-  },
-  (table) => {
-    return {
-      userId: index("userId").on(table.userId),
-      UserSkill_id: primaryKey({ columns: [table.id], name: "UserSkill_id" }),
-    };
-  },
-);
-
 export const coverLetter = mysqlTable(
   "CoverLetter",
   {
     id: int("id").autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     content: text("content").notNull(),
   },
   (table) => {
@@ -283,10 +230,14 @@ export const userFollowsComapny = mysqlTable(
     id: int("id").autoincrement().notNull(),
     companyId: int("companyId")
       .notNull()
-      .references(() => company.id),
+      .references(() => company.id, {
+        onDelete: "cascade",
+      }),
     userId: int("userId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
   },
   (table) => {
     return {
@@ -301,10 +252,14 @@ export const resumeView = mysqlTable(
   "ResumeView",
   {
     id: int("id").autoincrement().notNull(),
-    viewerCompanyId: int("viewerCompanyId").references(() => company.id),
+    viewerCompanyId: int("viewerCompanyId").references(() => company.id, {
+      onDelete: "cascade",
+    }),
     viewedUserId: int("viewedUserId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     viewedAt: datetime("viewedAt", { mode: "string" }).notNull(),
   },
   (table) => {
@@ -322,10 +277,14 @@ export const userBookmarksJob = mysqlTable(
     id: int("id").autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     jobId: int("jobId")
       .notNull()
-      .references(() => job.id),
+      .references(() => job.id, {
+        onDelete: "cascade",
+      }),
     bookmarkedAt: datetime("bookmarkedAt", { mode: "string" }).notNull(),
   },
   (table) => {
@@ -343,10 +302,14 @@ export const userViewsJob = mysqlTable(
     id: int("id").autoincrement().notNull(),
     viewerUserId: int("viewerUserId")
       .notNull()
-      .references(() => user.id),
+      .references(() => user.id, {
+        onDelete: "cascade",
+      }),
     viewedJobId: int("viewedJobId")
       .notNull()
-      .references(() => job.id),
+      .references(() => job.id, {
+        onDelete: "cascade",
+      }),
   },
   (table) => {
     return {
@@ -363,7 +326,7 @@ export const resume = mysqlTable(
     id: int("id").autoincrement().notNull(),
     title: varchar("title", { length: 512 }).notNull(),
     userId: int("userId")
-      .references(() => user.id)
+      .references(() => user.id, { onDelete: "cascade" })
       .notNull(),
     language: varchar("language", { length: 100 }).notNull(),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
@@ -414,7 +377,9 @@ export const userSection = mysqlTable(
   {
     id: int("id").autoincrement().notNull(),
     resumeId: int("resumeId")
-      .references(() => resume.id)
+      .references(() => resume.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     sectionId: int("sectionId")
       .references(() => section.id)
@@ -436,7 +401,9 @@ export const userField = mysqlTable(
   {
     id: int("id").autoincrement().notNull(),
     userSectionId: int("userSectionId")
-      .references(() => userSection.id)
+      .references(() => userSection.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     fieldId: int("fieldId")
       .references(() => field.id)
