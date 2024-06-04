@@ -1,9 +1,9 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/src/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
-import GenericConfirmDialog from "@/components/GenericConfirmDialog";
-import { Toaster } from "@/components/ui/sonner";
+import GenericConfirmDialog from "@/src/components/GenericConfirmDialog";
+import { Toaster } from "@/src/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 

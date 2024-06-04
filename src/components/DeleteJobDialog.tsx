@@ -9,8 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { deleteGeneric } from "@/lib/generic";
+} from "@/src/components/ui/alert-dialog";
+import { deleteGeneric } from "@/src/lib/generic";
 import { JobApplication } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";

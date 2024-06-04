@@ -1,6 +1,6 @@
 import AppLogo from "../../assets/logo.svg";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn } from "@/src/lib/utils";
 
 interface ILogoProps {
   width?: string;

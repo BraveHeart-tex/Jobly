@@ -1,10 +1,10 @@
 import { getTotalJobStats } from "../../actions";
-import { Card } from "@/components/ui/card";
-import { StatusMappings } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { Card } from "@/src/components/ui/card";
+import { cn } from "@/src/lib/utils";
 import React from "react";
 import { AiOutlineClockCircle, AiOutlineDelete, AiOutlineHourglass } from "react-icons/ai";
 import { FaMoneyBill } from "react-icons/fa";
+import { StatusMappings } from "../lib/types";
 
 interface TotalJobApplicationStat {
   status: string;

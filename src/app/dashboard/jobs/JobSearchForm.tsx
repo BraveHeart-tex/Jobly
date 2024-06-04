@@ -1,10 +1,10 @@
 "use client";
 import { searchJobs } from "../../../../actions";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS } from "@/lib/utils";
+import { Button } from "@/src/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/src/components/ui/select";
+import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS } from "@/src/lib/utils";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";

@@ -1,5 +1,5 @@
 "use client";
-import { LINK_ITEMS, cn } from "@/lib/utils";
+import { LINK_ITEMS, cn } from "@/src/lib/utils";
 import { createElement } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,7 +20,7 @@ const MobileNavigation = () => {
             key={link.href}
             className={cn(
               "inline-flex h-full whitespace-nowrap flex-1 flex-col items-center justify-center px-5 hover:bg-gray-200 dark:hover:bg-gray-700 group",
-              isActive(link.href) && "bg-gray-300 dark:bg-gray-900 hover:bg-gray-300 dark:hover:bg-gray-900"
+              isActive(link.href) && "bg-gray-300 dark:bg-gray-900 hover:bg-gray-300 dark:hover:bg-gray-900",
             )}
           >
             {link.icon &&
@@ -30,7 +30,7 @@ const MobileNavigation = () => {
             <span
               className={cn(
                 "text-xs hidden md:inline text-foreground group-hover:text-facebook dark:group-hover:text-facebook-300",
-                isActive(link.href) && "text-facebook dark:text-foreground"
+                isActive(link.href) && "text-facebook dark:text-foreground",
               )}
             >
               {link.name}

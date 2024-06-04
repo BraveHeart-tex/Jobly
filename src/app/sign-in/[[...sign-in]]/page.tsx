@@ -1,6 +1,6 @@
 import { SignIn } from "@clerk/nextjs";
 import Image from "next/image";
-import MotionDiv from "@/components/animations/MotionDiv";
+import MotionDiv from "@/src/components/animations/MotionDiv";
 
 export default function Page() {
   return (

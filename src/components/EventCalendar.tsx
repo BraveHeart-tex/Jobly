@@ -6,14 +6,14 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { FormEvent, useState, useTransition } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/src/components/ui/dialog";
 import { toast } from "sonner";
-import { createGenericWithCurrentUser, deleteGeneric, updateGeneric } from "@/lib/generic";
+import { createGenericWithCurrentUser, deleteGeneric, updateGeneric } from "@/src/lib/generic";
 import { Event } from "@prisma/client";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import EventCalendarForm from "@/components/EventCalendarForm";
-import { useGenericConfirmStore } from "@/store/genericConfirmStore";
+import { Popover, PopoverContent, PopoverTrigger } from "@/src/components/ui/popover";
+import { cn } from "@/src/lib/utils";
+import EventCalendarForm from "@/src/components/EventCalendarForm";
+import { useGenericConfirmStore } from "@/src/store/genericConfirmStore";
 
 const EventCalendar = ({ userEvents }: { userEvents: Event[] }) => {
   let [isPending, startTransition] = useTransition();

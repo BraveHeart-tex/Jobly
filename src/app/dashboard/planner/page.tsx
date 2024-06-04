@@ -1,6 +1,6 @@
-import AnimationRoot from "@/components/animations/AnimationRoot";
-import EventCalendar from "@/components/EventCalendar";
-import { getGenericListByCurrentUser } from "@/lib/generic";
+import AnimationRoot from "@/src/components/animations/AnimationRoot";
+import EventCalendar from "@/src/components/EventCalendar";
+import { getGenericListByCurrentUser } from "@/src/lib/generic";
 import { Event } from "@prisma/client";
 
 const PlannerPage = async () => {

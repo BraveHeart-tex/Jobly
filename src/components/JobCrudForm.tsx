@@ -2,18 +2,18 @@
 import { ApplicationStatus, JobApplication, JobType } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import JobSchema from "@/schemas/JobSchema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, cn, deepEqual } from "@/lib/utils";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/src/components/ui/form";
+import { Input } from "@/src/components/ui/input";
+import { Button } from "@/src/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/src/components/ui/select";
+import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, cn, deepEqual } from "@/src/lib/utils";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { handleJobFormSubmit } from "../../actions";
 import { FaSpinner } from "react-icons/fa";
 import { HiPencil, HiDocumentAdd } from "react-icons/hi";
 import { toast } from "sonner";
+import JobSchema from "../schemas/JobSchema";
 
 interface JobCrudFormProps {
   mode: "create";

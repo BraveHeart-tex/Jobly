@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/src/lib/utils";
 import { useIsPresent } from "framer-motion";
 import { motion } from "framer-motion";
 interface IListAnimationProps {

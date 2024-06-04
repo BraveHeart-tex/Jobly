@@ -1,7 +1,7 @@
-import AnimationRoot from "@/components/animations/AnimationRoot";
-import { Button } from "@/components/ui/button";
-import { getGeneric } from "@/lib/generic";
-import { JOB_TYPE_OPTIONS, formatDate } from "@/lib/utils";
+import AnimationRoot from "@/src/components/animations/AnimationRoot";
+import { Button } from "@/src/components/ui/button";
+import { getGeneric } from "@/src/lib/generic";
+import { JOB_TYPE_OPTIONS, formatDate } from "@/src/lib/utils";
 import { JobApplication } from "@prisma/client";
 import Link from "next/link";
 import { FaArrowLeft, FaPencilAlt } from "react-icons/fa";

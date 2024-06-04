@@ -1,4 +1,4 @@
-import JobCrudForm from "@/components/JobCrudForm";
+import JobCrudForm from "@/src/components/JobCrudForm";
 
 const AddJobsPageClient = () => {
   return (

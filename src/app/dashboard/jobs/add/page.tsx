@@ -1,4 +1,4 @@
-import AnimationRoot from "@/components/animations/AnimationRoot";
+import AnimationRoot from "@/src/components/animations/AnimationRoot";
 import AddJobsPageClient from "./AddJobsPageClient";
 
 const AddJobPage = () => {

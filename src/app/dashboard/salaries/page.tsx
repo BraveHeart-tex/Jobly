@@ -3,8 +3,8 @@ import SalaryDataFilterForm from "./SalaryDataFilterForm";
 import Link from "next/link";
 import { searchSalaryDataset } from "../../../../actions";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { cn } from "@/lib/utils";
-import AnimationRoot from "@/components/animations/AnimationRoot";
+import { cn } from "@/src/lib/utils";
+import AnimationRoot from "@/src/components/animations/AnimationRoot";
 
 const SalaryEstimationsPage = async ({
   searchParams,

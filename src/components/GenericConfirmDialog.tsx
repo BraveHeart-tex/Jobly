@@ -6,10 +6,10 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/src/components/ui/alert-dialog";
 import { useEffect, useRef, useTransition } from "react";
-import { useGenericConfirmStore } from "@/store/genericConfirmStore";
-import { Button } from "@/components/ui/button";
+import { useGenericConfirmStore } from "@/src/store/genericConfirmStore";
+import { Button } from "@/src/components/ui/button";
 import { useMediaQuery } from "usehooks-ts";
 import {
   Drawer,
@@ -18,7 +18,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from "@/components/ui/drawer";
+} from "@/src/components/ui/drawer";
 
 const GenericConfirmDialog = () => {
   const {

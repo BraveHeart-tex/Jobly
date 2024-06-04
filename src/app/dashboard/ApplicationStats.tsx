@@ -1,5 +1,5 @@
-import JobStatusCard from "@/components/JobStatusCard";
-import ResponsiveChartContainer from "@/components/ResponsiveChartContainer";
+import JobStatusCard from "@/src/components/JobStatusCard";
+import ResponsiveChartContainer from "@/src/components/ResponsiveChartContainer";
 
 const ApplicationStats = () => {
   return (

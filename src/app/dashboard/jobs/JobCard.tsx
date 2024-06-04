@@ -1,10 +1,10 @@
 import { TfiLocationPin } from "react-icons/tfi";
 import { BsBriefcase, BsCalendarDay, BsInfoCircle } from "react-icons/bs";
 import { JobApplication } from "@prisma/client";
-import JobCardHeader from "@/components/JobCardHeader";
-import JobCardFooter from "@/components/JobCardFooter";
-import MotionDiv from "@/components/animations/MotionDiv";
-import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, formatDate } from "@/lib/utils";
+import JobCardHeader from "@/src/components/JobCardHeader";
+import JobCardFooter from "@/src/components/JobCardFooter";
+import MotionDiv from "@/src/components/animations/MotionDiv";
+import { APPLICATION_STATUS_OPTIONS, JOB_TYPE_OPTIONS, formatDate } from "@/src/lib/utils";
 
 interface IJobCardProps {
   jobApplication: JobApplication;

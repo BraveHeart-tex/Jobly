@@ -1,4 +1,4 @@
-import MotionDiv from "@/components/animations/MotionDiv";
+import MotionDiv from "@/src/components/animations/MotionDiv";
 import Link from "next/link";
 
 interface INoJobsFoundProps {

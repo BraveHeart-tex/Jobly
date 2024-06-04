@@ -1,7 +1,7 @@
 import { JobApplication } from "@prisma/client";
 import Link from "next/link";
-import JobCrudForm from "@/components/JobCrudForm";
-import { Button } from "@/components/ui/button";
+import JobCrudForm from "@/src/components/JobCrudForm";
+import { Button } from "@/src/components/ui/button";
 import { FaArrowLeft } from "react-icons/fa";
 
 interface IEditJobPageClientProps {

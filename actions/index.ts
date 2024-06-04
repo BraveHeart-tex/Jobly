@@ -7,12 +7,12 @@ import {
   capitalizeJobTypeParams,
   convertResponseData,
   mapTotalApplicationStatsToStatusCounts,
-} from "@/lib/utils";
+} from "@/src/lib/utils";
 import { redirect } from "next/navigation";
-import { IJobSearchFormValues } from "@/app/dashboard/jobs/JobSearchForm";
-import { createGenericWithCurrentUser, updateGeneric } from "@/lib/generic";
+import { IJobSearchFormValues } from "@/src/app/dashboard/jobs/JobSearchForm";
+import { createGenericWithCurrentUser, updateGeneric } from "@/src/lib/generic";
 import { revalidatePath } from "next/cache";
-import { handleJobFormSubmitParams } from "@/lib/types";
+import { handleJobFormSubmitParams } from "@/src/lib/types";
 import { currentUser as getCurrentUser } from "@clerk/nextjs";
 
 export const searchJobs = async ({

@@ -1,6 +1,6 @@
 import "../globals.css";
 import SidebarWithHeader from "../../components/Sidebar";
-import MobileNavigation from "@/components/MobileNavigation";
+import MobileNavigation from "@/src/components/MobileNavigation";
 
 export const metadata = {
   title: "Jobly | Dashboard",

@@ -1,6 +1,6 @@
-import Logo from "@/components/Logo";
-import NavItem from "@/components/NavItem";
-import { LINK_ITEMS, cn } from "@/lib/utils";
+import Logo from "@/src/components/Logo";
+import NavItem from "@/src/components/NavItem";
+import { LINK_ITEMS, cn } from "@/src/lib/utils";
 
 const SidebarContent = ({ className }: { className?: string }) => {
   return (

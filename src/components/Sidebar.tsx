@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import MobileNav from "@/components/MobileNav";
-import SidebarContent from "@/components/SidebarContent";
+import MobileNav from "@/src/components/MobileNav";
+import SidebarContent from "@/src/components/SidebarContent";
 
 export default async function SidebarWithHeader({ children }: { children: ReactNode }) {
   return (

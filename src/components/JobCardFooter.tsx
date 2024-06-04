@@ -1,4 +1,4 @@
-import DeleteJobDialog from "@/components/DeleteJobDialog";
+import DeleteJobDialog from "@/src/components/DeleteJobDialog";
 import Link from "next/link";
 import { FaPencilAlt } from "react-icons/fa";
 import { FiEye } from "react-icons/fi";
