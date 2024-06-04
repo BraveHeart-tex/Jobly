@@ -89,6 +89,9 @@ importers:
       framer-motion:
         specifier: ^10.12.16
         version: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      lucia:
+        specifier: ^3.2.0
+        version: 3.2.0
       lucide-react:
         specifier: ^0.290.0
         version: 0.290.0(react@18.3.1)
@@ -6356,7 +6359,7 @@ snapshots:
   dot-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.4.1
+      tslib: 2.6.2
 
   dotenv@16.4.5: {}
 
@@ -7484,7 +7487,7 @@ snapshots:
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.6.2
 
   lru-cache@10.2.2: {}
 
@@ -7640,7 +7643,7 @@ snapshots:
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.4.1
+      tslib: 2.6.2
 
   node-fetch-native@1.0.1: {}
 
