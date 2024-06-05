@@ -1,49 +1,35 @@
-import {
-  type Control,
-  type FieldValues,
-  type FormState,
-  useForm,
-  type UseFormClearErrors,
-  type UseFormGetFieldState,
-  type UseFormGetValues,
-  type UseFormHandleSubmit,
-  type UseFormProps,
-  type UseFormRegister,
-  type UseFormReset,
-  type UseFormResetField,
-  type UseFormSetError,
-  type UseFormSetFocus,
-  type UseFormSetValue,
-  type UseFormTrigger,
-  type UseFormUnregister,
-  type UseFormWatch,
-} from "react-hook-form";
+import { type FieldValues, type Path, useForm, type UseFormProps, type UseFormReturn } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type ZodObject } from "zod";
+import { zodErrorMap } from "@/lib/zodErrorMap";
 
-export const useExtendedForm = <TFieldValues extends FieldValues = FieldValues>(
-  props?: UseFormProps,
-): {
-  getValues: UseFormGetValues<FieldValues>;
-  resetField: UseFormResetField<FieldValues>;
-  clearErrors: UseFormClearErrors<FieldValues>;
-  unregister: UseFormUnregister<FieldValues>;
+type ExtendedUseFormReturn<
+  TFieldValues extends FieldValues,
+  TContext,
+  TTransformedValues extends FieldValues | undefined,
+> = UseFormReturn<TFieldValues, TContext, TTransformedValues> & {
   setInitialValues: (values: Record<keyof TFieldValues, unknown>) => void;
-  control: Control;
-  trigger: UseFormTrigger<FieldValues>;
-  setFocus: UseFormSetFocus<FieldValues>;
-  handleSubmit: UseFormHandleSubmit<FieldValues, undefined>;
-  getFieldState: UseFormGetFieldState<FieldValues>;
-  watch: UseFormWatch<FieldValues>;
-  setError: UseFormSetError<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
-  formState: FormState<FieldValues>;
-  reset: UseFormReset<FieldValues>;
-  register: UseFormRegister<FieldValues>;
-} => {
-  const form = useForm(props);
+};
 
-  const setInitialValues = (values: Record<keyof TFieldValues, unknown>) => {
-    Object.keys(values).forEach((key) => {
-      form.setValue(key, values[key]);
+export const useExtendedForm = <
+  TFieldValues extends FieldValues = FieldValues,
+  TContext = undefined,
+  TTransformedValues extends FieldValues | undefined = undefined,
+>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  schema: ZodObject<any>,
+  props?: UseFormProps<TFieldValues, TContext>,
+): ExtendedUseFormReturn<TFieldValues, TContext, TTransformedValues> => {
+  const form = useForm<TFieldValues, TContext, TTransformedValues>({
+    ...props,
+    resolver: zodResolver(schema, {
+      errorMap: zodErrorMap,
+    }),
+  });
+
+  const setInitialValues = (values: Record<Path<TFieldValues>, unknown>) => {
+    (Object.keys(values) as Array<Path<TFieldValues>>).forEach((key) => {
+      form.setValue(key, values[key] as never);
     });
   };
 

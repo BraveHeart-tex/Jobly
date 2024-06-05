@@ -28,7 +28,7 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
           alt={supportiveHeading}
           width={1920}
           height={1080}
-          className="size-[500px] dark:invert"
+          className="size-[500px]"
         />
         <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">{supportiveHeading}</h2>
       </div>

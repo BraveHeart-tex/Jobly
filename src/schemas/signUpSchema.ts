@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 export const signUpSchema = z.object({
-  firstName: z.coerce.string().min(1),
-  lastName: z.coerce.string().min(1),
-  email: z.coerce.string().email(),
-  password: z.coerce.string().min(8, "Password must be at least 8 characters"),
+  firstName: z.string().min(1).default(""),
+  lastName: z.string().min(1).default(""),
+  email: z.string().email("Please enter a valid email address").default(""),
+  password: z.string().min(8).default(""),
 });
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;
