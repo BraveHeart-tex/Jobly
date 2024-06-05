@@ -4,6 +4,10 @@ import { TRPCError } from "@trpc/server";
 import { getUserByEmail } from "@/server/api/services/user.service";
 import { hash } from "@node-rs/argon2";
 import * as authService from "@/server/api/services/auth.service";
+import { lucia } from "@/lib/auth";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { ROUTES } from "@/lib/constants";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure.input(signUpSchema).mutation(async ({ ctx, input }) => {
@@ -45,8 +49,10 @@ export const authRouter = createTRPCRouter({
       });
     }
 
-    return {
-      createdUserId: result.insertId,
-    };
+    const session = await lucia.createSession(result.insertId, {});
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+
+    return redirect(ROUTES.HOME);
   }),
 });
