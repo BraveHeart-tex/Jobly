@@ -16,9 +16,9 @@ type LoginPageProps = {
 
 const contentByPortalType = {
   employee: [
-    "Your dream job, one click away",
-    "Explore endless opportunities that you're passionate about",
-    "Get an interview, get hired",
+    "Find your dream job with just one click",
+    "Discover endless opportunities aligned with your passions",
+    "Land interviews and secure your dream job",
   ],
   employer: [
     "Discover the ideal talent the right way",
@@ -33,7 +33,7 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
   const supportiveHeading = contentByPortalType[portalType][contentIndex - 1] as string;
 
   return (
-    <div className="grid h-screen w-full lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className="grid h-screen w-full bg-muted/10 lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="hidden size-full flex-col items-center justify-center lg:flex">
         <Image
           src={`/illustrations/${portalType}/${portalType}-${contentIndex}.svg`}
