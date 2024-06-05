@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { generateRandomNumber } from "@/lib/utils";
+import { contentByPortalType, ROUTES } from "@/lib/constants";
 
 type LoginPageSearchParams = {
   portalType?: "employer" | "employee";
@@ -12,19 +13,6 @@ type LoginPageSearchParams = {
 
 type LoginPageProps = {
   searchParams: LoginPageSearchParams;
-};
-
-const contentByPortalType = {
-  employee: [
-    "Find your dream job with just one click",
-    "Discover endless opportunities aligned with your passions",
-    "Land interviews and secure your dream job",
-  ],
-  employer: [
-    "Discover the ideal talent the right way",
-    "Build your dream team effortlessly",
-    "Transform hiring with tools that prioritize talent and humanity",
-  ],
 };
 
 const LoginPage = ({ searchParams }: LoginPageProps) => {
@@ -40,7 +28,7 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
           alt={supportiveHeading}
           width={1920}
           height={1080}
-          className="size-[500px]"
+          className="size-[500px] dark:invert"
         />
         <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">{supportiveHeading}</h2>
       </div>
@@ -61,7 +49,7 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link href="/forgot-password" className="ml-auto inline-block text-sm underline">
+                <Link href={ROUTES.FORGOT_PASSWORD} className="ml-auto inline-block text-sm underline">
                   Forgot your password?
                 </Link>
               </div>
@@ -70,13 +58,15 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
             <Button type="submit" className="w-full">
               Login
             </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
+            {portalType === "employee" && (
+              <Button variant="outline" className="w-full">
+                Login with Google
+              </Button>
+            )}
           </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="#" className="underline">
+            <Link href={ROUTES["SIGN-UP"] + `?portalType=${portalType}`} className="underline">
               Sign up
             </Link>
           </div>
