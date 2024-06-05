@@ -21,7 +21,7 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
   const supportiveHeading = contentByPortalType[portalType][contentIndex - 1] as string;
 
   return (
-    <div className="grid h-screen w-full bg-muted/10 lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="hidden size-full flex-col items-center justify-center lg:flex">
         <Image
           src={`/illustrations/${portalType}/${portalType}-${contentIndex}.svg`}
@@ -56,15 +56,15 @@ const LoginPage = ({ searchParams }: LoginPageProps) => {
               <Input id="password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
-              Login
+              Log in
             </Button>
             {portalType === "employee" && (
               <Button variant="outline" className="w-full">
-                Login with Google
+                Log in with Google
               </Button>
             )}
           </div>
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-1 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link href={ROUTES["SIGN-UP"] + `?portalType=${portalType}`} className="underline">
               Sign up

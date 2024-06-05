@@ -29,7 +29,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
   const supportiveHeading = contentByPortalType[portalType][contentIndex - 1] as string;
 
   return (
-    <div className="grid h-screen w-full bg-muted/10 lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+    <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="hidden size-full flex-col items-center justify-center lg:flex">
         <Image
           src={`/illustrations/${portalType}/${portalType}-${contentIndex}.svg`}
@@ -41,7 +41,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
         <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">{supportiveHeading}</h2>
       </div>
       <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6 lg:w-[450px]">
+        <div className="mx-auto grid w-[350px] gap-6 lg:w-[400px]">
           <div className="grid gap-2 text-center">
             <div className="mb-4 flex items-center justify-center">
               <Image src="/logo.svg" alt="Jobly Logo" width={60} height={60} />
@@ -71,7 +71,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
               </Button>
             )}
           </div>
-          <div className="mt-2 text-center text-sm">
+          <div className="mt-1 text-center text-sm">
             Already have an account?{" "}
             <Link href={ROUTES.LOGIN + `?portalType=${portalType}`} className="underline">
               Log in
