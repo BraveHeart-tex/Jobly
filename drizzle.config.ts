@@ -1,14 +1,11 @@
-import { defineConfig } from "drizzle-kit";
+import { type Config } from "drizzle-kit";
+import { env } from "@/env";
 
-export default defineConfig({
+export default {
+  schema: "./src/server/db/schema.ts",
   dialect: "mysql",
-  schema: "./db/schema.ts",
   out: "./drizzle",
   dbCredentials: {
-    host: process.env.DATABASE_HOST!,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    port: 3306,
-    database: process.env.DATABASE_NAME!,
+    url: env.DATABASE_URL,
   },
-});
+} satisfies Config;
