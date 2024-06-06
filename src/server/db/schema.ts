@@ -1,5 +1,5 @@
 import { mysqlTable, index, primaryKey, int, text, varchar, datetime, mysqlEnum } from "drizzle-orm/mysql-core";
-import { relations, sql } from "drizzle-orm";
+import { type InferSelectModel, relations, sql } from "drizzle-orm";
 
 export const user = mysqlTable(
   "User",
@@ -21,6 +21,8 @@ export const user = mysqlTable(
     };
   },
 );
+
+export type UserSelectModel = InferSelectModel<typeof user>;
 
 export const session = mysqlTable(
   "Session",

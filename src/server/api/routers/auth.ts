@@ -2,12 +2,11 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import { TRPCError } from "@trpc/server";
 import { getUserByEmail } from "@/server/api/services/user.service";
-import { hash } from "@node-rs/argon2";
+import { hash, verify } from "@node-rs/argon2";
 import * as authService from "@/server/api/services/auth.service";
-import { lucia } from "@/lib/auth";
-import { cookies } from "next/headers";
-import { checkPasswordPwned, checkPasswordStrength } from "@/lib/auth/actions";
+import { checkPasswordPwned, checkPasswordStrength, createSessionWithUserId } from "@/lib/auth/actions";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import { signInSchema } from "@/schemas/signInSchema";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure.input(signUpSchema).mutation(async ({ ctx, input }) => {
@@ -22,7 +21,8 @@ export const authRouter = createTRPCRouter({
     const { email, firstName, lastName, password } = input;
 
     const userAlreadyExists = await getUserByEmail(email);
-    if (!userAlreadyExists) {
+    console.log("userAlreadyExists", userAlreadyExists);
+    if (userAlreadyExists) {
       throw new TRPCError({
         code: "BAD_REQUEST",
         message: "The provided email is already in use.",
@@ -68,13 +68,46 @@ export const authRouter = createTRPCRouter({
       });
     }
 
-    const session = await lucia.createSession(result.insertId, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+    await createSessionWithUserId(result.insertId);
 
     return {
       success: true,
       message: "Account created successfully.",
+    };
+  }),
+  signIn: publicProcedure.input(signInSchema).mutation(async ({ ctx, input }) => {
+    if (ctx.session ?? ctx.user) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid Request. You cannot sign in again while being signed in.",
+      });
+    }
+    const { email, password } = input;
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return {
+        error: "Incorrect username or password.",
+      };
+    }
+
+    const isValidPassword = await verify(existingUser.hashedPassword, password, {
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    });
+
+    if (!isValidPassword) {
+      return {
+        error: "Incorrect username or password.",
+      };
+    }
+
+    await createSessionWithUserId(existingUser.id);
+
+    return {
+      success: true,
+      message: "Successfully signed in.",
     };
   }),
 });

@@ -3,6 +3,9 @@
 import { createHash } from "crypto";
 import zxcvbn from "zxcvbn";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import { lucia } from "@/lib/auth/index";
+import { cookies } from "next/headers";
+import { type UserSelectModel } from "@/server/db/schema";
 
 async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();
@@ -57,4 +60,10 @@ export const checkPasswordStrength = async (password: string) => {
     suggestions: result.feedback.suggestions,
     message: strengthMessage,
   };
+};
+
+export const createSessionWithUserId = async (userId: UserSelectModel["id"]) => {
+  const session = await lucia.createSession(userId, {});
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 };
