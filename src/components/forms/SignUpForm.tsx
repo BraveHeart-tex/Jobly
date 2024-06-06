@@ -4,16 +4,58 @@ import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useExtendedForm } from "@/lib/hook-form";
+import { api, type RouterOutputs } from "@/trpc/react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type SignUpFormProps = {
   portalType?: "employer" | "employee";
 };
 
 const SignUpForm = ({ portalType }: SignUpFormProps) => {
+  const router = useRouter();
+  const { isPending, mutate: signUpUser } = api.auth.signUp.useMutation();
   const form = useExtendedForm<SignUpSchema>(signUpSchema);
 
+  const handlePasswordError = (error: string, message: string) => {
+    toast.error(error);
+    form.setError("password", { message }, { shouldFocus: true });
+  };
+
+  const onSettled = (data: RouterOutputs["auth"]["signUp"]) => {
+    if (!data) return;
+
+    const { error, isPasswordPwned, isWeakPassword, success, message } = data;
+
+    if (error) {
+      if (isPasswordPwned) {
+        handlePasswordError(error, "This password was detected in data breaches. Please use a different password.");
+        return;
+      }
+
+      if (isWeakPassword) {
+        handlePasswordError(error, error);
+        return;
+      }
+    }
+
+    if (success) {
+      toast.success(message);
+      router.refresh();
+    }
+  };
+
   const onSubmit = (values: SignUpSchema) => {
-    console.log(values);
+    if (isPending) return;
+    signUpUser(values, {
+      onSettled: (data) => {
+        if (!data) return;
+        onSettled(data);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   };
 
   return (
@@ -74,11 +116,11 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
           )}
         />
         <div className="grid grid-cols-1 gap-4">
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={isPending}>
             Sign Up
           </Button>
           {portalType === "employee" && (
-            <Button type="button" variant="outline" className="w-full">
+            <Button type="button" variant="outline" className="w-full" disabled={isPending}>
               Sign Up with Google
             </Button>
           )}

@@ -6,11 +6,12 @@ import { hash } from "@node-rs/argon2";
 import * as authService from "@/server/api/services/auth.service";
 import { lucia } from "@/lib/auth";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { ROUTES } from "@/lib/constants";
+import { checkPasswordPwned, checkPasswordStrength } from "@/lib/auth/actions";
+import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure.input(signUpSchema).mutation(async ({ ctx, input }) => {
+    console.log("input", input);
     if (ctx.session ?? ctx.user) {
       throw new TRPCError({
         code: "BAD_REQUEST",
@@ -26,6 +27,24 @@ export const authRouter = createTRPCRouter({
         code: "BAD_REQUEST",
         message: "The provided email is already in use.",
       });
+    }
+
+    const isPasswordPwned = await checkPasswordPwned(password);
+
+    if (isPasswordPwned) {
+      return {
+        isPasswordPwned,
+        error: "This password seems to be compromised. Please use a different and stronger password.",
+      };
+    }
+
+    const { score, message: passwordStrengthScoreMessage } = await checkPasswordStrength(password);
+
+    if (score === PASSWORD_STRENGTH_LEVELS.VERY_WEAK || score === PASSWORD_STRENGTH_LEVELS.WEAK) {
+      return {
+        isWeakPassword: true,
+        error: passwordStrengthScoreMessage,
+      };
     }
 
     const passwordHash = await hash(password, {
@@ -53,6 +72,9 @@ export const authRouter = createTRPCRouter({
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
-    return redirect(ROUTES.HOME);
+    return {
+      success: true,
+      message: "Account created successfully.",
+    };
   }),
 });

@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { TRPCReactProvider } from "@/trpc/react";
 import ThemeProvider from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Jobly",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Toaster richColors closeButton />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>

@@ -17,3 +17,11 @@ export const contentByPortalType = {
     "Transform hiring with tools that prioritize talent and humanity",
   ],
 };
+
+export const PASSWORD_STRENGTH_LEVELS = {
+  VERY_WEAK: 0,
+  WEAK: 1,
+  MODERATE: 2,
+  STRONG: 3,
+  VERY_STRONG: 4,
+} as const;
