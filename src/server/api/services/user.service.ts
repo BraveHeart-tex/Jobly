@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { eq } from "drizzle-orm/sql/expressions/conditions";
+import { eq } from "drizzle-orm";
 
 export const getUserByEmail = async (email: string) => {
   return db.query.user.findFirst({
