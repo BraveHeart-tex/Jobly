@@ -6,7 +6,7 @@ export const jobRouter = createTRPCRouter({
     return db.query.job.findMany({
       with: {
         company: {
-          columns: { name: true },
+          columns: { name: true, logo: true },
         },
       },
     });
