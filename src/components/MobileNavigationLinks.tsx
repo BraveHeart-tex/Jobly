@@ -5,7 +5,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/constants";
+import { EMPLOYEE_NAVIGATION_LINKS, ROUTES } from "@/lib/constants";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,7 @@ const MobileNavigationLinks = () => {
               </AccordionItem>
             ))}
           </Accordion>
-          <Link href="/" className={cn("mt-4 w-full", buttonVariants({ variant: "default" }))}>
+          <Link href={ROUTES.JOBS} className={cn("mt-4 w-full", buttonVariants({ variant: "default" }))}>
             Find Work
           </Link>
         </div>

@@ -7,7 +7,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/constants";
+import { EMPLOYEE_NAVIGATION_LINKS, ROUTES } from "@/lib/constants";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import * as React from "react";
@@ -38,7 +38,7 @@ const DesktopNavigationLinks = () => {
         ))}
 
         <NavigationMenuItem>
-          <Link href="/search" legacyBehavior passHref>
+          <Link href={ROUTES.JOBS} legacyBehavior passHref>
             <NavigationMenuLink
               className={cn(
                 navigationMenuTriggerStyle(),

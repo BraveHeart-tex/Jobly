@@ -1,11 +1,11 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 
-type HomeLayoutProps = {
+type AppLayoutProps = {
   children?: React.ReactNode;
 };
 
-const HomeLayout = ({ children }: HomeLayoutProps) => {
+const AppLayout = ({ children }: AppLayoutProps) => {
   return (
     <main>
       <Navbar />
@@ -14,4 +14,4 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
   );
 };
 
-export default HomeLayout;
+export default AppLayout;

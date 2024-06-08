@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
+import { ROUTES } from "@/lib/constants";
 
 const Navbar = () => {
   return (
@@ -12,7 +13,7 @@ const Navbar = () => {
           <MobileNavigationLinks />
         </div>
 
-        <Link href="/" className="flex select-none items-center gap-1">
+        <Link href={ROUTES.HOME} className="flex select-none items-center gap-1">
           <Image src={"/logo.svg"} alt="Mims Logo" className="cursor-pointer" width={45} height={45} />
           <p className="text-base font-medium">Jobly</p>
         </Link>
