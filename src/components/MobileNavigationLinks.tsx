@@ -1,13 +1,17 @@
-import React from "react";
+"use client";
+import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/constants";
+import Link from "next/link";
 
 const MobileNavigationLinks = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button size="icon" variant="ghost">
           <Menu />
@@ -17,15 +21,31 @@ const MobileNavigationLinks = () => {
         <SheetHeader>
           <div className="flex items-center gap-1">
             <Image src="/logo.svg" alt="Jobly" width={50} height={50} className="size-10" />
-            <p className="text-base font-medium">Jobly</p>
+            <p className="text-lg font-medium">Jobly</p>
           </div>
         </SheetHeader>
-        <div className="p-1">
+
+        <div>
           <Accordion type="single" collapsible>
-            <AccordionItem value="item-1">
-              <AccordionTrigger>Is it accessible?</AccordionTrigger>
-              <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-            </AccordionItem>
+            {EMPLOYEE_NAVIGATION_LINKS.map((navigationMenuItem) => (
+              <AccordionItem value={navigationMenuItem.triggerLabel} key={navigationMenuItem.triggerLabel}>
+                <AccordionTrigger className="text-base">{navigationMenuItem.triggerLabel}</AccordionTrigger>
+                {navigationMenuItem.linkItems.map((linkItem) => (
+                  <AccordionContent
+                    key={linkItem.href}
+                    className="border-b px-1 py-4 hover:bg-muted"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <Link href={linkItem.href}>
+                      <h3 className="text-base font-medium text-foreground">{linkItem.title}</h3>
+                      <p className="text-sm text-muted-foreground">{linkItem.description}</p>
+                    </Link>
+                  </AccordionContent>
+                ))}
+              </AccordionItem>
+            ))}
           </Accordion>
         </div>
       </SheetContent>
