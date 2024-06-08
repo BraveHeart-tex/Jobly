@@ -8,13 +8,22 @@ import { ROUTES } from "@/lib/constants";
 const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 h-max w-full border-b border-input bg-background/80 py-1 backdrop-blur-lg transition-colors">
-      <div className="mx-auto flex max-w-7xl items-center lg:justify-between">
+      <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between">
         <div className="ml-2 lg:hidden">
           <MobileNavigationLinks />
         </div>
 
-        <Link href={ROUTES.HOME} className="flex select-none items-center gap-1">
-          <Image src={"/logo.svg"} alt="Mims Logo" className="cursor-pointer" width={45} height={45} />
+        <Link
+          href={ROUTES.HOME}
+          className="flex select-none items-center gap-1"
+        >
+          <Image
+            src={"/logo.svg"}
+            alt="Mims Logo"
+            className="cursor-pointer"
+            width={45}
+            height={45}
+          />
           <p className="text-base font-medium">Jobly</p>
         </Link>
 

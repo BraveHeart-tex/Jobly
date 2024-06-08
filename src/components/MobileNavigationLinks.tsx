@@ -1,13 +1,22 @@
 "use client";
 import { useState } from "react";
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
-import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Image from "next/image";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { EMPLOYEE_NAVIGATION_LINKS, ROUTES } from "@/lib/constants";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 const MobileNavigationLinks = () => {
   const [open, setOpen] = useState(false);
@@ -21,7 +30,13 @@ const MobileNavigationLinks = () => {
       <SheetContent side="left" className="p-1">
         <SheetHeader>
           <div className="flex items-center gap-1">
-            <Image src="/logo.svg" alt="Jobly" width={50} height={50} className="size-10" />
+            <Image
+              src="/logo.svg"
+              alt="Jobly"
+              width={50}
+              height={50}
+              className="size-10"
+            />
             <p className="text-lg font-medium">Jobly</p>
           </div>
         </SheetHeader>
@@ -29,8 +44,13 @@ const MobileNavigationLinks = () => {
         <div>
           <Accordion type="single" collapsible>
             {EMPLOYEE_NAVIGATION_LINKS.map((navigationMenuItem) => (
-              <AccordionItem value={navigationMenuItem.triggerLabel} key={navigationMenuItem.triggerLabel}>
-                <AccordionTrigger className="text-base">{navigationMenuItem.triggerLabel}</AccordionTrigger>
+              <AccordionItem
+                value={navigationMenuItem.triggerLabel}
+                key={navigationMenuItem.triggerLabel}
+              >
+                <AccordionTrigger className="text-base">
+                  {navigationMenuItem.triggerLabel}
+                </AccordionTrigger>
                 {navigationMenuItem.linkItems.map((linkItem) => (
                   <AccordionContent
                     key={linkItem.href}
@@ -42,17 +62,28 @@ const MobileNavigationLinks = () => {
                     <Link href={linkItem.href}>
                       <div className="mb-1 flex items-center gap-1">
                         <linkItem.icon size={21} />
-                        <h3 className="text-base font-medium text-foreground">{linkItem.title}</h3>
+                        <h3 className="text-base font-medium text-foreground">
+                          {linkItem.title}
+                        </h3>
                       </div>
-                      <p className="text-sm text-muted-foreground">{linkItem.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {linkItem.description}
+                      </p>
                     </Link>
                   </AccordionContent>
                 ))}
               </AccordionItem>
             ))}
           </Accordion>
-          <Link href={ROUTES.JOBS} className={cn("mt-4 w-full", buttonVariants({ variant: "default" }))}>
-            Find Work
+          <Link href={ROUTES.JOBS} className="mt-4 w-full">
+            <Button
+              className="w-full"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              Find Work
+            </Button>
           </Link>
         </div>
       </SheetContent>
