@@ -2,17 +2,18 @@ import { type NavigationMenuItem } from "@/lib/types";
 import { BarChart4, BookmarkIcon, BookOpenText, FileInput, FilePen, HistoryIcon, PencilRuler, Rss } from "lucide-react";
 
 export const ROUTES = {
-  HOME: "/home",
   LOGIN: "/login",
   "SIGN-UP": "/sign-up",
   FORGOT_PASSWORD: "/forgot-password",
-  JOB_HISTORY: "/jobs/history",
-  BOOKMARKED_JOBS: "/jobs/bookmarked",
-  APPLICATIONS: "/user/applications",
-  UNFINISHED_APPLICATIONS: "/user/applications?unfinished=true",
-  CV_BUILDER: "/tools/cv-builder",
-  SALARIES: "/data/salaries",
-  INTERVIEW_PREP: "/interview-prep",
+  HOME: "/app",
+  JOBS: "/app/jobs",
+  JOB_HISTORY: "/app/user/job-history",
+  BOOKMARKED_JOBS: "/app/jobs/bookmarked",
+  APPLICATIONS: "/app/user/applications",
+  UNFINISHED_APPLICATIONS: "/app/user/applications?unfinished=true",
+  CV_BUILDER: "/app/tools/cv-builder",
+  SALARIES: "/app/data/salaries",
+  INTERVIEW_PREP: "/app/interview-prep",
   BLOG: "/blog",
 } as const;
 
