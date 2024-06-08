@@ -39,7 +39,10 @@ const MobileNavigationLinks = () => {
                     }}
                   >
                     <Link href={linkItem.href}>
-                      <h3 className="text-base font-medium text-foreground">{linkItem.title}</h3>
+                      <div className="mb-1 flex items-center gap-1">
+                        <linkItem.icon size={21} />
+                        <h3 className="text-base font-medium text-foreground">{linkItem.title}</h3>
+                      </div>
                       <p className="text-sm text-muted-foreground">{linkItem.description}</p>
                     </Link>
                   </AccordionContent>
