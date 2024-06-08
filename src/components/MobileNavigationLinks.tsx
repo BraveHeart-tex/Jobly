@@ -1,12 +1,13 @@
 "use client";
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/constants";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const MobileNavigationLinks = () => {
   const [open, setOpen] = useState(false);
@@ -50,6 +51,9 @@ const MobileNavigationLinks = () => {
               </AccordionItem>
             ))}
           </Accordion>
+          <Link href="/" className={cn("mt-4 w-full", buttonVariants({ variant: "default" }))}>
+            Find Work
+          </Link>
         </div>
       </SheetContent>
     </Sheet>

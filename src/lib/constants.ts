@@ -6,6 +6,14 @@ export const ROUTES = {
   LOGIN: "/login",
   "SIGN-UP": "/sign-up",
   FORGOT_PASSWORD: "/forgot-password",
+  JOB_HISTORY: "/jobs/history",
+  BOOKMARKED_JOBS: "/jobs/bookmarked",
+  APPLICATIONS: "/user/applications",
+  UNFINISHED_APPLICATIONS: "/user/applications?unfinished=true",
+  CV_BUILDER: "/tools/cv-builder",
+  SALARIES: "/data/salaries",
+  INTERVIEW_PREP: "/interview-prep",
+  BLOG: "/blog",
 } as const;
 
 export const contentByPortalType = {
@@ -36,25 +44,25 @@ export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       {
         title: "View History",
         description: "See the job posting you looked at.",
-        href: "/jobs/history",
+        href: ROUTES.JOB_HISTORY,
         icon: HistoryIcon,
       },
       {
         title: "Bookmarked",
         description: "Check out your bookmarked job postings.",
-        href: "/jobs/bookmarked",
+        href: ROUTES.BOOKMARKED_JOBS,
         icon: BookmarkIcon,
       },
       {
         title: "My Applications",
         description: "Take a look at your job applications.",
-        href: "/user/applications",
+        href: ROUTES.APPLICATIONS,
         icon: FileInput,
       },
       {
         title: "Unfinished Applications",
         description: "Complete your unfinished job applications",
-        href: "/user/applications?unfinished=true",
+        href: ROUTES.UNFINISHED_APPLICATIONS,
         icon: FilePen,
       },
     ],
@@ -64,25 +72,25 @@ export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
     linkItems: [
       {
         title: "CV Builder",
-        href: "/tools/cv-builder",
+        href: ROUTES.CV_BUILDER,
         description: "Visually craft your CV. Add custom sections or use a template.",
         icon: PencilRuler,
       },
       {
         title: "Salaries",
-        href: "/data/salaries",
+        href: ROUTES.SALARIES,
         description: "Curious about the salary of a profession? Take a look at our insights.",
         icon: BarChart4,
       },
       {
         title: "Interview Prep.",
-        href: "/interview-prep",
+        href: ROUTES.INTERVIEW_PREP,
         description: "Take a look at useful materials that can help you during the interview process.",
         icon: BookOpenText,
       },
       {
         title: "Blog",
-        href: "/blog",
+        href: ROUTES.BLOG,
         description: "Check out useful blog posts curated by the Jobly team to help you in your job search.",
         icon: Rss,
       },

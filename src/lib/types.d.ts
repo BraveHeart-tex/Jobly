@@ -1,4 +1,5 @@
 import { type LucideIcon } from "lucide-react";
+import { type ROUTES } from "@/lib/constants";
 
 export type NavigationMenuItem = {
   triggerLabel: string;
@@ -7,7 +8,7 @@ export type NavigationMenuItem = {
 
 export type NavigationMenuItemLink = {
   title: string;
-  href: string;
+  href: (typeof ROUTES)[keyof typeof ROUTES];
   description: string;
   icon: LucideIcon;
 };
