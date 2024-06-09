@@ -1,4 +1,9 @@
-import { type InferSelectModel, relations, sql } from "drizzle-orm";
+import {
+  type InferInsertModel,
+  type InferSelectModel,
+  relations,
+  sql,
+} from "drizzle-orm";
 import {
   datetime,
   index,
@@ -124,6 +129,8 @@ export const job = mysqlTable(
     };
   },
 );
+
+export type JobInsertModel = InferInsertModel<typeof job>;
 
 export const application = mysqlTable(
   "Application",

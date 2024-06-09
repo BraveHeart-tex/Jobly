@@ -3,13 +3,16 @@
   "organizeImports": {
     "enabled": true
   },
+  "files": {
+    "ignore": ["drizzle/**", "node_modules/**", ".next/**", ".idea", ".vscode"]
+  },
   "formatter": {
     "lineWidth": 80,
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode", "drizzle/**"]
+    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode"]
   },
   "javascript": {
     "formatter": {
@@ -35,6 +38,6 @@
       },
       "recommended": true
     },
-    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode", "drizzle/**"]
+    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode"]
   }
 }

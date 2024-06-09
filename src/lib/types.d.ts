@@ -14,3 +14,6 @@ export type NavigationMenuItemLink = {
 };
 
 export type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
+
+export type MakeFieldsRequired<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;

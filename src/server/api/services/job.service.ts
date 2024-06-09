@@ -1,5 +1,11 @@
+import type { MakeFieldsRequired } from "@/lib/types";
 import { db } from "@/server/db";
-import { company, job, userViewsJob } from "@/server/db/schema";
+import {
+  type JobInsertModel,
+  company,
+  job,
+  userViewsJob,
+} from "@/server/db/schema";
 import { and, desc, eq, exists, getTableColumns } from "drizzle-orm";
 
 export const getJobListings = async (userId: number) => {
@@ -25,7 +31,8 @@ export const getJobListings = async (userId: number) => {
     .from(job)
     .innerJoin(company, eq(job.companyId, company.id))
     .leftJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId))
-    .orderBy(desc(job.createdAt));
+    .orderBy(desc(job.createdAt))
+    .limit(12);
 };
 
 export const getJobById = async (id: number) => {
@@ -36,5 +43,21 @@ export const getJobById = async (id: number) => {
         columns: { name: true, logo: true },
       },
     },
+  });
+};
+
+export const updateJob = async (
+  data: MakeFieldsRequired<Partial<JobInsertModel>, "id">,
+) => {
+  return db.update(job).set(data).where(eq(job.id, data.id));
+};
+
+export const markJobAsViewed = async ({
+  jobId,
+  userId,
+}: { jobId: number; userId: number }) => {
+  return db.insert(userViewsJob).values({
+    viewedJobId: jobId,
+    viewerUserId: userId,
   });
 };

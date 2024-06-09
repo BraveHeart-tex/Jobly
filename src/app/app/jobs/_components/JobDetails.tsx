@@ -31,6 +31,10 @@ const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
 
   if (!jobDetails) return null;
 
+  // Do mutation
+  // if (!jobDetails.userViewedJob) {
+  // }
+
   return (
     <JobDetailsContainer
       currentJobId={currentJobId}
