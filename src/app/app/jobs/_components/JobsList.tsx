@@ -1,17 +1,19 @@
-import { type RouterOutputs } from "@/trpc/react";
-import { headers } from "next/headers";
-import JobsListCard from "./JobsListCard";
-import JobDetails from "./JobDetails";
-import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { RouterOutputs } from "@/trpc/react";
+import { headers } from "next/headers";
+import { Suspense } from "react";
+import JobDetails from "./JobDetails";
+import JobsListCard from "./JobsListCard";
 
 type JobsListProps = {
   jobs: RouterOutputs["job"]["getJobListings"];
 };
 
 const JobsList = ({ jobs }: JobsListProps) => {
-  const url = new URL(headers().get("x-url")!);
-  const currentJobId = parseInt(url.searchParams.get("currentJobId") ?? "0");
+  const url = new URL(headers().get("x-url") as string);
+  const currentJobId = Number.parseInt(
+    url.searchParams.get("currentJobId") ?? "0",
+  );
 
   return (
     <div className="grid grid-cols-12 gap-4">
@@ -36,7 +38,7 @@ const JobsList = ({ jobs }: JobsListProps) => {
             </div>
           }
         >
-          <JobDetails currentJobId={currentJobId} />
+          {currentJobId ? <JobDetails currentJobId={currentJobId} /> : null}
         </Suspense>
       </div>
     </div>

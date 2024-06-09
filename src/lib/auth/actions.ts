@@ -1,11 +1,12 @@
 "use server";
 
-import { createHash } from "crypto";
-import zxcvbn from "zxcvbn";
-import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
+import { createHash } from "node:crypto";
 import { lucia } from "@/lib/auth/index";
+import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import type { UserSelectModel } from "@/server/db/schema";
 import { cookies } from "next/headers";
-import { type UserSelectModel } from "@/server/db/schema";
+import zxcvbn from "zxcvbn";
 
 async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();
@@ -44,7 +45,8 @@ export const checkPasswordStrength = async (password: string) => {
         "Weak password. Consider using a longer password with a mix of letters, numbers, and special characters.";
       break;
     case PASSWORD_STRENGTH_LEVELS.MODERATE:
-      strengthMessage = "Moderate password. Consider adding more characters and avoiding common words.";
+      strengthMessage =
+        "Moderate password. Consider adding more characters and avoiding common words.";
       break;
     case PASSWORD_STRENGTH_LEVELS.STRONG:
       strengthMessage = "Strong password. This should be safe for most uses.";
@@ -62,8 +64,14 @@ export const checkPasswordStrength = async (password: string) => {
   };
 };
 
-export const createSessionWithUserId = async (userId: UserSelectModel["id"]) => {
+export const createSessionWithUserId = async (
+  userId: UserSelectModel["id"],
+) => {
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
 };

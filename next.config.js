@@ -1,3 +1,4 @@
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
 import { fileURLToPath } from "node:url";
 import createJiti from "jiti";
 

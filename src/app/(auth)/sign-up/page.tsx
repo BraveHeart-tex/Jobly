@@ -1,11 +1,10 @@
-import React from "react";
+import SignUpForm from "@/components/forms/SignUpForm";
 import { validateRequest } from "@/lib/auth/validate-request";
-import { redirect } from "next/navigation";
-import { contentByPortalType, ROUTES } from "@/lib/constants";
+import { ROUTES, contentByPortalType } from "@/lib/constants";
+import { generateRandomNumber } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { generateRandomNumber } from "@/lib/utils";
-import SignUpForm from "@/components/forms/SignUpForm";
+import { redirect } from "next/navigation";
 
 type SignUpPageSearchParams = {
   portalType?: "employer" | "employee";
@@ -24,7 +23,9 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
 
   const portalType = searchParams.portalType ?? "employee";
   const contentIndex = generateRandomNumber(1, 4);
-  const supportiveHeading = contentByPortalType[portalType][contentIndex - 1] as string;
+  const supportiveHeading = contentByPortalType[portalType][
+    contentIndex - 1
+  ] as string;
 
   return (
     <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
@@ -36,7 +37,9 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
           height={1080}
           className="size-[500px]"
         />
-        <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">{supportiveHeading}</h2>
+        <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">
+          {supportiveHeading}
+        </h2>
       </div>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6 lg:w-[400px]">
@@ -44,12 +47,17 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
             <div className="mb-4 flex items-center justify-center">
               <Image src="/logo.svg" alt="Jobly Logo" width={60} height={60} />
             </div>
-            <h1 className="text-3xl font-bold">Sign Up to Jobly {portalType === "employer" && "for employers"}</h1>
+            <h1 className="text-3xl font-bold">
+              Sign Up to Jobly {portalType === "employer" && "for employers"}
+            </h1>
           </div>
           <SignUpForm portalType={portalType} />
           <div className="mt-1 text-center text-sm">
             Already have an account?{" "}
-            <Link href={ROUTES.LOGIN + `?portalType=${portalType}`} className="underline">
+            <Link
+              href={`${ROUTES.LOGIN}?portalType=${portalType}`}
+              className="underline"
+            >
               Log in
             </Link>
           </div>

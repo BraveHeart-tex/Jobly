@@ -1,5 +1,14 @@
-import { mysqlTable, index, primaryKey, int, text, varchar, datetime, mysqlEnum } from "drizzle-orm/mysql-core";
 import { type InferSelectModel, relations, sql } from "drizzle-orm";
+import {
+  datetime,
+  index,
+  int,
+  mysqlEnum,
+  mysqlTable,
+  primaryKey,
+  text,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
 export const user = mysqlTable(
   "User",
@@ -83,7 +92,12 @@ export const job = mysqlTable(
     title: varchar("title", { length: 512 }).notNull(),
     description: text("description"),
     location: varchar("location", { length: 255 }),
-    workType: mysqlEnum("workType", ["office", "remote", "hybrid", "other"]).default("office"),
+    workType: mysqlEnum("workType", [
+      "office",
+      "remote",
+      "hybrid",
+      "other",
+    ]).default("office"),
     salaryRange: varchar("salaryRange", { length: 50 }),
     employmentType: mysqlEnum("employmentType", [
       "full-time",
@@ -125,7 +139,13 @@ export const application = mysqlTable(
       .references(() => job.id),
     coverLetter: text("coverLetter"),
     resume: varchar("resume", { length: 255 }),
-    status: mysqlEnum("status", ["pending", "applied", "rejected", "interview", "offer"] as const).default("applied"),
+    status: mysqlEnum("status", [
+      "pending",
+      "applied",
+      "rejected",
+      "interview",
+      "offer",
+    ] as const).default("applied"),
     appliedAt: datetime("appliedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
@@ -133,7 +153,10 @@ export const application = mysqlTable(
       jobId: index("jobId").on(table.jobId),
       userId: index("userId").on(table.userId),
       status: index("status").on(table.status),
-      Application_id: primaryKey({ columns: [table.id], name: "Application_id" }),
+      Application_id: primaryKey({
+        columns: [table.id],
+        name: "Application_id",
+      }),
     };
   },
 );
@@ -202,7 +225,10 @@ export const userProfile = mysqlTable(
   (table) => {
     return {
       userId: index("userId").on(table.userId),
-      UserProfile_id: primaryKey({ columns: [table.id], name: "UserProfile_id" }),
+      UserProfile_id: primaryKey({
+        columns: [table.id],
+        name: "UserProfile_id",
+      }),
     };
   },
 );
@@ -221,7 +247,10 @@ export const coverLetter = mysqlTable(
   (table) => {
     return {
       userId: index("userId").on(table.userId),
-      CoverLetter_id: primaryKey({ columns: [table.id], name: "CoverLetter_id" }),
+      CoverLetter_id: primaryKey({
+        columns: [table.id],
+        name: "CoverLetter_id",
+      }),
     };
   },
 );
@@ -243,7 +272,10 @@ export const userFollowsComapny = mysqlTable(
   },
   (table) => {
     return {
-      UserFollowsCompany_id: primaryKey({ columns: [table.id], name: "UserFollowsCompany_id" }),
+      UserFollowsCompany_id: primaryKey({
+        columns: [table.id],
+        name: "UserFollowsCompany_id",
+      }),
       userId: index("userId").on(table.userId),
       companyId: index("companyId").on(table.companyId),
     };
@@ -291,7 +323,10 @@ export const userBookmarksJob = mysqlTable(
   },
   (table) => {
     return {
-      UserBookmarksJob_id: primaryKey({ columns: [table.id], name: "UserBookmarksJob_id" }),
+      UserBookmarksJob_id: primaryKey({
+        columns: [table.id],
+        name: "UserBookmarksJob_id",
+      }),
       userId: index("userId").on(table.userId),
       jobId: index("jobId").on(table.jobId),
     };
@@ -312,15 +347,26 @@ export const userViewsJob = mysqlTable(
       .references(() => job.id, {
         onDelete: "cascade",
       }),
+    viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {
-      UserViewsJob_id: primaryKey({ columns: [table.id], name: "UserViewsJob_id" }),
+      UserViewsJob_id: primaryKey({
+        columns: [table.id],
+        name: "UserViewsJob_id",
+      }),
       viewerUserId: index("viewerUserId").on(table.viewerUserId),
       viewedJobId: index("viewedJobId").on(table.viewedJobId),
     };
   },
 );
+
+export const userViewsJobRelations = relations(userViewsJob, ({ one }) => ({
+  viewedJob: one(job, {
+    fields: [userViewsJob.viewedJobId],
+    references: [job.id],
+  }),
+}));
 
 export const resume = mysqlTable(
   "Resume",
@@ -391,7 +437,10 @@ export const userSection = mysqlTable(
   },
   (table) => {
     return {
-      UserSection_id: primaryKey({ columns: [table.id], name: "UserSection_id" }),
+      UserSection_id: primaryKey({
+        columns: [table.id],
+        name: "UserSection_id",
+      }),
       resumeId: index("resumeId").on(table.resumeId),
       sectionId: index("sectionId").on(table.sectionId),
     };

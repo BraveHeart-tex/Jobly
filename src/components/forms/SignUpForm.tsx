@@ -1,12 +1,19 @@
 "use client";
-import { Input } from "@/components/ui/input";
-import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
-import { api, type RouterOutputs } from "@/trpc/react";
-import { toast } from "sonner";
+import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
+import { type RouterOutputs, api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type SignUpFormProps = {
   portalType?: "employer" | "employee";
@@ -29,7 +36,10 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
 
     if (error) {
       if (isPasswordPwned) {
-        handlePasswordError(error, "This password was detected in data breaches. Please use a different password.");
+        handlePasswordError(
+          error,
+          "This password was detected in data breaches. Please use a different password.",
+        );
         return;
       }
 
@@ -60,7 +70,10 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-4"
+      >
         <div className="grid grid-cols-2 gap-1">
           <FormField
             control={form.control}
@@ -96,7 +109,11 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
             <FormItem>
               <FormLabel>Email Address</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="example@email.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="example@email.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,7 +126,11 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Your secure password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Your secure password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -120,7 +141,12 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
             Sign Up
           </Button>
           {portalType === "employee" && (
-            <Button type="button" variant="outline" className="w-full" disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              disabled={isPending}
+            >
               Sign Up with Google
             </Button>
           )}

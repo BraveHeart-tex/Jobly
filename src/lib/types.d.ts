@@ -1,5 +1,5 @@
-import { type LucideIcon } from "lucide-react";
-import { type ROUTES } from "@/lib/constants";
+import type { ROUTES } from "@/lib/constants";
+import type { LucideIcon } from "lucide-react";
 
 export type NavigationMenuItem = {
   triggerLabel: string;

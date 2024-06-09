@@ -1,14 +1,14 @@
 "use client";
-import { ROUTES } from "@/lib/constants";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ROUTES } from "@/lib/constants";
+import type { ArrayElement } from "@/lib/types";
 import {
   cn,
   generateReadableEnumLabel,
   getAvatarPlaceholder,
 } from "@/lib/utils";
+import type { RouterOutputs } from "@/trpc/react";
 import Image from "next/image";
-import { type ArrayElement } from "@/lib/types";
-import { type RouterOutputs } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 
 type JobsListCardProps = {

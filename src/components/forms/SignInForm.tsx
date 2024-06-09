@@ -1,12 +1,19 @@
 "use client";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { type SignInSchema, signInSchema } from "@/schemas/signInSchema";
-import { api, type RouterOutputs } from "@/trpc/react";
-import { toast } from "sonner";
+import { type RouterOutputs, api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type SignInFormProps = {
   portalType?: "employer" | "employee";
@@ -43,7 +50,10 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-4"
+      >
         <FormField
           control={form.control}
           name="email"
@@ -51,7 +61,11 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
             <FormItem>
               <FormLabel>Email Address</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="example@email.com" {...field} />
+                <Input
+                  type="email"
+                  placeholder="example@email.com"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -64,7 +78,11 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Your secure password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Your secure password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,7 +93,12 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
             Sign In
           </Button>
           {portalType === "employee" && (
-            <Button type="button" variant="outline" className="w-full" disabled={isPending}>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              disabled={isPending}
+            >
               Sign In with Google
             </Button>
           )}

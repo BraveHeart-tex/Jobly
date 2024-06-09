@@ -8,7 +8,8 @@
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode", "drizzle/**"]
   },
   "javascript": {
     "formatter": {
@@ -33,6 +34,7 @@
         "useHookAtTopLevel": "error"
       },
       "recommended": true
-    }
+    },
+    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode", "drizzle/**"]
   }
 }

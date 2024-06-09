@@ -1,7 +1,7 @@
-import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { db } from "@/server/db";
 import { env } from "@/env.js";
+import { db } from "@/server/db";
 import { session, user } from "@/server/db/schema";
+import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia, TimeSpan } from "lucia";
 
 type DatabaseUserAttributes = {

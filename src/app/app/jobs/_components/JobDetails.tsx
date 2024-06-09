@@ -1,9 +1,9 @@
-import { api } from "@/trpc/server";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { getAvatarPlaceholder } from "@/lib/utils";
+import { api } from "@/trpc/server";
 import { Bookmark } from "lucide-react";
+import Image from "next/image";
 import JobDetailsContainer from "./JobDetailsContainer";
 
 type JobDetailsProps = {
@@ -29,7 +29,7 @@ export const renderCompanyLogo = (
 const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
   const jobDetails = await api.job.getJobById({ id: currentJobId });
 
-  if (!jobDetails || !jobDetails.company) return null;
+  if (!jobDetails) return null;
 
   return (
     <JobDetailsContainer

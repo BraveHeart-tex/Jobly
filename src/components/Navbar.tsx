@@ -1,14 +1,15 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
+import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import { ROUTES } from "@/lib/constants";
+import Image from "next/image";
+import Link from "next/link";
+import ColorModeToggle from "./ColorModeToggle";
 
 const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 h-max w-full border-b border-input bg-background/80 py-1 backdrop-blur-lg transition-colors">
-      <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between">
+      <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between pr-1">
         <div className="ml-2 lg:hidden">
           <MobileNavigationLinks />
         </div>
@@ -29,6 +30,9 @@ const Navbar = () => {
 
         <div className="hidden lg:block">
           <DesktopNavigationLinks />
+        </div>
+        <div className="ml-auto lg:ml-0">
+          <ColorModeToggle />
         </div>
       </div>
     </nav>

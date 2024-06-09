@@ -1,8 +1,8 @@
-import { type NavigationMenuItem } from "@/lib/types";
+import type { NavigationMenuItem } from "@/lib/types";
 import {
   BarChart4,
-  BookmarkIcon,
   BookOpenText,
+  BookmarkIcon,
   FileInput,
   FilePen,
   HistoryIcon,

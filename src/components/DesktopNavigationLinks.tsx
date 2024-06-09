@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,11 +8,10 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { EMPLOYEE_NAVIGATION_LINKS, ROUTES } from "@/lib/constants";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
+import Link from "next/link";
 import * as React from "react";
-import { type LucideIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const DesktopNavigationLinks = () => {
   return (
@@ -58,7 +58,7 @@ const NavigationLinkItem = React.forwardRef<
     <li>
       <NavigationMenuLink>
         <Link
-          href={props.href!}
+          href={props.href as string}
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",

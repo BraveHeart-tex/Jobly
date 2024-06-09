@@ -1,9 +1,3 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { signUpSchema } from "@/schemas/signUpSchema";
-import { TRPCError } from "@trpc/server";
-import { getUserByEmail } from "@/server/api/services/user.service";
-import { hash, verify } from "@node-rs/argon2";
-import * as authService from "@/server/api/services/auth.service";
 import {
   checkPasswordPwned,
   checkPasswordStrength,
@@ -11,6 +5,12 @@ import {
 } from "@/lib/auth/actions";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 import { signInSchema } from "@/schemas/signInSchema";
+import { signUpSchema } from "@/schemas/signUpSchema";
+import * as authService from "@/server/api/services/auth.service";
+import { getUserByEmail } from "@/server/api/services/user.service";
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { hash, verify } from "@node-rs/argon2";
+import { TRPCError } from "@trpc/server";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure

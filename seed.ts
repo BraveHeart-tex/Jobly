@@ -1,8 +1,8 @@
-import { createConnection } from "mysql2";
-import { drizzle } from "drizzle-orm/mysql2";
 import { company, job } from "@/server/db/schema";
 import { faker } from "@faker-js/faker";
 import dotenv from "dotenv";
+import { drizzle } from "drizzle-orm/mysql2";
+import { createConnection } from "mysql2";
 
 dotenv.config();
 

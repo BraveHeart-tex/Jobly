@@ -28,7 +28,7 @@ export const getAvatarPlaceholder = (text: string): string => {
 
 export const generateReadableEnumLabel = (
   enumValue: string | null,
-  separator: string = "-",
+  separator = "-",
 ) => {
   if (!enumValue) return "";
   const words = enumValue.split(separator);

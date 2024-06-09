@@ -1,7 +1,13 @@
-import { type FieldValues, type Path, useForm, type UseFormProps, type UseFormReturn } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { type ZodObject } from "zod";
 import { zodErrorMap } from "@/lib/zodErrorMap";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  type FieldValues,
+  type Path,
+  type UseFormProps,
+  type UseFormReturn,
+  useForm,
+} from "react-hook-form";
+import type { ZodObject } from "zod";
 
 type ExtendedUseFormReturn<
   TFieldValues extends FieldValues,
@@ -16,7 +22,7 @@ export const useExtendedForm = <
   TContext = undefined,
   TTransformedValues extends FieldValues | undefined = undefined,
 >(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   schema: ZodObject<any>,
   props?: UseFormProps<TFieldValues, TContext>,
 ): ExtendedUseFormReturn<TFieldValues, TContext, TTransformedValues> => {
@@ -28,9 +34,10 @@ export const useExtendedForm = <
   });
 
   const setInitialValues = (values: Record<Path<TFieldValues>, unknown>) => {
-    (Object.keys(values) as Array<Path<TFieldValues>>).forEach((key) => {
+    const keys = Object.keys(values) as Array<Path<TFieldValues>>;
+    for (const key of keys) {
       form.setValue(key, values[key] as never);
-    });
+    }
   };
 
   return {
