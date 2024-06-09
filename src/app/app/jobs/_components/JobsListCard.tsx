@@ -1,5 +1,5 @@
+"use client";
 import { ROUTES } from "@/lib/constants";
-import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   cn,
@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 import { type ArrayElement } from "@/lib/types";
 import { type RouterOutputs } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 
 type JobsListCardProps = {
   job: ArrayElement<RouterOutputs["job"]["getJobListings"]>;
@@ -18,29 +19,32 @@ type JobsListCardProps = {
 export const renderCompanyLogo = (
   companyName: string,
   logo?: string | null,
+  className?: string,
 ) => {
   if (logo) {
     return <Image src={logo} width={80} height={80} alt={companyName} />;
   }
 
   return (
-    <Avatar>
+    <Avatar className={className}>
       <AvatarFallback>{getAvatarPlaceholder(companyName)}</AvatarFallback>
     </Avatar>
   );
 };
 
 const JobsListCard = ({ job, isActive }: JobsListCardProps) => {
+  const router = useRouter();
   const { id, title, company, employmentType, workType } = job;
 
   return (
-    <Link
-      href={`${ROUTES.JOBS}?currentJobId=${id}`}
+    <div
+      onMouseDown={() => {
+        router.push(`${ROUTES.JOBS}?currentJobId=${id}`);
+      }}
       key={id}
-      scroll={false}
       className={cn(
         "cursor-pointer rounded-md bg-card p-4",
-        isActive && "outline outline-primary",
+        isActive && "bg-muted-foreground/20",
       )}
     >
       <div className="grid gap-2">
@@ -68,7 +72,7 @@ const JobsListCard = ({ job, isActive }: JobsListCardProps) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

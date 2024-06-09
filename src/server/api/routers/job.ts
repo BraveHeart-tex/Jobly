@@ -10,6 +10,7 @@ export const jobRouter = createTRPCRouter({
           columns: { name: true, logo: true },
         },
       },
+      limit: 12,
     });
   }),
   getJobById: protectedProcedure
