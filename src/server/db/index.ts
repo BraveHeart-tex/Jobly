@@ -11,4 +11,4 @@ const conn = globalForDb.conn ?? createPool({ uri: env.DATABASE_URL });
 
 if (env.NODE_ENV !== "production") globalForDb.conn = conn;
 
-export const db = drizzle(conn, { schema, mode: "default", logger: true });
+export const db = drizzle(conn, { schema, mode: "default", logger: false });

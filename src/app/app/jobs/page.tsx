@@ -1,11 +1,10 @@
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { generateReadableEnumLabel, getAvatarPlaceholder } from "@/lib/utils";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/lib/constants";
+import JobsList from "./_components/JobsList";
 
 const JobsPage = async () => {
   const { user } = await validateRequest();
@@ -15,18 +14,6 @@ const JobsPage = async () => {
   }
 
   const jobs = await api.job.getJobListings();
-
-  const renderCompanyLogo = (companyName: string, logo?: string | null) => {
-    if (logo) {
-      return <Image src={logo} width={80} height={80} alt={companyName} />;
-    }
-
-    return (
-      <Avatar>
-        <AvatarFallback>{getAvatarPlaceholder(companyName)}</AvatarFallback>
-      </Avatar>
-    );
-  };
 
   return (
     <React.Fragment>
@@ -53,47 +40,9 @@ const JobsPage = async () => {
           </div>
         </div>
       </div>
-      <div className="rounded-2xl bg-muted p-10">
+      <div className="bg-muted p-10">
         <div className="mx-auto max-w-screen-2xl">
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-4 grid grid-cols-1 gap-4">
-              {jobs.map(({ id, title, company, employmentType, workType }) => (
-                <div key={id} className="cursor-pointer rounded-md bg-card p-4">
-                  <div className="grid gap-2">
-                    <div className="flex items-center gap-2">
-                      {renderCompanyLogo(company.name, company.logo)}
-                      <div className="flex flex-col">
-                        <h4 className="text-base font-medium text-foreground">
-                          {title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {company.name}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="line-clamp-3 text-foreground/70">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                      Cumque debitis, delectus ducimus excepturi expedita harum
-                      minus nesciunt perferendis quos? A accusantium assumenda
-                      atque aut blanditiis culpa debitis doloremque earum eius
-                      error excepturi fuga ipsum iure, maxime minima mollitia
-                      natus neque obcaecati omnis pariatur perspiciatis, quasi
-                      repudiandae tempora vel veritatis voluptatibus?
-                    </p>
-                    <div className="flex flex-wrap items-center gap-2 text-sm font-medium">
-                      <div className="rounded-md bg-muted p-1 text-muted-foreground">
-                        {generateReadableEnumLabel(employmentType)}
-                      </div>
-                      <div className="rounded-md bg-muted p-1 text-muted-foreground">
-                        {generateReadableEnumLabel(workType)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="col-span-8">MAN!</div>
-          </div>
+          <JobsList jobs={jobs} />
         </div>
       </div>
     </React.Fragment>
