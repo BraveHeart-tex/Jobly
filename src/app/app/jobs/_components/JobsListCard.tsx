@@ -44,7 +44,7 @@ const JobsListCard = ({ job, isActive }: JobsListCardProps) => {
       key={id}
       className={cn(
         "cursor-pointer rounded-md bg-card p-4",
-        isActive && "bg-muted-foreground/20",
+        isActive && "bg-muted-foreground/20 dark:bg-accent",
       )}
     >
       <div className="grid gap-2">
