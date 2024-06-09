@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAvatarPlaceholder } from "@/lib/utils";
 import { Bookmark } from "lucide-react";
+import JobDetailsContainer from "./JobDetailsContainer";
 
 type JobDetailsProps = {
   currentJobId: number;
@@ -31,7 +32,10 @@ const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
   if (!jobDetails || !jobDetails.company) return null;
 
   return (
-    <article className="h-full overflow-auto rounded-lg bg-background p-4">
+    <JobDetailsContainer
+      currentJobId={currentJobId}
+      className="h-full overflow-auto rounded-lg bg-background p-4"
+    >
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {renderCompanyLogo(
@@ -241,7 +245,7 @@ const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
           </p>
         </div>
       </div>
-    </article>
+    </JobDetailsContainer>
   );
 };
 
