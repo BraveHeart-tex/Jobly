@@ -34,7 +34,12 @@ export const renderCompanyLogo = (
 
 const JobsListCard = ({ job, isActive }: JobsListCardProps) => {
   const router = useRouter();
-  const { id, title, company, employmentType, workType } = job;
+  const { id, title, company, employmentType, workType, userViewedJob } = job;
+
+  if (userViewedJob) {
+    console.log("userViewedJob", userViewedJob);
+    console.log("job", job.title);
+  }
 
   return (
     <div
@@ -71,6 +76,11 @@ const JobsListCard = ({ job, isActive }: JobsListCardProps) => {
             {generateReadableEnumLabel(workType)}
           </div>
         </div>
+        {userViewedJob ? (
+          <p className="text-sm text-muted-foreground h-4">Viewed.</p>
+        ) : (
+          <div className="h-4" />
+        )}
       </div>
     </div>
   );

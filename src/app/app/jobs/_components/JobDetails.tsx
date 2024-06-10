@@ -31,9 +31,9 @@ const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
 
   if (!jobDetails) return null;
 
-  // Do mutation
-  // if (!jobDetails.userViewedJob) {
-  // }
+  if (!jobDetails.userViewedJob) {
+    await api.job.markJobAsViewed({ id: jobDetails.id });
+  }
 
   return (
     <JobDetailsContainer

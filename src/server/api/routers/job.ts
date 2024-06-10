@@ -1,5 +1,6 @@
 import { jobSchema } from "@/schemas/jobSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import * as jobService from "../services/job.service";
 
@@ -14,9 +15,12 @@ export const jobRouter = createTRPCRouter({
         id: z.number(),
       }),
     )
-    .query(async ({ input }) => {
+    .query(async ({ ctx, input }) => {
       const id = input.id;
-      return jobService.getJobById(id);
+      return jobService.getJobById({
+        jobId: id,
+        userId: ctx.user.id,
+      });
     }),
   updateJob: protectedProcedure
     .input(
@@ -30,9 +34,11 @@ export const jobRouter = createTRPCRouter({
   markJobAsViewed: protectedProcedure
     .input(jobSchema.pick({ id: true }))
     .mutation(async ({ ctx, input }) => {
-      return jobService.markJobAsViewed({
+      await jobService.markJobAsViewed({
         userId: ctx.user.id,
         jobId: input.id,
       });
+      revalidatePath("/jobs");
+      return { success: true };
     }),
 });

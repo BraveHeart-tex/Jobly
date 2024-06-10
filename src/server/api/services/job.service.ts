@@ -8,8 +8,8 @@ import {
 } from "@/server/db/schema";
 import { and, desc, eq, exists, getTableColumns } from "drizzle-orm";
 
-export const getJobListings = async (userId: number) => {
-  return db
+const jobDetailsWithUserViewStatusQuery = (userId: number) =>
+  db
     .select({
       ...getTableColumns(job),
       company: {
@@ -30,20 +30,24 @@ export const getJobListings = async (userId: number) => {
     })
     .from(job)
     .innerJoin(company, eq(job.companyId, company.id))
-    .leftJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId))
+    .leftJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId));
+
+export const getJobListings = async (userId: number) => {
+  const jobDetailsList = await jobDetailsWithUserViewStatusQuery(userId)
     .orderBy(desc(job.createdAt))
     .limit(12);
+
+  return jobDetailsList;
 };
 
-export const getJobById = async (id: number) => {
-  return db.query.job.findFirst({
-    where: (job, { eq }) => eq(job.id, id),
-    with: {
-      company: {
-        columns: { name: true, logo: true },
-      },
-    },
-  });
+export const getJobById = async ({
+  jobId,
+  userId,
+}: { jobId: number; userId: number }) => {
+  const jobDetails = await jobDetailsWithUserViewStatusQuery(userId).where(
+    and(eq(job.id, jobId)),
+  );
+  return jobDetails[0];
 };
 
 export const updateJob = async (

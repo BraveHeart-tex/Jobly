@@ -368,13 +368,6 @@ export const userViewsJob = mysqlTable(
   },
 );
 
-export const userViewsJobRelations = relations(userViewsJob, ({ one }) => ({
-  viewedJob: one(job, {
-    fields: [userViewsJob.viewedJobId],
-    references: [job.id],
-  }),
-}));
-
 export const resume = mysqlTable(
   "Resume",
   {
