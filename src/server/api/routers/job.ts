@@ -4,10 +4,19 @@ import { z } from "zod";
 import * as jobService from "../services/job.service";
 
 export const jobRouter = createTRPCRouter({
-  getJobListings: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.user.id;
-    return jobService.getJobListings(userId);
-  }),
+  getJobListings: protectedProcedure
+    .input(
+      z.object({
+        query: z.string().optional().default(""),
+      }),
+    )
+    .query(async ({ ctx, input: { query } }) => {
+      const userId = ctx.user.id;
+      return jobService.getJobListings({
+        userId,
+        query,
+      });
+    }),
   getJobById: protectedProcedure
     .input(
       z.object({

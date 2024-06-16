@@ -1,7 +1,7 @@
 "use client";
 import { useQueryState } from "nuqs";
 import { Input } from "./ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "react-use";
 
 type QueryStringInputProps = {
@@ -24,6 +24,10 @@ const QueryStringInput = ({
   });
 
   const [query, setQuery] = useState(debouncedQuery);
+
+  useEffect(() => {
+    setQuery(debouncedQuery);
+  }, [debouncedQuery]);
 
   useDebounce(
     () => {

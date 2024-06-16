@@ -7,9 +7,9 @@ import {
   userViewsJob,
   userBookmarksJob,
 } from "@/server/db/schema";
-import { and, desc, eq, exists, getTableColumns } from "drizzle-orm";
+import { and, desc, eq, exists, getTableColumns, like, or } from "drizzle-orm";
 
-const jobDetailsWithUserViewStatusQuery = (userId: number) =>
+const jobDetailsWithUserStatusQuery = (userId: number) =>
   db
     .selectDistinct({
       ...getTableColumns(job),
@@ -44,8 +44,12 @@ const jobDetailsWithUserViewStatusQuery = (userId: number) =>
     .innerJoin(company, eq(job.companyId, company.id))
     .leftJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId));
 
-export const getJobListings = async (userId: number) => {
-  const jobDetailsList = await jobDetailsWithUserViewStatusQuery(userId)
+export const getJobListings = async ({
+  userId,
+  query = "",
+}: { userId: number; query: string }) => {
+  const jobDetailsList = await jobDetailsWithUserStatusQuery(userId)
+    .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)))
     .orderBy(desc(job.createdAt))
     .limit(12);
 
@@ -56,7 +60,7 @@ export const getJobById = async ({
   jobId,
   userId,
 }: { jobId: number; userId: number }) => {
-  const jobDetails = await jobDetailsWithUserViewStatusQuery(userId).where(
+  const jobDetails = await jobDetailsWithUserStatusQuery(userId).where(
     and(eq(job.id, jobId)),
   );
   return jobDetails[0];
