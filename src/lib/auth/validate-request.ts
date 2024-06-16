@@ -12,6 +12,7 @@ export const uncachedValidateRequest = async (): Promise<
   }
 
   const result = await lucia.validateSession(sessionId);
+
   try {
     if (result.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id);
@@ -21,7 +22,7 @@ export const uncachedValidateRequest = async (): Promise<
         sessionCookie.attributes,
       );
     }
-    if (result.session) {
+    if (!result.session) {
       const sessionCookie = lucia.createBlankSessionCookie();
       cookies().set(
         sessionCookie.name,

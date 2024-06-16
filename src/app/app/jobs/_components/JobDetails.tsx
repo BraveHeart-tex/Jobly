@@ -1,10 +1,13 @@
+"use client";
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getAvatarPlaceholder } from "@/lib/utils";
-import { api } from "@/trpc/server";
+import { api } from "@/trpc/react";
 import { Bookmark } from "lucide-react";
 import Image from "next/image";
-import JobDetailsContainer from "./JobDetailsContainer";
+import { useEffect, useRef } from "react";
 
 type JobDetailsProps = {
   currentJobId: number;
@@ -26,18 +29,44 @@ export const renderCompanyLogo = (
   );
 };
 
-const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
-  const jobDetails = await api.job.getJobById({ id: currentJobId });
+const JobDetails = ({ currentJobId }: JobDetailsProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const { data: jobDetails, isPending: isPendingJobDetails } =
+    api.job.getJobById.useQuery({
+      id: currentJobId,
+    });
+
+  useEffect(() => {
+    if (currentJobId && containerRef?.current && jobDetails?.id) {
+      containerRef.current.scroll({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }, [currentJobId, jobDetails?.id]);
+
+  if (!jobDetails && isPendingJobDetails) {
+    return (
+      <div className="h-full rounded-md bg-card p-4">
+        <div className="grid gap-4">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-8 w-full lg:w-1/2" />
+          <Skeleton className="h-8 w-full lg:w-1/2" />
+        </div>
+      </div>
+    );
+  }
 
   if (!jobDetails) return null;
 
-  if (!jobDetails.userViewedJob) {
-    await api.job.markJobAsViewed({ id: jobDetails.id });
-  }
+  // if (!jobDetails.userViewedJob) {
+  //   await api.job.markJobAsViewed({ id: jobDetails.id });
+  // }
 
   return (
-    <JobDetailsContainer
-      currentJobId={currentJobId}
+    <article
+      ref={containerRef}
       className="h-full overflow-auto rounded-lg bg-background p-4"
     >
       <header className="flex items-center justify-between">
@@ -249,7 +278,7 @@ const JobDetails = async ({ currentJobId }: JobDetailsProps) => {
           </p>
         </div>
       </div>
-    </JobDetailsContainer>
+    </article>
   );
 };
 

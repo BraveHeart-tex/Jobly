@@ -2,7 +2,7 @@ import { env } from "@/env.js";
 import { db } from "@/server/db";
 import { session, user } from "@/server/db/schema";
 import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { Lucia, TimeSpan } from "lucia";
+import { Lucia } from "lucia";
 
 type DatabaseUserAttributes = {
   id: number;
@@ -22,7 +22,6 @@ export const lucia = new Lucia(adapter, {
       lastName: attributes.lastName,
     };
   },
-  sessionExpiresIn: new TimeSpan(30, "d"),
   sessionCookie: {
     name: "jbly_session",
     expires: false,

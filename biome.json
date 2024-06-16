@@ -32,6 +32,9 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "suspicious": {
+        "noConsoleLog": "info"
+      },
       "correctness": {
         "all": true,
         "useHookAtTopLevel": "error"

@@ -10,7 +10,7 @@ import { and, desc, eq, exists, getTableColumns } from "drizzle-orm";
 
 const jobDetailsWithUserViewStatusQuery = (userId: number) =>
   db
-    .select({
+    .selectDistinct({
       ...getTableColumns(job),
       company: {
         name: company.name,

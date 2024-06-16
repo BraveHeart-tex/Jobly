@@ -1,7 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton";
+"use client";
 import type { RouterOutputs } from "@/trpc/react";
-import { headers } from "next/headers";
-import { Suspense } from "react";
+import { useQueryState } from "nuqs";
+import React, { type RefObject, useEffect, useRef } from "react";
 import JobDetails from "./JobDetails";
 import JobsListCard from "./JobsListCard";
 
@@ -10,36 +10,54 @@ type JobsListProps = {
 };
 
 const JobsList = ({ jobs }: JobsListProps) => {
-  const url = new URL(headers().get("x-url") as string);
-  const currentJobId = Number.parseInt(
-    url.searchParams.get("currentJobId") ?? "0",
-  );
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
+  const [currentJobId] = useQueryState("currentJobId");
+
+  if (jobs.length > 0) {
+    itemRefs.current = jobs.map(() => React.createRef<HTMLDivElement>());
+  }
+
+  useEffect(() => {
+    if (currentJobId) {
+      const index = jobs.findIndex(
+        (job) => job.id === Number.parseInt(currentJobId),
+      );
+
+      if (index && itemRefs?.current[index] && containerRef.current) {
+        const container = containerRef.current;
+        const activeItem = itemRefs.current[index]?.current;
+
+        if (!container || !activeItem) return;
+
+        const containerRect = container?.getBoundingClientRect();
+        const itemRect = activeItem?.getBoundingClientRect();
+
+        const offsetTop =
+          itemRect.top - containerRect.top + container.scrollTop;
+
+        container.scrollTo({
+          top: offsetTop - containerRect.height / 2 + itemRect.height / 2,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [currentJobId, jobs]);
 
   return (
     <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-4 grid h-[calc(100vh-62px)] grid-cols-1 gap-4 overflow-auto p-1">
-        {jobs.map((job) => (
-          <JobsListCard
-            key={job.id}
-            job={job}
-            isActive={currentJobId === job.id}
-          />
+      <div
+        ref={containerRef}
+        className="col-span-4 grid h-[calc(100vh-62px)] grid-cols-1 gap-4 overflow-auto p-1"
+      >
+        {jobs.map((job, index) => (
+          <JobsListCard ref={itemRefs?.current[index]} key={job.id} job={job} />
         ))}
       </div>
       <div className="col-span-8  h-[calc(100vh-62px)]">
-        <Suspense
-          fallback={
-            <div className="h-full rounded-md bg-card p-4">
-              <div className="grid gap-4">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-8 w-full lg:w-1/2" />
-                <Skeleton className="h-8 w-full lg:w-1/2" />
-              </div>
-            </div>
-          }
-        >
-          {currentJobId ? <JobDetails currentJobId={currentJobId} /> : null}
-        </Suspense>
+        {currentJobId ? (
+          <JobDetails currentJobId={Number.parseInt(currentJobId)} />
+        ) : null}
       </div>
     </div>
   );

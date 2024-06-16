@@ -16,7 +16,6 @@ export const authRouter = createTRPCRouter({
   signUp: publicProcedure
     .input(signUpSchema)
     .mutation(async ({ ctx, input }) => {
-      console.log("input", input);
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({
           code: "BAD_REQUEST",
