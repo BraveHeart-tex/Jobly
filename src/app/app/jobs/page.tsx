@@ -11,7 +11,7 @@ const JobsPage = async () => {
   }
 
   return (
-    <div className="bg-muted p-2 pt-0">
+    <div className="bg-muted p-1 pt-0">
       <div className="mx-auto max-w-screen-2xl">
         <JobsList />
       </div>

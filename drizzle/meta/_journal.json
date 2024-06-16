@@ -15,6 +15,13 @@
       "when": 1717951815407,
       "tag": "0001_dazzling_brood",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1718564523407,
+      "tag": "0002_mysterious_whiplash",
+      "breakpoints": true
     }
   ]
 }

@@ -3,12 +3,13 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getAvatarPlaceholder } from "@/lib/utils";
+import { cn, getAvatarPlaceholder } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { BookmarkPlus, BookmarkX } from "lucide-react";
+import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { useBookmark, useDeleteBookmark, useMarkJobAsViewed } from "../_hooks";
+import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 
 type JobDetailsProps = {
   currentJobId: number;
@@ -31,6 +32,7 @@ export const renderCompanyLogo = (
 };
 
 const JobDetails = ({ currentJobId }: JobDetailsProps) => {
+  const { setView, view } = useJobListViewStore();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { data: jobDetails, isPending: isPendingJobDetails } =
@@ -89,9 +91,17 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
   return (
     <article
       ref={containerRef}
-      className="h-full overflow-auto rounded-lg bg-background p-4"
+      className="h-full overflow-auto rounded-lg bg-background p-4 relative"
     >
-      <header className="flex items-center justify-between">
+      <Button
+        variant="ghost"
+        size="icon"
+        className={cn("hidden", view === "jobDetail" && "flex mb-1 lg:hidden")}
+        onClick={() => setView("list")}
+      >
+        <ArrowLeft size={18} />
+      </Button>
+      <header className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
           {renderCompanyLogo(
             jobDetails?.company.name,
@@ -107,7 +117,7 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 ml-auto lg:ml-0">
           <Button>Apply Now</Button>
           <Button
             variant="secondary"

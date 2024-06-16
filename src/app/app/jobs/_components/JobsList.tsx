@@ -10,8 +10,11 @@ import React, {
 } from "react";
 import JobDetails from "./JobDetails";
 import JobsListCard from "./JobsListCard";
+import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
+import { cn } from "@/lib/utils";
 
 const JobsList = () => {
+  const { setView, view } = useJobListViewStore();
   const { data: jobs, isPending: isPendingJobs } =
     api.job.getJobListings.useQuery();
 
@@ -27,8 +30,9 @@ const JobsList = () => {
     if (Array.isArray(jobs) && jobs.length > 0 && !currentJobId) {
       const firstJobId = jobs[0]?.id.toString() || "";
       setCurrentJobId(firstJobId);
+      setView("jobDetail");
     }
-  }, [jobs, currentJobId, setCurrentJobId]);
+  }, [jobs, currentJobId, setCurrentJobId, setView]);
 
   useEffect(() => {
     if (jobs && currentJobId) {
@@ -52,9 +56,11 @@ const JobsList = () => {
           top: offsetTop - containerRect.height / 2 + itemRect.height / 2,
           behavior: "smooth",
         });
+
+        setView("jobDetail");
       }
     }
-  }, [currentJobId, jobs]);
+  }, [currentJobId, jobs, setView]);
 
   const renderJobs = () => {
     if (!jobs || jobs.length === 0) return null;
@@ -73,10 +79,13 @@ const JobsList = () => {
   };
 
   return (
-    <div className="grid grid-cols-12 gap-4">
+    <div className="grid lg:grid-cols-12 gap-4">
       <div
         ref={containerRef}
-        className="col-span-4 grid h-[calc(100vh-62px)] grid-cols-1 gap-4 overflow-auto p-1"
+        className={cn(
+          "lg:col-span-4 grid h-[calc(100vh-62px)] grid-cols-1 gap-4 overflow-auto p-1",
+          view === "jobDetail" && "hidden lg:grid",
+        )}
       >
         {isPendingJobs ? (
           <>
@@ -92,7 +101,13 @@ const JobsList = () => {
           renderJobs()
         )}
       </div>
-      <div className="col-span-8  h-[calc(100vh-62px)]">
+      <div
+        className={cn(
+          "lg:col-span-8 h-[calc(100vh-62px)]",
+          view === "jobDetail" && "h-full w-full lg:h-[calc(100vh-62px)]",
+          view === "list" && "hidden lg:inline-block",
+        )}
+      >
         {currentJobId ? (
           <JobDetails currentJobId={Number.parseInt(currentJobId)} />
         ) : null}

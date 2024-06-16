@@ -1,5 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import type { ArrayElement } from "@/lib/types";
 import {
   cn,
@@ -33,6 +34,7 @@ export const renderCompanyLogo = (
 
 const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
   ({ job }, ref) => {
+    const { setView } = useJobListViewStore();
     const { id, title, company, employmentType, workType, userViewedJob } = job;
     const [currentJobId, setCurrentJobId] = useQueryState("currentJobId");
     const isActive = currentJobId?.toString() === id.toString();
@@ -42,6 +44,7 @@ const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
         ref={ref}
         onMouseDown={() => {
           setCurrentJobId(id.toString());
+          setView("jobDetail");
         }}
         key={id}
         className={cn(
