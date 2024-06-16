@@ -94,7 +94,7 @@ export const useMarkJobAsViewed = (currentJobId: number) => {
         },
       );
       queryClientUtils.job.getJobListings.setData(
-        undefined,
+        { query: "" },
         (oldJobListings) => {
           if (!oldJobListings) return oldJobListings;
           return oldJobListings.map((job) => {
@@ -114,7 +114,7 @@ export const useMarkJobAsViewed = (currentJobId: number) => {
         context?.previousJobDetails,
       );
       queryClientUtils.job.getJobListings.setData(
-        undefined,
+        { query: "" },
         context?.previostJobListings,
       );
     },
