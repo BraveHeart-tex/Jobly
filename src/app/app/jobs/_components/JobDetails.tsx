@@ -8,6 +8,7 @@ import { api } from "@/trpc/react";
 import { BookmarkPlus, BookmarkX } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { useBookmark, useDeleteBookmark, useMarkJobAsViewed } from "../_hooks";
 
 type JobDetailsProps = {
   currentJobId: number;
@@ -37,151 +38,10 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
       id: currentJobId,
     });
 
-  const queryClientUtils = api.useUtils();
-
-  const { mutate: markJobAsViewed } = api.job.markJobAsViewed.useMutation({
-    onMutate: async () => {
-      await queryClientUtils.job.getJobById.cancel();
-      await queryClientUtils.job.getJobListings.cancel();
-
-      const previousJobDetails = queryClientUtils.job.getJobById.getData();
-      const previostJobListings = queryClientUtils.job.getJobListings.getData();
-
-      queryClientUtils.job.getJobById.setData(
-        { id: currentJobId },
-        (oldJobData) => {
-          if (!oldJobData) return oldJobData;
-          oldJobData.userViewedJob = true;
-          return oldJobData;
-        },
-      );
-      queryClientUtils.job.getJobListings.setData(
-        undefined,
-        (oldJobListings) => {
-          if (!oldJobListings) return oldJobListings;
-          return oldJobListings.map((job) => {
-            if (job.id === currentJobId) {
-              job.userViewedJob = true;
-            }
-            return job;
-          });
-        },
-      );
-
-      return { previousJobDetails, previostJobListings };
-    },
-    onError: (_err, _newJob, context) => {
-      queryClientUtils.job.getJobById.setData(
-        { id: currentJobId },
-        context?.previousJobDetails,
-      );
-      queryClientUtils.job.getJobListings.setData(
-        undefined,
-        context?.previostJobListings,
-      );
-    },
-    onSettled: () => {
-      void queryClientUtils.job.getJobListings.invalidate();
-      void queryClientUtils.job.getJobById.invalidate();
-    },
-  });
-  const { mutate: bookmarkJob, isPending: isBookmarkingJob } =
-    api.job.bookmarkJob.useMutation({
-      onMutate: async () => {
-        await queryClientUtils.job.getJobById.cancel();
-        await queryClientUtils.job.getJobListings.cancel();
-
-        const previousJobDetails = queryClientUtils.job.getJobById.getData();
-        const previostJobListings =
-          queryClientUtils.job.getJobListings.getData();
-
-        queryClientUtils.job.getJobById.setData(
-          { id: currentJobId },
-          (oldJobData) => {
-            if (!oldJobData) return oldJobData;
-            oldJobData.userBookmarkedJob = !oldJobData.userBookmarkedJob;
-            return oldJobData;
-          },
-        );
-        queryClientUtils.job.getJobListings.setData(
-          undefined,
-          (oldJobListings) => {
-            if (!oldJobListings) return oldJobListings;
-            return oldJobListings.map((job) => {
-              if (job.id === currentJobId) {
-                job.userBookmarkedJob = !job.userBookmarkedJob;
-              }
-              return job;
-            });
-          },
-        );
-
-        return { previousJobDetails, previostJobListings };
-      },
-      onError: (_err, _newJob, context) => {
-        queryClientUtils.job.getJobById.setData(
-          { id: currentJobId },
-          context?.previousJobDetails,
-        );
-        queryClientUtils.job.getJobListings.setData(
-          undefined,
-          context?.previostJobListings,
-        );
-      },
-      onSettled: () => {
-        void queryClientUtils.job.getJobListings.invalidate();
-        void queryClientUtils.job.getJobById.invalidate();
-      },
-    });
-
-  const { mutate: deleteJobBookmark, isPending: isDeletingJobBookmark } =
-    api.job.deleteJobBookmark.useMutation({
-      onMutate: async () => {
-        await queryClientUtils.job.getJobById.cancel();
-        await queryClientUtils.job.getJobListings.cancel();
-
-        const previousJobDetails = queryClientUtils.job.getJobById.getData();
-        const previostJobListings =
-          queryClientUtils.job.getJobListings.getData();
-
-        queryClientUtils.job.getJobById.setData(
-          { id: currentJobId },
-          (oldJobData) => {
-            if (!oldJobData) return oldJobData;
-            oldJobData.userBookmarkedJob = !oldJobData.userBookmarkedJob;
-            return oldJobData;
-          },
-        );
-        queryClientUtils.job.getJobListings.setData(
-          undefined,
-          (oldJobListings) => {
-            if (!oldJobListings) return oldJobListings;
-            return oldJobListings.map((job) => {
-              if (job.id === currentJobId) {
-                job.userBookmarkedJob = !job.userBookmarkedJob;
-              }
-              return job;
-            });
-          },
-        );
-
-        return { previousJobDetails, previostJobListings };
-      },
-      onError: (_err, _newJob, context) => {
-        queryClientUtils.job.getJobById.setData(
-          { id: currentJobId },
-          context?.previousJobDetails,
-        );
-        queryClientUtils.job.getJobListings.setData(
-          undefined,
-          context?.previostJobListings,
-        );
-      },
-      onSettled: () => {
-        void queryClientUtils.job.getJobListings.invalidate();
-        void queryClientUtils.job.getJobById.invalidate();
-      },
-    });
+  const { markJobAsViewed } = useMarkJobAsViewed(currentJobId);
+  const { bookmarkJob, isBookmarkingJob } = useBookmark(currentJobId);
+  const { deleteJobBookmark, isDeletingJobBookmark } =
+    useDeleteBookmark(currentJobId);
 
   useEffect(() => {
     if (currentJobId && containerRef?.current && jobDetails?.id) {
