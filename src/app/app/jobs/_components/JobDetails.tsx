@@ -37,6 +37,55 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
       id: currentJobId,
     });
 
+  const queryClientUtils = api.useUtils();
+
+  const { mutate: markJobAsViewed } = api.job.markJobAsViewed.useMutation({
+    onMutate: async () => {
+      await queryClientUtils.job.getJobById.cancel();
+      await queryClientUtils.job.getJobListings.cancel();
+
+      const previousJobDetails = queryClientUtils.job.getJobById.getData();
+      const previostJobListings = queryClientUtils.job.getJobListings.getData();
+
+      queryClientUtils.job.getJobById.setData(
+        { id: currentJobId },
+        (oldJobData) => {
+          if (!oldJobData) return oldJobData;
+          oldJobData.userViewedJob = true;
+          return oldJobData;
+        },
+      );
+      queryClientUtils.job.getJobListings.setData(
+        undefined,
+        (oldJobListings) => {
+          if (!oldJobListings) return oldJobListings;
+          return oldJobListings.map((job) => {
+            if (job.id === currentJobId) {
+              job.userViewedJob = true;
+            }
+            return job;
+          });
+        },
+      );
+
+      return { previousJobDetails, previostJobListings };
+    },
+    onError: (_err, _newJob, context) => {
+      queryClientUtils.job.getJobById.setData(
+        { id: currentJobId },
+        context?.previousJobDetails,
+      );
+      queryClientUtils.job.getJobListings.setData(
+        undefined,
+        context?.previostJobListings,
+      );
+    },
+    onSettled: () => {
+      void queryClientUtils.job.getJobListings.invalidate();
+      void queryClientUtils.job.getJobById.invalidate();
+    },
+  });
+
   useEffect(() => {
     if (currentJobId && containerRef?.current && jobDetails?.id) {
       containerRef.current.scroll({
@@ -45,6 +94,14 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
       });
     }
   }, [currentJobId, jobDetails?.id]);
+
+  useEffect(() => {
+    if (jobDetails && !jobDetails.userViewedJob) {
+      markJobAsViewed({
+        id: jobDetails.id,
+      });
+    }
+  }, [jobDetails, markJobAsViewed]);
 
   if (!jobDetails && isPendingJobDetails) {
     return (
@@ -59,10 +116,6 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
   }
 
   if (!jobDetails) return null;
-
-  // if (!jobDetails.userViewedJob) {
-  //   await api.job.markJobAsViewed({ id: jobDetails.id });
-  // }
 
   return (
     <article

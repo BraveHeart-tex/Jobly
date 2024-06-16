@@ -131,6 +131,7 @@ export const job = mysqlTable(
 );
 
 export type JobInsertModel = InferInsertModel<typeof job>;
+export type JobSelectModel = InferSelectModel<typeof job>;
 
 export const application = mysqlTable(
   "Application",
