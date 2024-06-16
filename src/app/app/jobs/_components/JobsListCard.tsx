@@ -1,5 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import type { ArrayElement } from "@/lib/types";
 import {
@@ -36,7 +37,9 @@ const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
   ({ job }, ref) => {
     const { setView } = useJobListViewStore();
     const { id, title, company, employmentType, workType, userViewedJob } = job;
-    const [currentJobId, setCurrentJobId] = useQueryState("currentJobId");
+    const [currentJobId, setCurrentJobId] = useQueryState(
+      URL_SEARCH_QUERY_KEYS.CURRENT_JOB_ID,
+    );
     const isActive = currentJobId?.toString() === id.toString();
 
     return (

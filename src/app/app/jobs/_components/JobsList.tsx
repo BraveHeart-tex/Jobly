@@ -12,6 +12,7 @@ import JobDetails from "./JobDetails";
 import JobsListCard from "./JobsListCard";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import { cn } from "@/lib/utils";
+import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 
 const JobsList = () => {
   const { setView, view } = useJobListViewStore();
@@ -20,7 +21,10 @@ const JobsList = () => {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
-  const [currentJobId, setCurrentJobId] = useQueryState("currentJobId");
+
+  const [currentJobId, setCurrentJobId] = useQueryState(
+    URL_SEARCH_QUERY_KEYS.CURRENT_JOB_ID,
+  );
 
   if (jobs && jobs?.length > 0) {
     itemRefs.current = jobs.map(() => React.createRef<HTMLDivElement>());

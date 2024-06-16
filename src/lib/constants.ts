@@ -110,3 +110,8 @@ export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
     ],
   },
 ];
+
+export const URL_SEARCH_QUERY_KEYS = {
+  CURRENT_JOB_ID: "currentJobId",
+  QUERY: "query",
+} as const;

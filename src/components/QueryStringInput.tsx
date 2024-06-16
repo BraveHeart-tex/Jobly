@@ -1,12 +1,15 @@
 "use client";
 import { useQueryState } from "nuqs";
 import { Input } from "./ui/input";
+import { useState } from "react";
+import { useDebounce } from "react-use";
 
 type QueryStringInputProps = {
   queryKey: string;
   defaultValue?: string;
   placeholder?: string;
   className?: string;
+  debounceMs?: number;
 };
 
 const QueryStringInput = ({
@@ -14,10 +17,21 @@ const QueryStringInput = ({
   defaultValue = "",
   placeholder,
   className,
+  debounceMs = 0,
 }: QueryStringInputProps) => {
-  const [query, setQuery] = useQueryState(queryKey, {
+  const [debouncedQuery, setDebouncedQuery] = useQueryState(queryKey, {
     defaultValue,
   });
+
+  const [query, setQuery] = useState(debouncedQuery);
+
+  useDebounce(
+    () => {
+      setDebouncedQuery(query);
+    },
+    debounceMs,
+    [query],
+  );
 
   return (
     <Input

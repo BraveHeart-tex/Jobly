@@ -1,6 +1,7 @@
 "use client";
 
 import QueryStringInput from "@/components/QueryStringInput";
+import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { Search } from "lucide-react";
 
 const JobListSearchInput = () => {
@@ -11,9 +12,10 @@ const JobListSearchInput = () => {
         size={18}
       />
       <QueryStringInput
-        queryKey="query"
+        queryKey={URL_SEARCH_QUERY_KEYS.QUERY}
         placeholder="Job title, skill or company"
         className="pl-7 bg-card"
+        debounceMs={400}
       />
     </div>
   );
