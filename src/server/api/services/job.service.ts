@@ -5,6 +5,7 @@ import {
   company,
   job,
   userViewsJob,
+  userBookmarksJob,
 } from "@/server/db/schema";
 import { and, desc, eq, exists, getTableColumns } from "drizzle-orm";
 
@@ -24,6 +25,17 @@ const jobDetailsWithUserViewStatusQuery = (userId: number) =>
             and(
               eq(userViewsJob.viewedJobId, job.id),
               eq(userViewsJob.viewerUserId, userId),
+            ),
+          ),
+      ),
+      userBookmarkedJob: exists(
+        db
+          .select()
+          .from(userBookmarksJob)
+          .where(
+            and(
+              eq(userBookmarksJob.jobId, job.id),
+              eq(userBookmarksJob.userId, userId),
             ),
           ),
       ),
@@ -64,4 +76,28 @@ export const markJobAsViewed = async ({
     viewedJobId: jobId,
     viewerUserId: userId,
   });
+};
+
+export const bookmarkJob = async ({
+  jobId,
+  userId,
+}: { jobId: number; userId: number }) => {
+  return db.insert(userBookmarksJob).values({
+    jobId,
+    userId,
+  });
+};
+
+export const deleteJobBookmark = async ({
+  userId,
+  jobId,
+}: { userId: number; jobId: number }) => {
+  return db
+    .delete(userBookmarksJob)
+    .where(
+      and(
+        eq(userBookmarksJob.jobId, jobId),
+        eq(userBookmarksJob.userId, userId),
+      ),
+    );
 };

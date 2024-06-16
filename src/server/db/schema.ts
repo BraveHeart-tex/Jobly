@@ -327,7 +327,9 @@ export const userBookmarksJob = mysqlTable(
       .references(() => job.id, {
         onDelete: "cascade",
       }),
-    bookmarkedAt: datetime("bookmarkedAt", { mode: "string" }).notNull(),
+    bookmarkedAt: datetime("bookmarkedAt", { mode: "string" }).default(
+      sql`(now())`,
+    ),
   },
   (table) => {
     return {

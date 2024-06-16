@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAvatarPlaceholder } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { Bookmark } from "lucide-react";
+import { BookmarkPlus, BookmarkX } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
@@ -85,6 +85,103 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
       void queryClientUtils.job.getJobById.invalidate();
     },
   });
+  const { mutate: bookmarkJob, isPending: isBookmarkingJob } =
+    api.job.bookmarkJob.useMutation({
+      onMutate: async () => {
+        await queryClientUtils.job.getJobById.cancel();
+        await queryClientUtils.job.getJobListings.cancel();
+
+        const previousJobDetails = queryClientUtils.job.getJobById.getData();
+        const previostJobListings =
+          queryClientUtils.job.getJobListings.getData();
+
+        queryClientUtils.job.getJobById.setData(
+          { id: currentJobId },
+          (oldJobData) => {
+            if (!oldJobData) return oldJobData;
+            oldJobData.userBookmarkedJob = !oldJobData.userBookmarkedJob;
+            return oldJobData;
+          },
+        );
+        queryClientUtils.job.getJobListings.setData(
+          undefined,
+          (oldJobListings) => {
+            if (!oldJobListings) return oldJobListings;
+            return oldJobListings.map((job) => {
+              if (job.id === currentJobId) {
+                job.userBookmarkedJob = !job.userBookmarkedJob;
+              }
+              return job;
+            });
+          },
+        );
+
+        return { previousJobDetails, previostJobListings };
+      },
+      onError: (_err, _newJob, context) => {
+        queryClientUtils.job.getJobById.setData(
+          { id: currentJobId },
+          context?.previousJobDetails,
+        );
+        queryClientUtils.job.getJobListings.setData(
+          undefined,
+          context?.previostJobListings,
+        );
+      },
+      onSettled: () => {
+        void queryClientUtils.job.getJobListings.invalidate();
+        void queryClientUtils.job.getJobById.invalidate();
+      },
+    });
+
+  const { mutate: deleteJobBookmark, isPending: isDeletingJobBookmark } =
+    api.job.deleteJobBookmark.useMutation({
+      onMutate: async () => {
+        await queryClientUtils.job.getJobById.cancel();
+        await queryClientUtils.job.getJobListings.cancel();
+
+        const previousJobDetails = queryClientUtils.job.getJobById.getData();
+        const previostJobListings =
+          queryClientUtils.job.getJobListings.getData();
+
+        queryClientUtils.job.getJobById.setData(
+          { id: currentJobId },
+          (oldJobData) => {
+            if (!oldJobData) return oldJobData;
+            oldJobData.userBookmarkedJob = !oldJobData.userBookmarkedJob;
+            return oldJobData;
+          },
+        );
+        queryClientUtils.job.getJobListings.setData(
+          undefined,
+          (oldJobListings) => {
+            if (!oldJobListings) return oldJobListings;
+            return oldJobListings.map((job) => {
+              if (job.id === currentJobId) {
+                job.userBookmarkedJob = !job.userBookmarkedJob;
+              }
+              return job;
+            });
+          },
+        );
+
+        return { previousJobDetails, previostJobListings };
+      },
+      onError: (_err, _newJob, context) => {
+        queryClientUtils.job.getJobById.setData(
+          { id: currentJobId },
+          context?.previousJobDetails,
+        );
+        queryClientUtils.job.getJobListings.setData(
+          undefined,
+          context?.previostJobListings,
+        );
+      },
+      onSettled: () => {
+        void queryClientUtils.job.getJobListings.invalidate();
+        void queryClientUtils.job.getJobById.invalidate();
+      },
+    });
 
   useEffect(() => {
     if (currentJobId && containerRef?.current && jobDetails?.id) {
@@ -117,6 +214,18 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
 
   if (!jobDetails) return null;
 
+  const handleBookmarkJob = () => {
+    if (!jobDetails.userBookmarkedJob) {
+      bookmarkJob({
+        id: jobDetails.id,
+      });
+    } else {
+      deleteJobBookmark({
+        id: jobDetails.id,
+      });
+    }
+  };
+
   return (
     <article
       ref={containerRef}
@@ -140,9 +249,23 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
         </div>
         <div className="grid grid-cols-2 gap-2">
           <Button>Apply Now</Button>
-          <Button variant="secondary" className="flex items-center gap-1">
-            <Bookmark size={18} />
-            Save
+          <Button
+            variant="secondary"
+            className="flex items-center gap-1"
+            onClick={handleBookmarkJob}
+            disabled={isBookmarkingJob || isDeletingJobBookmark}
+          >
+            {jobDetails?.userBookmarkedJob ? (
+              <>
+                <BookmarkX size={18} />
+                Unsave
+              </>
+            ) : (
+              <>
+                <BookmarkPlus size={18} />
+                Save
+              </>
+            )}
           </Button>
         </div>
       </header>

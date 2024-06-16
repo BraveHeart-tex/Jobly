@@ -1,6 +1,5 @@
 import { jobSchema } from "@/schemas/jobSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import * as jobService from "../services/job.service";
 
@@ -38,7 +37,25 @@ export const jobRouter = createTRPCRouter({
         userId: ctx.user.id,
         jobId: input.id,
       });
-      revalidatePath("/jobs");
+      return { success: true };
+    }),
+  bookmarkJob: protectedProcedure
+    .input(jobSchema.pick({ id: true }))
+    .mutation(async ({ ctx, input }) => {
+      await jobService.bookmarkJob({
+        userId: ctx.user.id,
+        jobId: input.id,
+      });
+
+      return { success: true };
+    }),
+  deleteJobBookmark: protectedProcedure
+    .input(jobSchema.pick({ id: true }))
+    .mutation(async ({ ctx, input }) => {
+      await jobService.deleteJobBookmark({
+        userId: ctx.user.id,
+        jobId: input.id,
+      });
       return { success: true };
     }),
 });
