@@ -101,3 +101,27 @@ export const deleteJobBookmark = async ({
       ),
     );
 };
+
+export const getBookmarkedJobs = async (userId: number) => {
+  return db
+    .select({
+      // TODO: Get only the needed columns later on instead of spreading
+      ...getTableColumns(job),
+      bookmarkedAt: userBookmarksJob.bookmarkedAt,
+    })
+    .from(job)
+    .innerJoin(userBookmarksJob, eq(job.id, userBookmarksJob.jobId))
+    .where(eq(userBookmarksJob.userId, userId));
+};
+
+export const getViewedJobs = async (userId: number) => {
+  return db
+    .select({
+      // TODO: Get only the needed columns later on instead of spreading
+      ...getTableColumns(job),
+      viewedAt: userViewsJob.viewedAt,
+    })
+    .from(job)
+    .innerJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId))
+    .where(eq(userViewsJob.viewerUserId, userId));
+};

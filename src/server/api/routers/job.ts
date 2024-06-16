@@ -58,4 +58,12 @@ export const jobRouter = createTRPCRouter({
       });
       return { success: true };
     }),
+  getBookmarkedJobs: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return jobService.getBookmarkedJobs(userId);
+  }),
+  getViewedJobs: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return jobService.getViewedJobs(userId);
+  }),
 });
