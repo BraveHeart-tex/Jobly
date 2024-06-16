@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,8 +6,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Moon, Sun } from "lucide-react";
+import { Cog, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import type { LucideIcon } from "lucide-react";
+
+const COLOR_MODES: { label: string; value: string; icon: LucideIcon }[] = [
+  {
+    label: "Light",
+    value: "light",
+    icon: Sun,
+  },
+  {
+    label: "Dark",
+    value: "dark",
+    icon: Moon,
+  },
+  {
+    label: "System",
+    value: "system",
+    icon: Cog,
+  },
+];
 
 const ColorModeToggle = () => {
   const { setTheme } = useTheme();
@@ -23,15 +41,16 @@ const ColorModeToggle = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        {COLOR_MODES.map((mode) => (
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setTheme(mode.value)}
+            key={mode.value}
+          >
+            <mode.icon className="h-[1.2rem] w-[1.2rem] mr-2" />
+            {mode.label}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
