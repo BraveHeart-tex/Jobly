@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "2ef13750-fe05-4731-9207-58d920b29eac",
-  "prevId": "33a4b3c6-03f7-4719-99fd-e769db37b36e",
+  "id": "001c4b2f-9168-4236-bb20-48c37ae89946",
+  "prevId": "2ef13750-fe05-4731-9207-58d920b29eac",
   "tables": {
     "Application": {
       "name": "Application",
@@ -62,23 +62,17 @@
       "indexes": {
         "jobId": {
           "name": "jobId",
-          "columns": [
-            "jobId"
-          ],
+          "columns": ["jobId"],
           "isUnique": false
         },
         "userId": {
           "name": "userId",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "status": {
           "name": "status",
-          "columns": [
-            "status"
-          ],
+          "columns": ["status"],
           "isUnique": false
         }
       },
@@ -87,12 +81,8 @@
           "name": "Application_userId_User_id_fk",
           "tableFrom": "Application",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -100,12 +90,8 @@
           "name": "Application_jobId_Job_id_fk",
           "tableFrom": "Application",
           "tableTo": "Job",
-          "columnsFrom": [
-            "jobId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["jobId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -113,9 +99,7 @@
       "compositePrimaryKeys": {
         "Application_id": {
           "name": "Application_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -228,9 +212,7 @@
       "indexes": {
         "name": {
           "name": "name",
-          "columns": [
-            "name"
-          ],
+          "columns": ["name"],
           "isUnique": false
         }
       },
@@ -238,9 +220,7 @@
       "compositePrimaryKeys": {
         "Company_id": {
           "name": "Company_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -273,9 +253,7 @@
       "indexes": {
         "userId": {
           "name": "userId",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -284,12 +262,8 @@
           "name": "CoverLetter_userId_User_id_fk",
           "tableFrom": "CoverLetter",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -297,9 +271,7 @@
       "compositePrimaryKeys": {
         "CoverLetter_id": {
           "name": "CoverLetter_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -339,9 +311,7 @@
       "indexes": {
         "sectionId": {
           "name": "sectionId",
-          "columns": [
-            "sectionId"
-          ],
+          "columns": ["sectionId"],
           "isUnique": false
         }
       },
@@ -350,12 +320,8 @@
           "name": "Field_sectionId_Section_id_fk",
           "tableFrom": "Field",
           "tableTo": "Section",
-          "columnsFrom": [
-            "sectionId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["sectionId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -363,9 +329,7 @@
       "compositePrimaryKeys": {
         "Field_id": {
           "name": "Field_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -466,37 +430,27 @@
       "indexes": {
         "title": {
           "name": "title",
-          "columns": [
-            "title"
-          ],
+          "columns": ["title"],
           "isUnique": false
         },
         "companyId": {
           "name": "companyId",
-          "columns": [
-            "companyId"
-          ],
+          "columns": ["companyId"],
           "isUnique": false
         },
         "location": {
           "name": "location",
-          "columns": [
-            "location"
-          ],
+          "columns": ["location"],
           "isUnique": false
         },
         "workType": {
           "name": "workType",
-          "columns": [
-            "workType"
-          ],
+          "columns": ["workType"],
           "isUnique": false
         },
         "employmentType": {
           "name": "employmentType",
-          "columns": [
-            "employmentType"
-          ],
+          "columns": ["employmentType"],
           "isUnique": false
         }
       },
@@ -505,12 +459,8 @@
           "name": "Job_companyId_Company_id_fk",
           "tableFrom": "Job",
           "tableTo": "Company",
-          "columnsFrom": [
-            "companyId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["companyId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -518,9 +468,7 @@
       "compositePrimaryKeys": {
         "Job_id": {
           "name": "Job_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -553,9 +501,7 @@
       "indexes": {
         "jobId": {
           "name": "jobId",
-          "columns": [
-            "jobId"
-          ],
+          "columns": ["jobId"],
           "isUnique": false
         }
       },
@@ -564,12 +510,8 @@
           "name": "JobSkill_jobId_Job_id_fk",
           "tableFrom": "JobSkill",
           "tableTo": "Job",
-          "columnsFrom": [
-            "jobId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["jobId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -577,9 +519,7 @@
       "compositePrimaryKeys": {
         "JobSkill_id": {
           "name": "JobSkill_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -635,9 +575,7 @@
       "indexes": {
         "userId": {
           "name": "userId",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -646,12 +584,8 @@
           "name": "Resume_userId_User_id_fk",
           "tableFrom": "Resume",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -659,9 +593,7 @@
       "compositePrimaryKeys": {
         "Resume_id": {
           "name": "Resume_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -701,16 +633,12 @@
       "indexes": {
         "viewerCompanyId": {
           "name": "viewerCompanyId",
-          "columns": [
-            "viewerCompanyId"
-          ],
+          "columns": ["viewerCompanyId"],
           "isUnique": false
         },
         "viewedUserId": {
           "name": "viewedUserId",
-          "columns": [
-            "viewedUserId"
-          ],
+          "columns": ["viewedUserId"],
           "isUnique": false
         }
       },
@@ -719,12 +647,8 @@
           "name": "ResumeView_viewerCompanyId_Company_id_fk",
           "tableFrom": "ResumeView",
           "tableTo": "Company",
-          "columnsFrom": [
-            "viewerCompanyId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["viewerCompanyId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -732,12 +656,8 @@
           "name": "ResumeView_viewedUserId_User_id_fk",
           "tableFrom": "ResumeView",
           "tableTo": "User",
-          "columnsFrom": [
-            "viewedUserId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["viewedUserId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -745,9 +665,7 @@
       "compositePrimaryKeys": {
         "ResumeView_id": {
           "name": "ResumeView_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -782,9 +700,7 @@
       "compositePrimaryKeys": {
         "Section_id": {
           "name": "Section_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -817,9 +733,7 @@
       "indexes": {
         "user_id": {
           "name": "user_id",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": false
         }
       },
@@ -828,12 +742,8 @@
           "name": "Session_user_id_User_id_fk",
           "tableFrom": "Session",
           "tableTo": "User",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -841,9 +751,7 @@
       "compositePrimaryKeys": {
         "Session_id": {
           "name": "Session_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -890,9 +798,7 @@
       "indexes": {
         "email": {
           "name": "email",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": false
         }
       },
@@ -900,17 +806,13 @@
       "compositePrimaryKeys": {
         "User_id": {
           "name": "User_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "User_email_unique": {
           "name": "User_email_unique",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       }
     },
@@ -942,23 +844,20 @@
           "name": "bookmarkedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
         }
       },
       "indexes": {
         "userId": {
           "name": "userId",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "jobId": {
           "name": "jobId",
-          "columns": [
-            "jobId"
-          ],
+          "columns": ["jobId"],
           "isUnique": false
         }
       },
@@ -967,12 +866,8 @@
           "name": "UserBookmarksJob_userId_User_id_fk",
           "tableFrom": "UserBookmarksJob",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -980,12 +875,8 @@
           "name": "UserBookmarksJob_jobId_Job_id_fk",
           "tableFrom": "UserBookmarksJob",
           "tableTo": "Job",
-          "columnsFrom": [
-            "jobId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["jobId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -993,9 +884,7 @@
       "compositePrimaryKeys": {
         "UserBookmarksJob_id": {
           "name": "UserBookmarksJob_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1035,16 +924,12 @@
       "indexes": {
         "userSectionId": {
           "name": "userSectionId",
-          "columns": [
-            "userSectionId"
-          ],
+          "columns": ["userSectionId"],
           "isUnique": false
         },
         "fieldId": {
           "name": "fieldId",
-          "columns": [
-            "fieldId"
-          ],
+          "columns": ["fieldId"],
           "isUnique": false
         }
       },
@@ -1053,12 +938,8 @@
           "name": "UserField_userSectionId_UserSection_id_fk",
           "tableFrom": "UserField",
           "tableTo": "UserSection",
-          "columnsFrom": [
-            "userSectionId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userSectionId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1066,12 +947,8 @@
           "name": "UserField_fieldId_Field_id_fk",
           "tableFrom": "UserField",
           "tableTo": "Field",
-          "columnsFrom": [
-            "fieldId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["fieldId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1079,9 +956,7 @@
       "compositePrimaryKeys": {
         "UserField_id": {
           "name": "UserField_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1114,16 +989,12 @@
       "indexes": {
         "userId": {
           "name": "userId",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         },
         "companyId": {
           "name": "companyId",
-          "columns": [
-            "companyId"
-          ],
+          "columns": ["companyId"],
           "isUnique": false
         }
       },
@@ -1132,12 +1003,8 @@
           "name": "UserFollowsCompany_companyId_Company_id_fk",
           "tableFrom": "UserFollowsCompany",
           "tableTo": "Company",
-          "columnsFrom": [
-            "companyId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["companyId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1145,12 +1012,8 @@
           "name": "UserFollowsCompany_userId_User_id_fk",
           "tableFrom": "UserFollowsCompany",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1158,9 +1021,7 @@
       "compositePrimaryKeys": {
         "UserFollowsCompany_id": {
           "name": "UserFollowsCompany_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1237,9 +1098,7 @@
       "indexes": {
         "userId": {
           "name": "userId",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -1248,12 +1107,8 @@
           "name": "UserProfile_userId_User_id_fk",
           "tableFrom": "UserProfile",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1261,9 +1116,7 @@
       "compositePrimaryKeys": {
         "UserProfile_id": {
           "name": "UserProfile_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1310,16 +1163,12 @@
       "indexes": {
         "resumeId": {
           "name": "resumeId",
-          "columns": [
-            "resumeId"
-          ],
+          "columns": ["resumeId"],
           "isUnique": false
         },
         "sectionId": {
           "name": "sectionId",
-          "columns": [
-            "sectionId"
-          ],
+          "columns": ["sectionId"],
           "isUnique": false
         }
       },
@@ -1328,12 +1177,8 @@
           "name": "UserSection_resumeId_Resume_id_fk",
           "tableFrom": "UserSection",
           "tableTo": "Resume",
-          "columnsFrom": [
-            "resumeId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["resumeId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1341,12 +1186,8 @@
           "name": "UserSection_sectionId_Section_id_fk",
           "tableFrom": "UserSection",
           "tableTo": "Section",
-          "columnsFrom": [
-            "sectionId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["sectionId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -1354,9 +1195,7 @@
       "compositePrimaryKeys": {
         "UserSection_id": {
           "name": "UserSection_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1397,16 +1236,12 @@
       "indexes": {
         "viewerUserId": {
           "name": "viewerUserId",
-          "columns": [
-            "viewerUserId"
-          ],
+          "columns": ["viewerUserId"],
           "isUnique": false
         },
         "viewedJobId": {
           "name": "viewedJobId",
-          "columns": [
-            "viewedJobId"
-          ],
+          "columns": ["viewedJobId"],
           "isUnique": false
         }
       },
@@ -1415,12 +1250,8 @@
           "name": "UserViewsJob_viewerUserId_User_id_fk",
           "tableFrom": "UserViewsJob",
           "tableTo": "User",
-          "columnsFrom": [
-            "viewerUserId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["viewerUserId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1428,12 +1259,8 @@
           "name": "UserViewsJob_viewedJobId_Job_id_fk",
           "tableFrom": "UserViewsJob",
           "tableTo": "Job",
-          "columnsFrom": [
-            "viewedJobId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["viewedJobId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1441,9 +1268,7 @@
       "compositePrimaryKeys": {
         "UserViewsJob_id": {
           "name": "UserViewsJob_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}

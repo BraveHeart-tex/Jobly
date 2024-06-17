@@ -4,7 +4,7 @@ import type { Config } from "drizzle-kit";
 export default {
   schema: "./src/server/db/schema.ts",
   dialect: "mysql",
-  out: "./drizzle",
+  out: "./migrations",
   dbCredentials: {
     url: env.DATABASE_URL,
   },
