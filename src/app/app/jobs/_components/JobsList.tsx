@@ -59,31 +59,39 @@ const JobsList = () => {
   }, [jobs, currentJobId, setCurrentJobId, setView]);
 
   useEffect(() => {
-    if (jobs && currentJobId) {
-      const index = jobs.findIndex(
-        (job) => job.id === Number.parseInt(currentJobId),
-      );
+    const scrollToActiveItem = (
+      container: HTMLDivElement,
+      activeItem: HTMLDivElement,
+    ) => {
+      if (!container || !activeItem) return;
 
-      if (index && itemRefs?.current[index] && containerRef.current) {
-        const container = containerRef.current;
-        const activeItem = itemRefs.current[index]?.current;
+      const containerRect = container?.getBoundingClientRect();
+      const itemRect = activeItem?.getBoundingClientRect();
 
-        if (!container || !activeItem) return;
+      const offsetTop = itemRect.top - containerRect.top + container.scrollTop;
 
-        const containerRect = container?.getBoundingClientRect();
-        const itemRect = activeItem?.getBoundingClientRect();
+      container.scrollTo({
+        top: offsetTop - containerRect.height / 2 + itemRect.height / 2,
+        behavior: "smooth",
+      });
+    };
 
-        const offsetTop =
-          itemRect.top - containerRect.top + container.scrollTop;
+    if (!jobs || !currentJobId) return;
+    const activeItemIndex = jobs.findIndex(
+      (job) => job.id === Number.parseInt(currentJobId),
+    );
+    if (
+      activeItemIndex === -1 ||
+      !itemRefs?.current[activeItemIndex] ||
+      !containerRef.current
+    )
+      return;
 
-        container.scrollTo({
-          top: offsetTop - containerRect.height / 2 + itemRect.height / 2,
-          behavior: "smooth",
-        });
-
-        setView("jobDetail");
-      }
-    }
+    const container = containerRef.current;
+    const activeItem = itemRefs.current[activeItemIndex]?.current;
+    if (!container || !activeItem) return;
+    scrollToActiveItem(container, activeItem);
+    setView("jobDetail");
   }, [currentJobId, jobs, setView]);
 
   const renderJobs = () => {
@@ -113,6 +121,15 @@ const JobsList = () => {
     );
   };
 
+  const renderSkeletons = () =>
+    Array.from({ length: 4 }).map((_, index) => (
+      <Skeleton
+        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+        key={index}
+        className="rounded-md p-4 h-52"
+      />
+    ));
+
   return (
     <div className="grid lg:grid-cols-12 gap-4">
       <div
@@ -122,19 +139,7 @@ const JobsList = () => {
           view === "jobDetail" && "hidden lg:grid",
         )}
       >
-        {isPendingJobs ? (
-          <>
-            {Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                key={index}
-                className="rounded-md p-4 h-52"
-              />
-            ))}
-          </>
-        ) : (
-          renderJobs()
-        )}
+        {isPendingJobs ? renderSkeletons() : renderJobs()}
       </div>
       <div
         className={cn(
