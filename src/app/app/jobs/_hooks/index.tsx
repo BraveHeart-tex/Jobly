@@ -95,14 +95,17 @@ export const useMarkJobAsViewed = (currentJobId: number) => {
       );
       queryClientUtils.job.getJobListings.setData(
         { query: "" },
-        (oldJobListings) => {
-          if (!oldJobListings) return oldJobListings;
-          return oldJobListings.map((job) => {
-            if (job.id === currentJobId) {
-              job.userViewedJob = true;
-            }
-            return job;
-          });
+        (oldJobListingsData) => {
+          if (!oldJobListingsData?.jobListings) return oldJobListingsData;
+          return {
+            ...oldJobListingsData,
+            jobListings: oldJobListingsData.jobListings.map((job) => {
+              if (job.id === currentJobId) {
+                job.userViewedJob = true;
+              }
+              return job;
+            }),
+          };
         },
       );
 

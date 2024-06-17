@@ -14,7 +14,7 @@ import { useQueryState } from "nuqs";
 import { forwardRef } from "react";
 
 type JobsListCardProps = {
-  job: ArrayElement<RouterOutputs["job"]["getJobListings"]>;
+  job: ArrayElement<RouterOutputs["job"]["getJobListings"]["jobListings"]>;
 };
 
 export const renderCompanyLogo = (

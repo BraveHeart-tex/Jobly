@@ -16,21 +16,26 @@ import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 
 const JobsList = () => {
-  const { setView, view } = useJobListViewStore();
   const [currentJobId, setCurrentJobId] = useQueryState(
     URL_SEARCH_QUERY_KEYS.CURRENT_JOB_ID,
   );
   const [query, setQuery] = useQueryState(URL_SEARCH_QUERY_KEYS.QUERY, {
     defaultValue: "",
   });
-
-  const { data: jobs, isPending: isPendingJobs } =
-    api.job.getJobListings.useQuery({
-      query,
-    });
-
+  const [page] = useQueryState(URL_SEARCH_QUERY_KEYS.PAGE, {
+    defaultValue: "1",
+  });
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
+  const { setView, view } = useJobListViewStore();
+
+  const { data: jobListingsResponse, isPending: isPendingJobs } =
+    api.job.getJobListings.useQuery({
+      query,
+      page: Number.parseInt(page),
+    });
+
+  const jobs = jobListingsResponse?.jobListings;
 
   if (jobs && jobs?.length > 0) {
     itemRefs.current = jobs.map(() => React.createRef<HTMLDivElement>());

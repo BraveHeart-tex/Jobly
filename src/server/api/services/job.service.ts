@@ -7,7 +7,16 @@ import {
   userViewsJob,
   userBookmarksJob,
 } from "@/server/db/schema";
-import { and, desc, eq, exists, getTableColumns, like, or } from "drizzle-orm";
+import {
+  and,
+  desc,
+  eq,
+  exists,
+  getTableColumns,
+  like,
+  or,
+  sql,
+} from "drizzle-orm";
 
 const jobDetailsWithUserStatusQuery = (userId: number) =>
   db
@@ -44,16 +53,54 @@ const jobDetailsWithUserStatusQuery = (userId: number) =>
     .innerJoin(company, eq(job.companyId, company.id))
     .leftJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId));
 
+type GetJobListingsParams = {
+  userId: number;
+  query?: string;
+  page?: number;
+  limit?: number;
+};
+
 export const getJobListings = async ({
   userId,
   query = "",
-}: { userId: number; query: string }) => {
+  page = 1,
+  limit = 12,
+}: GetJobListingsParams) => {
+  const skipAmount = (page - 1) * limit;
+
   const jobDetailsList = await jobDetailsWithUserStatusQuery(userId)
     .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)))
     .orderBy(desc(job.createdAt))
-    .limit(12);
+    .limit(limit)
+    .offset(skipAmount);
 
-  return jobDetailsList;
+  const jobDetailsListCount = await db
+    .select({
+      count: sql<number>`count(*)`.as("count"),
+    })
+    .from(job)
+    .innerJoin(company, eq(job.companyId, company.id))
+    .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)));
+
+  const totalCount = jobDetailsListCount[0]?.count ?? 0;
+
+  if (jobDetailsList.length === 0) {
+    return {
+      jobListings: [],
+      hasNextPage: false,
+      hasPreviousPage: page > 1,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+    };
+  }
+
+  return {
+    jobListings: jobDetailsList,
+    hasNextPage: totalCount > skipAmount + limit,
+    hasPreviousPage: page > 1,
+    totalPages: Math.ceil(totalCount / limit),
+    currentPage: page,
+  };
 };
 
 export const getJobById = async ({

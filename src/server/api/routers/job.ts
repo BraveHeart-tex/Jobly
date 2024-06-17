@@ -8,13 +8,15 @@ export const jobRouter = createTRPCRouter({
     .input(
       z.object({
         query: z.string().optional().default(""),
+        page: z.number().optional().default(1),
       }),
     )
-    .query(async ({ ctx, input: { query } }) => {
+    .query(async ({ ctx, input: { query, page } }) => {
       const userId = ctx.user.id;
       return jobService.getJobListings({
         userId,
         query,
+        page,
       });
     }),
   getJobById: protectedProcedure
