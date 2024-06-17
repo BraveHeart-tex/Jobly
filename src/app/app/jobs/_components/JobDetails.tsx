@@ -29,12 +29,12 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
     useDeleteBookmark(currentJobId);
 
   useEffect(() => {
-    if (currentJobId && containerRef?.current && jobDetails?.id) {
-      containerRef.current.scroll({
-        top: 0,
-        behavior: "smooth",
-      });
-    }
+    if (!currentJobId || !containerRef?.current || !jobDetails?.id) return;
+
+    containerRef.current.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [currentJobId, jobDetails?.id]);
 
   useEffect(() => {
