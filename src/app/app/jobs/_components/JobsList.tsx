@@ -42,10 +42,19 @@ const JobsList = () => {
   }
 
   useEffect(() => {
-    if (Array.isArray(jobs) && jobs.length > 0 && !currentJobId) {
-      const firstJobId = jobs[0]?.id.toString() || "";
+    const updateCurrentJobIdAndView = () => {
+      const firstJobId = jobs?.[0]?.id.toString() || "";
       setCurrentJobId(firstJobId);
       setView("jobDetail");
+    };
+    if (!Array.isArray(jobs) || jobs.length === 0) return;
+
+    const currentJobNotFound =
+      currentJobId &&
+      !jobs.find((job) => job.id === Number.parseInt(currentJobId));
+
+    if (!currentJobId || currentJobNotFound) {
+      updateCurrentJobIdAndView();
     }
   }, [jobs, currentJobId, setCurrentJobId, setView]);
 
