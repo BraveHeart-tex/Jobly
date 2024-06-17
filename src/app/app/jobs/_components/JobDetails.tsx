@@ -1,34 +1,17 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn, getAvatarPlaceholder } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { useBookmark, useDeleteBookmark, useMarkJobAsViewed } from "../_hooks";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
+import CompanyLogo from "./CompanyLogo";
 
 type JobDetailsProps = {
   currentJobId: number;
-};
-
-export const renderCompanyLogo = (
-  companyName: string,
-  logo?: string | null,
-  className?: string,
-) => {
-  if (logo) {
-    return <Image src={logo} width={80} height={80} alt={companyName} />;
-  }
-
-  return (
-    <Avatar className={className}>
-      <AvatarFallback>{getAvatarPlaceholder(companyName)}</AvatarFallback>
-    </Avatar>
-  );
 };
 
 const JobDetails = ({ currentJobId }: JobDetailsProps) => {
@@ -103,11 +86,11 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
       </Button>
       <header className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          {renderCompanyLogo(
-            jobDetails?.company.name,
-            jobDetails?.company.logo,
-            "size-14",
-          )}
+          <CompanyLogo
+            className="size-14"
+            companyName={jobDetails?.company.name}
+            logo={jobDetails?.company.logo}
+          />
           <div className="grid">
             <h2 className="text-2xl font-semibold tracking-tight">
               {jobDetails.title}

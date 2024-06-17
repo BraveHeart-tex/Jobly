@@ -1,36 +1,15 @@
 "use client";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import type { ArrayElement } from "@/lib/types";
-import {
-  cn,
-  generateReadableEnumLabel,
-  getAvatarPlaceholder,
-} from "@/lib/utils";
+import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import type { RouterOutputs } from "@/trpc/react";
-import Image from "next/image";
 import { useQueryState } from "nuqs";
 import { forwardRef } from "react";
+import CompanyLogo from "./CompanyLogo";
 
 type JobsListCardProps = {
   job: ArrayElement<RouterOutputs["job"]["getJobListings"]["jobListings"]>;
-};
-
-export const renderCompanyLogo = (
-  companyName: string,
-  logo?: string | null,
-  className?: string,
-) => {
-  if (logo) {
-    return <Image src={logo} width={80} height={80} alt={companyName} />;
-  }
-
-  return (
-    <Avatar className={className}>
-      <AvatarFallback>{getAvatarPlaceholder(companyName)}</AvatarFallback>
-    </Avatar>
-  );
 };
 
 const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
@@ -57,7 +36,7 @@ const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
       >
         <div className="grid gap-2">
           <div className="flex items-center gap-2">
-            {renderCompanyLogo(company.name, company.logo)}
+            <CompanyLogo companyName={company.name} logo={company.logo} />
             <div className="flex flex-col">
               <h4 className="text-base font-medium text-foreground">{title}</h4>
               <p className="text-sm text-muted-foreground">{company.name}</p>
