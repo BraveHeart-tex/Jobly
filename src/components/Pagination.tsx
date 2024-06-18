@@ -36,23 +36,52 @@ const Pagination = ({
   };
 
   const renderPageNumbers = () => {
+    const pages = [];
     const pageNumbers = [];
-    for (let index = 1; index <= totalPages; index++) {
-      pageNumbers.push(
-        <Button
-          type="button"
-          variant="ghost"
-          key={index}
-          aria-description={`Go to page number ${index}`}
-          onClick={() => setPage(index.toString())}
-          className={cn(
-            currentPage === index && "bg-primary text-primary-foreground",
-          )}
-        >
-          {index}
-        </Button>,
-      );
+
+    if (totalPages <= 6) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      if (currentPage > 4) {
+        pages.push(-1);
+      }
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      if (currentPage < totalPages - 2) {
+        pages.push(-1);
+      }
+      pages.push(totalPages);
     }
+
+    for (const page of pages) {
+      if (page === -1) {
+        pageNumbers.push(
+          <span key={page} className="px-4 py-2 mx-1">
+            ...
+          </span>,
+        );
+      } else {
+        pageNumbers.push(
+          <Button
+            key={page}
+            onClick={() => setPage(page.toString())}
+            variant="ghost"
+            className={cn(
+              currentPage === page && "bg-primary text-primary-foreground",
+            )}
+          >
+            {page}
+          </Button>,
+        );
+      }
+    }
+
     return pageNumbers;
   };
 

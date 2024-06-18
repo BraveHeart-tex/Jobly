@@ -15,6 +15,7 @@ import { cn, exclude } from "@/lib/utils";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/Pagination";
+import { useMedia } from "react-use";
 
 const JobsList = () => {
   const [currentJobId, setCurrentJobId] = useQueryState(
@@ -28,6 +29,7 @@ const JobsList = () => {
   });
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
+  const isMobile = useMedia("(max-width: 768px)");
   const { setView, view } = useJobListViewStore();
 
   const { data: jobListingsResponse, isPending: isPendingJobs } =
@@ -44,6 +46,10 @@ const JobsList = () => {
 
   useEffect(() => {
     const updateCurrentJobIdAndView = () => {
+      if (isMobile) {
+        return;
+      }
+
       const firstJobId = jobs?.[0]?.id.toString() || "";
       setCurrentJobId(firstJobId);
       setView("jobDetail");
@@ -57,7 +63,7 @@ const JobsList = () => {
     if (!currentJobId || currentJobNotFound) {
       updateCurrentJobIdAndView();
     }
-  }, [jobs, currentJobId, setCurrentJobId, setView]);
+  }, [jobs, currentJobId, setCurrentJobId, setView, isMobile]);
 
   useEffect(() => {
     const scrollToActiveItem = (
