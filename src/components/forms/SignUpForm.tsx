@@ -126,11 +126,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
-                  placeholder="Your secure password"
-                  {...field}
-                />
+                <Input type="password" placeholder="******" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
