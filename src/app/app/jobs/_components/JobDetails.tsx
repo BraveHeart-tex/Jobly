@@ -24,9 +24,8 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
     });
 
   const { markJobAsViewed } = useMarkJobAsViewed(currentJobId);
-  const { bookmarkJob, isBookmarkingJob } = useBookmark(currentJobId);
-  const { deleteJobBookmark, isDeletingJobBookmark } =
-    useDeleteBookmark(currentJobId);
+  const { bookmarkJob } = useBookmark(currentJobId);
+  const { deleteJobBookmark } = useDeleteBookmark(currentJobId);
 
   useEffect(() => {
     if (!currentJobId || !containerRef?.current || !jobDetails?.id) return;
@@ -71,19 +70,48 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
     }
   };
 
+  const renderActionButtons = () => (
+    <div className="grid grid-cols-2 gap-2 ml-auto lg:ml-0">
+      <Button>Apply Now</Button>
+      <Button
+        variant="secondary"
+        className="flex items-center gap-1"
+        onClick={handleBookmarkJob}
+      >
+        {jobDetails?.userBookmarkedJob ? (
+          <>
+            <BookmarkX size={18} />
+            Unsave
+          </>
+        ) : (
+          <>
+            <BookmarkPlus size={18} />
+            Save
+          </>
+        )}
+      </Button>
+    </div>
+  );
+
   return (
     <article
       ref={containerRef}
       className="h-full overflow-auto rounded-lg bg-background p-4 relative"
     >
-      <Button
-        variant="ghost"
-        size="icon"
-        className={cn("hidden", view === "jobDetail" && "flex mb-1 lg:hidden")}
-        onClick={() => setView("list")}
-      >
-        <ArrowLeft size={18} />
-      </Button>
+      <div className="flex items-center justify-between mb-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn("hidden", view === "jobDetail" && "flex lg:hidden")}
+          onClick={() => setView("list")}
+        >
+          <ArrowLeft size={18} />
+        </Button>
+        <div className={cn(view === "jobDetail" && "block lg:hidden")}>
+          {renderActionButtons()}
+        </div>
+      </div>
+
       <header className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
           <CompanyLogo
@@ -100,27 +128,7 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-2 ml-auto lg:ml-0">
-          <Button>Apply Now</Button>
-          <Button
-            variant="secondary"
-            className="flex items-center gap-1"
-            onClick={handleBookmarkJob}
-            disabled={isBookmarkingJob || isDeletingJobBookmark}
-          >
-            {jobDetails?.userBookmarkedJob ? (
-              <>
-                <BookmarkX size={18} />
-                Unsave
-              </>
-            ) : (
-              <>
-                <BookmarkPlus size={18} />
-                Save
-              </>
-            )}
-          </Button>
-        </div>
+        <div className="hidden lg:block">{renderActionButtons()}</div>
       </header>
 
       <div className="mt-12">
