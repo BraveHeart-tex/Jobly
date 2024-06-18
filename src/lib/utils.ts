@@ -39,3 +39,34 @@ export const generateReadableEnumLabel = (
 
   return capitalizedWords.join(" ");
 };
+
+export const pick = <T extends Record<string, unknown>, K extends keyof T>(
+  baseObject: T,
+  keysToPick: K[],
+): Partial<T> => {
+  return keysToPick.reduce(
+    (acc, key) => {
+      if (key in baseObject) {
+        acc[key] = baseObject[key];
+      }
+      return acc;
+    },
+    {} as Partial<T>,
+  );
+};
+
+export const exclude = <T extends Record<string, unknown>, K extends keyof T>(
+  baseObject: T,
+  keysToRemove: K[],
+): Omit<T, K> => {
+  return (Object.keys(baseObject) as K[]).reduce(
+    (acc, key) => {
+      if (!keysToRemove.includes(key)) {
+        // @ts-ignore
+        acc[key] = baseObject[key];
+      }
+      return acc;
+    },
+    {} as Omit<T, K>,
+  );
+};

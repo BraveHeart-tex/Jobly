@@ -11,9 +11,10 @@ import React, {
 import JobDetails from "./JobDetails";
 import JobsListCard from "./JobsListCard";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
-import { cn } from "@/lib/utils";
+import { cn, exclude } from "@/lib/utils";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import Pagination from "@/components/Pagination";
 
 const JobsList = () => {
   const [currentJobId, setCurrentJobId] = useQueryState(
@@ -108,6 +109,8 @@ const JobsList = () => {
 
     if (!jobs || jobs.length === 0) return null;
 
+    const paginationProps = exclude(jobListingsResponse, ["jobListings"]);
+
     return (
       <>
         {jobs?.map((job, index) => (
@@ -117,6 +120,7 @@ const JobsList = () => {
             job={job}
           />
         ))}
+        <Pagination {...paginationProps} />
       </>
     );
   };
