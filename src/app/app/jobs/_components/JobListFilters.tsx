@@ -23,15 +23,27 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { capitalizeString } from "@/lib/utils";
-import { type JobWorkType, job } from "@/server/db/schema";
+import {
+  type JobEmploymentType,
+  type JobWorkType,
+  job,
+} from "@/server/db/schema";
 import { SlidersHorizontal } from "lucide-react";
+
+const employmentOptions: {
+  label: Capitalize<JobEmploymentType>;
+  value: JobEmploymentType;
+}[] = job.employmentType.enumValues.map((employmentType) => ({
+  label: capitalizeString<JobEmploymentType>(employmentType),
+  value: employmentType,
+}));
 
 const workTypeOptions: {
   label: Capitalize<JobWorkType>;
   value: JobWorkType;
-}[] = job.employmentType.enumValues.map((workTypeValue) => ({
-  label: capitalizeString(workTypeValue) as Capitalize<JobWorkType>,
-  value: workTypeValue,
+}[] = job.workType.enumValues.map((workType) => ({
+  label: capitalizeString<JobWorkType>(workType),
+  value: workType,
 }));
 
 const JobListFilters = () => {
@@ -42,7 +54,16 @@ const JobListFilters = () => {
     setBookmarked,
     workType,
     setWorkType,
+    employmentType,
+    setEmploymentType,
   } = useJobsListPageSearchParams();
+
+  const clearAllFilters = () => {
+    setBookmarked("false");
+    setViewed("false");
+    setWorkType("");
+    setEmploymentType("");
+  };
 
   return (
     <Popover>
@@ -82,6 +103,25 @@ const JobListFilters = () => {
               </SelectContent>
             </Select>
           </div>
+          <div>
+            <Label>Employment Type</Label>
+            <Select
+              defaultValue={employmentType}
+              value={employmentType}
+              onValueChange={(value) => setEmploymentType(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Employment Type" />
+              </SelectTrigger>
+              <SelectContent>
+                {employmentOptions.map((option) => (
+                  <SelectItem value={option.value} key={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="flex items-center gap-2 mt-2">
             <Checkbox
               id="userViewedJob"
@@ -102,15 +142,7 @@ const JobListFilters = () => {
             />
             <Label htmlFor="userBookmarkedJob">Show Bookmarked Jobs</Label>
           </div>
-          <Button
-            className="mt-1"
-            variant="ghost"
-            onClick={() => {
-              setBookmarked("false");
-              setViewed("false");
-              setWorkType("");
-            }}
-          >
+          <Button className="mt-1" variant="ghost" onClick={clearAllFilters}>
             Clear
           </Button>
         </div>

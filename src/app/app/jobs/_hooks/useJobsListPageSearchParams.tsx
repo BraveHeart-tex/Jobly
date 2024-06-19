@@ -27,6 +27,12 @@ export const useJobsListPageSearchParams = () => {
       defaultValue: "",
     },
   );
+  const [employmentType, setEmploymentType] = useQueryState(
+    URL_SEARCH_QUERY_KEYS.JOB_EMPLOYMENT_TYPE,
+    {
+      defaultValue: "",
+    },
+  );
 
   return {
     currentJobId,
@@ -41,5 +47,7 @@ export const useJobsListPageSearchParams = () => {
     setViewed,
     workType,
     setWorkType,
+    employmentType,
+    setEmploymentType,
   };
 };
