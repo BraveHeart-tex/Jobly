@@ -132,6 +132,7 @@ export const job = mysqlTable(
 
 export type JobInsertModel = InferInsertModel<typeof job>;
 export type JobSelectModel = InferSelectModel<typeof job>;
+export type JobWorkType = (typeof job.employmentType.enumValues)[number];
 
 export const application = mysqlTable(
   "Application",

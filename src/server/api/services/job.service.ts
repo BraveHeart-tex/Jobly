@@ -4,8 +4,8 @@ import {
   type JobInsertModel,
   company,
   job,
-  userViewsJob,
   userBookmarksJob,
+  userViewsJob,
 } from "@/server/db/schema";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import { withBookmarkJoin, withUserViewsJobJoin } from "./job.service.utils";

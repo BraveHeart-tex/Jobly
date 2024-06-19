@@ -70,3 +70,6 @@ export const exclude = <T extends Record<string, unknown>, K extends keyof T>(
     {} as Omit<T, K>,
   );
 };
+
+export const capitalizeString = (string: string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);

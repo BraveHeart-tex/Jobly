@@ -1,7 +1,9 @@
 "use client";
+import JobListFilters from "@/app/app/jobs/_components/JobListFilters";
+import JoblistLocationInput from "@/app/app/jobs/_components/JoblistLocationInput";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
-import JobListSearchInput from "./JobListSearchInput";
 import { cn } from "@/lib/utils";
+import JobListSearchInput from "./JobListSearchInput";
 
 const JobListSearchToolbar = () => {
   const { view } = useJobListViewStore();
@@ -13,7 +15,11 @@ const JobListSearchToolbar = () => {
         view === "jobDetail" && "hidden lg:block",
       )}
     >
-      <JobListSearchInput />
+      <div className="w-full flex items-center gap-1">
+        <JobListSearchInput />
+        <JoblistLocationInput />
+        <JobListFilters />
+      </div>
     </div>
   );
 };

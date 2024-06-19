@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 
 const JobListSearchInput = () => {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Search
         className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground"
         size={18}

@@ -117,4 +117,6 @@ export const URL_SEARCH_QUERY_KEYS = {
   PAGE: "page",
   BOOKMARKED_JOBS: "bookmarked",
   VIEWED_JOBS: "viewed",
+  JOB_LOCATION: "location",
+  JOB_WORK_TYPE: "workType",
 } as const;
