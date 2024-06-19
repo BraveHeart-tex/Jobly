@@ -7,57 +7,16 @@ import {
   userViewsJob,
   userBookmarksJob,
 } from "@/server/db/schema";
-import {
-  and,
-  desc,
-  eq,
-  exists,
-  getTableColumns,
-  like,
-  or,
-  sql,
-} from "drizzle-orm";
-
-const jobDetailsWithUserStatusQuery = (userId: number) =>
-  db
-    .selectDistinct({
-      ...getTableColumns(job),
-      company: {
-        name: company.name,
-        logo: company.logo,
-      },
-      userViewedJob: exists(
-        db
-          .select()
-          .from(userViewsJob)
-          .where(
-            and(
-              eq(userViewsJob.viewedJobId, job.id),
-              eq(userViewsJob.viewerUserId, userId),
-            ),
-          ),
-      ),
-      userBookmarkedJob: exists(
-        db
-          .select()
-          .from(userBookmarksJob)
-          .where(
-            and(
-              eq(userBookmarksJob.jobId, job.id),
-              eq(userBookmarksJob.userId, userId),
-            ),
-          ),
-      ),
-    })
-    .from(job)
-    .innerJoin(company, eq(job.companyId, company.id))
-    .leftJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId));
+import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
+import { withBookmarkJoin, withUserViewsJobJoin } from "./job.service.utils";
 
 type GetJobListingsParams = {
   userId: number;
   query?: string;
   page?: number;
   limit?: number;
+  bookmarked?: boolean;
+  viewed?: boolean;
 };
 
 export const getJobListings = async ({
@@ -65,22 +24,50 @@ export const getJobListings = async ({
   query = "",
   page = 1,
   limit = 12,
+  bookmarked = false,
+  viewed = false,
 }: GetJobListingsParams) => {
   const skipAmount = (page - 1) * limit;
 
-  const jobDetailsList = await jobDetailsWithUserStatusQuery(userId)
+  const jobDetailsListQuery = db
+    .selectDistinct({
+      ...getTableColumns(job),
+      company: {
+        name: company.name,
+        logo: company.logo,
+      },
+      userViewedJob: userViewsJob.viewerUserId,
+      userBookmarkedJob: userBookmarksJob.userId,
+    })
+    .from(job)
+    .innerJoin(company, eq(job.companyId, company.id))
     .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)))
     .orderBy(desc(job.createdAt))
     .limit(limit)
-    .offset(skipAmount);
+    .offset(skipAmount)
+    .$dynamic();
 
-  const jobDetailsListCount = await db
+  const jobDetailsListCountQuery = db
     .select({
       count: sql<number>`count(*)`.as("count"),
     })
     .from(job)
     .innerJoin(company, eq(job.companyId, company.id))
-    .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)));
+    .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)))
+    .$dynamic();
+
+  const [jobDetailsList, jobDetailsListCount] = await Promise.all([
+    withBookmarkJoin(
+      withUserViewsJobJoin(jobDetailsListQuery, userId, viewed),
+      userId,
+      bookmarked,
+    ),
+    withBookmarkJoin(
+      withUserViewsJobJoin(jobDetailsListCountQuery, userId, viewed),
+      userId,
+      bookmarked,
+    ),
+  ]);
 
   const totalCount = jobDetailsListCount[0]?.count ?? 0;
 
@@ -107,9 +94,33 @@ export const getJobById = async ({
   jobId,
   userId,
 }: { jobId: number; userId: number }) => {
-  const jobDetails = await jobDetailsWithUserStatusQuery(userId).where(
-    and(eq(job.id, jobId)),
-  );
+  const jobDetails = await db
+    .selectDistinct({
+      ...getTableColumns(job),
+      company: {
+        name: company.name,
+        logo: company.logo,
+      },
+      userViewedJob: userViewsJob.viewerUserId,
+      userBookmarkedJob: userBookmarksJob.userId,
+    })
+    .from(job)
+    .innerJoin(company, eq(job.companyId, company.id))
+    .leftJoin(
+      userViewsJob,
+      and(
+        eq(job.id, userViewsJob.viewedJobId),
+        eq(userViewsJob.viewerUserId, userId),
+      ),
+    )
+    .leftJoin(
+      userBookmarksJob,
+      and(
+        eq(job.id, userBookmarksJob.jobId),
+        eq(userBookmarksJob.userId, userId),
+      ),
+    )
+    .where(and(eq(job.id, jobId)));
   return jobDetails[0];
 };
 

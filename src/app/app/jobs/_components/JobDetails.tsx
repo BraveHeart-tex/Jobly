@@ -6,7 +6,9 @@ import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useBookmark, useDeleteBookmark, useMarkJobAsViewed } from "../_hooks";
+import { useMarkJobAsViewed } from "../_hooks/useMarkJobAsViewed";
+import { useDeleteBookmark } from "../_hooks/useDeleteBookmark";
+import { useBookmark } from "../_hooks/useBookmark";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import CompanyLogo from "./CompanyLogo";
 

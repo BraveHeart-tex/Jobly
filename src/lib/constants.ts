@@ -15,8 +15,8 @@ export const ROUTES = {
   "SIGN-UP": "/sign-up",
   HOME: "/app",
   JOBS: "/app/jobs",
-  JOB_HISTORY: "/app/user/job-history",
-  BOOKMARKED_JOBS: "/app/user/bookmarked-jobs",
+  JOB_HISTORY: "/app/jobs/?viewed=true",
+  BOOKMARKED_JOBS: "/app/jobs/?bookmarked=true",
   APPLICATIONS: "/app/user/applications",
   UNFINISHED_APPLICATIONS: "/app/user/applications?unfinished=true",
   CV_BUILDER: "/app/tools/cv-builder",
@@ -115,4 +115,6 @@ export const URL_SEARCH_QUERY_KEYS = {
   CURRENT_JOB_ID: "currentJobId",
   QUERY: "query",
   PAGE: "page",
+  BOOKMARKED_JOBS: "bookmarked",
+  VIEWED_JOBS: "viewed",
 } as const;

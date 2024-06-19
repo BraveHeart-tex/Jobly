@@ -27,15 +27,23 @@ const JobsList = () => {
   const [page] = useQueryState(URL_SEARCH_QUERY_KEYS.PAGE, {
     defaultValue: "1",
   });
+  const [bookmarked] = useQueryState(URL_SEARCH_QUERY_KEYS.BOOKMARKED_JOBS, {
+    defaultValue: "",
+  });
+  const [viewed] = useQueryState(URL_SEARCH_QUERY_KEYS.VIEWED_JOBS, {
+    defaultValue: "",
+  });
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
-  const isMobile = useMedia("(max-width: 768px)");
+  const isMobile = useMedia("(max-width: 768px)", false);
   const { setView, view } = useJobListViewStore();
 
   const { data: jobListingsResponse, isPending: isPendingJobs } =
     api.job.getJobListings.useQuery({
       query,
       page: Number.parseInt(page),
+      bookmarked: bookmarked === "true",
+      viewed: viewed === "true",
     });
 
   const jobs = jobListingsResponse?.jobListings;
@@ -46,9 +54,7 @@ const JobsList = () => {
 
   useEffect(() => {
     const updateCurrentJobIdAndView = () => {
-      if (isMobile) {
-        return;
-      }
+      if (isMobile) return;
 
       const firstJobId = jobs?.[0]?.id.toString() || "";
       setCurrentJobId(firstJobId);
