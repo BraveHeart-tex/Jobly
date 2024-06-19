@@ -1,38 +1,31 @@
 "use client";
+import { useJobsListPageSearchParams } from "@/app/app/jobs/_hooks/useJobsListPageSearchParams";
+import Pagination from "@/components/Pagination";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
+import { cn, exclude } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { useQueryState } from "nuqs";
 import React, {
   type LegacyRef,
   type RefObject,
   useEffect,
   useRef,
 } from "react";
+import { useMedia } from "react-use";
 import JobDetails from "./JobDetails";
 import JobsListCard from "./JobsListCard";
-import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
-import { cn, exclude } from "@/lib/utils";
-import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
-import Pagination from "@/components/Pagination";
-import { useMedia } from "react-use";
 
 const JobsList = () => {
-  const [currentJobId, setCurrentJobId] = useQueryState(
-    URL_SEARCH_QUERY_KEYS.CURRENT_JOB_ID,
-  );
-  const [query, setQuery] = useQueryState(URL_SEARCH_QUERY_KEYS.QUERY, {
-    defaultValue: "",
-  });
-  const [page] = useQueryState(URL_SEARCH_QUERY_KEYS.PAGE, {
-    defaultValue: "1",
-  });
-  const [bookmarked] = useQueryState(URL_SEARCH_QUERY_KEYS.BOOKMARKED_JOBS, {
-    defaultValue: "",
-  });
-  const [viewed] = useQueryState(URL_SEARCH_QUERY_KEYS.VIEWED_JOBS, {
-    defaultValue: "",
-  });
+  const {
+    currentJobId,
+    setCurrentJobId,
+    query,
+    setQuery,
+    page,
+    bookmarked,
+    viewed,
+  } = useJobsListPageSearchParams();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
   const isMobile = useMedia("(max-width: 768px)", false);

@@ -1,5 +1,6 @@
 "use client";
 
+import { useJobsListPageSearchParams } from "@/app/app/jobs/_hooks/useJobsListPageSearchParams";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -21,11 +22,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { capitalizeString } from "@/lib/utils";
 import { type JobWorkType, job } from "@/server/db/schema";
 import { SlidersHorizontal } from "lucide-react";
-import { useQueryState } from "nuqs";
 
 const workTypeOptions: {
   label: Capitalize<JobWorkType>;
@@ -36,22 +35,14 @@ const workTypeOptions: {
 }));
 
 const JobListFilters = () => {
-  // TODO: Refactor to a custom hook
-  const [workType, setWorkType] = useQueryState(
-    URL_SEARCH_QUERY_KEYS.JOB_WORK_TYPE,
-    {
-      defaultValue: "",
-    },
-  );
-  const [viewed, setViewed] = useQueryState(URL_SEARCH_QUERY_KEYS.VIEWED_JOBS, {
-    defaultValue: "",
-  });
-  const [bookmarked, setBookmarked] = useQueryState(
-    URL_SEARCH_QUERY_KEYS.BOOKMARKED_JOBS,
-    {
-      defaultValue: "",
-    },
-  );
+  const {
+    viewed,
+    setViewed,
+    bookmarked,
+    setBookmarked,
+    workType,
+    setWorkType,
+  } = useJobsListPageSearchParams();
 
   return (
     <Popover>

@@ -1,10 +1,9 @@
 "use client";
-import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
+import { useJobsListPageSearchParams } from "@/app/app/jobs/_hooks/useJobsListPageSearchParams";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import type { RouterOutputs } from "@/trpc/react";
-import { useQueryState } from "nuqs";
 import { forwardRef } from "react";
 import CompanyLogo from "./CompanyLogo";
 
@@ -16,9 +15,7 @@ const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
   ({ job }, ref) => {
     const { setView } = useJobListViewStore();
     const { id, title, company, employmentType, workType, userViewedJob } = job;
-    const [currentJobId, setCurrentJobId] = useQueryState(
-      URL_SEARCH_QUERY_KEYS.CURRENT_JOB_ID,
-    );
+    const { currentJobId, setCurrentJobId } = useJobsListPageSearchParams();
     const isActive = currentJobId?.toString() === id.toString();
 
     return (
