@@ -70,7 +70,7 @@ const DocumentTabs = () => {
           ))}
         </div>
       </div>
-      <div>
+      <div className="pt-1">
         {activeTab === DOCUMENT_TAB_VALUES.RESUMES && (
           <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
             {resumes.map((resume) => (
