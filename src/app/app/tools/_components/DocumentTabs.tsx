@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
+import type { Document } from "@/server/db/schema";
 
 const DOCUMENT_TAB_VALUES = {
   RESUMES: "resumes",
@@ -34,6 +35,11 @@ const DocumentTabs = () => {
     DOCUMENT_TAB_VALUES.RESUMES,
   );
 
+  const documentMap = {
+    [DOCUMENT_TAB_VALUES.RESUMES]: resumes,
+    [DOCUMENT_TAB_VALUES.COVER_LETTERS]: coverLetters,
+  };
+
   return (
     <div className="grid gap-2">
       <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
@@ -57,6 +63,7 @@ const DocumentTabs = () => {
               {activeTab === item.value && (
                 <motion.div
                   layoutId="active-tab-transition"
+                  transition={{ duration: 0.2 }}
                   className="absolute -bottom-[2px] left-0 right-0 h-1 bg-primary w-full rounded-md"
                 />
               )}
@@ -65,23 +72,22 @@ const DocumentTabs = () => {
         </div>
       </div>
       <div className="pt-1 max-h-[calc(100vh-210px)] overflow-auto">
-        {activeTab === DOCUMENT_TAB_VALUES.RESUMES && (
-          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-            {resumes.map((resume) => (
-              <DocumentListItem key={resume.id} item={resume} />
-            ))}
-          </div>
-        )}
-        {activeTab === DOCUMENT_TAB_VALUES.COVER_LETTERS && (
-          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-            {coverLetters.map((coverLetter) => (
-              <DocumentListItem key={coverLetter.id} item={coverLetter} />
-            ))}
-          </div>
-        )}
+        <DocumentList documents={documentMap[activeTab]} />
       </div>
     </div>
   );
 };
+
+type DocumentListProps = {
+  documents: Document[];
+};
+
+const DocumentList = ({ documents }: DocumentListProps) => (
+  <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+    {documents.map((document) => (
+      <DocumentListItem key={document.id} item={document} />
+    ))}
+  </div>
+);
 
 export default DocumentTabs;

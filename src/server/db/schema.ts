@@ -140,8 +140,8 @@ export const application = mysqlTable(
     jobId: int("jobId")
       .notNull()
       .references(() => job.id),
-    coverLetterId: int("coverLetterId").references(() => coverLetter.id),
-    resume: varchar("resume", { length: 255 }),
+    coverLetterId: int("coverLetterId").references(() => document.id),
+    resumeId: int("resumeId").references(() => document.id),
     status: mysqlEnum("status", [
       "pending",
       "applied",
@@ -237,32 +237,6 @@ export const userProfile = mysqlTable(
   },
 );
 
-export const coverLetter = mysqlTable(
-  "CoverLetter",
-  {
-    id: int("id").autoincrement().notNull(),
-    title: varchar("title", { length: 255 }).notNull(),
-    userId: int("userId")
-      .notNull()
-      .references(() => user.id, {
-        onDelete: "cascade",
-      }),
-    content: text("content").notNull(),
-    language: varchar("language", { length: 100 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
-  },
-  (table) => {
-    return {
-      CoverLetter_id: primaryKey({
-        columns: [table.id],
-        name: "CoverLetter_id",
-      }),
-      userId: index("userId").on(table.userId),
-    };
-  },
-);
-
 export const userFollowsComapny = mysqlTable(
   "UserFollowsCompany",
   {
@@ -299,7 +273,7 @@ export const resumeView = mysqlTable(
     }),
     viewedResumeId: int("viewedResumeId")
       .notNull()
-      .references(() => resume.id),
+      .references(() => document.id),
     viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
@@ -369,21 +343,22 @@ export const userViewsJob = mysqlTable(
   },
 );
 
-export const resume = mysqlTable(
-  "Resume",
+export const document = mysqlTable(
+  "Document",
   {
     id: int("id").autoincrement().notNull(),
     title: varchar("title", { length: 512 }).notNull(),
     userId: int("userId")
       .references(() => user.id, { onDelete: "cascade" })
       .notNull(),
+    type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
     language: varchar("language", { length: 100 }).notNull(),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
     updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {
-      Resume_id: primaryKey({ columns: [table.id], name: "Resume_id" }),
+      Document_id: primaryKey({ columns: [table.id], name: "Document_id" }),
       userId: index("userId").on(table.userId),
     };
   },
@@ -426,7 +401,7 @@ export const userSection = mysqlTable(
   {
     id: int("id").autoincrement().notNull(),
     resumeId: int("resumeId")
-      .references(() => resume.id, {
+      .references(() => document.id, {
         onDelete: "cascade",
       })
       .notNull(),
@@ -476,5 +451,4 @@ export type JobInsertModel = InferInsertModel<typeof job>;
 export type Job = InferSelectModel<typeof job>;
 export type JobEmploymentType = (typeof job.employmentType.enumValues)[number];
 export type JobWorkType = (typeof job.workType.enumValues)[number];
-export type Resume = InferSelectModel<typeof resume>;
-export type CoverLetter = InferSelectModel<typeof coverLetter>;
+export type Document = InferSelectModel<typeof document>;

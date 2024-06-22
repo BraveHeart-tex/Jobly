@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { format } from "date-fns";
-import type { CoverLetter, Resume } from "@/server/db/schema";
 import {
   Popover,
   PopoverContent,
@@ -18,14 +17,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
+import type { Document } from "@/server/db/schema";
 
 type DocumentListItemProps = {
-  item: Resume | CoverLetter;
+  item: Document;
 };
 
 const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const [showRenameButton, setShowRenameButton] = useState(false);
-  const { deleteDocument } = useDeleteDocument();
+  const { handleDeleteDocument } = useDeleteDocument();
   const router = useRouter();
   const updatedAtDate = new Date(item.updatedAt as string);
 
@@ -46,7 +46,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
       label: "Delete Document",
       icon: <Trash2 size={18} />,
       onClick: () => {
-        deleteDocument(item.id);
+        handleDeleteDocument(item.id);
       },
     },
   ];

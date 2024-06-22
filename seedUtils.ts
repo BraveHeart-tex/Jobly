@@ -1,4 +1,4 @@
-import { company, job, resume } from "@/server/db/schema";
+import { company, document, job } from "@/server/db/schema";
 import { faker } from "@faker-js/faker";
 import type { Trx } from "seed";
 
@@ -26,9 +26,19 @@ export const insertCompaniesWithJobsPostings = async (trx: Trx) => {
 };
 
 export const insertResume = (trx: Trx) => {
-  return trx.insert(resume).values({
+  return trx.insert(document).values({
     language: "TR",
     title: faker.person.jobTitle(),
     userId: TEST_USER_ID,
+    type: "resume",
+  });
+};
+
+export const insertCoverLetter = (trx: Trx) => {
+  return trx.insert(document).values({
+    language: "TR",
+    title: faker.person.jobTitle(),
+    userId: TEST_USER_ID,
+    type: "cover_letter",
   });
 };

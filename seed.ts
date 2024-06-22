@@ -7,7 +7,7 @@ import {
   type MySql2PreparedQueryHKT,
 } from "drizzle-orm/mysql2";
 import { createConnection } from "mysql2";
-import { insertCompaniesWithJobsPostings, insertResume } from "seedUtils";
+import { insertCoverLetter, insertResume } from "seedUtils";
 
 dotenv.config();
 
@@ -28,8 +28,9 @@ const seed = async () => {
 
   await db.transaction(async (trx) => {
     for (let index = 0; index < 50; index++) {
-      await insertCompaniesWithJobsPostings(trx);
+      // await insertCompaniesWithJobsPostings(trx);
       await insertResume(trx);
+      await insertCoverLetter(trx);
     }
   });
 };

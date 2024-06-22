@@ -1,17 +1,13 @@
 "use server";
 
 import { db } from "@/server/db";
-import type { User } from "@/server/db/schema";
+import { type User, document, type Document } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export const getUserDocuments = async (userId: User["id"]) => {
-  const [resumes, coverLetters] = await Promise.all([
-    db.query.resume.findMany({
-      where: (resume, { eq }) => eq(resume.userId, userId),
-    }),
-    db.query.coverLetter.findMany({
-      where: (coverLetter, { eq }) => eq(coverLetter.userId, userId),
-    }),
-  ]);
+  return db.select().from(document).where(eq(document.userId, userId));
+};
 
-  return { resumes, coverLetters };
+export const deleteDocument = async (documentId: Document["id"]) => {
+  return db.delete(document).where(eq(document.id, documentId));
 };
