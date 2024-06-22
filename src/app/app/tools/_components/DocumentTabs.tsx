@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
 import type { Document } from "@/server/db/schema";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/constants";
 
 const DOCUMENT_TAB_VALUES = {
   RESUMES: "resumes",
@@ -30,6 +32,7 @@ const tabItems: {
 ];
 
 const DocumentTabs = () => {
+  const router = useRouter();
   const { resumes, coverLetters } = useDocuments();
   const [activeTab, setActiveTab] = useState<DocumentTabValue>(
     DOCUMENT_TAB_VALUES.RESUMES,
@@ -40,11 +43,26 @@ const DocumentTabs = () => {
     [DOCUMENT_TAB_VALUES.COVER_LETTERS]: coverLetters,
   };
 
+  const handleCreateNewDocument = () => {
+    if (activeTab === DOCUMENT_TAB_VALUES.RESUMES) {
+      router.push(`${ROUTES.CV_BUILDER}/create`);
+      return;
+    }
+
+    if (activeTab === DOCUMENT_TAB_VALUES.COVER_LETTERS) {
+      router.push(`${ROUTES.COVER_LETTERS}/create`);
+      return;
+    }
+  };
+
   return (
     <div className="grid gap-2">
-      <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-        Your Documents
-      </h1>
+      <div className="flex items-center justify-between">
+        <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
+          Your Documents
+        </h1>
+        <Button onClick={handleCreateNewDocument}>Create New</Button>
+      </div>
       <div className="w-full border-b relative">
         <div className="flex items-center gap-4 w-max">
           {tabItems.map((item) => (

@@ -18,6 +18,7 @@ export const ROUTES = {
   APPLICATIONS: "/app/user/applications",
   UNFINISHED_APPLICATIONS: "/app/user/applications?unfinished=true",
   CV_BUILDER: "/app/tools/cv-builder",
+  COVER_LETTERS: "/app/tools/cover-letters",
   SALARIES: "/data/salaries",
 } as const;
 
