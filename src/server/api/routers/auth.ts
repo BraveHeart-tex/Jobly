@@ -8,7 +8,11 @@ import { signInSchema } from "@/schemas/signInSchema";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import * as authService from "@/server/api/services/auth.service";
 import { getUserByEmail } from "@/server/api/services/user.service";
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { hash, verify } from "@node-rs/argon2";
 import { TRPCError } from "@trpc/server";
 
@@ -129,4 +133,8 @@ export const authRouter = createTRPCRouter({
         message: "Successfully signed in.",
       };
     }),
+
+  getCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.user;
+  }),
 });

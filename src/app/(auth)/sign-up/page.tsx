@@ -36,6 +36,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
           width={1920}
           height={1080}
           className="size-[500px]"
+          priority
         />
         <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">
           {supportiveHeading}

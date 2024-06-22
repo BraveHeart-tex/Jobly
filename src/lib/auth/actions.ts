@@ -3,10 +3,12 @@
 // biome-ignore lint/correctness/noNodejsModules: <explanation>
 import { createHash } from "node:crypto";
 import { lucia } from "@/lib/auth/index";
-import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import { PASSWORD_STRENGTH_LEVELS, ROUTES } from "@/lib/constants";
 import type { User } from "@/server/db/schema";
 import { cookies } from "next/headers";
 import zxcvbn from "zxcvbn";
+import { validateRequest } from "./validate-request";
+import { redirect } from "next/navigation";
 
 async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();
@@ -72,4 +74,20 @@ export const createSessionWithUserId = async (userId: User["id"]) => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
+};
+
+export const signOut = async () => {
+  const { session } = await validateRequest();
+  if (!session) {
+    return redirect(ROUTES.LOGIN);
+  }
+
+  await lucia.invalidateSession(session.id);
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
+  return redirect(ROUTES.LOGIN);
 };

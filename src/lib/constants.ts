@@ -1,13 +1,11 @@
 import type { NavigationMenuItem } from "@/lib/types";
 import {
   BarChart4,
-  BookOpenText,
   BookmarkIcon,
   FileInput,
   FilePen,
   HistoryIcon,
   PencilRuler,
-  Rss,
 } from "lucide-react";
 
 export const ROUTES = {
@@ -21,9 +19,9 @@ export const ROUTES = {
   UNFINISHED_APPLICATIONS: "/app/user/applications?unfinished=true",
   CV_BUILDER: "/app/tools/cv-builder",
   SALARIES: "/data/salaries",
-  INTERVIEW_PREP: "/interview-prep",
-  BLOG: "/blog",
 } as const;
+
+export type ROUTE = (typeof ROUTES)[keyof typeof ROUTES];
 
 export const contentByPortalType = {
   employee: [
@@ -92,20 +90,6 @@ export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
         description:
           "Curious about the salary of a profession? Take a look at our insights.",
         icon: BarChart4,
-      },
-      {
-        title: "Interview Prep.",
-        href: ROUTES.INTERVIEW_PREP,
-        description:
-          "Take a look at useful materials that can help you during the interview process.",
-        icon: BookOpenText,
-      },
-      {
-        title: "Blog",
-        href: ROUTES.BLOG,
-        description:
-          "Check out useful blog posts curated by the Jobly team to help you in your job search.",
-        icon: Rss,
       },
     ],
   },

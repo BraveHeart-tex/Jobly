@@ -33,11 +33,14 @@
     "enabled": true,
     "rules": {
       "suspicious": {
-        "noConsoleLog": "info"
+        "noConsoleLog": "error"
       },
       "correctness": {
         "all": true,
-        "useHookAtTopLevel": "error"
+        "useHookAtTopLevel": "error",
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noUnreachable": "error"
       },
       "recommended": true
     },
