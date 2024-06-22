@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { useGenericConfirmStore } from "@/lib/stores/useGenericConfirmDialogStore";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 
-const GenericConfirmDialog = () => {
+const ConfirmDialog = () => {
   const {
     visible,
     cleanUp,
@@ -22,7 +22,7 @@ const GenericConfirmDialog = () => {
     callPrimaryAction,
     callSecondaryAction,
     loading,
-  } = useGenericConfirmStore((state) => state);
+  } = useConfirmStore((state) => state);
   const actionRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -85,4 +85,4 @@ const GenericConfirmDialog = () => {
   );
 };
 
-export default GenericConfirmDialog;
+export default ConfirmDialog;

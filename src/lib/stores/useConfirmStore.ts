@@ -10,7 +10,7 @@ type ShowConfirmDialogParams = {
   onDeny?: () => void;
 };
 
-type GenericConfirmStoreState = {
+type ConfirmStoreState = {
   visible: boolean;
   title: string;
   message: string;
@@ -27,8 +27,8 @@ type GenericConfirmStoreState = {
   cleanUp: () => void;
 };
 
-export const useGenericConfirmStore = create<
-  GenericConfirmStoreState,
+export const useConfirmStore = create<
+  ConfirmStoreState,
   [["zustand/devtools", never]]
 >(
   devtools(

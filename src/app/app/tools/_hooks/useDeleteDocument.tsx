@@ -1,11 +1,9 @@
 "use client";
 
-import { useGenericConfirmStore } from "@/lib/stores/useGenericConfirmDialogStore";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 
 export const useDeleteDocument = () => {
-  const showConfirmDialog = useGenericConfirmStore(
-    (state) => state.showConfirmDialog,
-  );
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
 
   const deleteDocument = (documentId: number) => {
     showConfirmDialog({

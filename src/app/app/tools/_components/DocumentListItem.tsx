@@ -69,7 +69,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
                 transition={{ duration: 0.2 }}
               >
                 <TooltipProvider>
-                  <Tooltip delayDuration={400}>
+                  <Tooltip delayDuration={300}>
                     <TooltipTrigger>
                       <Button variant="ghost" className="px-1 py-0">
                         <Pencil size={18} />
