@@ -51,7 +51,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
           onClick={handleSignOut}
         >
           <LogOut size={18} />
-          Log out
+          Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
