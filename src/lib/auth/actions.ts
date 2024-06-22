@@ -4,7 +4,7 @@
 import { createHash } from "node:crypto";
 import { lucia } from "@/lib/auth/index";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
-import type { UserSelectModel } from "@/server/db/schema";
+import type { User } from "@/server/db/schema";
 import { cookies } from "next/headers";
 import zxcvbn from "zxcvbn";
 
@@ -64,9 +64,7 @@ export const checkPasswordStrength = async (password: string) => {
   };
 };
 
-export const createSessionWithUserId = async (
-  userId: UserSelectModel["id"],
-) => {
+export const createSessionWithUserId = async (userId: User["id"]) => {
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
   cookies().set(

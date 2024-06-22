@@ -1,10 +1,22 @@
-import { company, job } from "@/server/db/schema";
-import { faker } from "@faker-js/faker";
 import dotenv from "dotenv";
-import { drizzle } from "drizzle-orm/mysql2";
+import type { ExtractTablesWithRelations } from "drizzle-orm";
+import type { MySqlTransaction } from "drizzle-orm/mysql-core";
+import {
+  drizzle,
+  type MySql2QueryResultHKT,
+  type MySql2PreparedQueryHKT,
+} from "drizzle-orm/mysql2";
 import { createConnection } from "mysql2";
+import { insertCompaniesWithJobsPostings, insertResume } from "seedUtils";
 
 dotenv.config();
+
+export type Trx = MySqlTransaction<
+  MySql2QueryResultHKT,
+  MySql2PreparedQueryHKT,
+  Record<string, never>,
+  ExtractTablesWithRelations<Record<string, never>>
+>;
 
 const seed = async () => {
   console.log("starting seed");
@@ -16,24 +28,8 @@ const seed = async () => {
 
   await db.transaction(async (trx) => {
     for (let index = 0; index < 50; index++) {
-      const [companyResult] = await trx.insert(company).values({
-        name: faker.company.name(),
-        employeeCount: faker.number.int({ min: 10, max: 10000 }).toString(),
-        bio: faker.company.catchPhraseDescriptor(),
-        website: faker.internet.url(),
-        address: faker.company.catchPhraseDescriptor(),
-        foundedYear: faker.number.int({ min: 1900, max: 2024 }).toString(),
-      });
-
-      await trx.insert(job).values({
-        applicationCount: 0,
-        benefits: "Testing, food card, in-house gym, good office",
-        companyId: companyResult.insertId,
-        title: faker.person.jobTitle(),
-        description: faker.person.jobDescriptor(),
-        location: faker.location.streetAddress(),
-        workType: faker.helpers.arrayElement(job.workType.enumValues),
-      });
+      await insertCompaniesWithJobsPostings(trx);
+      await insertResume(trx);
     }
   });
 };

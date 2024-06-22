@@ -36,8 +36,6 @@ export const user = mysqlTable(
   },
 );
 
-export type UserSelectModel = InferSelectModel<typeof user>;
-
 export const session = mysqlTable(
   "Session",
   {
@@ -130,11 +128,6 @@ export const job = mysqlTable(
   },
 );
 
-export type JobInsertModel = InferInsertModel<typeof job>;
-export type JobSelectModel = InferSelectModel<typeof job>;
-export type JobEmploymentType = (typeof job.employmentType.enumValues)[number];
-export type JobWorkType = (typeof job.workType.enumValues)[number];
-
 export const application = mysqlTable(
   "Application",
   {
@@ -147,7 +140,7 @@ export const application = mysqlTable(
     jobId: int("jobId")
       .notNull()
       .references(() => job.id),
-    coverLetter: text("coverLetter"),
+    coverLetterId: int("coverLetterId").references(() => coverLetter.id),
     resume: varchar("resume", { length: 255 }),
     status: mysqlEnum("status", [
       "pending",
@@ -163,6 +156,7 @@ export const application = mysqlTable(
       jobId: index("jobId").on(table.jobId),
       userId: index("userId").on(table.userId),
       status: index("status").on(table.status),
+      coverLetterId: index("coverLetterId").on(table.coverLetterId),
       Application_id: primaryKey({
         columns: [table.id],
         name: "Application_id",
@@ -247,20 +241,24 @@ export const coverLetter = mysqlTable(
   "CoverLetter",
   {
     id: int("id").autoincrement().notNull(),
+    title: varchar("title", { length: 255 }).notNull(),
     userId: int("userId")
       .notNull()
       .references(() => user.id, {
         onDelete: "cascade",
       }),
     content: text("content").notNull(),
+    language: varchar("language", { length: 100 }).notNull(),
+    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {
-      userId: index("userId").on(table.userId),
       CoverLetter_id: primaryKey({
         columns: [table.id],
         name: "CoverLetter_id",
       }),
+      userId: index("userId").on(table.userId),
     };
   },
 );
@@ -299,18 +297,16 @@ export const resumeView = mysqlTable(
     viewerCompanyId: int("viewerCompanyId").references(() => company.id, {
       onDelete: "cascade",
     }),
-    viewedUserId: int("viewedUserId")
+    viewedResumeId: int("viewedResumeId")
       .notNull()
-      .references(() => user.id, {
-        onDelete: "cascade",
-      }),
-    viewedAt: datetime("viewedAt", { mode: "string" }).notNull(),
+      .references(() => resume.id),
+    viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {
       ResumeView_id: primaryKey({ columns: [table.id], name: "ResumeView_id" }),
       viewerCompanyId: index("viewerCompanyId").on(table.viewerCompanyId),
-      viewedUserId: index("viewedUserId").on(table.viewedUserId),
+      viewedResumeId: index("viewedResumeId").on(table.viewedResumeId),
     };
   },
 );
@@ -474,3 +470,11 @@ export const userField = mysqlTable(
     };
   },
 );
+
+export type User = InferSelectModel<typeof user>;
+export type JobInsertModel = InferInsertModel<typeof job>;
+export type Job = InferSelectModel<typeof job>;
+export type JobEmploymentType = (typeof job.employmentType.enumValues)[number];
+export type JobWorkType = (typeof job.workType.enumValues)[number];
+export type Resume = InferSelectModel<typeof resume>;
+export type CoverLetter = InferSelectModel<typeof coverLetter>;
