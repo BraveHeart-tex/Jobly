@@ -25,7 +25,7 @@ type DocumentListItemProps = {
 
 const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const [showRenameButton, setShowRenameButton] = useState(false);
-  const { handleDeleteDocument } = useDeleteDocument();
+  const { handleDeleteDocument, isDeletingDocument } = useDeleteDocument();
   const router = useRouter();
   const updatedAtDate = new Date(item.updatedAt as string);
 
@@ -48,6 +48,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
       onClick: () => {
         handleDeleteDocument(item.id);
       },
+      disabled: isDeletingDocument,
     },
   ];
 
@@ -95,6 +96,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
               {documentActions.map((action) => (
                 <Button
                   key={action.label}
+                  disabled={action.disabled}
                   variant="ghost"
                   className="flex items-center justify-start w-full gap-2"
                   onClick={action.onClick}
