@@ -8,6 +8,9 @@ import DocumentListItem from "./DocumentListItem";
 import type { Document } from "@/server/db/schema";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/constants";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Plus } from "lucide-react";
+import Image from "next/image";
 
 const DOCUMENT_TAB_VALUES = {
   RESUMES: "resumes",
@@ -33,14 +36,18 @@ const tabItems: {
 
 const DocumentTabs = () => {
   const router = useRouter();
-  const { resumes, coverLetters } = useDocuments();
+  const {
+    resumes,
+    coverLetters,
+    isPending: isPendingDocuments,
+  } = useDocuments();
   const [activeTab, setActiveTab] = useState<DocumentTabValue>(
     DOCUMENT_TAB_VALUES.RESUMES,
   );
 
   const documentMap = {
-    [DOCUMENT_TAB_VALUES.RESUMES]: resumes,
     [DOCUMENT_TAB_VALUES.COVER_LETTERS]: coverLetters,
+    [DOCUMENT_TAB_VALUES.RESUMES]: resumes,
   };
 
   const handleCreateNewDocument = () => {
@@ -55,13 +62,24 @@ const DocumentTabs = () => {
     }
   };
 
+  const shouldRenderNotFound =
+    documentMap[activeTab].length === 0 && !isPendingDocuments;
+  const shouldRenderSkeletons =
+    documentMap[activeTab].length === 0 && isPendingDocuments;
+
   return (
     <div className="grid gap-2">
       <div className="flex items-center justify-between">
         <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
           Your Documents
         </h1>
-        <Button onClick={handleCreateNewDocument}>Create New</Button>
+        <Button
+          onClick={handleCreateNewDocument}
+          className="flex items-center gap-1"
+        >
+          <Plus size={18} />
+          Create New
+        </Button>
       </div>
       <div className="w-full border-b relative">
         <div className="flex items-center gap-4 w-max">
@@ -90,8 +108,82 @@ const DocumentTabs = () => {
         </div>
       </div>
       <div className="pt-1 max-h-[calc(100vh-210px)] overflow-auto">
-        <DocumentList documents={documentMap[activeTab]} />
+        {shouldRenderSkeletons && (
+          <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+            <Skeleton className="w-full h-12 rounded-md" />
+            <Skeleton className="w-full h-12 rounded-md" />
+            <Skeleton className="w-full h-12 rounded-md" />
+            <Skeleton className="w-full h-12 rounded-md" />
+            <Skeleton className="w-full h-12 rounded-md" />
+            <Skeleton className="w-full h-12 rounded-md" />
+          </div>
+        )}
+        {shouldRenderNotFound ? (
+          <NoDocumentsFound
+            activeTab={activeTab}
+            onCreateNewDocumentClick={() => handleCreateNewDocument()}
+          />
+        ) : (
+          <DocumentList documents={documentMap[activeTab]} />
+        )}
       </div>
+    </div>
+  );
+};
+
+export default DocumentTabs;
+
+type NoDocumentsFoundProps = {
+  activeTab: DocumentTabValue;
+  onCreateNewDocumentClick?: () => void;
+};
+
+const NoDocumentsFound = ({
+  activeTab,
+  onCreateNewDocumentClick,
+}: NoDocumentsFoundProps) => {
+  const notFoundContentMap = {
+    [DOCUMENT_TAB_VALUES.COVER_LETTERS]: {
+      title: "A cover letter to win hearts and minds",
+      illustrationPath: "/illustrations/cover-letter.svg",
+      description:
+        "The ideal partner for your CV. Don't be like the other applicants and talk directly to the employer!",
+    },
+    [DOCUMENT_TAB_VALUES.RESUMES]: {
+      title: "Double your chances of getting hired",
+      illustrationPath: "/illustrations/resume.svg",
+      description: "Craft a tailored resume for each job application.",
+    },
+  };
+
+  const createNewButtonLabelMap = {
+    [DOCUMENT_TAB_VALUES.COVER_LETTERS]: "New Cover Letter",
+    [DOCUMENT_TAB_VALUES.RESUMES]: "New Resume",
+  };
+
+  const { title, description, illustrationPath } =
+    notFoundContentMap[activeTab];
+
+  return (
+    <div className="flex flex-col gap-2 items-center justify-center w-full mx-auto">
+      <Image
+        alt={title}
+        src={illustrationPath}
+        width={1920}
+        height={1080}
+        className="size-[300px] dark:invert"
+      />
+      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+        {title}
+      </h3>
+      <p className="text-muted-foreground">{description}</p>
+      <Button
+        className="flex items-center gap-1 w-max mt-4"
+        onClick={onCreateNewDocumentClick}
+      >
+        <Plus size={18} />
+        {createNewButtonLabelMap[activeTab]}
+      </Button>
     </div>
   );
 };
@@ -107,5 +199,3 @@ const DocumentList = ({ documents }: DocumentListProps) => (
     ))}
   </div>
 );
-
-export default DocumentTabs;
