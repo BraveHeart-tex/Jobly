@@ -36,6 +36,7 @@ const buttonVariants = cva(
 
 export type ButtonProps = {
   asChild?: boolean;
+  loading?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>;
 

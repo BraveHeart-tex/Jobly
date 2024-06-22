@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/react";
 import { GeistSans } from "geist/font/sans";
 import type React from "react";
+import GenericConfirmDialog from "@/components/GenericConfirmDialog";
 
 export const metadata = {
   title: "Jobly",
@@ -20,6 +21,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Toaster richColors closeButton />
+            <GenericConfirmDialog />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>
