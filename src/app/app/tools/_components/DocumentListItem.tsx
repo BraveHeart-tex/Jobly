@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { format } from "date-fns";
@@ -18,16 +18,25 @@ import {
 } from "@/components/ui/tooltip";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import type { Document } from "@/server/db/schema";
+import { Input } from "@/components/ui/input";
+import { useUpdateDocument } from "../_hooks/useUpdateDocument";
 
 type DocumentListItemProps = {
   item: Document;
 };
 
 const DocumentListItem = ({ item }: DocumentListItemProps) => {
+  const [isRenaming, setIsRenaming] = useState(false);
+  const renameInputRef = useRef<HTMLInputElement>(null);
   const [showRenameButton, setShowRenameButton] = useState(false);
   const { handleDeleteDocument, isDeletingDocument } = useDeleteDocument();
+  const { updateDocument } = useUpdateDocument();
   const router = useRouter();
   const updatedAtDate = new Date(item.updatedAt as string);
+
+  const goToEditPage = () => {
+    router.push(`/app/tools/cv-builder/edit/${item.id}`);
+  };
 
   const documentActions = [
     {
@@ -38,9 +47,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
     {
       label: "Edit Document",
       icon: <FilePen size={18} />,
-      onClick: () => {
-        router.push(`/app/tools/cv-builder/edit/${item.id}`);
-      },
+      onClick: () => goToEditPage(),
     },
     {
       label: "Delete Document",
@@ -52,38 +59,89 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
     },
   ];
 
+  const handleRenameInputBlur = () => {
+    if (!renameInputRef.current) return;
+
+    const enteredTitle = renameInputRef.current.value;
+    if (!enteredTitle || enteredTitle === item.title) {
+      setIsRenaming(false);
+      return;
+    }
+
+    updateDocument({
+      id: item.id,
+      title: enteredTitle,
+    });
+    setIsRenaming(false);
+  };
+
   return (
     <article className="grid gap-2 rounded-md border p-4 bg-card">
       <div className="flex items-center justify-between w-full">
         <div
           className="flex items-center gap-1 w-full"
-          onMouseEnter={() => setShowRenameButton(true)}
+          onMouseEnter={() => {
+            if (isRenaming) return;
+            setShowRenameButton(true);
+          }}
           onMouseLeave={() => setShowRenameButton(false)}
         >
-          <h3 className="text-foreground">{item.title}</h3>
-          <AnimatePresence>
-            {showRenameButton && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-              >
-                <TooltipProvider>
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger>
-                      <Button variant="ghost" className="px-1 py-0">
-                        <Pencil size={18} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Rename</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {isRenaming ? (
+            <Input
+              ref={renameInputRef}
+              autoFocus
+              onBlur={() => handleRenameInputBlur()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleRenameInputBlur();
+                }
+              }}
+              defaultValue={item.title}
+              placeholder={item.title}
+              className="border-0 border-b"
+            />
+          ) : (
+            <Button
+              variant="link"
+              className="text-foreground hover:text-primary hover:no-underline transition-all px-0 text-base"
+              onClick={() => {
+                goToEditPage();
+              }}
+            >
+              {item.title}
+            </Button>
+          )}
+          {!isRenaming && (
+            <AnimatePresence>
+              {showRenameButton && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <TooltipProvider>
+                    <Tooltip delayDuration={300}>
+                      <TooltipTrigger>
+                        <Button
+                          variant="ghost"
+                          className="px-1 py-0"
+                          onClick={() => {
+                            setIsRenaming(true);
+                          }}
+                        >
+                          <Pencil size={18} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Rename</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
         </div>
         <Popover>
           <PopoverTrigger asChild>

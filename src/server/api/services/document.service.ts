@@ -1,5 +1,6 @@
 "use server";
 
+import type { MakeFieldsRequired } from "@/lib/types";
 import { db } from "@/server/db";
 import { type User, document, type Document } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
@@ -10,4 +11,10 @@ export const getUserDocuments = async (userId: User["id"]) => {
 
 export const deleteDocument = async (documentId: Document["id"]) => {
   return db.delete(document).where(eq(document.id, documentId));
+};
+
+export const updateDocument = async (
+  input: MakeFieldsRequired<Partial<Document>, "id">,
+) => {
+  return db.update(document).set(input).where(eq(document.id, input.id));
 };

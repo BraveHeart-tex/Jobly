@@ -43,6 +43,13 @@
       "when": 1719057627323,
       "tag": "0005_large_mastermind",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1719071371249,
+      "tag": "0006_silent_runaways",
+      "breakpoints": true
     }
   ]
 }

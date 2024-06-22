@@ -73,7 +73,10 @@ export const company = mysqlTable(
     coverImage: varchar("coverImage", { length: 512 }),
     description: text("description"),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: datetime("updatedAt", { mode: "string" })
+      .default(sql`(now())`)
+      .notNull()
+      .$onUpdate(() => sql`(now())`),
   },
   (table) => {
     return {
@@ -114,7 +117,10 @@ export const job = mysqlTable(
     applicationCount: int("applicationCount").default(0),
     benefits: text("benefits"),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: datetime("updatedAt", { mode: "string" })
+      .default(sql`(now())`)
+      .notNull()
+      .$onUpdate(() => sql`(now())`),
   },
   (table) => {
     return {
@@ -224,7 +230,10 @@ export const userProfile = mysqlTable(
     portfolio: varchar("portfolio", { length: 255 }),
     image: varchar("image", { length: 512 }),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: datetime("updatedAt", { mode: "string" })
+      .default(sql`(now())`)
+      .notNull()
+      .$onUpdate(() => sql`(now())`),
   },
   (table) => {
     return {
@@ -353,8 +362,13 @@ export const document = mysqlTable(
       .notNull(),
     type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
     language: varchar("language", { length: 100 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" }).default(sql`(now())`),
+    createdAt: datetime("createdAt", { mode: "string" })
+      .default(sql`(now())`)
+      .notNull(),
+    updatedAt: datetime("updatedAt", { mode: "string" })
+      .default(sql`(now())`)
+      .notNull()
+      .$onUpdate(() => sql`(now())`),
   },
   (table) => {
     return {
