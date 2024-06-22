@@ -4,7 +4,7 @@
     "enabled": true
   },
   "files": {
-    "ignore": ["drizzle/**", "node_modules/**", ".next/**", ".idea", ".vscode"]
+    "ignore": ["drizzle/**", "node_modules/**", ".next/**", ".idea"]
   },
   "formatter": {
     "lineWidth": 80,
@@ -12,7 +12,7 @@
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules/**", ".next/**", ".idea", ".vscode"]
+    "ignore": ["node_modules/**", ".next/**", ".idea"]
   },
   "javascript": {
     "formatter": {
