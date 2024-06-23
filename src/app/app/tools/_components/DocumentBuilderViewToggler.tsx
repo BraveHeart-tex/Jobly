@@ -16,7 +16,7 @@ const DocumentBuilderViewToggler = forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <Button
-      className="fixed right-[52%] bottom-5 z-50 transition-all flex items-center gap-2 rounded-full hover:bg-opacity-95 ease-in-out text-lg py-8 px-6"
+      className="fixed right-[50.5%] bottom-2 z-50 transition-all flex items-center gap-2 rounded-full hover:bg-opacity-95 ease-in-out text-lg py-8 px-6"
       size="lg"
       onClick={() => setView("preview")}
     >
@@ -47,7 +47,7 @@ const DocumentBuilderViewToggler = forwardRef<HTMLDivElement>((_, ref) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <File />
+      <File size={28} />
     </Button>
   );
 });
