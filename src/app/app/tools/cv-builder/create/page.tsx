@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import DocumentBuilderHeader from "../../_components/DocumentBuilderHeader";
 import DocumentBuilderViewToggler from "../../_components/DocumentBuilderViewToggler";
-import EditableSectionTitle from "../../_components/EditableSectionTitle";
+import CvBuilderPersonalDetailsSection from "../../_components/CvBuilderPersonalDetailsSection";
 
 const CreateCvPage = () => {
   const builderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -16,8 +16,8 @@ const CreateCvPage = () => {
           <DocumentBuilderHeader />
           <DocumentBuilderViewToggler ref={builderContainerRef} />
         </div>
-        <div className="mt-4">
-          <EditableSectionTitle defaultValue="Personal Details" />
+        <div className="mt-4 grid gap-2">
+          <CvBuilderPersonalDetailsSection />
         </div>
       </div>
       <div className="bg-muted-foreground min-h-screen flex items-center justify-center flex-col">

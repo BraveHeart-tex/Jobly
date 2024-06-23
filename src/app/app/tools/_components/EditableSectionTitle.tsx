@@ -74,7 +74,7 @@ const EditableSectionTitle = ({
     >
       <span
         ref={spanRef}
-        className="absolute whitespace-pre text-xl font-semibold"
+        className="absolute whitespace-pre text-[22px] font-semibold"
         style={{
           visibility: "hidden",
         }}
@@ -84,7 +84,7 @@ const EditableSectionTitle = ({
       {isEditing ? (
         <div className="w-full">
           <Input
-            className="bg-transparent border-0 text-xl font-semibold focus:outline-none focus-visible:ring-0 shadow-none  rounded-none text-left overflow-visible min-w-full p-0"
+            className="bg-transparent border-0 text-[22px] font-semibold focus:outline-none focus-visible:ring-0 shadow-none  rounded-none text-left overflow-visible min-w-full p-0"
             ref={inputRef}
             placeholder={value}
             defaultValue={value}
@@ -111,7 +111,10 @@ const EditableSectionTitle = ({
         </div>
       ) : (
         <div
-          className={cn("scroll-m-20 text-xl font-semibold", labelClassName)}
+          className={cn(
+            "scroll-m-20 text-[22px] font-semibold",
+            labelClassName,
+          )}
         >
           {value}
         </div>

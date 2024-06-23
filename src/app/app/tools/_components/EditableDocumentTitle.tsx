@@ -9,7 +9,6 @@ const EditableDocumentTitle = () => {
   const [focused, setFocused] = useState(false);
   const spanRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-
   const documentTitle =
     useDocumentBuilderStore((state) => state.document?.title) || "Untitled";
   const setDocumentValue = useDocumentBuilderStore(
@@ -43,7 +42,9 @@ const EditableDocumentTitle = () => {
             placeholder={documentTitle}
             defaultValue={documentTitle}
             onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
+            onBlur={() => {
+              setFocused(false);
+            }}
             onChange={(e) => setDocumentValue("title", e.target.value)}
           />
           <AnimatePresence>
