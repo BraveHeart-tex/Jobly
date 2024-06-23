@@ -3,7 +3,9 @@ import EditableDocumentTitle from "./EditableDocumentTitle";
 const DocumentBuilderHeader = () => {
   return (
     <header className="w-full">
-      <EditableDocumentTitle />
+      <div>
+        <EditableDocumentTitle />
+      </div>
     </header>
   );
 };

@@ -7,7 +7,7 @@
     "ignore": ["drizzle/**", "node_modules/**", ".next/**", ".idea"]
   },
   "formatter": {
-    "lineWidth": 120,
+    "lineWidth": 80,
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",

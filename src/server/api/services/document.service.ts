@@ -2,7 +2,7 @@
 
 import type { MakeFieldsRequired } from "@/lib/types";
 import { db } from "@/server/db";
-import { type User, document, type Document } from "@/server/db/schema";
+import { type Document, type User, document } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
 export const getUserDocuments = async (userId: User["id"]) => {

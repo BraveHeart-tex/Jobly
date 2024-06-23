@@ -1,6 +1,6 @@
+import { job, userBookmarksJob, userViewsJob } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import type { MySqlSelect } from "drizzle-orm/mysql-core";
-import { job, userViewsJob, userBookmarksJob } from "@/server/db/schema";
 
 export function withBookmarkJoin<T extends MySqlSelect>(
   qb: T,

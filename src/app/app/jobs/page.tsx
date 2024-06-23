@@ -1,8 +1,8 @@
 import { validateRequest } from "@/lib/auth/validate-request";
 import { ROUTES } from "@/lib/constants";
 import { redirect } from "next/navigation";
-import JobsList from "./_components/JobsList";
 import JobListSearchToolbar from "./_components/JobListSearchToolbar";
+import JobsList from "./_components/JobsList";
 
 const JobsPage = async () => {
   const { user } = await validateRequest();

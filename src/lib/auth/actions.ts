@@ -6,9 +6,9 @@ import { lucia } from "@/lib/auth/index";
 import { PASSWORD_STRENGTH_LEVELS, ROUTES } from "@/lib/constants";
 import type { User } from "@/server/db/schema";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import zxcvbn from "zxcvbn";
 import { validateRequest } from "./validate-request";
-import { redirect } from "next/navigation";
 
 async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();

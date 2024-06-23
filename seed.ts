@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 import type { ExtractTablesWithRelations } from "drizzle-orm";
 import type { MySqlTransaction } from "drizzle-orm/mysql-core";
 import {
-  drizzle,
-  type MySql2QueryResultHKT,
   type MySql2PreparedQueryHKT,
+  type MySql2QueryResultHKT,
+  drizzle,
 } from "drizzle-orm/mysql2";
 import { createConnection } from "mysql2";
 import { insertCoverLetter, insertResume } from "seedUtils";
@@ -19,7 +19,7 @@ export type Trx = MySqlTransaction<
 >;
 
 const seed = async () => {
-  console.log("starting seed");
+  console.info("starting seed");
   const connection = createConnection({
     uri: process.env.DATABASE_URL,
   });
@@ -37,7 +37,7 @@ const seed = async () => {
 
 seed()
   .then(() => {
-    console.log("seeding done");
+    console.info("seeding done");
     process.exit(1);
   })
   .catch((err) => {

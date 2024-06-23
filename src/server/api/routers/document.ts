@@ -1,8 +1,8 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
-import * as documentService from "../services/document.service";
-import { z } from "zod";
-import { createInsertSchema } from "drizzle-zod";
 import { document } from "@/server/db/schema";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod";
+import * as documentService from "../services/document.service";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const documentRouter = createTRPCRouter({
   getUserDocuments: protectedProcedure.query(async ({ ctx }) => {

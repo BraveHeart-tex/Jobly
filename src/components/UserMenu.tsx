@@ -1,9 +1,5 @@
 "use client";
 
-import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import type { User } from "lucia";
-import { useEffect } from "react";
-import { Avatar, AvatarFallback } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +8,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import type { User } from "lucia";
 import { LogOut } from "lucide-react";
+import { useEffect } from "react";
+import { Avatar, AvatarFallback } from "./ui/avatar";
 
 import { signOut } from "@/lib/auth/actions";
 

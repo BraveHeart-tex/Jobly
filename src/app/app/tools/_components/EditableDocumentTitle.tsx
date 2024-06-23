@@ -1,17 +1,20 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 const EditableDocumentTitle = () => {
   const [focused, setFocused] = useState(false);
   const spanRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const documentTitle = useDocumentBuilderStore((state) => state.document?.title) || "Untitled";
-  const setDocumentValue = useDocumentBuilderStore((state) => state.setDocumentValue);
+  const documentTitle =
+    useDocumentBuilderStore((state) => state.document?.title) || "Untitled";
+  const setDocumentValue = useDocumentBuilderStore(
+    (state) => state.setDocumentValue,
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -25,7 +28,7 @@ const EditableDocumentTitle = () => {
   return (
     <div className="flex items-center gap-2 w-full justify-center">
       <div className="text-3xl font-semibold w-full flex items-center justify-center">
-        <div className="inline-block" ref={containerRef}>
+        <div className="inline-block h-10" ref={containerRef}>
           <span
             ref={spanRef}
             className="absolute whitespace-pre text-3xl font-semibold"

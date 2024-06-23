@@ -2,14 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useMarkJobAsViewed } from "../_hooks/useMarkJobAsViewed";
-import { useDeleteBookmark } from "../_hooks/useDeleteBookmark";
 import { useBookmark } from "../_hooks/useBookmark";
-import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
+import { useDeleteBookmark } from "../_hooks/useDeleteBookmark";
+import { useMarkJobAsViewed } from "../_hooks/useMarkJobAsViewed";
 import CompanyLogo from "./CompanyLogo";
 
 type JobDetailsProps = {

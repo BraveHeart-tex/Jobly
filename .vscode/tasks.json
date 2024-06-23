@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "Biome Check",
-      "command": "biome check --write --organize-imports-enabled=true --no-errors-on-unmatched",
+      "command": "biome check --write --organize-imports-enabled=true --no-errors-on-unmatched --config-path=biome.json",
       "type": "shell",
       "group": "build",
       "options": {

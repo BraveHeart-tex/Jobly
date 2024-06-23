@@ -1,16 +1,16 @@
 "use client";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useDocuments } from "../_hooks/useDocuments";
-import DocumentListItem from "./DocumentListItem";
-import type { Document } from "@/server/db/schema";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/lib/constants";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ROUTES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import type { Document } from "@/server/db/schema";
+import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useDocuments } from "../_hooks/useDocuments";
+import DocumentListItem from "./DocumentListItem";
 
 const DOCUMENT_TAB_VALUES = {
   RESUMES: "resumes",

@@ -1,10 +1,10 @@
 import "@/styles/globals.css";
+import ConfirmDialog from "@/components/ConfirmDialog";
 import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TRPCReactProvider } from "@/trpc/react";
 import { GeistSans } from "geist/font/sans";
 import type React from "react";
-import ConfirmDialog from "@/components/ConfirmDialog";
 
 export const metadata = {
   title: "Jobly",

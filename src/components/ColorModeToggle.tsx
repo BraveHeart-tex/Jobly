@@ -7,8 +7,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Cog, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import type { LucideIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const COLOR_MODES: { label: string; value: string; icon: LucideIcon }[] = [
   {

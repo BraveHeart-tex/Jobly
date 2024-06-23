@@ -1,8 +1,8 @@
 "use client";
 import { useQueryState } from "nuqs";
-import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
 import { useDebounce } from "react-use";
+import { Input } from "./ui/input";
 
 type QueryStringInputProps = {
   queryKey: string;

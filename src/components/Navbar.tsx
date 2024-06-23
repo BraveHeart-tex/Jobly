@@ -1,10 +1,10 @@
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import { ROUTES } from "@/lib/constants";
+import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
-import { api } from "@/trpc/server";
 import UserMenu from "./UserMenu";
 
 const Navbar = async () => {

@@ -2,21 +2,29 @@
 
 import { Button } from "@/components/ui/button";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import { File } from "lucide-react";
 import { type RefObject, forwardRef, useState } from "react";
 
 const DocumentBuilderViewToggler = forwardRef<HTMLDivElement>((_, ref) => {
   const setView = useDocumentBuilderStore((state) => state.setView);
   const [shouldShowButtonText, setShouldShowButtonText] = useState(false);
-  const { scrollYProgress } = useScroll({ container: ref as RefObject<HTMLDivElement> });
+  const { scrollYProgress } = useScroll({
+    container: ref as RefObject<HTMLDivElement>,
+    layoutEffect: false,
+  });
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setShouldShowButtonText(latest === 1 || latest === 0);
   });
 
   return (
     <Button
-      className="fixed right-[50.5%] bottom-2 z-50 transition-all flex items-center gap-2 rounded-full hover:bg-opacity-95 ease-in-out text-lg py-8 px-6"
+      className="fixed right-[50.5%] bottom-2 z-50 transition-all flex xl:hidden items-center gap-2 rounded-full hover:bg-opacity-95 ease-in-out text-base py-7 px-5"
       size="lg"
       onClick={() => setView("preview")}
     >
@@ -47,7 +55,7 @@ const DocumentBuilderViewToggler = forwardRef<HTMLDivElement>((_, ref) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <File size={28} />
+      <File size={24} />
     </Button>
   );
 });
