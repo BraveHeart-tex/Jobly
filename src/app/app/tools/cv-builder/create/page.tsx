@@ -29,7 +29,7 @@ const CreateCvPage = () => {
           </div>
           <div className="bg-background rounded-md h-full w-full" />
           <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 text-muted dark:text-muted-foreground">
               <div className="relative">
                 <Cloud size={28} strokeWidth={1} />
                 <Check
@@ -38,7 +38,7 @@ const CreateCvPage = () => {
                   strokeWidth={2}
                 />
               </div>
-              <span className="text-xs text-muted-foreground">Saved</span>
+              <span className="text-xs">Saved</span>
             </div>
             <div />
           </div>
