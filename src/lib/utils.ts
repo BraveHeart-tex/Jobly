@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import type { StringMap } from "quill";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -75,3 +76,30 @@ export const capitalizeString = <T extends string>(
   string: string,
 ): Capitalize<T> =>
   (string.charAt(0).toUpperCase() + string.slice(1)) as Capitalize<T>;
+
+type FormattingType = "bold" | "italic" | "underline" | "strike" | "blockquote";
+interface ToolbarConfig {
+  headers?: boolean;
+  formatting?: FormattingType[];
+  lists?: boolean;
+  links?: boolean;
+  images?: boolean;
+  clean?: boolean;
+}
+
+export const generateEditorModules = (config: ToolbarConfig): StringMap => {
+  const toolbarItems: [boolean | string[] | undefined, unknown][] = [
+    [config.headers, [{ header: [1, 2, false] }]],
+    [config.formatting, config.formatting],
+    [config.lists, [{ list: "ordered" }, { list: "bullet" }]],
+    [config.links, ["link"]],
+    [config.images, ["image"]],
+    [config.clean, ["clean"]],
+  ];
+
+  const toolbar = toolbarItems
+    .filter(([condition]) => condition)
+    .map(([, item]) => item);
+
+  return { toolbar };
+};

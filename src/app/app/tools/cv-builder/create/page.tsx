@@ -1,10 +1,11 @@
 "use client";
-import { useRef } from "react";
-import DocumentBuilderHeader from "../../_components/DocumentBuilderHeader";
-import DocumentBuilderViewToggler from "../../_components/DocumentBuilderViewToggler";
-import CvBuilderPersonalDetailsSection from "../../_components/CvBuilderPersonalDetailsSection";
+import CvBuilderProfessionalSummarySection from "@/app/app/tools/_components/CvBuilderProfessionalSummarySection";
 import { Button } from "@/components/ui/button";
 import { Check, Cloud } from "lucide-react";
+import { useRef } from "react";
+import CvBuilderPersonalDetailsSection from "../../_components/CvBuilderPersonalDetailsSection";
+import DocumentBuilderHeader from "../../_components/DocumentBuilderHeader";
+import DocumentBuilderViewToggler from "../../_components/DocumentBuilderViewToggler";
 
 const CreateCvPage = () => {
   const builderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -21,10 +22,13 @@ const CreateCvPage = () => {
         <div className="mt-4 grid gap-2">
           <CvBuilderPersonalDetailsSection />
         </div>
+        <div className="mt-4 grid gap-2">
+          <CvBuilderProfessionalSummarySection />
+        </div>
       </div>
       <div className="bg-muted-foreground dark:bg-secondary min-h-screen">
-        <div className="h-[91vh] w-[63%] mx-auto pt-4">
-          <div className="w-full flex items-center justify-end mb-4">
+        <div className="h-[90vh] w-[63%] mx-auto pt-4">
+          <div className="w-full flex items-center justify-end mb-2">
             <Button className="self-end">Download PDF</Button>
           </div>
           <div className="bg-background rounded-md h-full w-full" />
