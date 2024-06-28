@@ -50,6 +50,20 @@
       "when": 1719071371249,
       "tag": "0006_silent_runaways",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1719600444534,
+      "tag": "0007_blue_squadron_supreme",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1719601687641,
+      "tag": "0008_nasty_maddog",
+      "breakpoints": true
     }
   ]
 }

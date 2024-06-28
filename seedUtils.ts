@@ -15,11 +15,10 @@ export const insertCompaniesWithJobsPostings = async (trx: Trx) => {
   });
 
   await trx.insert(job).values({
-    applicationCount: 0,
     benefits: "Testing, food card, in-house gym, good office",
     companyId: companyResult.insertId,
     title: faker.person.jobTitle(),
-    description: faker.person.jobDescriptor(),
+    content: faker.person.jobDescriptor(),
     location: faker.location.streetAddress(),
     workType: faker.helpers.arrayElement(job.workType.enumValues),
   });

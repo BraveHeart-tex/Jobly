@@ -9,6 +9,7 @@ import DocumentBuilderViewToggler from "../../_components/DocumentBuilderViewTog
 
 const CreateCvPage = () => {
   const builderContainerRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <main className="grid grid-cols-2 fixed top-0 z-50 w-full">
       <div

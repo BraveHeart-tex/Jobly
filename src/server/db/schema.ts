@@ -64,7 +64,6 @@ export const company = mysqlTable(
     name: varchar("name", { length: 512 }).notNull(),
     bio: text("bio"),
     website: varchar("website", { length: 512 }),
-    followerCount: int("followerCount").default(0),
     industry: varchar("industry", { length: 255 }),
     address: varchar("address", { length: 512 }),
     foundedYear: varchar("foundedYear", { length: 50 }),
@@ -96,7 +95,7 @@ export const job = mysqlTable(
         onDelete: "cascade",
       }),
     title: varchar("title", { length: 512 }).notNull(),
-    description: text("description"),
+    content: text("content"),
     location: varchar("location", { length: 255 }),
     workType: mysqlEnum("workType", [
       "office",
@@ -114,7 +113,6 @@ export const job = mysqlTable(
       "volunteer",
       "other",
     ] as const).default("full-time"),
-    applicationCount: int("applicationCount").default(0),
     benefits: text("benefits"),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
     updatedAt: datetime("updatedAt", { mode: "string" })
@@ -246,7 +244,7 @@ export const userProfile = mysqlTable(
   },
 );
 
-export const userFollowsComapny = mysqlTable(
+export const userFollowsCompany = mysqlTable(
   "UserFollowsCompany",
   {
     id: int("id").autoincrement().notNull(),
@@ -382,6 +380,9 @@ export const section = mysqlTable(
   "Section",
   {
     id: int("id").autoincrement().notNull(),
+    documentId: int("documentId")
+      .references(() => document.id, { onDelete: "cascade" })
+      .notNull(),
     name: varchar("name", { length: 100 }).notNull(),
     displayOrder: int("displayOrder").notNull(),
   },
@@ -397,10 +398,10 @@ export const field = mysqlTable(
   {
     id: int("id").autoincrement().notNull(),
     sectionId: int("sectionId")
-      .references(() => section.id)
+      .references(() => section.id, { onDelete: "cascade" })
       .notNull(),
-    name: varchar("name", { length: 100 }).notNull(),
-    dataType: varchar("dataType", { length: 100 }).notNull(),
+    fieldName: varchar("fieldName", { length: 100 }).notNull(),
+    fieldType: varchar("fieldType", { length: 100 }).notNull(),
   },
   (table) => {
     return {
@@ -410,51 +411,17 @@ export const field = mysqlTable(
   },
 );
 
-export const userSection = mysqlTable(
-  "UserSection",
+export const fieldValue = mysqlTable(
+  "FieldValue",
   {
     id: int("id").autoincrement().notNull(),
-    resumeId: int("resumeId")
-      .references(() => document.id, {
-        onDelete: "cascade",
-      })
-      .notNull(),
-    sectionId: int("sectionId")
-      .references(() => section.id)
-      .notNull(),
-    name: varchar("name", { length: 255 }).notNull(),
-    displayOrder: int("displayOrder").notNull(),
-  },
-  (table) => {
-    return {
-      UserSection_id: primaryKey({
-        columns: [table.id],
-        name: "UserSection_id",
-      }),
-      resumeId: index("resumeId").on(table.resumeId),
-      sectionId: index("sectionId").on(table.sectionId),
-    };
-  },
-);
-
-export const userField = mysqlTable(
-  "UserField",
-  {
-    id: int("id").autoincrement().notNull(),
-    userSectionId: int("userSectionId")
-      .references(() => userSection.id, {
-        onDelete: "cascade",
-      })
-      .notNull(),
     fieldId: int("fieldId")
-      .references(() => field.id)
+      .references(() => field.id, { onDelete: "cascade" })
       .notNull(),
-    label: varchar("label", { length: 255 }).notNull(),
   },
   (table) => {
     return {
-      UserField_id: primaryKey({ columns: [table.id], name: "UserField_id" }),
-      userSectionId: index("userSectionId").on(table.userSectionId),
+      FieldValue_id: primaryKey({ columns: [table.id], name: "FieldValue_id" }),
       fieldId: index("fieldId").on(table.fieldId),
     };
   },
