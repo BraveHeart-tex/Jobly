@@ -15,6 +15,7 @@ type DocumentBuilderStore = {
   setDocumentData: (key: string, data: unknown) => void;
 };
 
+// TODO: Refactor according to the db schema
 export const useDocumentBuilderStore = create<
   DocumentBuilderStore,
   [["zustand/devtools", never]]
