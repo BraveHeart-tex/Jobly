@@ -13,7 +13,7 @@ const CvBuilderProfessionalSummarySection = () => {
   );
 
   const renderCharCountIndicator = () => {
-    const charCount = documentDataValue?.length || 0;
+    const charCount = documentDataValue?.replace(/<[^>]*>/g, "")?.length || 0;
     if (!charCount) {
       return <p>0 / 400+</p>;
     }

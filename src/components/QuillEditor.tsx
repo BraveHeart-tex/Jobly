@@ -9,7 +9,7 @@ type QuillEditorProps = ReactQuillProps;
 
 const QuillEditor = ({ ...props }: QuillEditorProps) => {
   return (
-    <div className="text-editor">
+    <div className="text-editor w-full overflow-auto">
       <ReactQuill theme="snow" {...props} />
     </div>
   );
