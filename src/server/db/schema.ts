@@ -376,6 +376,14 @@ export const document = mysqlTable(
   },
 );
 
+export const documentRelations = relations(document, ({ one, many }) => ({
+  user: one(user, {
+    fields: [document.userId],
+    references: [user.id],
+  }),
+  sections: many(section),
+}));
+
 export const section = mysqlTable(
   "Section",
   {
@@ -392,6 +400,14 @@ export const section = mysqlTable(
     };
   },
 );
+
+export const sectionRelations = relations(section, ({ one, many }) => ({
+  document: one(document, {
+    fields: [section.documentId],
+    references: [document.id],
+  }),
+  fields: many(field),
+}));
 
 export const field = mysqlTable(
   "Field",
@@ -411,6 +427,14 @@ export const field = mysqlTable(
   },
 );
 
+export const fieldRelations = relations(field, ({ one, many }) => ({
+  section: one(section, {
+    fields: [field.sectionId],
+    references: [section.id],
+  }),
+  fieldValues: many(fieldValue),
+}));
+
 export const fieldValue = mysqlTable(
   "FieldValue",
   {
@@ -427,6 +451,13 @@ export const fieldValue = mysqlTable(
     };
   },
 );
+
+export const fieldValueRelations = relations(fieldValue, ({ one }) => ({
+  field: one(field, {
+    fields: [fieldValue.fieldId],
+    references: [field.id],
+  }),
+}));
 
 export type User = InferSelectModel<typeof user>;
 export type JobInsertModel = InferInsertModel<typeof job>;

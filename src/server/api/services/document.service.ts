@@ -7,10 +7,6 @@ import {
   type DocumentInsertModel,
   type User,
   document as documentSchema,
-  section,
-  field,
-  fieldValue,
-  type SectionField,
 } from "@/server/db/schema";
 import { desc, eq } from "drizzle-orm";
 
@@ -40,48 +36,34 @@ export const createDocument = async (input: DocumentInsertModel) => {
   return response.insertId;
 };
 
-// TODO: Oh god, this is ugly and needs refactoring
 export const getDocumentById = async (
   id: Document["id"],
 ): Promise<DocumentBuilderConfig | { error: string }> => {
-  const document = await db.query.document.findFirst({
+  const result = await db.query.document.findFirst({
     where: eq(documentSchema.id, id),
+    with: {
+      sections: {
+        with: {
+          fields: {
+            with: {
+              fieldValues: true,
+            },
+          },
+        },
+      },
+    },
   });
 
-  if (!document) {
-    return {
-      error: "Document not found",
-    };
-  }
-
-  const sections = await db.query.section.findMany({
-    where: eq(section.documentId, document.id),
-  });
-
-  const fields: SectionField[] = [];
-
-  for (const section of sections) {
-    const sectionFields = await db.query.field.findMany({
-      where: eq(field.sectionId, section.id),
-    });
-
-    fields.push(...sectionFields);
-  }
-
-  const fieldValues = [];
-
-  for (const field of fields) {
-    const fieldValueItem = await db.query.fieldValue.findMany({
-      where: eq(fieldValue.fieldId, field.id),
-    });
-
-    fieldValues.push(...fieldValueItem);
+  if (!result) {
+    return { error: "Document not found" };
   }
 
   return {
-    document,
-    fields,
-    fieldValues,
-    sections,
+    document: result,
+    sections: result.sections,
+    fields: result.sections.flatMap((section) => section.fields),
+    fieldValues: result.sections.flatMap((section) =>
+      section.fields.flatMap((field) => field.fieldValues),
+    ),
   };
 };
