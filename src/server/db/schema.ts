@@ -418,6 +418,7 @@ export const fieldValue = mysqlTable(
     fieldId: int("fieldId")
       .references(() => field.id, { onDelete: "cascade" })
       .notNull(),
+    value: text("value"),
   },
   (table) => {
     return {

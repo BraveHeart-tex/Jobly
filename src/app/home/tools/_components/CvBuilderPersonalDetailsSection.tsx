@@ -1,28 +1,34 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);
+  const fields = useDocumentBuilderStore((state) => state.fields);
+  const documentTitle = useDocumentBuilderStore(
+    (state) => state.document.title,
+  );
+  const setDocumentValue = useDocumentBuilderStore(
+    (state) => state.setDocumentValue,
+  );
+
   return (
     <>
       <EditableSectionTitle defaultValue="Personal Details" />
       <div className="grid gap-6">
         <DocumentBuilderInput
-          label="Wanted Job Title"
-          fieldName="wantedJobTitle"
+          value={documentTitle}
+          onChange={(value) => setDocumentValue("title", value)}
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DocumentBuilderInput label="First Name" fieldName="firstName" />
-          <DocumentBuilderInput label="Last Name" fieldName="lastName" />
-          <DocumentBuilderInput label="Email" fieldName="email" />
-          <DocumentBuilderInput label="Phone" fieldName="phone" />
-          <DocumentBuilderInput label="Country" fieldName="country" />
-          <DocumentBuilderInput label="City" fieldName="city" />
+          {fields.slice(0, 6).map((field) => (
+            <DocumentBuilderInput key={field.id} field={field} />
+          ))}
           <div className="lg:col-span-2">
             <AnimatePresence>
               {showAdditionalDetails && (
@@ -32,27 +38,9 @@ const CvBuilderPersonalDetailsSection = () => {
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                 >
-                  <DocumentBuilderInput label="Address" fieldName="address" />
-                  <DocumentBuilderInput
-                    label="Postal Code"
-                    fieldName="postalCode"
-                  />
-                  <DocumentBuilderInput
-                    label="Driving License"
-                    fieldName="drivingLicense"
-                  />
-                  <DocumentBuilderInput
-                    label="Nationality"
-                    fieldName="nationality"
-                  />
-                  <DocumentBuilderInput
-                    label="Place of Birth"
-                    fieldName="placeOfBirth"
-                  />
-                  <DocumentBuilderInput
-                    label="Date of Birth"
-                    fieldName="dateOfBirth"
-                  />
+                  {fields.slice(6).map((field) => (
+                    <DocumentBuilderInput key={field.id} field={field} />
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>

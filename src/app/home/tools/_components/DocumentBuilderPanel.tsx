@@ -3,24 +3,9 @@ import CvBuilderPersonalDetailsSection from "@/app/home/tools/_components/CvBuil
 import CvBuilderProfessionalSummarySection from "@/app/home/tools/_components/CvBuilderProfessionalSummarySection";
 import DocumentBuilderHeader from "@/app/home/tools/_components/DocumentBuilderHeader";
 import DocumentBuilderViewToggle from "@/app/home/tools/_components/DocumentBuilderViewToggle";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Document } from "@/server/db/schema";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
-type DocumentBuilderPanelProps = {
-  documentData?: Document;
-};
-
-const DocumentBuilderPanel = ({ documentData }: DocumentBuilderPanelProps) => {
-  const setDocumentObject = useDocumentBuilderStore(
-    (state) => state.setDocumentObject,
-  );
-
-  useEffect(() => {
-    if (!documentData || Object.keys(documentData).length === 0) return;
-    setDocumentObject(documentData);
-  }, [documentData, setDocumentObject]);
-
+const DocumentBuilderPanel = () => {
   const builderContainerRef = useRef<HTMLDivElement | null>(null);
   return (
     <div

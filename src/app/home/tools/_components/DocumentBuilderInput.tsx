@@ -3,35 +3,44 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Document } from "@/server/db/schema";
+import type { SectionField } from "@/server/db/schema";
 
-// TODO: Refactor props to handle section keys etc
 type DocumentBuilderInputProps = {
-  label: string;
-  fieldName: keyof Document;
+  field?: SectionField;
+  label?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
 const DocumentBuilderInput = ({
+  field,
   label,
-  fieldName,
+  value = "",
+  onChange,
 }: DocumentBuilderInputProps) => {
-  const documentDataValue = useDocumentBuilderStore(
-    (state) => state.document[fieldName],
+  const getFieldValue = useDocumentBuilderStore(
+    (state) => state.getFieldValueByFieldId,
   );
-  const setDocumentDataValue = useDocumentBuilderStore(
-    (state) => state.setDocumentValue,
+  const setFieldValue = useDocumentBuilderStore(
+    (state) => state.setFieldValueByFieldId,
   );
+
+  const fieldValue = field ? getFieldValue(field?.id) : value;
+
+  const setValue = (value: string) => {
+    if (field?.id) setFieldValue(field?.id, value);
+    if (onChange) onChange(value);
+  };
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      <Label className="text-foreground/80 font-normal">{label}</Label>
+      <Label className="text-foreground/80 font-normal">
+        {field?.fieldName || label}
+      </Label>
       <Input
-        value={documentDataValue}
+        value={fieldValue || ""}
         className="w-full rounded-[2px] px-4 py-3 bg-muted/30 text-muted-foreground"
-        onChange={(e) => {
-          const newValue = e.target.value;
-          setDocumentDataValue(fieldName, newValue);
-        }}
+        onChange={(e) => setValue(e.target.value)}
       />
     </div>
   );

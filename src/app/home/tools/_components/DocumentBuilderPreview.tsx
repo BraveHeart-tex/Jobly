@@ -1,7 +1,15 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Check, Cloud } from "lucide-react";
 
 const DocumentBuilderPreview = () => {
+  // const state = useDocumentBuilderStore((state) => state);
+
+  // useEffect(() => {
+  //   console.log("DocumentBuilderPreview state changed", state);
+  // }, [state]);
+
   return (
     <div className="bg-muted-foreground dark:bg-secondary min-h-screen">
       <div className="h-[90vh] w-[63%] mx-auto pt-4">

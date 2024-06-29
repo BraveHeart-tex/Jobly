@@ -1,4 +1,7 @@
 {
   "editor.defaultFormatter": "biomejs.biome",
-  "gitlens.currentLine.enabled": false
+  "biome.enabled": true,
+  "eslint.enable": false,
+  "gitlens.currentLine.enabled": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
