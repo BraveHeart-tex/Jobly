@@ -1,5 +1,5 @@
 "use client";
-import { useCreateDocument } from "@/app/app/tools/_hooks/useCreateDocument";
+import { useCreateDocument } from "@/app/home/tools/_hooks/useCreateDocument";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ROUTES } from "@/lib/constants";

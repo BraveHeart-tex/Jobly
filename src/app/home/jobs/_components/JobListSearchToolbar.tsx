@@ -1,6 +1,6 @@
 "use client";
-import JobListFilters from "@/app/app/jobs/_components/JobListFilters";
-import JoblistLocationInput from "@/app/app/jobs/_components/JoblistLocationInput";
+import JobListFilters from "@/app/home/jobs/_components/JobListFilters";
+import JoblistLocationInput from "@/app/home/jobs/_components/JoblistLocationInput";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import { cn } from "@/lib/utils";
 import JobListSearchInput from "./JobListSearchInput";

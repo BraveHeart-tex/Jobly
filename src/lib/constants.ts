@@ -11,14 +11,14 @@ import {
 export const ROUTES = {
   LOGIN: "/login",
   "SIGN-UP": "/sign-up",
-  HOME: "/app",
-  JOBS: "/app/jobs",
-  JOB_HISTORY: "/app/jobs/?viewed=true",
-  BOOKMARKED_JOBS: "/app/jobs/?bookmarked=true",
-  APPLICATIONS: "/app/user/applications",
-  UNFINISHED_APPLICATIONS: "/app/user/applications?unfinished=true",
-  CV_BUILDER: "/app/tools/cv-builder",
-  COVER_LETTERS: "/app/tools/cover-letters",
+  HOME: "/home",
+  JOBS: "/home/jobs",
+  JOB_HISTORY: "/home/jobs/?viewed=true",
+  BOOKMARKED_JOBS: "/home/jobs/?bookmarked=true",
+  APPLICATIONS: "/home/user/applications",
+  UNFINISHED_APPLICATIONS: "/home/user/applications?unfinished=true",
+  CV_BUILDER: "/home/tools/cv-builder",
+  COVER_LETTERS: "/home/tools/cover-letters",
   SALARIES: "/data/salaries",
 } as const;
 

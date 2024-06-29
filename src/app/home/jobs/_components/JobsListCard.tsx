@@ -1,5 +1,5 @@
 "use client";
-import { useJobsListPageSearchParams } from "@/app/app/jobs/_hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/app/home/jobs/_hooks/useJobsListPageSearchParams";
 import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";

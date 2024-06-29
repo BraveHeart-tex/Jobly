@@ -1,4 +1,4 @@
-import EditableSectionTitle from "@/app/app/tools/_components/EditableSectionTitle";
+import EditableSectionTitle from "@/app/home/tools/_components/EditableSectionTitle";
 import QuillEditor from "@/components/QuillEditor";
 import { generateEditorModules } from "@/lib/utils";
 import { Frown, Smile } from "lucide-react";

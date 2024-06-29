@@ -8,10 +8,14 @@ import {
   type User,
   document,
 } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export const getUserDocuments = async (userId: User["id"]) => {
-  return db.select().from(document).where(eq(document.userId, userId));
+  return db
+    .select()
+    .from(document)
+    .where(eq(document.userId, userId))
+    .orderBy(desc(document.createdAt));
 };
 
 export const deleteDocument = async (documentId: Document["id"]) => {
@@ -27,4 +31,10 @@ export const updateDocument = async (
 export const createDocument = async (input: DocumentInsertModel) => {
   const [response] = await db.insert(document).values(input);
   return response.insertId;
+};
+
+export const getDocumentById = async (id: Document["id"]) => {
+  return db.query.document.findFirst({
+    where: eq(document.id, id),
+  });
 };
