@@ -1,43 +1,57 @@
-import type { Document } from "@/server/db/schema";
+import type {
+  Document,
+  Section,
+  SectionField,
+  SectionFieldValue,
+} from "@/server/db/schema";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 type DocumentBuilderStore = {
   view: "builder" | "preview";
   setView: (view: "builder" | "preview") => void;
-  document: Partial<Document> | null;
-  setDocument: (document: Partial<Document> | null) => void;
+  document: Document;
+  setDocumentObject: (document: Document) => void;
   setDocumentValue: <K extends keyof Document>(
     key: K,
     value: Document[K],
   ) => void;
-  documentData: Record<string, string>;
-  setDocumentData: (key: string, data: unknown) => void;
+  sections: Section[];
+  setSections: (sections: Section[]) => void;
+  fields: SectionField[];
+  setFields: (fields: SectionField[]) => void;
+  fieldValues: SectionFieldValue[];
+  setFieldValues: (fieldValues: SectionFieldValue[]) => void;
 };
 
-// TODO: Refactor according to the db schema
 export const useDocumentBuilderStore = create<
   DocumentBuilderStore,
   [["zustand/devtools", never]]
 >(
   devtools(
     (set, get) => ({
-      document: null,
       view: "builder",
       setView: (view) => set({ view }),
-      setDocument: (document) => set({ document }),
-      setDocumentValue: (key, value) => {
-        const document = get().document;
-        set({ document: { ...document, [key]: value } });
+      document: {} as Document,
+      setDocumentObject: (document) => {
+        set({ document });
       },
-      documentData: {},
-      setDocumentData: (key: string, data: unknown) =>
+      setDocumentValue: (key, value) => {
         set({
-          documentData: {
-            ...get().documentData,
-            [key]: data as string,
+          document: {
+            ...get().document,
+            [key]: value,
           },
-        }),
+        });
+      },
+      sections: [],
+      setSections: (sections) => {
+        set({ sections });
+      },
+      fields: [],
+      setFields: (fields) => set({ fields }),
+      fieldValues: [],
+      setFieldValues: (fieldValues) => set({ fieldValues }),
     }),
     {
       name: "useDocumentBuilderStore",

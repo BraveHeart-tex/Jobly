@@ -23,4 +23,17 @@ export const documentRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return documentService.updateDocument(input);
     }),
+  createDocument: protectedProcedure
+    .input(
+      createInsertSchema(document).omit({
+        userId: true,
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.session.userId;
+      return documentService.createDocument({
+        ...input,
+        userId,
+      });
+    }),
 });

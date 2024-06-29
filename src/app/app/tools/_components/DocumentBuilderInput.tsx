@@ -1,12 +1,14 @@
 "use client";
 
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import type { Document } from "@/server/db/schema";
 
+// TODO: Refactor props to handle section keys etc
 type DocumentBuilderInputProps = {
   label: string;
-  fieldName: string;
+  fieldName: keyof Document;
 };
 
 const DocumentBuilderInput = ({
@@ -14,10 +16,10 @@ const DocumentBuilderInput = ({
   fieldName,
 }: DocumentBuilderInputProps) => {
   const documentDataValue = useDocumentBuilderStore(
-    (state) => state.documentData[fieldName],
+    (state) => state.document[fieldName],
   );
   const setDocumentDataValue = useDocumentBuilderStore(
-    (state) => state.setDocumentData,
+    (state) => state.setDocumentValue,
   );
 
   return (

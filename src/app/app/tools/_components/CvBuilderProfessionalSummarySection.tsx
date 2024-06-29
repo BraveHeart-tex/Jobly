@@ -1,19 +1,19 @@
 import EditableSectionTitle from "@/app/app/tools/_components/EditableSectionTitle";
 import QuillEditor from "@/components/QuillEditor";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules } from "@/lib/utils";
 import { Frown, Smile } from "lucide-react";
 
 const CvBuilderProfessionalSummarySection = () => {
-  const documentDataValue = useDocumentBuilderStore(
-    (state) => state.documentData.professionalSummary,
-  );
-  const setDocumentDataValue = useDocumentBuilderStore(
-    (state) => state.setDocumentData,
-  );
+  // const documentDataValue = useDocumentBuilderStore(
+  //   (state) => state.documentData.professionalSummary,
+  // );
+  // const setDocumentDataValue = useDocumentBuilderStore(
+  //   (state) => state.setDocumentValue,
+  // );
 
   const renderCharCountIndicator = () => {
-    const charCount = documentDataValue?.replace(/<[^>]*>/g, "")?.length || 0;
+    // documentDataValue?.replace(/<[^>]*>/g, "")?.length || 0;
+    const charCount = 500;
     if (!charCount) {
       return <p>0 / 400+</p>;
     }
@@ -51,9 +51,9 @@ const CvBuilderProfessionalSummarySection = () => {
           lists: true,
           links: true,
         })}
-        value={documentDataValue}
-        onChange={(value) => {
-          setDocumentDataValue("professionalSummary", value);
+        value={""}
+        onChange={() => {
+          // setDocumentDataValue("professionalSummary", value);
         }}
       />
       <div className="w-full flex items-center justify-between gap-4">

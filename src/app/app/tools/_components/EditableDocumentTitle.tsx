@@ -9,8 +9,9 @@ const EditableDocumentTitle = () => {
   const [focused, setFocused] = useState(false);
   const spanRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const documentTitle =
-    useDocumentBuilderStore((state) => state.document?.title) || "Untitled";
+  const documentTitle = useDocumentBuilderStore(
+    (state) => state.document?.title,
+  );
   const setDocumentValue = useDocumentBuilderStore(
     (state) => state.setDocumentValue,
   );

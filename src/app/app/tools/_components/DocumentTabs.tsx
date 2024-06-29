@@ -1,4 +1,5 @@
 "use client";
+import { useCreateDocument } from "@/app/app/tools/_hooks/useCreateDocument";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ROUTES } from "@/lib/constants";
@@ -9,13 +10,19 @@ import { Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
 
 const DOCUMENT_TAB_VALUES = {
-  RESUMES: "resumes",
-  COVER_LETTERS: "cover-letters",
+  RESUME: "resume",
+  COVER_LETTER: "cover_letter",
 } as const;
+
+const DOCUMENT_ROUTE_MAP = {
+  [DOCUMENT_TAB_VALUES.RESUME]: `${ROUTES.CV_BUILDER}/edit`,
+  [DOCUMENT_TAB_VALUES.COVER_LETTER]: `${ROUTES.COVER_LETTERS}/edit`,
+};
 
 type DocumentTabValue =
   (typeof DOCUMENT_TAB_VALUES)[keyof typeof DOCUMENT_TAB_VALUES];
@@ -26,11 +33,11 @@ const tabItems: {
 }[] = [
   {
     label: "Resumes",
-    value: DOCUMENT_TAB_VALUES.RESUMES,
+    value: DOCUMENT_TAB_VALUES.RESUME,
   },
   {
     label: "Cover Letters",
-    value: DOCUMENT_TAB_VALUES.COVER_LETTERS,
+    value: DOCUMENT_TAB_VALUES.COVER_LETTER,
   },
 ];
 
@@ -41,25 +48,26 @@ const DocumentTabs = () => {
     coverLetters,
     isPending: isPendingDocuments,
   } = useDocuments();
+  const { createDocument, isCreatingDocument } = useCreateDocument();
   const [activeTab, setActiveTab] = useState<DocumentTabValue>(
-    DOCUMENT_TAB_VALUES.RESUMES,
+    DOCUMENT_TAB_VALUES.RESUME,
   );
 
   const documentMap = {
-    [DOCUMENT_TAB_VALUES.COVER_LETTERS]: coverLetters,
-    [DOCUMENT_TAB_VALUES.RESUMES]: resumes,
+    [DOCUMENT_TAB_VALUES.COVER_LETTER]: coverLetters,
+    [DOCUMENT_TAB_VALUES.RESUME]: resumes,
   };
 
-  const handleCreateNewDocument = () => {
-    if (activeTab === DOCUMENT_TAB_VALUES.RESUMES) {
-      router.push(`${ROUTES.CV_BUILDER}/create`);
-      return;
-    }
+  const handleCreateNewDocument = async () => {
+    const documentInsertId = await createDocument(activeTab);
 
-    if (activeTab === DOCUMENT_TAB_VALUES.COVER_LETTERS) {
-      router.push(`${ROUTES.COVER_LETTERS}/create`);
-      return;
+    if (!documentInsertId) {
+      return toast.error(
+        "We encountered a problem while creating the document. Please try again later.",
+      );
     }
+    const route = DOCUMENT_ROUTE_MAP[activeTab];
+    router.push(`${route}/${documentInsertId}`);
   };
 
   const shouldRenderNotFound =
@@ -76,6 +84,7 @@ const DocumentTabs = () => {
         <Button
           onClick={handleCreateNewDocument}
           className="flex items-center gap-1"
+          disabled={isCreatingDocument}
         >
           <Plus size={18} />
           Create New
@@ -143,13 +152,13 @@ const NoDocumentsFound = ({
   onCreateNewDocumentClick,
 }: NoDocumentsFoundProps) => {
   const notFoundContentMap = {
-    [DOCUMENT_TAB_VALUES.COVER_LETTERS]: {
+    [DOCUMENT_TAB_VALUES.COVER_LETTER]: {
       title: "A cover letter to win hearts and minds",
       illustrationPath: "/illustrations/cover-letter.svg",
       description:
         "The ideal partner for your CV. Don't be like the other applicants and talk directly to the employer!",
     },
-    [DOCUMENT_TAB_VALUES.RESUMES]: {
+    [DOCUMENT_TAB_VALUES.RESUME]: {
       title: "Double your chances of getting hired",
       illustrationPath: "/illustrations/resume.svg",
       description: "Craft a tailored resume for each job application.",
@@ -157,8 +166,8 @@ const NoDocumentsFound = ({
   };
 
   const createNewButtonLabelMap = {
-    [DOCUMENT_TAB_VALUES.COVER_LETTERS]: "New Cover Letter",
-    [DOCUMENT_TAB_VALUES.RESUMES]: "New Resume",
+    [DOCUMENT_TAB_VALUES.COVER_LETTER]: "New Cover Letter",
+    [DOCUMENT_TAB_VALUES.RESUME]: "New Resume",
   };
 
   const { title, description, illustrationPath } =

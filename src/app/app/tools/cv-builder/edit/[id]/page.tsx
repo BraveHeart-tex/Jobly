@@ -1,6 +1,61 @@
+"use client";
+
+import CvBuilderPersonalDetailsSection from "@/app/app/tools/_components/CvBuilderPersonalDetailsSection";
+import CvBuilderProfessionalSummarySection from "@/app/app/tools/_components/CvBuilderProfessionalSummarySection";
+import DocumentBuilderHeader from "@/app/app/tools/_components/DocumentBuilderHeader";
+import DocumentBuilderViewToggle from "@/app/app/tools/_components/DocumentBuilderViewToggle";
+import { Button } from "@/components/ui/button";
+import { Check, Cloud } from "lucide-react";
+import { useRef } from "react";
+
 const EditCvPage = ({ params }: { params: { id: string } }) => {
+  const builderContainerRef = useRef<HTMLDivElement | null>(null);
   const id = Number.parseInt(params.id);
-  return <div className="text-5xl h-full w-full">ID: {id}</div>;
+
+  // TODO: Do data fetching here with the id and implement suspense
+
+  return (
+    <main className="grid grid-cols-2 fixed top-0 z-50 w-full">
+      <div
+        className="bg-card min-h-screen p-10 overflow-auto max-h-screen"
+        ref={builderContainerRef}
+      >
+        <div className="max-w-screen-2xl mx-auto flex items-center justify-center">
+          <DocumentBuilderHeader />
+          Document ID: {id}
+          <DocumentBuilderViewToggle ref={builderContainerRef} />
+        </div>
+        <div className="mt-4 grid gap-2">
+          <CvBuilderPersonalDetailsSection />
+        </div>
+        <div className="mt-4 grid gap-2">
+          <CvBuilderProfessionalSummarySection />
+        </div>
+      </div>
+      <div className="bg-muted-foreground dark:bg-secondary min-h-screen">
+        <div className="h-[90vh] w-[63%] mx-auto pt-4">
+          <div className="w-full flex items-center justify-end mb-2">
+            <Button className="self-end">Download PDF</Button>
+          </div>
+          <div className="bg-background rounded-md h-full w-full" />
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-1 text-muted dark:text-muted-foreground">
+              <div className="relative">
+                <Cloud size={28} strokeWidth={1} />
+                <Check
+                  className="absolute top-[11px] left-[8px]"
+                  size={10}
+                  strokeWidth={2}
+                />
+              </div>
+              <span className="text-xs">Saved</span>
+            </div>
+            <div />
+          </div>
+        </div>
+      </div>
+    </main>
+  );
 };
 
 export default EditCvPage;

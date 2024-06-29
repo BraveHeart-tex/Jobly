@@ -11,7 +11,7 @@ import {
 import { File } from "lucide-react";
 import { type RefObject, forwardRef, useState } from "react";
 
-const DocumentBuilderViewToggler = forwardRef<HTMLDivElement>((_, ref) => {
+const DocumentBuilderViewToggle = forwardRef<HTMLDivElement>((_, ref) => {
   const setView = useDocumentBuilderStore((state) => state.setView);
   const [shouldShowButtonText, setShouldShowButtonText] = useState(false);
   const { scrollYProgress } = useScroll({
@@ -60,4 +60,4 @@ const DocumentBuilderViewToggler = forwardRef<HTMLDivElement>((_, ref) => {
   );
 });
 
-export default DocumentBuilderViewToggler;
+export default DocumentBuilderViewToggle;
