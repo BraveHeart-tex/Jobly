@@ -7,19 +7,11 @@ import type {
 import type { User } from "lucia";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-type DocumentBuilderStoreInitParam = {
-  document: Document;
-  sections: Section[];
-  fields: SectionField[];
-  fieldValues: SectionFieldValue[];
-};
+import type { DocumentBuilderConfig } from "../types";
 
 type DocumentBuilderStore = {
-  initializeState: (
-    user: User,
-    initialState: DocumentBuilderStoreInitParam,
-  ) => void;
+  initialized: boolean;
+  initializeState: (user: User, initialState: DocumentBuilderConfig) => void;
   view: "builder" | "preview";
   setView: (view: "builder" | "preview") => void;
   document: Document;
@@ -43,7 +35,7 @@ type DocumentBuilderStore = {
 const getPredefinedDocumentSections = ({
   user,
   document,
-}: { user: User; document: Document }): DocumentBuilderStoreInitParam => {
+}: { user: User; document: Document }): DocumentBuilderConfig => {
   if (document.type === "resume") {
     return {
       document,
@@ -182,10 +174,8 @@ export const useDocumentBuilderStore = create<
 >(
   devtools(
     (set, get) => ({
-      initializeState: (
-        user: User,
-        initialState: DocumentBuilderStoreInitParam,
-      ) => {
+      initialized: false,
+      initializeState: (user: User, initialState: DocumentBuilderConfig) => {
         const {
           sections,
           document: initialDocument,
@@ -201,13 +191,17 @@ export const useDocumentBuilderStore = create<
             user,
             document: initialDocument,
           });
-          set(predefined);
+          set({
+            ...predefined,
+            initialized: true,
+          });
         } else {
           set({
             sections,
             fieldValues,
             fields,
             document: initialDocument,
+            initialized: true,
           });
         }
       },
