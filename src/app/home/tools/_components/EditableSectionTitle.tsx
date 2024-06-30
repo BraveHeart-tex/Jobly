@@ -100,6 +100,7 @@ const EditableSectionTitle = ({
           <Input
             className="bg-transparent border-0 text-[22px] font-semibold focus:outline-none focus-visible:ring-0 shadow-none  rounded-none text-left overflow-visible min-w-full p-0"
             ref={inputRef}
+            defaultValue={value}
             placeholder={value}
             onFocus={() => setFocused(true)}
             onBlur={() => handleBlur()}

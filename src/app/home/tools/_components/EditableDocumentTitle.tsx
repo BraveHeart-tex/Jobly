@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 const EditableDocumentTitle = () => {
   const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const spanRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const documentTitle = useDocumentBuilderStore(
@@ -39,10 +40,17 @@ const EditableDocumentTitle = () => {
             {documentTitle}
           </span>
           <Input
+            ref={inputRef}
             className="bg-transparent border-0 text-3xl font-semibold focus:outline-none focus-visible:ring-0 shadow-none  rounded-none text-center overflow-visible w-full p-0"
             placeholder={documentTitle}
             defaultValue={documentTitle}
             onFocus={() => setFocused(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                setFocused(false);
+                inputRef.current?.blur();
+              }
+            }}
             onBlur={() => {
               setFocused(false);
             }}
