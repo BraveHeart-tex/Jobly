@@ -18,27 +18,33 @@ const DocumentBuilderInput = ({
   value = "",
   onChange,
 }: DocumentBuilderInputProps) => {
-  const getFieldValue = useDocumentBuilderStore(
+  const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
   const setFieldValue = useDocumentBuilderStore(
     (state) => state.setFieldValueByFieldId,
   );
 
-  const fieldValue = field ? getFieldValue(field?.id) : value;
+  const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
+
+  const inputValue = fieldValueObject?.value ?? value;
 
   const setValue = (value: string) => {
-    if (field?.id) setFieldValue(field?.id, value);
-    if (onChange) onChange(value);
+    if (field?.id) {
+      setFieldValue(field?.id, value);
+    }
+    if (onChange) {
+      onChange(value);
+    }
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-2 w-full" key={fieldValueObject?.value}>
       <Label className="text-foreground/80 font-normal">
         {field?.fieldName || label}
       </Label>
       <Input
-        value={fieldValue || ""}
+        defaultValue={inputValue}
         className="w-full rounded-[2px] px-4 py-3 bg-muted/30 text-muted-foreground"
         onChange={(e) => setValue(e.target.value)}
       />

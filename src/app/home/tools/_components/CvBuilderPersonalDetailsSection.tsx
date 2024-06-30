@@ -10,21 +10,12 @@ import EditableSectionTitle from "./EditableSectionTitle";
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);
   const fields = useDocumentBuilderStore((state) => state.fields);
-  const documentTitle = useDocumentBuilderStore(
-    (state) => state.document.title,
-  );
-  const setDocumentValue = useDocumentBuilderStore(
-    (state) => state.setDocumentValue,
-  );
+  const section = useDocumentBuilderStore((state) => state.sections)[0];
 
   return (
     <>
-      <EditableSectionTitle defaultValue="Personal Details" />
+      <EditableSectionTitle section={section} />
       <div className="grid gap-6">
-        <DocumentBuilderInput
-          value={documentTitle}
-          onChange={(value) => setDocumentValue("title", value)}
-        />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {fields.slice(0, 6).map((field) => (
             <DocumentBuilderInput key={field.id} field={field} />

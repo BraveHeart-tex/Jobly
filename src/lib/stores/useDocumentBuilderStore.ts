@@ -9,6 +9,12 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { DocumentBuilderConfig } from "../types";
 
+type SetSectionValueParams<K extends keyof Section> = {
+  sectionId: Section["id"];
+  key: K;
+  value: Section[K];
+};
+
 type DocumentBuilderStore = {
   initialized: boolean;
   initializeState: (user: User, initialState: DocumentBuilderConfig) => void;
@@ -21,11 +27,14 @@ type DocumentBuilderStore = {
     value: Document[K],
   ) => void;
   sections: Section[];
+  setSectionValue: <K extends keyof Section>(
+    params: SetSectionValueParams<K>,
+  ) => void;
   fields: SectionField[];
   fieldValues: SectionFieldValue[];
   getFieldValueByFieldId: (
     fieldId: SectionField["id"],
-  ) => SectionFieldValue["value"];
+  ) => SectionFieldValue | undefined;
   setFieldValueByFieldId: (
     fieldId: SectionField["id"],
     newValue: string,
@@ -220,27 +229,35 @@ export const useDocumentBuilderStore = create<
         });
       },
       sections: [],
+      setSectionValue: ({ sectionId, key, value }) => {
+        set({
+          sections: get().sections.map((section) => {
+            if (section.id === sectionId) {
+              section[key] = value;
+            }
+
+            return section;
+          }),
+        });
+      },
       fields: [],
       fieldValues: [],
       getFieldValueByFieldId: (fieldId: SectionField["id"]) => {
-        return (
-          get().fieldValues.find((fieldValue) => fieldValue.fieldId === fieldId)
-            ?.value ?? ""
+        return get().fieldValues.find(
+          (fieldValue) => fieldValue.fieldId === fieldId,
         );
       },
       setFieldValueByFieldId: (
         fieldId: SectionField["id"],
         newValue: string,
       ) => {
-        const newFieldValues = get().fieldValues.map((fieldValue) => {
-          if (fieldValue.fieldId === fieldId) {
-            fieldValue.value = newValue;
-          }
-          return fieldValue;
-        });
-
         set({
-          fieldValues: newFieldValues,
+          fieldValues: get().fieldValues.map((fieldValue) => {
+            if (fieldValue.fieldId === fieldId) {
+              fieldValue.value = newValue;
+            }
+            return fieldValue;
+          }),
         });
       },
     }),

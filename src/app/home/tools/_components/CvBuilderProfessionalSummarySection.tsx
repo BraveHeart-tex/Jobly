@@ -1,15 +1,11 @@
 import EditableSectionTitle from "@/app/home/tools/_components/EditableSectionTitle";
 import QuillEditor from "@/components/QuillEditor";
+import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules } from "@/lib/utils";
 import { Frown, Smile } from "lucide-react";
 
 const CvBuilderProfessionalSummarySection = () => {
-  // const documentDataValue = useDocumentBuilderStore(
-  //   (state) => state.documentData.professionalSummary,
-  // );
-  // const setDocumentDataValue = useDocumentBuilderStore(
-  //   (state) => state.setDocumentValue,
-  // );
+  const section = useDocumentBuilderStore((state) => state.sections)[1];
 
   const renderCharCountIndicator = () => {
     // documentDataValue?.replace(/<[^>]*>/g, "")?.length || 0;
@@ -38,7 +34,7 @@ const CvBuilderProfessionalSummarySection = () => {
   return (
     <div className="grid gap-2">
       <div className="flex flex-col">
-        <EditableSectionTitle defaultValue="Professional Summary" />
+        <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
           Craft 2-4 short and energetic sentences to captivate your reader!
           Highlight your role, experience, and most importantly, your greatest
@@ -52,9 +48,7 @@ const CvBuilderProfessionalSummarySection = () => {
           links: true,
         })}
         value={""}
-        onChange={() => {
-          // setDocumentDataValue("professionalSummary", value);
-        }}
+        onChange={() => {}}
       />
       <div className="w-full flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
