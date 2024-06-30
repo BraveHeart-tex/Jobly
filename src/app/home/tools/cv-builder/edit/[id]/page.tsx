@@ -25,7 +25,7 @@ const EditCvPage = async ({ params }: { params: { id: string } }) => {
             alt={documentResponse.error}
             width={300}
             height={300}
-            className="mx-auto"
+            className="mx-auto dark:invert"
           />
           <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-4xl">
             Oops! There was a problem loading this document
