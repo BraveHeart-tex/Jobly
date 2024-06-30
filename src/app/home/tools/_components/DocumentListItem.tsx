@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ROUTES } from "@/lib/constants";
 import type { Document } from "@/server/db/schema";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
@@ -35,7 +36,9 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const updatedAtDate = new Date(item.updatedAt as string);
 
   const goToEditPage = () => {
-    router.push(`/app/tools/cv-builder/edit/${item.id}`);
+    const basePath =
+      item.type === "resume" ? ROUTES.CV_BUILDER : ROUTES.COVER_LETTERS;
+    router.push(`${basePath}/edit/${item.id}`);
   };
 
   const documentActions = [

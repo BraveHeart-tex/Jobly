@@ -18,10 +18,13 @@ export const documentRouter = createTRPCRouter({
         userId,
       });
     }),
-  getDocumentById: protectedProcedure
+  getDocumentDetails: protectedProcedure
     .input(createInsertSchema(document).required().pick({ id: true }))
-    .query(async ({ input }) => {
-      return documentService.getDocumentById(input.id);
+    .query(async ({ input, ctx }) => {
+      return documentService.getDocumentDetails({
+        id: input.id,
+        userId: ctx.session.userId,
+      });
     }),
   getUserDocuments: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.user.id;

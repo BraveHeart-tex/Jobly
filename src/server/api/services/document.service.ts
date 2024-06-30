@@ -8,7 +8,7 @@ import {
   type User,
   document as documentSchema,
 } from "@/server/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 export const getUserDocuments = async (userId: User["id"]) => {
   return db
@@ -36,11 +36,15 @@ export const createDocument = async (input: DocumentInsertModel) => {
   return response.insertId;
 };
 
-export const getDocumentById = async (
-  id: Document["id"],
-): Promise<DocumentBuilderConfig | { error: string }> => {
+export const getDocumentDetails = async ({
+  id,
+  userId,
+}: {
+  id: Document["id"];
+  userId: User["id"];
+}): Promise<DocumentBuilderConfig | { error: string }> => {
   const result = await db.query.document.findFirst({
-    where: eq(documentSchema.id, id),
+    where: and(eq(documentSchema.id, id), eq(documentSchema.userId, userId)),
     with: {
       sections: {
         with: {

@@ -1,18 +1,18 @@
 import DocumentBuilderPanel from "@/app/home/tools/_components/DocumentBuilderPanel";
 import DocumentBuilderPreview from "@/app/home/tools/_components/DocumentBuilderPreview";
-import { api } from "@/trpc/server";
 import DocumentInitializer from "@/app/home/tools/_components/DocumentInitializer";
-import { isErrorObject } from "@/lib/guards";
-import { buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { ROUTES } from "@/lib/constants";
-import { ArrowLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
 import DocumentLoader from "@/app/home/tools/_components/DocumentLoader";
+import { buttonVariants } from "@/components/ui/button";
+import { ROUTES } from "@/lib/constants";
+import { isErrorObject } from "@/lib/guards";
+import { cn } from "@/lib/utils";
+import { api } from "@/trpc/server";
+import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const EditCvPage = async ({ params }: { params: { id: string } }) => {
-  const documentResponse = await api.document.getDocumentById({
+  const documentResponse = await api.document.getDocumentDetails({
     id: Number.parseInt(params.id),
   });
 
