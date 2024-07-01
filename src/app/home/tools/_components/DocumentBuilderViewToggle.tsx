@@ -1,7 +1,7 @@
 "use client";
 
+import { useDocumentBuilderSearchParams } from "@/app/home/tools/_hooks/useDocumentBuilderSearchParams";
 import { Button } from "@/components/ui/button";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import {
   AnimatePresence,
   motion,
@@ -12,7 +12,7 @@ import { File } from "lucide-react";
 import { type RefObject, forwardRef, useState } from "react";
 
 const DocumentBuilderViewToggle = forwardRef<HTMLDivElement>((_, ref) => {
-  const setView = useDocumentBuilderStore((state) => state.setView);
+  const { setView } = useDocumentBuilderSearchParams();
   const [shouldShowButtonText, setShouldShowButtonText] = useState(false);
   const { scrollYProgress } = useScroll({
     container: ref as RefObject<HTMLDivElement>,
@@ -24,7 +24,7 @@ const DocumentBuilderViewToggle = forwardRef<HTMLDivElement>((_, ref) => {
 
   return (
     <Button
-      className="fixed right-[50.5%] bottom-2 z-50 transition-all flex xl:hidden items-center gap-2 rounded-full hover:bg-opacity-95 ease-in-out text-base py-7 px-5"
+      className="fixed right-5 bottom-2 z-50 transition-all flex xl:hidden items-center gap-2 rounded-full hover:bg-opacity-95 ease-in-out text-base py-7 px-5"
       size="lg"
       onClick={() => setView("preview")}
     >

@@ -106,4 +106,5 @@ export const URL_SEARCH_QUERY_KEYS = {
   JOB_WORK_TYPE: "workType",
   JOB_EMPLOYMENT_TYPE: "employmentType",
   DOCUMENT_TYPE: "documentType",
+  DOCUMENT_BUILDER_VIEW: "view",
 } as const;
