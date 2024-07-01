@@ -61,8 +61,8 @@ const JobListFilters = () => {
   const clearAllFilters = () => {
     setBookmarked("false");
     setViewed("false");
-    setWorkType("");
-    setEmploymentType("");
+    setWorkType(null);
+    setEmploymentType(null);
   };
 
   return (
@@ -87,9 +87,9 @@ const JobListFilters = () => {
           <div>
             <Label>Work Type</Label>
             <Select
-              defaultValue={workType}
-              value={workType}
-              onValueChange={(value) => setWorkType(value)}
+              defaultValue={workType ?? ""}
+              value={workType ?? ""}
+              onValueChange={(value) => setWorkType(value as JobWorkType)}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Work Type" />
@@ -106,9 +106,11 @@ const JobListFilters = () => {
           <div>
             <Label>Employment Type</Label>
             <Select
-              defaultValue={employmentType}
-              value={employmentType}
-              onValueChange={(value) => setEmploymentType(value)}
+              defaultValue={employmentType ?? ""}
+              value={employmentType ?? ""}
+              onValueChange={(value) =>
+                setEmploymentType(value as JobEmploymentType)
+              }
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Employment Type" />

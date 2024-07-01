@@ -1,8 +1,8 @@
 "use client";
 
+import { useJobsListPageSearchParams } from "@/app/home/jobs/_hooks/useJobsListPageSearchParams";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
@@ -17,7 +17,7 @@ type JobDetailsProps = {
 };
 
 const JobDetails = ({ currentJobId }: JobDetailsProps) => {
-  const { setView, view } = useJobListViewStore();
+  const { view, setView } = useJobsListPageSearchParams();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { data: jobDetails, isPending: isPendingJobDetails } =
@@ -104,12 +104,12 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
         <Button
           variant="ghost"
           size="icon"
-          className={cn("hidden", view === "jobDetail" && "flex lg:hidden")}
+          className={cn("hidden", view === "jobDetails" && "flex lg:hidden")}
           onClick={() => setView("list")}
         >
           <ArrowLeft size={18} />
         </Button>
-        <div className={cn(view === "jobDetail" && "block lg:hidden")}>
+        <div className={cn(view === "jobDetails" && "block lg:hidden")}>
           {renderActionButtons()}
         </div>
       </div>

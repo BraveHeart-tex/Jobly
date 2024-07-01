@@ -3,7 +3,6 @@ import { useJobsListPageSearchParams } from "@/app/home/jobs/_hooks/useJobsListP
 import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import { cn, exclude } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import React, {
@@ -25,11 +24,12 @@ const JobsList = () => {
     page,
     bookmarked,
     viewed,
+    view,
+    setView,
   } = useJobsListPageSearchParams();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
   const isMobile = useMedia("(max-width: 768px)", false);
-  const { setView, view } = useJobListViewStore();
 
   const { data: jobListingsResponse, isPending: isPendingJobs } =
     api.job.getJobListings.useQuery({
@@ -51,7 +51,7 @@ const JobsList = () => {
 
       const firstJobId = jobs?.[0]?.id.toString() || "";
       setCurrentJobId(firstJobId);
-      setView("jobDetail");
+      setView("jobDetails");
     };
     if (!Array.isArray(jobs) || jobs.length === 0) return;
 
@@ -97,7 +97,7 @@ const JobsList = () => {
     const activeItem = itemRefs.current[activeItemIndex]?.current;
     if (!container || !activeItem) return;
     scrollToActiveItem(container, activeItem);
-    setView("jobDetail");
+    setView("jobDetails");
   }, [currentJobId, jobs, setView]);
 
   const renderJobs = () => {
@@ -145,7 +145,7 @@ const JobsList = () => {
         ref={containerRef}
         className={cn(
           "lg:col-span-4 grid h-[calc(100vh-110px)] grid-cols-1 gap-1 overflow-auto p-1 pt-0 auto-rows-min",
-          view === "jobDetail" && "hidden lg:grid",
+          view === "jobDetails" && "hidden lg:grid",
         )}
       >
         {isPendingJobs ? renderSkeletons() : renderJobs()}
@@ -153,7 +153,7 @@ const JobsList = () => {
       <div
         className={cn(
           "lg:col-span-8 h-[calc(100vh-110px)]",
-          view === "jobDetail" && "h-full w-full lg:h-[calc(100vh-110px)]",
+          view === "jobDetails" && "h-full w-full lg:h-[calc(100vh-110px)]",
           view === "list" && "hidden lg:inline-block",
         )}
       >

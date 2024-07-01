@@ -1,6 +1,7 @@
 "use client";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
-import { useQueryState } from "nuqs";
+import { job } from "@/server/db/schema";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
 
 export const useJobsListPageSearchParams = () => {
   const [currentJobId, setCurrentJobId] = useQueryState(
@@ -21,17 +22,19 @@ export const useJobsListPageSearchParams = () => {
   const [viewed, setViewed] = useQueryState(URL_SEARCH_QUERY_KEYS.VIEWED_JOBS, {
     defaultValue: "",
   });
+
   const [workType, setWorkType] = useQueryState(
     URL_SEARCH_QUERY_KEYS.JOB_WORK_TYPE,
-    {
-      defaultValue: "",
-    },
+    parseAsStringLiteral(job.workType.enumValues),
   );
+
   const [employmentType, setEmploymentType] = useQueryState(
     URL_SEARCH_QUERY_KEYS.JOB_EMPLOYMENT_TYPE,
-    {
-      defaultValue: "",
-    },
+    parseAsStringLiteral(job.employmentType.enumValues),
+  );
+  const [view, setView] = useQueryState(
+    URL_SEARCH_QUERY_KEYS.JOB_LIST_VIEW,
+    parseAsStringLiteral(["list", "jobDetails"]).withDefault("list"),
   );
 
   return {
@@ -49,5 +52,7 @@ export const useJobsListPageSearchParams = () => {
     setWorkType,
     employmentType,
     setEmploymentType,
+    view,
+    setView,
   };
 };

@@ -1,6 +1,5 @@
 "use client";
 import { useJobsListPageSearchParams } from "@/app/home/jobs/_hooks/useJobsListPageSearchParams";
-import { useJobListViewStore } from "@/lib/stores/useJobListViewStore";
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import type { RouterOutputs } from "@/trpc/react";
@@ -13,7 +12,7 @@ type JobsListCardProps = {
 
 const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
   ({ job }, ref) => {
-    const { setView } = useJobListViewStore();
+    const { setView } = useJobsListPageSearchParams();
     const { id, title, company, employmentType, workType, userViewedJob } = job;
     const { currentJobId, setCurrentJobId } = useJobsListPageSearchParams();
     const isActive = currentJobId?.toString() === id.toString();
@@ -23,7 +22,7 @@ const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
         ref={ref}
         onMouseDown={() => {
           setCurrentJobId(id.toString());
-          setView("jobDetail");
+          setView("jobDetails");
         }}
         key={id}
         className={cn(
