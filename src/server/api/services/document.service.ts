@@ -1,6 +1,7 @@
 "use server";
 
 import type { DocumentBuilderConfig, MakeFieldsRequired } from "@/lib/types";
+import { exclude } from "@/lib/utils";
 import { db } from "@/server/db";
 import {
   type Document,
@@ -63,7 +64,7 @@ export const getDocumentDetails = async ({
   }
 
   return {
-    document: result,
+    document: exclude(result, ["sections"]),
     sections: result.sections,
     fields: result.sections.flatMap((section) => section.fields),
     fieldValues: result.sections.flatMap((section) =>

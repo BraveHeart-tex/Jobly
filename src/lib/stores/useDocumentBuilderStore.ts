@@ -15,23 +15,27 @@ type SetSectionValueParams<K extends keyof Section> = {
   value: Section[K];
 };
 
-type DocumentBuilderStore = {
+type DocumentBuilderState = {
   initialized: boolean;
-  initializeState: (user: User, initialState: DocumentBuilderConfig) => void;
   view: "builder" | "preview";
-  setView: (view: "builder" | "preview") => void;
   document: Document;
+  sections: Section[];
+  fields: SectionField[];
+  fieldValues: SectionFieldValue[];
+};
+
+type DocumentBuilderActions = {
+  initializeState: (user: User, initialState: DocumentBuilderConfig) => void;
+  setView: (view: "builder" | "preview") => void;
   setDocumentObject: (document: Document) => void;
   setDocumentValue: <K extends keyof Document>(
     key: K,
     value: Document[K],
   ) => void;
-  sections: Section[];
   setSectionValue: <K extends keyof Section>(
     params: SetSectionValueParams<K>,
   ) => void;
-  fields: SectionField[];
-  fieldValues: SectionFieldValue[];
+
   getFieldValueByFieldId: (
     fieldId: SectionField["id"],
   ) => SectionFieldValue | undefined;
@@ -40,6 +44,8 @@ type DocumentBuilderStore = {
     newValue: string,
   ) => void;
 };
+
+type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
 
 const getPredefinedDocumentSections = ({
   user,

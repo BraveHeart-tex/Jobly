@@ -32,7 +32,7 @@ const EditableDocumentTitle = () => {
         <div className="inline-block h-10" ref={containerRef}>
           <span
             ref={spanRef}
-            className="absolute whitespace-pre text-3xl font-semibold"
+            className="absolute text-2xl font-semibold"
             style={{
               visibility: "hidden",
             }}
@@ -41,7 +41,7 @@ const EditableDocumentTitle = () => {
           </span>
           <Input
             ref={inputRef}
-            className="bg-transparent border-0 text-3xl font-semibold focus:outline-none focus-visible:ring-0 shadow-none  rounded-none text-center overflow-visible w-full p-0"
+            className="bg-transparent border-0 text-2xl font-semibold focus:outline-none focus-visible:ring-0 shadow-none  rounded-none text-center overflow-visible w-full p-0"
             placeholder={documentTitle}
             defaultValue={documentTitle}
             onFocus={() => setFocused(true)}
