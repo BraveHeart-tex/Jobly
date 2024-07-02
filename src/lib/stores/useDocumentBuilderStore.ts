@@ -167,6 +167,11 @@ const getPredefinedDocumentSections = ({
           fieldId: 4,
           value: user.email,
         },
+        {
+          id: 4,
+          fieldId: 14,
+          value: "",
+        },
       ],
     };
   }
@@ -234,9 +239,11 @@ export const useDocumentBuilderStore = create<
         set({
           sections: get().sections.map((section) => {
             if (section.id === sectionId) {
-              section[key] = value;
+              return {
+                ...section,
+                [key]: value,
+              };
             }
-
             return section;
           }),
         });
@@ -253,12 +260,10 @@ export const useDocumentBuilderStore = create<
         newValue: string,
       ) => {
         set({
-          fieldValues: get().fieldValues.map((fieldValue) => {
-            if (fieldValue.fieldId === fieldId) {
-              fieldValue.value = newValue;
-            }
-            return fieldValue;
-          }),
+          fieldValues: get().fieldValues.map((fieldValue) => ({
+            ...fieldValue,
+            value: fieldValue.fieldId === fieldId ? newValue : fieldValue.value,
+          })),
         });
       },
     }),

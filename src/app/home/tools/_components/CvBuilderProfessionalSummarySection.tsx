@@ -5,11 +5,25 @@ import { generateEditorModules } from "@/lib/utils";
 import { Frown, Smile } from "lucide-react";
 
 const CvBuilderProfessionalSummarySection = () => {
-  const section = useDocumentBuilderStore((state) => state.sections)[1];
+  const section = useDocumentBuilderStore((state) => state.sections[1]);
+  const field = useDocumentBuilderStore((state) =>
+    state.fields.find((field) => field.sectionId === section?.id),
+  );
+  const fieldValue = useDocumentBuilderStore(
+    (state) =>
+      state.fieldValues.find((fieldValue) => fieldValue.fieldId === field?.id)
+        ?.value,
+  );
+
+  const setFieldValue = useDocumentBuilderStore(
+    (state) => state.setFieldValueByFieldId,
+  );
+
+  if (!field) return;
 
   const renderCharCountIndicator = () => {
-    // documentDataValue?.replace(/<[^>]*>/g, "")?.length || 0;
-    const charCount = 500;
+    const charCount = fieldValue?.replace(/<[^>]*>/g, "")?.length;
+
     if (!charCount) {
       return <p>0 / 400+</p>;
     }
@@ -47,8 +61,11 @@ const CvBuilderProfessionalSummarySection = () => {
           lists: true,
           links: true,
         })}
-        value={""}
-        onChange={() => {}}
+        value={fieldValue || ""}
+        onChange={(value) => {
+          if (!field) return;
+          setFieldValue(field.id, value);
+        }}
       />
       <div className="w-full flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
