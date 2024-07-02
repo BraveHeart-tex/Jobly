@@ -57,15 +57,22 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
 
   const onSubmit = (values: SignUpSchema) => {
     if (isPending) return;
-    signUpUser(values, {
-      onSettled: (data) => {
-        if (!data) return;
-        onSettled(data);
+
+    signUpUser(
+      {
+        ...values,
+        role: portalType ?? "employee",
       },
-      onError: (error) => {
-        toast.error(error.message);
+      {
+        onSettled: (data) => {
+          if (!data) return;
+          onSettled(data);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
       },
-    });
+    );
   };
 
   return (

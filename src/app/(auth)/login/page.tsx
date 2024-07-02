@@ -43,9 +43,9 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
         </h2>
       </div>
       <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-4 lg:w-[400px]">
+        <div className="mx-auto grid w-[90%] gap-4 max-w-[450px]">
           <div className="grid gap-2 text-center">
-            <div className="mb-4 flex items-center justify-center">
+            <div className="mb-1 flex items-center justify-center">
               <Image
                 src="/logo.svg"
                 alt={`${APP_NAME} Logo`}
@@ -55,7 +55,9 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
             </div>
             <h1 className="text-3xl font-bold">
               Sign in to {APP_NAME}{" "}
-              {portalType === "employer" && "for employers"}
+              {portalType === "employer" && (
+                <span className="text-primary">for employers</span>
+              )}
             </h1>
           </div>
           <SignInForm portalType={portalType} />

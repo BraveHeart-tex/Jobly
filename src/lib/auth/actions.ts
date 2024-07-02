@@ -78,7 +78,7 @@ export const createSessionWithUserId = async (userId: User["id"]) => {
 };
 
 export const signOut = async () => {
-  const { session } = await validateRequest();
+  const { session, user } = await validateRequest();
   if (!session) {
     return redirect(SHARED_ROUTES.LOGIN);
   }
@@ -90,7 +90,8 @@ export const signOut = async () => {
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect(SHARED_ROUTES.LOGIN);
+  const portalType = user.role;
+  return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${portalType}`);
 };
 
 export const validateRequestByRole = async (allowedRoles: User["role"][]) => {

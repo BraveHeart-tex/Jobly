@@ -29,7 +29,7 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const { email, firstName, lastName, password } = input;
+      const { email, firstName, lastName, password, role } = input;
 
       const userAlreadyExists = await getUserByEmail(email);
 
@@ -75,6 +75,7 @@ export const authRouter = createTRPCRouter({
         firstName,
         lastName,
         hashedPassword: passwordHash,
+        role,
       });
 
       if (!result.insertId) {
@@ -102,6 +103,7 @@ export const authRouter = createTRPCRouter({
             "Invalid Request. You cannot sign in again while being signed in.",
         });
       }
+
       const { email, password } = input;
       const existingUser = await getUserByEmail(email);
       if (!existingUser) {
