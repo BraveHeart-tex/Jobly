@@ -13,11 +13,13 @@ export const documentRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const userId = ctx.session.userId;
-      return documentService.createDocument({
-        ...input,
-        userId,
-      });
+      return documentService.createDocument(
+        {
+          ...input,
+          userId: ctx.user.id,
+        },
+        ctx.user,
+      );
     }),
   getDocumentDetails: protectedProcedure
     .input(createInsertSchema(document).required().pick({ id: true }))
