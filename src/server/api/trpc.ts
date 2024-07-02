@@ -2,7 +2,8 @@ import { uncachedValidateRequest } from "@/lib/auth/validate-request";
 import { db } from "@/server/db";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
-import { ZodError } from "zod";
+import { ZodError, z } from "zod";
+import { user } from "../db/schema";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const { session, user } = await uncachedValidateRequest();
@@ -33,18 +34,42 @@ export const createCallerFactory = t.createCallerFactory;
 
 export const createTRPCRouter = t.router;
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+export const protectedProcedure = t.procedure
+  .input(
+    z
+      .object({
+        allowedRoles: z.array(z.enum(user.role.enumValues)),
+      })
+      .optional(),
+  )
+  .use(({ ctx, next, input }) => {
+    const { allowedRoles } = input ?? {};
+    if (!ctx.session || !ctx.user) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You are not authorized to perform this action.",
+      });
+    }
 
-  return next({
-    ctx: {
-      session: { ...ctx.session },
-      user: { ...ctx.user },
-    },
+    const userRole = ctx.user.role;
+    if (
+      allowedRoles &&
+      allowedRoles?.length > 0 &&
+      !allowedRoles?.includes(userRole)
+    ) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You are not allowed to perform this action",
+      });
+    }
+
+    return next({
+      ctx: {
+        session: { ...ctx.session },
+        user: { ...ctx.user },
+      },
+    });
   });
-});
 
 export const publicProcedure = t.procedure;
 
