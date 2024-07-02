@@ -1,4 +1,5 @@
 "use client";
+
 import { useDocumentBuilderSearchParams } from "@/app/home/tools/_hooks/useDocumentBuilderSearchParams";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,14 +17,17 @@ const DocumentBuilderPreview = () => {
         view === "builder" && "hidden xl:block",
       )}
     >
-      <div className="h-[90vh] w-[90%] xl:w-[63%] mx-auto pt-4">
+      <div className="h-[90vh] w-[90%] xl:w-[66%] mx-auto pt-4">
         <div
           className={cn(
             "w-full flex items-center justify-between xl:justify-end mb-2",
           )}
         >
           <Button
-            className={cn(view === "preview" && "flex xl:hidden")}
+            className={cn(
+              "xl:hidden text-muted dark:text-secondary-foreground",
+              view === "preview" && "flex xl:hidden",
+            )}
             variant="ghost"
             onClick={() => {
               setView("builder");

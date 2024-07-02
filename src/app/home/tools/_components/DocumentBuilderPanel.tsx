@@ -4,7 +4,11 @@ import CvBuilderProfessionalSummarySection from "@/app/home/tools/_components/Cv
 import DocumentBuilderHeader from "@/app/home/tools/_components/DocumentBuilderHeader";
 import DocumentBuilderViewToggle from "@/app/home/tools/_components/DocumentBuilderViewToggle";
 import { useDocumentBuilderSearchParams } from "@/app/home/tools/_hooks/useDocumentBuilderSearchParams";
+import { buttonVariants } from "@/components/ui/button";
+import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 import { useRef } from "react";
 
 const DocumentBuilderPanel = () => {
@@ -14,7 +18,7 @@ const DocumentBuilderPanel = () => {
   return (
     <div
       className={cn(
-        "bg-card min-h-screen p-4 xl:p-10 overflow-auto max-h-screen",
+        "bg-card min-h-screen p-4 xl:p-10 overflow-auto max-h-screen relative",
         view === "builder" && "col-span-2 xl:col-span-1",
         view === "preview" && "hidden xl:block",
       )}
@@ -30,6 +34,17 @@ const DocumentBuilderPanel = () => {
       <div className="mt-4 grid gap-2">
         <CvBuilderProfessionalSummarySection />
       </div>
+      <Link
+        href={ROUTES.CV_BUILDER}
+        className={cn(
+          buttonVariants({
+            variant: "outline",
+          }),
+          "absolute top-2 left-2",
+        )}
+      >
+        <ArrowLeft />
+      </Link>
     </div>
   );
 };
