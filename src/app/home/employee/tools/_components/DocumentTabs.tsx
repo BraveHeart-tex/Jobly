@@ -156,7 +156,7 @@ const NoDocumentsFound = ({
       title: "A cover letter to win hearts and minds",
       illustrationPath: "/illustrations/cover-letter.svg",
       description:
-        "The ideal partner for your CV. Don't be like the other applicants and talk directly to the employer!",
+        "Stand out from other applicants - create a cover letter that speaks directly to employers.",
     },
     [DOCUMENT_TAB_VALUES.RESUME]: {
       title: "Double your chances of getting hired",
@@ -185,7 +185,7 @@ const NoDocumentsFound = ({
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
         {title}
       </h3>
-      <p className="text-muted-foreground">{description}</p>
+      <p className="text-muted-foreground text-center">{description}</p>
       <Button
         className="flex items-center gap-1 w-max mt-4"
         onClick={onCreateNewDocumentClick}
