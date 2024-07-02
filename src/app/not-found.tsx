@@ -1,5 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
-import { ROUTES } from "@/lib/constants";
+import { SHARED_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { Home } from "lucide-react";
 import Image from "next/image";
@@ -30,7 +30,7 @@ const NotFoundPage = () => {
             }),
             "w-full lg:w-max flex items-center gap-2",
           )}
-          href={ROUTES.HOME}
+          href={SHARED_ROUTES.HOME}
         >
           <Home />
           Go Home

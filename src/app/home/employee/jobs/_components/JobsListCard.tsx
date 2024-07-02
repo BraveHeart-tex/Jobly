@@ -1,5 +1,5 @@
 "use client";
-import { useJobsListPageSearchParams } from "@/app/home/jobs/_hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/app/home/employee/jobs/_hooks/useJobsListPageSearchParams";
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import type { RouterOutputs } from "@/trpc/react";

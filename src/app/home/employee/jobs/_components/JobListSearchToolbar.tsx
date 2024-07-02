@@ -1,7 +1,7 @@
 "use client";
-import JobListFilters from "@/app/home/jobs/_components/JobListFilters";
-import JoblistLocationInput from "@/app/home/jobs/_components/JoblistLocationInput";
-import { useJobsListPageSearchParams } from "@/app/home/jobs/_hooks/useJobsListPageSearchParams";
+import JobListFilters from "@/app/home/employee/jobs/_components/JobListFilters";
+import JoblistLocationInput from "@/app/home/employee/jobs/_components/JoblistLocationInput";
+import { useJobsListPageSearchParams } from "@/app/home/employee/jobs/_hooks/useJobsListPageSearchParams";
 import { cn } from "@/lib/utils";
 import JobListSearchInput from "./JobListSearchInput";
 

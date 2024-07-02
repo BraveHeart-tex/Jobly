@@ -12,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ROUTES } from "@/lib/constants";
 import type { Document } from "@/server/db/schema";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
+import { EMPLOYEE_ROUTES } from "@/lib/routes";
 
 type DocumentListItemProps = {
   item: Document;
@@ -36,9 +36,8 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const updatedAtDate = new Date(item.updatedAt as string);
 
   const goToEditPage = () => {
-    const basePath =
-      item.type === "resume" ? ROUTES.CV_BUILDER : ROUTES.COVER_LETTERS;
-    router.push(`${basePath}/edit/${item.id}`);
+    const basePath = `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/${item.type === "resume" ? "cv-builder" : "cover-letters"}/edit`;
+    router.push(`${basePath}/${item.id}`);
   };
 
   const documentActions = [

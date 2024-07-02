@@ -1,8 +1,7 @@
 "use client";
-import { useCreateDocument } from "@/app/home/tools/_hooks/useCreateDocument";
+import { useCreateDocument } from "@/app/home/employee/tools/_hooks/useCreateDocument";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/server/db/schema";
 import { motion } from "framer-motion";
@@ -13,6 +12,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
+import { EMPLOYEE_ROUTES } from "@/lib/routes";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",
@@ -20,8 +20,8 @@ const DOCUMENT_TAB_VALUES = {
 } as const;
 
 const DOCUMENT_ROUTE_MAP = {
-  [DOCUMENT_TAB_VALUES.RESUME]: `${ROUTES.CV_BUILDER}/edit`,
-  [DOCUMENT_TAB_VALUES.COVER_LETTER]: `${ROUTES.COVER_LETTERS}/edit`,
+  [DOCUMENT_TAB_VALUES.RESUME]: `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/cv-builder/edit`,
+  [DOCUMENT_TAB_VALUES.COVER_LETTER]: `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/cover-letters/edit`,
 };
 
 type DocumentTabValue =
@@ -87,7 +87,7 @@ const DocumentTabs = () => {
           disabled={isCreatingDocument}
         >
           <Plus size={18} />
-          Create New
+          <span className="hidden md:inline">Create New</span>
         </Button>
       </div>
       <div className="w-full border-b relative">

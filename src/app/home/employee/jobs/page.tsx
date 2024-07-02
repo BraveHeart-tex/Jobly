@@ -1,14 +1,14 @@
 import { validateRequest } from "@/lib/auth/validate-request";
-import { ROUTES } from "@/lib/constants";
 import { redirect } from "next/navigation";
 import JobListSearchToolbar from "./_components/JobListSearchToolbar";
 import JobsList from "./_components/JobsList";
+import { SHARED_ROUTES } from "@/lib/routes";
 
 const JobsPage = async () => {
   const { user } = await validateRequest();
 
   if (!user) {
-    redirect(ROUTES.LOGIN);
+    redirect(SHARED_ROUTES.LOGIN);
   }
 
   return (

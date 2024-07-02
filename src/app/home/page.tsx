@@ -1,11 +1,11 @@
 import { validateRequest } from "@/lib/auth/validate-request";
-import { ROUTES } from "@/lib/constants";
+import { SHARED_ROUTES } from "@/lib/routes";
 import { redirect } from "next/navigation";
 
 const AppHomePage = async () => {
   const { user } = await validateRequest();
   if (!user) {
-    redirect(ROUTES.LOGIN);
+    redirect(SHARED_ROUTES.LOGIN);
   }
 
   return <div>AppHomePage</div>;

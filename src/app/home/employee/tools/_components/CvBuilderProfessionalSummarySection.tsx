@@ -1,4 +1,4 @@
-import EditableSectionTitle from "@/app/home/tools/_components/EditableSectionTitle";
+import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
 import QuillEditor from "@/components/QuillEditor";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules } from "@/lib/utils";

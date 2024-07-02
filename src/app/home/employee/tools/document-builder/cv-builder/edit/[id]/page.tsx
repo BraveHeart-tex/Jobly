@@ -1,10 +1,10 @@
-import DocumentBuilderPanel from "@/app/home/tools/_components/DocumentBuilderPanel";
-import DocumentBuilderPreview from "@/app/home/tools/_components/DocumentBuilderPreview";
-import DocumentInitializer from "@/app/home/tools/_components/DocumentInitializer";
-import DocumentLoader from "@/app/home/tools/_components/DocumentLoader";
+import DocumentBuilderPanel from "@/app/home/employee/tools/_components/DocumentBuilderPanel";
+import DocumentBuilderPreview from "@/app/home/employee/tools/_components/DocumentBuilderPreview";
+import DocumentInitializer from "@/app/home/employee/tools/_components/DocumentInitializer";
+import DocumentLoader from "@/app/home/employee/tools/_components/DocumentLoader";
 import { buttonVariants } from "@/components/ui/button";
-import { ROUTES } from "@/lib/constants";
 import { isErrorObject } from "@/lib/guards";
+import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { ArrowLeft } from "lucide-react";
@@ -34,7 +34,7 @@ const EditCvPage = async ({ params }: { params: { id: string } }) => {
             {documentResponse.error}
           </p>
           <Link
-            href={ROUTES.CV_BUILDER}
+            href={EMPLOYEE_ROUTES.DOCUMENT_BUILDER}
             className={cn(
               buttonVariants({
                 variant: "default",

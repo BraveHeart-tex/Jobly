@@ -1,6 +1,7 @@
 import SignUpForm from "@/components/forms/SignUpForm";
 import { validateRequest } from "@/lib/auth/validate-request";
-import { ROUTES, contentByPortalType } from "@/lib/constants";
+import { contentByPortalType } from "@/lib/constants";
+import { SHARED_ROUTES } from "@/lib/routes";
 import { generateRandomNumber } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +19,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
   const { user } = await validateRequest();
 
   if (user) {
-    redirect(ROUTES.HOME);
+    redirect(SHARED_ROUTES.HOME);
   }
 
   const portalType = searchParams.portalType ?? "employee";
@@ -56,7 +57,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
           <div className="mt-1 text-center text-sm">
             Already have an account?{" "}
             <Link
-              href={`${ROUTES.LOGIN}?portalType=${portalType}`}
+              href={`${SHARED_ROUTES.LOGIN}?portalType=${portalType}`}
               className="underline"
             >
               Log in

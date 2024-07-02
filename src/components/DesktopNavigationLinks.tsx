@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,13 +7,14 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { EMPLOYEE_NAVIGATION_LINKS, ROUTES } from "@/lib/constants";
+import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/navigationLinks";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
 const DesktopNavigationLinks = () => {
+  // TODO: Add support for employer links
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -39,9 +39,6 @@ const DesktopNavigationLinks = () => {
             </NavigationMenuContent>
           </NavigationMenuItem>
         ))}
-        <Link href={ROUTES.JOBS}>
-          <Button>Find Work</Button>
-        </Link>
       </NavigationMenuList>
     </NavigationMenu>
   );

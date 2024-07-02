@@ -1,4 +1,3 @@
-import type { ROUTES } from "@/lib/constants";
 import type {
   Document,
   Section,
@@ -6,6 +5,7 @@ import type {
   SectionFieldValue,
 } from "@/server/db/schema";
 import type { LucideIcon } from "lucide-react";
+import type { EmployeeRoute, EmployerRoute } from "./routes";
 
 export type NavigationMenuItem = {
   triggerLabel: string;
@@ -14,7 +14,7 @@ export type NavigationMenuItem = {
 
 export type NavigationMenuItemLink = {
   title: string;
-  href: (typeof ROUTES)[keyof typeof ROUTES];
+  href: EmployeeRoute | EmployerRoute;
   description: string;
   icon: LucideIcon;
 };

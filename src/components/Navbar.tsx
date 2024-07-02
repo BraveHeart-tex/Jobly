@@ -1,11 +1,11 @@
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
-import { ROUTES } from "@/lib/constants";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import UserMenu from "./UserMenu";
+import { SHARED_ROUTES } from "@/lib/routes";
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();
@@ -17,12 +17,12 @@ const Navbar = async () => {
         </div>
 
         <Link
-          href={ROUTES.HOME}
+          href={SHARED_ROUTES.HOME}
           className="flex select-none items-center gap-1"
         >
           <Image
             src={"/logo.svg"}
-            alt="Mims Logo"
+            alt="Jobly Logo"
             className="cursor-pointer"
             width={45}
             height={45}

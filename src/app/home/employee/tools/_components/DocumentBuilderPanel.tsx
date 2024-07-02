@@ -1,11 +1,11 @@
 "use client";
-import CvBuilderPersonalDetailsSection from "@/app/home/tools/_components/CvBuilderPersonalDetailsSection";
-import CvBuilderProfessionalSummarySection from "@/app/home/tools/_components/CvBuilderProfessionalSummarySection";
-import DocumentBuilderHeader from "@/app/home/tools/_components/DocumentBuilderHeader";
-import DocumentBuilderViewToggle from "@/app/home/tools/_components/DocumentBuilderViewToggle";
-import { useDocumentBuilderSearchParams } from "@/app/home/tools/_hooks/useDocumentBuilderSearchParams";
+import CvBuilderPersonalDetailsSection from "@/app/home/employee/tools/_components/CvBuilderPersonalDetailsSection";
+import CvBuilderProfessionalSummarySection from "@/app/home/employee/tools/_components/CvBuilderProfessionalSummarySection";
+import DocumentBuilderHeader from "@/app/home/employee/tools/_components/DocumentBuilderHeader";
+import DocumentBuilderViewToggle from "@/app/home/employee/tools/_components/DocumentBuilderViewToggle";
+import { useDocumentBuilderSearchParams } from "@/app/home/employee/tools/_hooks/useDocumentBuilderSearchParams";
 import { buttonVariants } from "@/components/ui/button";
-import { ROUTES } from "@/lib/constants";
+import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -35,7 +35,7 @@ const DocumentBuilderPanel = () => {
         <CvBuilderProfessionalSummarySection />
       </div>
       <Link
-        href={ROUTES.CV_BUILDER}
+        href={EMPLOYEE_ROUTES.DOCUMENT_BUILDER}
         className={cn(
           buttonVariants({
             variant: "outline",

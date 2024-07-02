@@ -1,6 +1,6 @@
 "use client";
 
-import { useDocumentBuilderSearchParams } from "@/app/home/tools/_hooks/useDocumentBuilderSearchParams";
+import { useDocumentBuilderSearchParams } from "@/app/home/employee/tools/_hooks/useDocumentBuilderSearchParams";
 import { Button } from "@/components/ui/button";
 import {
   AnimatePresence,

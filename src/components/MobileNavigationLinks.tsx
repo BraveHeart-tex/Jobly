@@ -12,7 +12,8 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { EMPLOYEE_NAVIGATION_LINKS, ROUTES } from "@/lib/constants";
+import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/navigationLinks";
+import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -75,7 +76,7 @@ const MobileNavigationLinks = () => {
               </AccordionItem>
             ))}
           </Accordion>
-          <Link href={ROUTES.JOBS} className="mt-4 w-full">
+          <Link href={EMPLOYEE_ROUTES.JOBS} className="mt-4 w-full">
             <Button
               className="w-full"
               onClick={() => {
