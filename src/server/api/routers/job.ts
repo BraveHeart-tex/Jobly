@@ -2,25 +2,16 @@ import { jobSchema } from "@/schemas/jobSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import * as jobService from "../services/job.service";
+import { getJobListingsSchema } from "@/schemas/getJobListingsSchema";
 
 export const jobRouter = createTRPCRouter({
   getJobListings: protectedProcedure
-    .input(
-      z.object({
-        query: z.string().optional().default(""),
-        page: z.number().optional().default(1),
-        bookmarked: z.boolean().optional().default(false),
-        viewed: z.boolean().optional().default(false),
-      }),
-    )
-    .query(async ({ ctx, input: { query, page, bookmarked, viewed } }) => {
+    .input(getJobListingsSchema)
+    .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return jobService.getJobListings({
+        ...input,
         userId,
-        query,
-        page,
-        bookmarked,
-        viewed,
       });
     }),
   getJobById: protectedProcedure

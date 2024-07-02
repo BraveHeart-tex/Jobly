@@ -26,6 +26,8 @@ const JobsList = () => {
     viewed,
     view,
     setView,
+    workType,
+    employmentType,
   } = useJobsListPageSearchParams();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
@@ -37,6 +39,8 @@ const JobsList = () => {
       page: Number.parseInt(page),
       bookmarked: bookmarked === "true",
       viewed: viewed === "true",
+      workType,
+      employmentType,
     });
 
   const jobs = jobListingsResponse?.jobListings;

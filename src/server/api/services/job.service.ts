@@ -9,24 +9,19 @@ import {
 } from "@/server/db/schema";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import { withBookmarkJoin, withUserViewsJobJoin } from "./job.service.utils";
-
-type GetJobListingsParams = {
-  userId: number;
-  query?: string;
-  page?: number;
-  limit?: number;
-  bookmarked?: boolean;
-  viewed?: boolean;
-};
+import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
+import type { User } from "lucia";
 
 export const getJobListings = async ({
   userId,
   query = "",
   page = 1,
-  limit = 12,
   bookmarked = false,
   viewed = false,
-}: GetJobListingsParams) => {
+  employmentType,
+  workType,
+}: GetJobListingsSchema & { userId: User["id"] }) => {
+  const limit = 12;
   const skipAmount = (page - 1) * limit;
 
   const jobDetailsListQuery = db
@@ -41,7 +36,13 @@ export const getJobListings = async ({
     })
     .from(job)
     .innerJoin(company, eq(job.companyId, company.id))
-    .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)))
+    .where(
+      and(
+        or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)),
+        workType ? eq(job.workType, workType) : undefined,
+        employmentType ? eq(job.employmentType, employmentType) : undefined,
+      ),
+    )
     .orderBy(desc(job.createdAt))
     .limit(limit)
     .offset(skipAmount)
@@ -53,7 +54,13 @@ export const getJobListings = async ({
     })
     .from(job)
     .innerJoin(company, eq(job.companyId, company.id))
-    .where(or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)))
+    .where(
+      and(
+        or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)),
+        workType ? eq(job.workType, workType) : undefined,
+        employmentType ? eq(job.employmentType, employmentType) : undefined,
+      ),
+    )
     .$dynamic();
 
   const [jobDetailsList, jobDetailsListCount] = await Promise.all([
