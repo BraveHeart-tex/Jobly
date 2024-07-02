@@ -12,6 +12,7 @@ export const useCreateDocument = () => {
       title: "Untitled",
       language: "EN",
       type: documentType,
+      allowedRoles: ["employee"],
     });
   };
 

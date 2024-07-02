@@ -3,6 +3,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import * as documentService from "../services/document.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 
 export const documentRouter = createTRPCRouter({
   createDocument: protectedProcedure
@@ -43,5 +44,14 @@ export const documentRouter = createTRPCRouter({
     .input(z.object({ documentId: z.number() }))
     .mutation(async ({ input: { documentId } }) => {
       return documentService.deleteDocument(documentId);
+    }),
+  saveDocumentDetails: protectedProcedure
+    .input(saveDocumentDetailsSchema)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      return documentService.saveDocumentDetails({
+        ...input,
+        userId,
+      });
     }),
 });

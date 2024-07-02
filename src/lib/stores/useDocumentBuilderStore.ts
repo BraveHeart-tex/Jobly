@@ -44,6 +44,8 @@ type DocumentBuilderActions = {
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
 
+// TODO: this should be done from the db to get the predefined values
+// so that we always have the correct ids for that item
 const getPredefinedDocumentSections = ({
   user,
   document,

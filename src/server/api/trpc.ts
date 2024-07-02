@@ -38,7 +38,7 @@ export const protectedProcedure = t.procedure
   .input(
     z
       .object({
-        allowedRoles: z.array(z.enum(user.role.enumValues)),
+        allowedRoles: z.array(z.enum(user.role.enumValues)).optional(),
       })
       .optional(),
   )

@@ -2,12 +2,16 @@
 
 import type { DocumentBuilderConfig, MakeFieldsRequired } from "@/lib/types";
 import { exclude } from "@/lib/utils";
+import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { db } from "@/server/db";
 import {
   type Document,
   type DocumentInsertModel,
   type User,
   document as documentSchema,
+  section as sectionSchema,
+  field as fieldSchema,
+  fieldValue as fieldValueSchema,
 } from "@/server/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 
@@ -71,4 +75,48 @@ export const getDocumentDetails = async ({
       section.fields.flatMap((field) => field.fieldValues),
     ),
   };
+};
+
+export const saveDocumentDetails = async (
+  input: SaveDocumentDetailsSchema & { userId: User["id"] },
+) => {
+  const { document, sections, fields, fieldValues, userId } = input;
+
+  if (document.userId !== userId) {
+    return {
+      error: "You do not have access to edit this document.",
+    };
+  }
+
+  await db.transaction(async (trx) => {
+    await trx.insert(documentSchema).values(document).onDuplicateKeyUpdate({
+      set: document,
+    });
+
+    const sectionInserts = sections.map((sectionData) =>
+      trx
+        .insert(sectionSchema)
+        .values(sectionData)
+        .onDuplicateKeyUpdate({ set: sectionData }),
+    );
+
+    const fieldInserts = fields.map((fieldData) =>
+      trx.insert(fieldSchema).values(fieldData).onDuplicateKeyUpdate({
+        set: fieldData,
+      }),
+    );
+
+    const fieldValueInserts = fieldValues.map((fieldValueData) =>
+      trx
+        .insert(fieldValueSchema)
+        .values(fieldValueData)
+        .onDuplicateKeyUpdate({ set: fieldValueData }),
+    );
+
+    await Promise.all([
+      ...sectionInserts,
+      ...fieldInserts,
+      ...fieldValueInserts,
+    ]);
+  });
 };
