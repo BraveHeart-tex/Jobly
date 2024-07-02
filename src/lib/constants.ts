@@ -19,6 +19,8 @@ export const PASSWORD_STRENGTH_LEVELS = {
   VERY_STRONG: 4,
 } as const;
 
+export const APP_NAME = "Jobly" as const;
+
 export const URL_SEARCH_QUERY_KEYS = {
   CURRENT_JOB_ID: "currentJobId",
   QUERY: "query",

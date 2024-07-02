@@ -16,6 +16,7 @@ import {
 import { hash, verify } from "@node-rs/argon2";
 import { TRPCError } from "@trpc/server";
 
+// TODO: Handle employer sign up
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
     .input(signUpSchema)

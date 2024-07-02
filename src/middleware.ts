@@ -12,7 +12,6 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
       },
     });
   }
-
   const originHeader = request.headers.get("Origin");
   const hostHeader = request.headers.get("Host");
   if (

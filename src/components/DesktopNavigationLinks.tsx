@@ -7,18 +7,18 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { EMPLOYEE_NAVIGATION_LINKS } from "@/lib/navigationLinks";
+import { useNavigationLinks } from "@/lib/navigationLinks";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
 const DesktopNavigationLinks = () => {
-  // TODO: Add support for employer links
+  const navigationLinks = useNavigationLinks();
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {EMPLOYEE_NAVIGATION_LINKS.map((menuItem) => (
+        {navigationLinks.map((menuItem) => (
           <NavigationMenuItem key={menuItem.triggerLabel}>
             <NavigationMenuTrigger>
               {menuItem.triggerLabel}

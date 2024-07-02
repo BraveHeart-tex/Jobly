@@ -1,3 +1,4 @@
+import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { NavigationMenuItem } from "@/lib/types";
 import {
   AwardIcon,
@@ -224,3 +225,17 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
     ],
   },
 ];
+
+export const useNavigationLinks = () => {
+  const userRole = useCurrentUserStore((state) => state?.user?.role);
+
+  if (userRole === "employee") {
+    return EMPLOYEE_NAVIGATION_LINKS;
+  }
+
+  if (userRole === "employer") {
+    return EMPLOYER_NAVIGATION_LINKS;
+  }
+
+  return [];
+};

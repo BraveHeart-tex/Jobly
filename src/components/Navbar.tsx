@@ -1,11 +1,12 @@
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
+import { APP_NAME } from "@/lib/constants";
+import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import UserMenu from "./UserMenu";
-import { SHARED_ROUTES } from "@/lib/routes";
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();
@@ -22,12 +23,12 @@ const Navbar = async () => {
         >
           <Image
             src={"/logo.svg"}
-            alt="Jobly Logo"
+            alt={`${APP_NAME} Logo`}
             className="cursor-pointer"
             width={45}
             height={45}
           />
-          <p className="text-base font-medium">Jobly</p>
+          <p className="text-base font-medium">{APP_NAME}</p>
         </Link>
 
         <div className="hidden lg:block">

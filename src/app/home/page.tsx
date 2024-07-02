@@ -1,12 +1,7 @@
-import { validateRequest } from "@/lib/auth/validate-request";
-import { SHARED_ROUTES } from "@/lib/routes";
-import { redirect } from "next/navigation";
+import { validateRequestByRole } from "@/lib/auth/actions";
 
 const AppHomePage = async () => {
-  const { user } = await validateRequest();
-  if (!user) {
-    redirect(SHARED_ROUTES.LOGIN);
-  }
+  await validateRequestByRole(["employee", "employer"]);
 
   return <div>AppHomePage</div>;
 };

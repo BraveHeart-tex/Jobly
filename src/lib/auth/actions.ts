@@ -8,8 +8,8 @@ import type { User } from "@/server/db/schema";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import zxcvbn from "zxcvbn";
-import { validateRequest } from "./validate-request";
 import { SHARED_ROUTES } from "../routes";
+import { validateRequest } from "./validate-request";
 
 async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();
@@ -91,4 +91,17 @@ export const signOut = async () => {
     sessionCookie.attributes,
   );
   return redirect(SHARED_ROUTES.LOGIN);
+};
+
+export const validateRequestByRole = async (allowedRoles: User["role"][]) => {
+  const { session, user } = await validateRequest();
+  if (!session || !user) {
+    return redirect(SHARED_ROUTES.LOGIN);
+  }
+
+  if (!allowedRoles.includes(user.role)) {
+    return redirect(SHARED_ROUTES.HOME);
+  }
+
+  return { user, session };
 };

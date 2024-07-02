@@ -1,6 +1,6 @@
 import SignUpForm from "@/components/forms/SignUpForm";
 import { validateRequest } from "@/lib/auth/validate-request";
-import { contentByPortalType } from "@/lib/constants";
+import { APP_NAME, contentByPortalType } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { generateRandomNumber } from "@/lib/utils";
 import Image from "next/image";
@@ -47,10 +47,16 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
         <div className="mx-auto grid w-[350px] gap-6 lg:w-[400px]">
           <div className="grid gap-2 text-center">
             <div className="mb-4 flex items-center justify-center">
-              <Image src="/logo.svg" alt="Jobly Logo" width={60} height={60} />
+              <Image
+                src="/logo.svg"
+                alt={`${APP_NAME} Logo`}
+                width={60}
+                height={60}
+              />
             </div>
             <h1 className="text-3xl font-bold">
-              Sign Up to Jobly {portalType === "employer" && "for employers"}
+              Sign Up to {APP_NAME}{" "}
+              {portalType === "employer" && "for employers"}
             </h1>
           </div>
           <SignUpForm portalType={portalType} />

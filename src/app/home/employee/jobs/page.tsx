@@ -1,15 +1,9 @@
-import { validateRequest } from "@/lib/auth/validate-request";
-import { redirect } from "next/navigation";
+import { validateRequestByRole } from "@/lib/auth/actions";
 import JobListSearchToolbar from "./_components/JobListSearchToolbar";
 import JobsList from "./_components/JobsList";
-import { SHARED_ROUTES } from "@/lib/routes";
 
 const JobsPage = async () => {
-  const { user } = await validateRequest();
-
-  if (!user) {
-    redirect(SHARED_ROUTES.LOGIN);
-  }
+  await validateRequestByRole(["employee"]);
 
   return (
     <div className="bg-muted p-1 pt-0">
