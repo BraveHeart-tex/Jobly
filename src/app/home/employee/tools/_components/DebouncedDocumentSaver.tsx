@@ -4,6 +4,8 @@ import { api } from "@/trpc/react";
 import { Check, Cloud, Loader2 } from "lucide-react";
 import { useDebounce } from "react-use";
 
+const SAVE_DOCUMENT_DEBOUNCE_DURATION = 600 as const;
+
 const DebouncedDocumentSaver = () => {
   const { mutate: saveDocumentDetails, isPending: isSavingDocument } =
     api.document.saveDocumentDetails.useMutation();
@@ -18,7 +20,7 @@ const DebouncedDocumentSaver = () => {
 
       saveDocumentDetails({ document, sections, fields, fieldValues });
     },
-    1000,
+    SAVE_DOCUMENT_DEBOUNCE_DURATION,
     [state],
   );
 

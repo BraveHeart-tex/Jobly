@@ -5,6 +5,12 @@ import DocumentBuilderHeader from "@/app/home/employee/tools/_components/Documen
 import DocumentBuilderViewToggle from "@/app/home/employee/tools/_components/DocumentBuilderViewToggle";
 import { useDocumentBuilderSearchParams } from "@/app/home/employee/tools/_hooks/useDocumentBuilderSearchParams";
 import { buttonVariants } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
@@ -34,17 +40,26 @@ const DocumentBuilderPanel = () => {
       <div className="mt-4 grid gap-2">
         <CvBuilderProfessionalSummarySection />
       </div>
-      <Link
-        href={EMPLOYEE_ROUTES.DOCUMENT_BUILDER}
-        className={cn(
-          buttonVariants({
-            variant: "outline",
-          }),
-          "absolute top-2 left-2",
-        )}
-      >
-        <ArrowLeft />
-      </Link>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link
+              href={EMPLOYEE_ROUTES.DOCUMENT_BUILDER}
+              className={cn(
+                buttonVariants({
+                  variant: "outline",
+                }),
+                "absolute top-2 left-2",
+              )}
+            >
+              <ArrowLeft />
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Documents page</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 };
