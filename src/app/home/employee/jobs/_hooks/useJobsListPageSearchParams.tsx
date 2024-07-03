@@ -37,6 +37,14 @@ export const useJobsListPageSearchParams = () => {
     parseAsStringLiteral(["list", "jobDetails"]).withDefault("list"),
   );
 
+  const clearAllFilters = () => {
+    setBookmarked("false");
+    setViewed("false");
+    setWorkType(null);
+    setEmploymentType(null);
+    setView("list");
+  };
+
   return {
     currentJobId,
     setCurrentJobId,
@@ -54,5 +62,6 @@ export const useJobsListPageSearchParams = () => {
     setEmploymentType,
     view,
     setView,
+    clearAllFilters,
   };
 };

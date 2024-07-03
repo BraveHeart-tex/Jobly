@@ -20,7 +20,6 @@ const JobsList = () => {
     currentJobId,
     setCurrentJobId,
     query,
-    setQuery,
     page,
     bookmarked,
     viewed,
@@ -28,6 +27,7 @@ const JobsList = () => {
     setView,
     workType,
     employmentType,
+    clearAllFilters,
   } = useJobsListPageSearchParams();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<RefObject<HTMLDivElement | null>[]>([]);
@@ -105,13 +105,22 @@ const JobsList = () => {
   }, [currentJobId, jobs, setView]);
 
   const renderJobs = () => {
-    if (query && jobs?.length === 0) {
+    const hasSearchParams =
+      query || bookmarked || viewed || workType || employmentType;
+
+    if (hasSearchParams && jobs?.length === 0) {
       return (
         <div className="flex flex-col justify-center items-center gap-1 h-[calc(100vh-120px)]">
           <h2 className="scroll-m-20 text-2xl tracking-tight">
-            No results found for: <span className="font-bold">{query}</span>
+            No results were found for your search
           </h2>
-          <Button onClick={() => setQuery("")}>Clear Search</Button>
+          <Button
+            onClick={() => {
+              clearAllFilters();
+            }}
+          >
+            Clear All Filters
+          </Button>
         </div>
       );
     }
