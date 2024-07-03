@@ -38,7 +38,12 @@ const DocumentBuilderPreview = () => {
           <Button className="self-end">Download PDF</Button>
         </div>
         <div className="bg-background rounded-md h-full w-full" />
-        <DebouncedDocumentSaver />
+        <div className="w-full flex items-center justify-between">
+          <DebouncedDocumentSaver />
+          <span className="text-xs text-muted dark:text-muted-foreground">
+            Your changes are automatically saved.
+          </span>
+        </div>
       </div>
     </div>
   );
