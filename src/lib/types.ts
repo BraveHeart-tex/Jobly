@@ -1,88 +1,46 @@
-import prisma from "@/app/libs/prismadb";
-import { JobApplication } from "@prisma/client";
-import { IconType } from "react-icons/lib";
+import type {
+  Document,
+  Section,
+  SectionField,
+  SectionFieldValue,
+} from "@/server/db/schema";
+import type { LucideIcon } from "lucide-react";
+import type { EmployeeRoute, EmployerRoute } from "./routes";
+import type { ExtractTablesWithRelations } from "drizzle-orm";
+import type { MySqlTransaction } from "drizzle-orm/mysql-core";
+import type {
+  MySql2PreparedQueryHKT,
+  MySql2QueryResultHKT,
+} from "drizzle-orm/mysql2";
+import type * as schema from "@/server/db/schema";
 
-export interface TotalApplicationStat {
-  _count: {
-    applicationStatus: number;
-  };
-  applicationStatus: string;
-}
-
-export interface ApplicationStatusCount {
-  status: string;
-  count: number;
-}
-
-export type TableMap = {
-  [key in TableName]: (typeof prisma)[key];
+export type NavigationMenuItem = {
+  triggerLabel: string;
+  linkItems: NavigationMenuItemLink[];
 };
 
-export type WhereCondition<T> = {
-  [key in keyof T]?: T[key];
+export type NavigationMenuItemLink = {
+  title: string;
+  href: EmployeeRoute | EmployerRoute;
+  description: string;
+  icon: LucideIcon;
 };
 
-export type SelectCondition<T> = {
-  [key in keyof T]?: boolean;
-};
-export interface IGenericParams<T> {
-  tableName: TableName;
-  whereCondition?: WhereCondition<T>;
-  selectCondition?: SelectCondition<T>;
-}
+export type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
-export type CreateGenericInput<T> = {
-  [key in keyof Omit<T, "id" | "createdAt" | "updatedAt">]: T[key];
-};
+export type MakeFieldsRequired<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
 
-export type UpdateGenericInput<T> = {
-  [key in keyof Partial<T>]: T[key];
+export type DocumentBuilderConfig = {
+  document: Document;
+  sections: Section[];
+  fields: SectionField[];
+  fieldValues: SectionFieldValue[];
 };
 
-export type TableName = "jobApplication" | "salaryEstimationDataset" | "event";
-
-export type CreateGenericWithCurrentUserInput<T> = {
-  [key in keyof Omit<T, "id" | "createdAt" | "updatedAt" | "userId">]: T[key];
-};
-
-export type StatusMapping = {
-  border: string;
-  text: string;
-  icon: IconType;
-};
-
-export type StatusMappings = {
-  [status: string]: StatusMapping;
-};
-
-export interface FormattedMonthlyApplication {
-  date: string;
-  count: number;
-}
-
-export interface ResponseData {
-  formattedMonthlyApplications: FormattedMonthlyApplication[];
-}
-
-export interface IAddJobFormInputTypes {
-  jobTitle: string;
-  companyName: string;
-  applicationStatus: string;
-  jobType: string;
-  jobLocation: string;
-  comments?: string;
-}
-
-export interface IHandleEditJobParams {
-  mode: "edit";
-  jobId: number;
-  data: JobApplication;
-}
-
-export interface IHandleCreateJobParams {
-  mode: "create";
-  jobId?: number;
-  data: JobApplication;
-}
-
-export type handleJobFormSubmitParams = IHandleEditJobParams | IHandleCreateJobParams;
+export type Trx = MySqlTransaction<
+  MySql2QueryResultHKT,
+  MySql2PreparedQueryHKT,
+  typeof schema,
+  ExtractTablesWithRelations<typeof schema>
+>;

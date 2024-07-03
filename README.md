@@ -1,41 +1,29 @@
-# Jobly - Job Tracking Application
+# Create T3 App
 
-- Jobly is a job tracking application that helps users in their journey to land their dream job.
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-# Live Demo
+## What's next? How do I make an app with this?
 
-- Checkout the live demo of this application hosted on Vercel via this link : <a href="https://app-jobly.vercel.app" target="_blank"></a>
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-## Key Features
-1. Responsive user interface to offer the best user experience regardless of screen size.
-2. Clean and simplistic UI for a seamless user experience.
-3. Users can see an overiew of their application from the dashboard page.
-4. Users can add events to their planner to keep track of.
-5. Users can easily track their job application using the Jobs List page which includes searching, sorting, and filtering.
-6. Form validation with React-Hookform and Zod.
-7. Authentication and authorization with Clerk.
-8. Dark / Light mode for easy usage regardless of the time of day.
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Drizzle](https://orm.drizzle.team)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-## Showcase
+## Learn More
 
-<div style="display:grid; grid-template-columns: 1fr 1fr;">
-<img src="https://res.cloudinary.com/dmwafn98h/image/upload/v1704543891/ri48ostanq3extgamasv.png"/>
-</div>
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-<div style="display:grid; grid-template-columns: 1fr 1fr;">
-<img src="https://res.cloudinary.com/dmwafn98h/image/upload/v1704543928/txprtkswbmuzhtgxlzlb.png"/>
-</div>
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
-<div style="display:grid; grid-template-columns: 1fr 1fr;">
-<img src="https://res.cloudinary.com/dmwafn98h/image/upload/v1704543929/mjn8kqez2ehvhohh7awg.png"/>
-</div>
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-<div style="display:grid; grid-template-columns: 1fr 1fr;">
-<img src="https://res.cloudinary.com/dmwafn98h/image/upload/v1704543929/veawfn59nydgnm2psnd0.png"/>
-</div>
+## How do I deploy this?
 
-<div style="display:grid; grid-template-columns: 1fr 1fr;">
-<img src="https://res.cloudinary.com/dmwafn98h/image/upload/v1702289502/ej8ofiaoevpgj58zupvp.png"/>
-</div>
-
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.

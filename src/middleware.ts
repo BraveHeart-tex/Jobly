@@ -1,22 +1,39 @@
-import { authMiddleware } from "@clerk/nextjs";
-import { NextResponse } from "next/server";
+import { verifyRequestOrigin } from "lucia";
+import { type NextRequest, NextResponse } from "next/server";
 
-export default authMiddleware({
-  publicRoutes: ["/sign-in", "/sign-up", "/privacy-policy"],
-  afterAuth(auth, req, evt) {
-    if (!auth.userId && !auth.isPublicRoute) {
-      return NextResponse.redirect(new URL("/sign-in", req.nextUrl));
-    }
-  },
-  beforeAuth(req, evt) {
-    const url = req.nextUrl.pathname;
+export async function middleware(request: NextRequest): Promise<NextResponse> {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-url", request.nextUrl.href);
 
-    if (url === "/") {
-      return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
-    }
-  },
-});
+  if (request.method === "GET") {
+    return NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+  }
+  const originHeader = request.headers.get("Origin");
+  const hostHeader = request.headers.get("Host");
+  if (
+    !originHeader ||
+    !hostHeader ||
+    !verifyRequestOrigin(originHeader, [hostHeader])
+  ) {
+    return new NextResponse(null, {
+      status: 403,
+    });
+  }
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+}
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/(api|trpc)(.*)"],
+  matcher: [
+    "/home/:path*",
+    "/((?!api|static|.*\\..*|_next|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };

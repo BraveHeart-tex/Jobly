@@ -1,33 +1,31 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ClerkProvider } from "@clerk/nextjs";
-import GenericConfirmDialog from "@/components/GenericConfirmDialog";
-import { GenericConfirmContextProvider } from "./contexts/GenericConfirmContext";
-import SonnerToaster from "@/components/SonnerToaster";
-
-const inter = Inter({ subsets: ["latin"] });
+import "@/styles/globals.css";
+import ConfirmDialog from "@/components/ConfirmDialog";
+import ThemeProvider from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { APP_NAME } from "@/lib/constants";
+import { TRPCReactProvider } from "@/trpc/react";
+import { GeistSans } from "geist/font/sans";
+import type React from "react";
 
 export const metadata = {
-  title: "Jobly | Land your dream job",
-  description:
-    "Jobly is a job tracking app that helps you land your dream job. It offers a simple and intuitive interface to help you keep track of your job applications.",
+  title: APP_NAME,
+  description: `${APP_NAME} is a modern job portal that is meant for both employers and employees. Streamline your job/talent search with ${APP_NAME}.`,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
-      <html lang="en" data-theme={"corporate"}>
-        <body className={inter.className}>
-          <GenericConfirmContextProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <SonnerToaster />
-              <GenericConfirmDialog />
-              {children}
-            </ThemeProvider>
-          </GenericConfirmContextProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" className={`${GeistSans.variable}`}>
+      <body>
+        <TRPCReactProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Toaster richColors closeButton />
+            <ConfirmDialog />
+            {children}
+          </ThemeProvider>
+        </TRPCReactProvider>
+      </body>
+    </html>
   );
 }
