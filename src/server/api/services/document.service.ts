@@ -1,6 +1,10 @@
 "use server";
 
-import type { DocumentBuilderConfig, MakeFieldsRequired } from "@/lib/types";
+import type {
+  DocumentBuilderConfig,
+  MakeFieldsRequired,
+  Trx,
+} from "@/lib/types";
 import { exclude } from "@/lib/utils";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { db } from "@/server/db";
@@ -11,6 +15,11 @@ import {
   section as sectionSchema,
   field as fieldSchema,
   fieldValue as fieldValueSchema,
+  type SectionField,
+  type Section,
+  type SectionInsertModel,
+  type SectionFieldInsertModel,
+  type SectionFieldValueInsertModel,
 } from "@/server/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 import type { User } from "lucia";
@@ -46,6 +55,46 @@ export const createDocument = async (
     documentId: response.insertId,
   });
   return response.insertId;
+};
+
+const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
+  const results = await Promise.all(
+    sections.map((section) => trx.insert(sectionSchema).values(section)),
+  );
+
+  return results.map((result) => result[0].insertId);
+};
+
+const insertFields = async (
+  trx: Trx,
+  sectionId: Section["id"],
+  fields: Omit<SectionFieldInsertModel, "sectionId">[],
+) => {
+  const results = await Promise.all(
+    fields.map((field) =>
+      trx.insert(fieldSchema).values({
+        ...field,
+        sectionId,
+      }),
+    ),
+  );
+
+  return results.map((result) => result[0].insertId);
+};
+
+const insertFieldValues = async (
+  trx: Trx,
+  fieldId: SectionField["id"],
+  fieldValues: Omit<SectionFieldValueInsertModel, "fieldId">[],
+) => {
+  await Promise.all(
+    fieldValues.map((fieldValue) =>
+      trx.insert(fieldValueSchema).values({
+        ...fieldValue,
+        fieldId,
+      }),
+    ),
+  );
 };
 
 export const insertPredefinedSectionsAndFields = async ({
@@ -198,28 +247,31 @@ export const insertPredefinedSectionsAndFields = async ({
   ];
 
   await db.transaction(async (trx) => {
-    for (const section of sections) {
-      const [result] = await trx.insert(sectionSchema).values(section);
-      const sectionId = result.insertId;
+    const sectionIds = await insertSections(trx, sections);
+
+    for (let i = 0; i < sectionIds.length; i++) {
+      const section = sections[i];
+      const sectionId = sectionIds[i] as number;
+
       const selectedSectionFields = sectionFields.filter(
-        (field) => field.sectionKey === section.name,
+        (field) => field.sectionKey === section?.name,
       );
-      for (const field of selectedSectionFields) {
-        const [result] = await trx.insert(fieldSchema).values({
-          fieldName: field.fieldName,
-          fieldType: field.fieldName,
-          sectionId,
-        });
-        const fieldId = result.insertId;
+
+      const fieldIds = await insertFields(
+        trx,
+        sectionId,
+        selectedSectionFields,
+      );
+
+      for (let j = 0; j < selectedSectionFields.length; j++) {
+        const field = selectedSectionFields[j];
+        const fieldId = fieldIds[j] as number;
+
         const selectedSectionFieldValues = sectionFieldValues.filter(
-          (fieldValue) => fieldValue.fieldKey === field.fieldName,
+          (fieldValue) => fieldValue.fieldKey === field?.fieldName,
         );
-        for (const fieldValue of selectedSectionFieldValues) {
-          await trx.insert(fieldValueSchema).values({
-            ...fieldValue,
-            fieldId,
-          });
-        }
+
+        await insertFieldValues(trx, fieldId, selectedSectionFieldValues);
       }
     }
   });

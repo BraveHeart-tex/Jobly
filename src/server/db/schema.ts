@@ -461,13 +461,21 @@ export const fieldValueRelations = relations(fieldValue, ({ one }) => ({
 }));
 
 export type User = InferSelectModel<typeof user>;
+
 export type JobInsertModel = InferInsertModel<typeof job>;
 export type Job = InferSelectModel<typeof job>;
 export type JobEmploymentType = (typeof job.employmentType.enumValues)[number];
 export type JobWorkType = (typeof job.workType.enumValues)[number];
+
 export type Document = InferSelectModel<typeof document>;
 export type DocumentInsertModel = InferInsertModel<typeof document>;
 export type DocumentType = (typeof document.type.enumValues)[number];
+
 export type Section = InferSelectModel<typeof section>;
+export type SectionInsertModel = InferInsertModel<typeof section>;
+
 export type SectionField = InferSelectModel<typeof field>;
+export type SectionFieldInsertModel = InferInsertModel<typeof field>;
+
 export type SectionFieldValue = InferSelectModel<typeof fieldValue>;
+export type SectionFieldValueInsertModel = InferInsertModel<typeof fieldValue>;

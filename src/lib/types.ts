@@ -6,6 +6,13 @@ import type {
 } from "@/server/db/schema";
 import type { LucideIcon } from "lucide-react";
 import type { EmployeeRoute, EmployerRoute } from "./routes";
+import type { ExtractTablesWithRelations } from "drizzle-orm";
+import type { MySqlTransaction } from "drizzle-orm/mysql-core";
+import type {
+  MySql2PreparedQueryHKT,
+  MySql2QueryResultHKT,
+} from "drizzle-orm/mysql2";
+import type * as schema from "@/server/db/schema";
 
 export type NavigationMenuItem = {
   triggerLabel: string;
@@ -30,3 +37,10 @@ export type DocumentBuilderConfig = {
   fields: SectionField[];
   fieldValues: SectionFieldValue[];
 };
+
+export type Trx = MySqlTransaction<
+  MySql2QueryResultHKT,
+  MySql2PreparedQueryHKT,
+  typeof schema,
+  ExtractTablesWithRelations<typeof schema>
+>;
