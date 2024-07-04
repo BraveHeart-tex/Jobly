@@ -2,25 +2,25 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { api } from "@/trpc/react";
 import { Check, Cloud, Loader2 } from "lucide-react";
-import { useDebounce } from "react-use";
+import debounce from "lodash.debounce";
+import { useEffect } from "react";
 
 const SAVE_DOCUMENT_DEBOUNCE_DURATION = 600 as const;
 
 const DebouncedDocumentSaver = () => {
   const { mutate: saveDocumentDetails, isPending: isSavingDocument } =
     api.document.saveDocumentDetails.useMutation();
-  const state = useDocumentBuilderStore((state) => state);
-
-  useDebounce(
-    () => {
-      if (!state.initialized) return;
-      const { document, sections, fieldValues, fields } = state;
-
-      saveDocumentDetails({ document, sections, fields, fieldValues });
-    },
-    SAVE_DOCUMENT_DEBOUNCE_DURATION,
-    [state],
+  const setSaveDocumentDetailsFn = useDocumentBuilderStore(
+    (state) => state.setSaveDocumentDetailsFn,
   );
+
+  useEffect(() => {
+    const debouncedSaveDocumentDetails = debounce(
+      saveDocumentDetails,
+      SAVE_DOCUMENT_DEBOUNCE_DURATION,
+    );
+    setSaveDocumentDetailsFn(debouncedSaveDocumentDetails);
+  }, [setSaveDocumentDetailsFn, saveDocumentDetails]);
 
   return (
     <div className="flex items-center justify-between mt-2">

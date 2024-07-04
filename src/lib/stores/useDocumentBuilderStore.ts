@@ -20,6 +20,7 @@ type DocumentBuilderState = {
   sections: Section[];
   fields: SectionField[];
   fieldValues: SectionFieldValue[];
+  saveDocumentDetailsFn: (documentData: DocumentBuilderConfig) => unknown;
 };
 
 type DocumentBuilderActions = {
@@ -39,6 +40,10 @@ type DocumentBuilderActions = {
     fieldId: SectionField["id"],
     newValue: string,
   ) => void;
+  setSaveDocumentDetailsFn: (
+    fn: (documentData: DocumentBuilderConfig) => unknown,
+  ) => void;
+  callSaveDocumentDetailsFn: () => void;
 };
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -50,13 +55,22 @@ export const useDocumentBuilderStore = create<
   devtools(
     (set, get) => ({
       initialized: false,
-      initializeState: (initialState: DocumentBuilderConfig) => {
+      document: {} as Document,
+      sections: [],
+      fields: [],
+      fieldValues: [],
+      setSaveDocumentDetailsFn: (fn) => set({ saveDocumentDetailsFn: fn }),
+      saveDocumentDetailsFn: () => {},
+      callSaveDocumentDetailsFn: () => {
+        const state = get();
+        state.saveDocumentDetailsFn(state);
+      },
+      initializeState: (initialState) => {
         set({
           ...initialState,
           initialized: true,
         });
       },
-      document: {} as Document,
       setDocumentObject: (document) => {
         set({ document });
       },
@@ -67,8 +81,9 @@ export const useDocumentBuilderStore = create<
             [key]: value,
           },
         });
+
+        setTimeout(() => get().callSaveDocumentDetailsFn());
       },
-      sections: [],
       setSectionValue: ({ sectionId, key, value }) => {
         set({
           sections: get().sections.map((section) => {
@@ -81,24 +96,21 @@ export const useDocumentBuilderStore = create<
             return section;
           }),
         });
+        setTimeout(() => get().callSaveDocumentDetailsFn());
       },
-      fields: [],
-      fieldValues: [],
-      getFieldValueByFieldId: (fieldId: SectionField["id"]) => {
+      getFieldValueByFieldId: (fieldId) => {
         return get().fieldValues.find(
           (fieldValue) => fieldValue.fieldId === fieldId,
         );
       },
-      setFieldValueByFieldId: (
-        fieldId: SectionField["id"],
-        newValue: string,
-      ) => {
+      setFieldValueByFieldId: (fieldId, newValue) => {
         set({
           fieldValues: get().fieldValues.map((fieldValue) => ({
             ...fieldValue,
             value: fieldValue.fieldId === fieldId ? newValue : fieldValue.value,
           })),
         });
+        setTimeout(() => get().callSaveDocumentDetailsFn());
       },
     }),
     {
