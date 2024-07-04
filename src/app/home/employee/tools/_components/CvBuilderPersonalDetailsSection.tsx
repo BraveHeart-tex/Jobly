@@ -9,8 +9,10 @@ import EditableSectionTitle from "./EditableSectionTitle";
 
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);
-  const fields = useDocumentBuilderStore((state) => state.fields);
   const section = useDocumentBuilderStore((state) => state.sections[0]);
+  const fields = useDocumentBuilderStore((state) =>
+    state.fields.filter((field) => field.sectionId === section?.id),
+  );
 
   return (
     <>

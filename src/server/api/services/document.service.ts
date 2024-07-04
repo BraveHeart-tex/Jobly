@@ -305,7 +305,7 @@ export const getDocumentDetails = async ({
 
   return {
     document: exclude(result, ["sections"]),
-    sections: result.sections,
+    sections: result.sections.map((section) => exclude(section, ["fields"])),
     fields: result.sections.flatMap((section) => section.fields),
     fieldValues: result.sections.flatMap((section) =>
       section.fields.flatMap((field) => field.fieldValues),
