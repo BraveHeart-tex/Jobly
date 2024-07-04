@@ -12,9 +12,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const EditCvPage = async ({ params }: { params: { id: string } }) => {
-  // TODO: Make this protected with role
   const documentResponse = await api.document.getDocumentDetails({
     id: Number.parseInt(params.id),
+    allowedRoles: ["employee"],
   });
 
   if (isErrorObject(documentResponse)) {

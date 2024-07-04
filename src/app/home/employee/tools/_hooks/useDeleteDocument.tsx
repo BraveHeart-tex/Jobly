@@ -44,7 +44,6 @@ export const useDeleteDocument = () => {
   const handleDeleteDocument = (documentId: Document["id"]) => {
     showConfirmDialog({
       title: "Are you sure you want to delete this document?",
-      // TODO: Implement undo functionality later on
       message: "This action cannot be undone.",
       onConfirm: async () => {
         deleteDocument({

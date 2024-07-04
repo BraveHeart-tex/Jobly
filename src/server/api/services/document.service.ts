@@ -11,15 +11,15 @@ import { db } from "@/server/db";
 import {
   type Document,
   type DocumentInsertModel,
-  document as documentSchema,
-  section as sectionSchema,
-  field as fieldSchema,
-  fieldValue as fieldValueSchema,
-  type SectionField,
   type Section,
-  type SectionInsertModel,
+  type SectionField,
   type SectionFieldInsertModel,
   type SectionFieldValueInsertModel,
+  type SectionInsertModel,
+  document as documentSchema,
+  field as fieldSchema,
+  fieldValue as fieldValueSchema,
+  section as sectionSchema,
 } from "@/server/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 import type { User } from "lucia";

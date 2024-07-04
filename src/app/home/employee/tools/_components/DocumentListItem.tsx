@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import type { Document } from "@/server/db/schema";
 import { format } from "date-fns";
 import { AnimatePresence, motion } from "framer-motion";
@@ -20,7 +21,6 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
-import { EMPLOYEE_ROUTES } from "@/lib/routes";
 
 type DocumentListItemProps = {
   item: Document;

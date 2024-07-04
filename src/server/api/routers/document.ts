@@ -1,9 +1,9 @@
+import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { document } from "@/server/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import * as documentService from "../services/document.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 
 export const documentRouter = createTRPCRouter({
   createDocument: protectedProcedure

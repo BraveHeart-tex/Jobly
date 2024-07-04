@@ -8,12 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "@/lib/auth/actions";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { User } from "lucia";
 import { LogOut } from "lucide-react";
 import { useEffect } from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { signOut } from "@/lib/auth/actions";
 
 type UserMenuProps = {
   user: User;

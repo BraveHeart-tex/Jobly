@@ -3,10 +3,10 @@ import "server-only";
 import { headers } from "next/headers";
 import { cache } from "react";
 
+import { SHARED_ROUTES } from "@/lib/routes";
 import { createCaller } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { redirect } from "next/navigation";
-import { SHARED_ROUTES } from "@/lib/routes";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

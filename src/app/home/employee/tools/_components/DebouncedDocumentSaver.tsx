@@ -11,8 +11,6 @@ const DebouncedDocumentSaver = () => {
     api.document.saveDocumentDetails.useMutation();
   const state = useDocumentBuilderStore((state) => state);
 
-  // TODO: will have to find a way to skip the initial render
-  // to make sure that we only save to the db once the user edits the document
   useDebounce(
     () => {
       if (!state.initialized) return;

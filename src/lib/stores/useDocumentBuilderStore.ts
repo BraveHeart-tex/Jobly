@@ -43,9 +43,6 @@ type DocumentBuilderActions = {
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
 
-// TODO: this should be done from the db to get the predefined values
-// so that we always have the correct ids for that item
-
 export const useDocumentBuilderStore = create<
   DocumentBuilderStore,
   [["zustand/devtools", never]]
