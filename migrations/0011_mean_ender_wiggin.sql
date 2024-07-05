@@ -1,0 +1,1 @@
+ALTER TABLE `Section` ADD `fieldsContainerType` enum('collapsible','static') DEFAULT 'static' NOT NULL;

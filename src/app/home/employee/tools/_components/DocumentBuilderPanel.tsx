@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRef } from "react";
+import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
@@ -30,16 +31,6 @@ const DocumentBuilderPanel = () => {
       )}
       ref={builderContainerRef}
     >
-      <div className="max-w-screen-2xl mx-auto flex items-center justify-center">
-        <DocumentBuilderHeader />
-        <DocumentBuilderViewToggle ref={builderContainerRef} />
-      </div>
-      <div className="mt-4 grid gap-2">
-        <CvBuilderPersonalDetailsSection />
-      </div>
-      <div className="mt-4 grid gap-2">
-        <CvBuilderProfessionalSummarySection />
-      </div>
       <TooltipProvider delayDuration={300}>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -60,6 +51,20 @@ const DocumentBuilderPanel = () => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
+      <div className="max-w-screen-2xl mx-auto flex items-center justify-center">
+        <DocumentBuilderHeader />
+        <DocumentBuilderViewToggle ref={builderContainerRef} />
+      </div>
+      <div className="mt-4 grid gap-2">
+        <CvBuilderPersonalDetailsSection />
+      </div>
+      <div className="mt-4 grid gap-2">
+        <CvBuilderProfessionalSummarySection />
+      </div>
+      <div className="mt-4 grid gap-2">
+        <CvBuilderEmploymentHistorySection />
+      </div>
     </div>
   );
 };

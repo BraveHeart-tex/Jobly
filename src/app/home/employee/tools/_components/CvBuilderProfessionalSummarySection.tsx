@@ -47,7 +47,7 @@ const CvBuilderProfessionalSummarySection = () => {
 
   return (
     <div className="grid gap-2">
-      <div className="flex flex-col">
+      <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
           Craft 2-4 short and energetic sentences to captivate your reader!

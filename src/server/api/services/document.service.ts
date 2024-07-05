@@ -101,7 +101,7 @@ export const insertPredefinedSectionsAndFields = async ({
   user,
   documentId,
 }: { user: User; documentId: Document["id"] }) => {
-  const sections = [
+  const sections: SectionInsertModel[] = [
     {
       documentId,
       name: "Personal Details",
@@ -111,6 +111,18 @@ export const insertPredefinedSectionsAndFields = async ({
       documentId,
       name: "Professional Summary",
       displayOrder: 2,
+    },
+    {
+      documentId,
+      name: "Employment History",
+      displayOrder: 3,
+      fieldsContainerType: "collapsible",
+    },
+    {
+      documentId,
+      name: "Websites & Social Links",
+      displayOrder: 4,
+      fieldsContainerType: "collapsible",
     },
   ];
 
@@ -185,66 +197,63 @@ export const insertPredefinedSectionsAndFields = async ({
       fieldName: "Professional Summary",
       fieldType: "richText",
     },
+    {
+      sectionKey: "Employment History",
+      fieldName: "Job Title",
+      fieldType: "string",
+    },
+    {
+      sectionKey: "Employment History",
+      fieldName: "Start Date",
+      fieldType: "date",
+    },
+    {
+      sectionKey: "Employment History",
+      fieldName: "End Date",
+      fieldType: "date",
+    },
+    {
+      sectionKey: "Employment History",
+      fieldName: "Employer",
+      fieldType: "string",
+    },
+    {
+      sectionKey: "Employment History",
+      fieldName: "Description",
+      fieldType: "richText",
+    },
+    {
+      sectionKey: "Employment History",
+      fieldName: "Description",
+      fieldType: "richText",
+    },
   ];
 
-  const sectionFieldValues = [
-    {
-      fieldKey: "Wanted Job Title",
-      value: "",
-    },
-    {
-      fieldKey: "First Name",
-      value: user.firstName,
-    },
-    {
-      fieldKey: "Last Name",
-      value: user.lastName,
-    },
-    {
-      fieldKey: "Email",
-      value: user.email,
-    },
-    {
-      fieldKey: "Phone",
-      value: "",
-    },
-    {
-      fieldKey: "Country",
-      value: "",
-    },
-    {
-      fieldKey: "City",
-      value: "",
-    },
-    {
-      fieldKey: "Address",
-      value: "",
-    },
-    {
-      fieldKey: "Postal Code",
-      value: "",
-    },
-    {
-      fieldKey: "Driving License",
-      value: "",
-    },
-    {
-      fieldKey: "Nationality",
-      value: "",
-    },
-    {
-      fieldKey: "Place of Birth",
-      value: "",
-    },
-    {
-      fieldKey: "Date of Birth",
-      value: "",
-    },
-    {
-      fieldKey: "Professional Summary",
-      value: "",
-    },
-  ];
+  const generateSectionFieldValues = () => {
+    const defaultSectionFieldValues = [
+      {
+        fieldKey: "First Name",
+        value: user.firstName,
+      },
+      {
+        fieldKey: "Last Name",
+        value: user.lastName,
+      },
+      {
+        fieldKey: "Email",
+        value: user.email,
+      },
+    ];
+    return sectionFields.map((sectionField) => ({
+      fieldKey: sectionField.fieldName,
+      value:
+        defaultSectionFieldValues.find(
+          (value) => value.fieldKey === sectionField.fieldName,
+        )?.value || "",
+    }));
+  };
+
+  const sectionFieldValues = generateSectionFieldValues();
 
   await db.transaction(async (trx) => {
     const sectionIds = await insertSections(trx, sections);

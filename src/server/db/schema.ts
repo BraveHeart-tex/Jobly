@@ -393,6 +393,12 @@ export const section = mysqlTable(
       .references(() => document.id, { onDelete: "cascade" })
       .notNull(),
     name: varchar("name", { length: 100 }).notNull(),
+    fieldsContainerType: mysqlEnum("fieldsContainerType", [
+      "collapsible",
+      "static",
+    ])
+      .default("static")
+      .notNull(),
     displayOrder: int("displayOrder").notNull(),
   },
   (table) => {
