@@ -4,10 +4,12 @@ import { api } from "@/trpc/react";
 import { Check, Cloud, Loader2 } from "lucide-react";
 import debounce from "lodash.debounce";
 import { useEffect } from "react";
-
+import { useNetworkState } from "react-use";
 const SAVE_DOCUMENT_DEBOUNCE_DURATION = 600 as const;
 
 const DebouncedDocumentSaver = () => {
+  const { online, previous } = useNetworkState();
+  const userLostConnection = !online && previous;
   const { mutate: saveDocumentDetails, isPending: isSavingDocument } =
     api.document.saveDocumentDetails.useMutation();
   const setSaveDocumentDetailsFn = useDocumentBuilderStore(
@@ -15,12 +17,16 @@ const DebouncedDocumentSaver = () => {
   );
 
   useEffect(() => {
-    const debouncedSaveDocumentDetails = debounce(
-      saveDocumentDetails,
-      SAVE_DOCUMENT_DEBOUNCE_DURATION,
-    );
-    setSaveDocumentDetailsFn(debouncedSaveDocumentDetails);
-  }, [setSaveDocumentDetailsFn, saveDocumentDetails]);
+    if (!userLostConnection) {
+      const debouncedSaveDocumentDetails = debounce(
+        saveDocumentDetails,
+        SAVE_DOCUMENT_DEBOUNCE_DURATION,
+      );
+      setSaveDocumentDetailsFn(debouncedSaveDocumentDetails);
+    } else {
+      setSaveDocumentDetailsFn(() => {});
+    }
+  }, [userLostConnection, setSaveDocumentDetailsFn, saveDocumentDetails]);
 
   return (
     <div className="flex items-center justify-between mt-2">
