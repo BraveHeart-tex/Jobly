@@ -46,7 +46,7 @@ const DocumentBuilderInput = ({
       )}
     >
       {doNotRenderLabel ? null : (
-        <Label className="text-foreground/80 font-normal">
+        <Label className="text-foreground/80 font-normal w-full text-left">
           {field?.fieldName || label}
         </Label>
       )}
