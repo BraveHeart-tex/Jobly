@@ -52,7 +52,7 @@ const EditCvPage = async ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <main className="grid grid-cols-2 fixed top-0 z-50 w-full">
+    <main>
       <DocumentBuilderPanel />
       <DocumentLoader />
       <DocumentInitializer documentData={documentResponse} />

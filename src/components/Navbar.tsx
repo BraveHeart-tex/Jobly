@@ -1,17 +1,27 @@
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import { APP_NAME } from "@/lib/constants";
-import { SHARED_ROUTES } from "@/lib/routes";
+import { EMPLOYEE_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import UserMenu from "./UserMenu";
+import { headers } from "next/headers";
+import { cn } from "@/lib/utils";
 
 const Navbar = async () => {
+  const url = headers().get("x-url");
+  const shouldMinimize = url?.includes(EMPLOYEE_ROUTES.DOCUMENT_BUILDER);
   const currentUser = await api.auth.getCurrentUser();
+
   return (
-    <nav className="sticky top-0 z-50 h-max w-full border-b border-input bg-background/80 py-1 backdrop-blur-lg transition-colors">
+    <nav
+      className={cn(
+        "sticky top-0 z-50 h-max w-full border-b border-input bg-background/80 py-1 backdrop-blur-lg transition-colors",
+        shouldMinimize && "hidden",
+      )}
+    >
       <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between pr-1">
         <div className="ml-2 lg:hidden">
           <MobileNavigationLinks />

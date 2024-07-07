@@ -10,6 +10,15 @@
   @apply bg-primary text-primary-foreground;
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   background-color: hsl(var(--background));

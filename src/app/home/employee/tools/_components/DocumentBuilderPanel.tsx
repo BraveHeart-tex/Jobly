@@ -25,8 +25,8 @@ const DocumentBuilderPanel = () => {
   return (
     <div
       className={cn(
-        "bg-card min-h-screen p-4 py-12 xl:p-10 xl:py-10 max-h-screen relative overflow-auto",
-        view === "builder" && "col-span-2 xl:col-span-1",
+        "bg-card min-h-screen p-4 py-12 xl:p-10 xl:py-10 h-screen relative w-1/2 hide-scrollbar",
+        view === "builder" && "w-full xl:w-1/2",
         view === "preview" && "hidden xl:block",
       )}
       ref={builderContainerRef}

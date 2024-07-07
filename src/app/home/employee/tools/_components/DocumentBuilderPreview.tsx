@@ -12,8 +12,8 @@ const DocumentBuilderPreview = () => {
   return (
     <div
       className={cn(
-        "bg-muted-foreground dark:bg-secondary min-h-screen",
-        view === "preview" && "col-span-2 xl:col-span-1",
+        "bg-muted-foreground dark:bg-secondary min-h-screen fixed top-0 right-0 w-1/2",
+        view === "preview" && "w-full xl:w-1/2",
         view === "builder" && "hidden xl:block",
       )}
     >
