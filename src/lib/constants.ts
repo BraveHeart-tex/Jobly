@@ -49,3 +49,17 @@ export const MONTHS = [
   "Nov",
   "Dec",
 ] as const;
+
+export const INTERNAL_SECTION_TAGS = {
+  PERSONAL_DETAILS: "personal-details",
+  PROFESSIONAL_SUMMARY: "professional-summary",
+  EMPLOYMENT_HISTORY: "employment-history",
+  WEBSITES_SOCIAL_LINKS: "websites-social-links",
+} as const;
+
+export const SECTION_DESCRIPTIONS_BY_TAG = {
+  [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]:
+    "Craft 2-4 short and energetic sentences to captivate your reader! Highlight your role, experience, and most importantly, your greatest achievements, best qualities, and top skills.",
+  [INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY]:
+    "List your key accomplishments from the past decade. Use bullet points and include specific metrics where possible (e.g., 'Increased X by Y% through Z initiative').",
+} as const;

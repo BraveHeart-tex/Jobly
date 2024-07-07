@@ -1,5 +1,6 @@
 "use server";
 
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type {
   DocumentBuilderConfig,
   MakeFieldsRequired,
@@ -106,23 +107,27 @@ export const insertPredefinedSectionsAndFields = async ({
       documentId,
       name: "Personal Details",
       displayOrder: 1,
+      internalSectionTag: INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
     },
     {
       documentId,
       name: "Professional Summary",
       displayOrder: 2,
+      internalSectionTag: INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
     },
     {
       documentId,
       name: "Employment History",
       displayOrder: 3,
       fieldsContainerType: "collapsible",
+      internalSectionTag: INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
     },
     {
       documentId,
       name: "Websites & Social Links",
       displayOrder: 4,
       fieldsContainerType: "collapsible",
+      internalSectionTag: INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
     },
   ];
 
