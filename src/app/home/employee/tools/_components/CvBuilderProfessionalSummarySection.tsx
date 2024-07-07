@@ -1,11 +1,18 @@
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
 import QuillEditor from "@/components/QuillEditor";
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules } from "@/lib/utils";
 import { Frown, Smile } from "lucide-react";
 
 const CvBuilderProfessionalSummarySection = () => {
-  const section = useDocumentBuilderStore((state) => state.sections[1]);
+  const section = useDocumentBuilderStore((state) =>
+    state.sections.find(
+      (section) =>
+        section.internalSectionTag ===
+        INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
+    ),
+  );
   const field = useDocumentBuilderStore((state) =>
     state.fields.find((field) => field.sectionId === section?.id),
   );
