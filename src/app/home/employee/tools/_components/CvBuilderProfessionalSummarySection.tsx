@@ -40,7 +40,7 @@ const CvBuilderProfessionalSummarySection = () => {
     return (
       <div className="flex items-center gap-2">
         <p>{charCount} / 600</p>
-        <Smile size={24} className="fill-green-500" />
+        <Smile size={24} className="fill-green-500 text-gray-900" />
       </div>
     );
   };
