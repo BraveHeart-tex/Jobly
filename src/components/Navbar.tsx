@@ -7,22 +7,12 @@ import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import UserMenu from "./UserMenu";
-import { headers } from "next/headers";
-import { cn, matchPathnameToEditPath } from "@/lib/utils";
+import NavbarContainer from "./NavbarContainer";
 
 const Navbar = async () => {
-  const headersUrl = headers().get("x-url");
-  const pathname = headersUrl && new URL(headersUrl as string).pathname;
-  const shouldMinimize = pathname && matchPathnameToEditPath(pathname);
   const currentUser = await api.auth.getCurrentUser();
-
   return (
-    <nav
-      className={cn(
-        "sticky top-0 z-50 h-max w-full border-b border-input bg-background/80 py-1 backdrop-blur-lg transition-colors",
-        shouldMinimize && "hidden",
-      )}
-    >
+    <NavbarContainer>
       <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between pr-1">
         <div className="ml-2 lg:hidden">
           <MobileNavigationLinks />
@@ -50,7 +40,7 @@ const Navbar = async () => {
           <ColorModeToggle />
         </div>
       </div>
-    </nav>
+    </NavbarContainer>
   );
 };
 
