@@ -52,8 +52,22 @@ const CollapsibleSectionItemContainer = ({
         {open && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            animate={{
+              height: "auto",
+              opacity: 1,
+              transition: {
+                opacity: { duration: 0.15, delay: 0.15 },
+                width: { duration: 0.15 },
+              },
+            }}
+            exit={{
+              height: 0,
+              opacity: 0,
+              transition: {
+                opacity: { duration: 0.15 },
+                width: { duration: 0.15, delay: 0.15 },
+              },
+            }}
           >
             <div className="p-4">{children}</div>
           </motion.div>

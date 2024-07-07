@@ -34,3 +34,18 @@ export const URL_SEARCH_QUERY_KEYS = {
   DOCUMENT_BUILDER_VIEW: "view",
   JOB_LIST_VIEW: "listView",
 } as const;
+
+export const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
