@@ -87,7 +87,6 @@ const JobListFilters = () => {
           <div>
             <Label>Work Type</Label>
             <Select
-              defaultValue={workType ?? ""}
               value={workType ?? ""}
               onValueChange={(value) => setWorkType(value as JobWorkType)}
             >
@@ -106,7 +105,6 @@ const JobListFilters = () => {
           <div>
             <Label>Employment Type</Label>
             <Select
-              defaultValue={employmentType ?? ""}
               value={employmentType ?? ""}
               onValueChange={(value) =>
                 setEmploymentType(value as JobEmploymentType)

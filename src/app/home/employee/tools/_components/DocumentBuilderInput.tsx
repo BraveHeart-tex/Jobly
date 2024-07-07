@@ -52,7 +52,6 @@ const DocumentBuilderInput = ({
       )}
       <Input
         value={inputValue}
-        defaultValue={inputValue}
         className="w-full rounded-[2px] px-4 py-3 bg-muted/30 text-muted-foreground"
         onChange={(e) => setValue(e.target.value)}
       />

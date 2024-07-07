@@ -74,12 +74,12 @@ const CvBuilderProfessionalSummarySection = () => {
           setFieldValue(field.id, value);
         }}
       />
-      <div className="w-full flex items-center justify-between gap-4">
-        <p className="text-sm text-muted-foreground">
+      <div className="w-full flex items-center gap-4">
+        <p className="text-sm text-muted-foreground w-[80%]">
           Tip: Aim for 400-600 characters in your application to boost your
           chances of landing an interview.
         </p>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground w-[20%] text-right">
           {renderCharCountIndicator()}
         </div>
       </div>

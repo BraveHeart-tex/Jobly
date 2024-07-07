@@ -13,8 +13,8 @@ type CollapsibleSectionItemContainerProps = {
 };
 
 const CollapsibleSectionItemContainer = ({
-  triggerTitle = "Software Engineer at Mims Yazılım",
-  triggerDescription = "Jul 2023 - Present",
+  triggerTitle,
+  triggerDescription,
   children,
 }: CollapsibleSectionItemContainerProps) => {
   const [open, setOpen] = useState(false);

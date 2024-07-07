@@ -82,13 +82,15 @@ const DocumentBuilderPanel = () => {
         <DocumentBuilderViewToggle ref={builderContainerRef} />
       </div>
       <div className="grid gap-6">
-        {sections.map((section) => {
-          return (
-            <div key={section.id} className="grid gap-2">
-              {renderSection(section)}
-            </div>
-          );
-        })}
+        {sections
+          .sort((a, b) => a.displayOrder - b.displayOrder)
+          .map((section) => {
+            return (
+              <div key={section.id} className="grid gap-2">
+                {renderSection(section)}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

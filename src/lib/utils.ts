@@ -108,3 +108,16 @@ export const matchPathnameToEditPath = (path: string): boolean => {
   const pattern = /^\/home\/employee\/tools\/.*\/edit\/\d+$/;
   return pattern.test(path);
 };
+
+export const groupByN = <T>(arr: T[], n: number): T[][] =>
+  arr.reduce((groups: T[][], item: T, index: number) => {
+    const groupIndex = Math.floor(index / n);
+
+    if (!groups[groupIndex]) {
+      groups[groupIndex] = [];
+    }
+
+    groups[groupIndex]?.push(item);
+
+    return groups;
+  }, []);

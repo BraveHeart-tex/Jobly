@@ -224,8 +224,8 @@ export const insertPredefinedSectionsAndFields = async ({
     },
     {
       sectionKey: "Employment History",
-      fieldName: "Description",
-      fieldType: "richText",
+      fieldName: "City",
+      fieldType: "string",
     },
     {
       sectionKey: "Employment History",
@@ -320,7 +320,9 @@ export const getDocumentDetails = async ({
   return {
     document: exclude(result, ["sections"]),
     sections: result.sections.map((section) => exclude(section, ["fields"])),
-    fields: result.sections.flatMap((section) => section.fields),
+    fields: result.sections.flatMap((section) =>
+      section.fields.map((field) => exclude(field, ["fieldValues"])),
+    ),
     fieldValues: result.sections.flatMap((section) =>
       section.fields.flatMap((field) => field.fieldValues),
     ),

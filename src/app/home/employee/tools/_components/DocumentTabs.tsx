@@ -6,7 +6,7 @@ import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/server/db/schema";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -129,6 +129,7 @@ const DocumentTabs = () => {
         )}
         {shouldRenderNotFound ? (
           <NoDocumentsFound
+            loading={isCreatingDocument}
             activeTab={activeTab}
             onCreateNewDocumentClick={() => handleCreateNewDocument()}
           />
@@ -145,11 +146,13 @@ export default DocumentTabs;
 type NoDocumentsFoundProps = {
   activeTab: DocumentTabValue;
   onCreateNewDocumentClick?: () => void;
+  loading?: boolean;
 };
 
 const NoDocumentsFound = ({
   activeTab,
   onCreateNewDocumentClick,
+  loading,
 }: NoDocumentsFoundProps) => {
   const notFoundContentMap = {
     [DOCUMENT_TAB_VALUES.COVER_LETTER]: {
@@ -189,9 +192,16 @@ const NoDocumentsFound = ({
       <Button
         className="flex items-center gap-1 w-max mt-4"
         onClick={onCreateNewDocumentClick}
+        disabled={loading}
       >
-        <Plus size={18} />
-        {createNewButtonLabelMap[activeTab]}
+        {loading ? (
+          <Loader2 size={18} className="animate-spin" />
+        ) : (
+          <>
+            <Plus size={18} />
+            {createNewButtonLabelMap[activeTab]}
+          </>
+        )}
       </Button>
     </div>
   );
