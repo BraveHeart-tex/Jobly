@@ -1,0 +1,1 @@
+ALTER TABLE `Section` ADD `internalSectionTag` varchar(256) NOT NULL;

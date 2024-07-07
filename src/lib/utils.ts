@@ -103,3 +103,8 @@ export const generateEditorModules = (config: ToolbarConfig): StringMap => {
 
   return { toolbar };
 };
+
+export const matchPathnameToEditPath = (path: string): boolean => {
+  const pattern = /^\/home\/employee\/tools\/.*\/edit\/\d+$/;
+  return pattern.test(path);
+};

@@ -1,18 +1,19 @@
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import { APP_NAME } from "@/lib/constants";
-import { EMPLOYEE_ROUTES, SHARED_ROUTES } from "@/lib/routes";
+import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import UserMenu from "./UserMenu";
 import { headers } from "next/headers";
-import { cn } from "@/lib/utils";
+import { cn, matchPathnameToEditPath } from "@/lib/utils";
 
 const Navbar = async () => {
-  const url = headers().get("x-url");
-  const shouldMinimize = url?.includes(EMPLOYEE_ROUTES.DOCUMENT_BUILDER);
+  const headersUrl = headers().get("x-url");
+  const pathname = headersUrl && new URL(headersUrl as string).pathname;
+  const shouldMinimize = pathname && matchPathnameToEditPath(pathname);
   const currentUser = await api.auth.getCurrentUser();
 
   return (

@@ -400,6 +400,9 @@ export const section = mysqlTable(
       .default("static")
       .notNull(),
     displayOrder: int("displayOrder").notNull(),
+    internalSectionTag: varchar("internalSectionTag", {
+      length: 256,
+    }).notNull(),
   },
   (table) => {
     return {
