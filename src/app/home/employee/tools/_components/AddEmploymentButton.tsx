@@ -4,9 +4,9 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type {
   Section,
   SectionField,
-  SectionFieldInsertModel,
   SectionFieldValue,
 } from "@/server/db/schema";
+import { getFieldInsertTemplate } from "@/server/utils/document.service.utils";
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
@@ -17,53 +17,30 @@ type AddEmploymentButtonProps = {
 const AddEmploymentButton = ({ sectionId }: AddEmploymentButtonProps) => {
   const addField = useDocumentBuilderStore((state) => state.addField);
   const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
-  const fieldsToInsert: SectionFieldInsertModel[] = [
-    {
-      fieldName: "Job Title",
-      sectionId,
-      fieldType: "string",
-    },
-    {
-      fieldName: "Start Date",
-      sectionId,
-      fieldType: "date",
-    },
-    {
-      fieldName: "End Date",
-      sectionId,
-      fieldType: "date",
-    },
-    {
-      fieldName: "Employer",
-      sectionId,
-      fieldType: "string",
-    },
-    {
-      fieldName: "Description",
-      sectionId,
-      fieldType: "richText",
-    },
-  ];
+  const fieldsToInsert = getFieldInsertTemplate(sectionId, "employmentHistory");
 
-  const { mutate: addFields, isPending } = api.document.addFields.useMutation({
-    onSuccess(data) {
-      const mappedFields = fieldsToInsert.map((field, index) => ({
-        ...field,
-        id: data[index] as SectionField["id"],
-      }));
-
-      const getFieldValueDto = (field: SectionField): SectionFieldValue => ({
-        id: 0,
-        fieldId: field.id,
-        value: "",
-      });
-
-      for (const field of mappedFields) {
-        addField(field);
-        addFieldValue(getFieldValueDto(field));
-      }
-    },
-  });
+  const { mutate: addFields, isPending } =
+    api.document.addFieldsWithValues.useMutation({
+      onSuccess({ fieldIds, fieldValueIds }) {
+        const fieldsWithId = fieldsToInsert.map((field, index) => ({
+          ...field,
+          id: fieldIds[index] as SectionField["id"],
+        }));
+        const fieldValues: SectionFieldValue[] = fieldsWithId.map(
+          (field, index) => ({
+            id: fieldValueIds[index] as SectionFieldValue["id"],
+            fieldId: field.id,
+            value: "",
+          }),
+        );
+        for (const field of fieldsWithId) {
+          addField(field);
+        }
+        for (const fieldValue of fieldValues) {
+          addFieldValue(fieldValue);
+        }
+      },
+    });
 
   const handleAddEmployment = () => {
     addFields({

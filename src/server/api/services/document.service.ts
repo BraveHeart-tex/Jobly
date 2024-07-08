@@ -373,11 +373,31 @@ export const saveDocumentDetails = async (
   });
 };
 
-export const addFields = async (fields: SectionFieldInsertModel[]) => {
-  return await db.transaction(async (trx) => {
+export const addFieldsWithValues = async (
+  fields: SectionFieldInsertModel[],
+) => {
+  const fieldInsertIds = await db.transaction(async (trx) => {
     const results = await Promise.all(
       fields.map((field) => trx.insert(fieldSchema).values(field)),
     );
     return results.map((result) => result[0].insertId);
   });
+
+  const fieldValueInsertIds = await db.transaction(async (trx) => {
+    const results = await Promise.all(
+      fieldInsertIds.map((fieldId) =>
+        trx.insert(fieldValueSchema).values({
+          fieldId,
+          value: "",
+        }),
+      ),
+    );
+
+    return results.map((result) => result[0].insertId);
+  });
+
+  return {
+    fieldIds: fieldInsertIds,
+    fieldValueIds: fieldValueInsertIds,
+  };
 };

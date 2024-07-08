@@ -10,7 +10,10 @@ import {
 } from "@/server/db/schema";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import type { User } from "lucia";
-import { withBookmarkJoin, withUserViewsJobJoin } from "./job.service.utils";
+import {
+  withBookmarkJoin,
+  withUserViewsJobJoin,
+} from "../../utils/job.service.utils";
 
 export const getJobListings = async ({
   userId,

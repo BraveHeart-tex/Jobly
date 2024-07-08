@@ -109,15 +109,12 @@ export const matchPathnameToEditPath = (path: string): boolean => {
   return pattern.test(path);
 };
 
-export const groupByN = <T>(arr: T[], n: number): T[][] =>
-  arr.reduce((groups: T[][], item: T, index: number) => {
-    const groupIndex = Math.floor(index / n);
+export const groupEveryN = <T>(array: T[], n: number): T[][] => {
+  const result: T[][] = [];
 
-    if (!groups[groupIndex]) {
-      groups[groupIndex] = [];
-    }
+  for (let i = 0; i < array.length; i += n) {
+    result.push(array.slice(i, i + 6));
+  }
 
-    groups[groupIndex]?.push(item);
-
-    return groups;
-  }, []);
+  return result;
+};

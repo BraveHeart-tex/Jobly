@@ -1,15 +1,15 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+import { Label } from "@/components/ui/label";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { generateEditorModules, groupByN } from "@/lib/utils";
+import { generateEditorModules, groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
+import AddEmploymentButton from "./AddEmploymentButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
-import QuillEditor from "@/components/QuillEditor";
-import { Label } from "@/components/ui/label";
-import AddEmploymentButton from "./AddEmploymentButton";
 
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -19,14 +19,16 @@ const CvBuilderEmploymentHistorySection = () => {
     ),
   );
   const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
+    state.fields
+      .filter((field) => field.sectionId === section?.id)
+      .sort((a, b) => a.id - b.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
 
   const renderGroupItems = () => {
-    const groupedFields = groupByN(fields, 7);
+    const groupedFields = groupEveryN(fields, 6);
 
     return groupedFields.map((group) => {
       const jobTitleField = group[0] as SectionField;

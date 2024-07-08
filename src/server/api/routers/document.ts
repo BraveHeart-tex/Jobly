@@ -56,13 +56,13 @@ export const documentRouter = createTRPCRouter({
         userId,
       });
     }),
-  addFields: protectedProcedure
+  addFieldsWithValues: protectedProcedure
     .input(
       z.object({
         fields: z.array(createInsertSchema(field)),
       }),
     )
     .mutation(async ({ input }) => {
-      return documentService.addFields(input.fields);
+      return documentService.addFieldsWithValues(input.fields);
     }),
 });

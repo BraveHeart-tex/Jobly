@@ -125,14 +125,18 @@
   }
 }
 
-.text-editor .ql-container {
+.text-editor .ql-container  {
   min-height: 10em;
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   border-color: hsl(var(--input));
 }
 
-.text-editor .ql-toolbar {
+.text-editor .ql-editor {
+  min-height: 10em !important;
+}
+
+.text-editor .ql-toolbar  {
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
   border-bottom: none;

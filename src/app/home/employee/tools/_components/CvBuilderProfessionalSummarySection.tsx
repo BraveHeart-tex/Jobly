@@ -3,7 +3,6 @@ import QuillEditor from "@/components/QuillEditor";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules } from "@/lib/utils";
-import { Frown, Smile } from "lucide-react";
 
 const CvBuilderProfessionalSummarySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -37,17 +36,15 @@ const CvBuilderProfessionalSummarySection = () => {
 
     if (charCount < 400) {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-orange-600">
           <p>{charCount} / 400+</p>
-          <Frown size={24} className="text-gray-900" fill="orange" />
         </div>
       );
     }
 
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 text-green-600">
         <p>{charCount} / 600</p>
-        <Smile size={24} className="fill-green-500 text-gray-900" />
       </div>
     );
   };
@@ -74,12 +71,12 @@ const CvBuilderProfessionalSummarySection = () => {
           setFieldValue(field.id, value);
         }}
       />
-      <div className="w-full flex items-center gap-4">
-        <p className="text-sm text-muted-foreground w-[80%]">
+      <div className="w-full items-center gap-10 justify-between hidden lg:flex">
+        <p className="text-sm text-muted-foreground">
           Tip: Aim for 400-600 characters in your application to boost your
           chances of landing an interview.
         </p>
-        <div className="text-sm text-muted-foreground w-[20%] text-right">
+        <div className="text-sm text-muted-foreground text-right">
           {renderCharCountIndicator()}
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
+import { useEffect } from "react";
 
 type DocumentBuilderInputProps = {
   label?: string;
@@ -27,6 +28,7 @@ const DocumentBuilderInput = ({
     (state) => state.setFieldValueByFieldId,
   );
   const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
+
   const inputValue = value ? value : fieldValueObject?.value ?? "";
 
   const setValue = (value: string) => {
@@ -37,6 +39,10 @@ const DocumentBuilderInput = ({
       onChange(value);
     }
   };
+
+  useEffect(() => {
+    if (field?.fieldName !== "Job Title") return;
+  }, [field]);
 
   return (
     <div
