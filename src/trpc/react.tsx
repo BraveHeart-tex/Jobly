@@ -13,8 +13,8 @@ import { useState } from "react";
 import type React from "react";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@/server/api/root";
 import { toast } from "sonner";
+import type { AppRouter } from "index";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;

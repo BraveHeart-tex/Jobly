@@ -1,16 +1,3 @@
-interface Document {
-  startViewTransition(
-    updateCallback: () => Promise<void> | void,
-  ): ViewTransition;
-}
+import type { appRouter } from "@/server/api/root";
 
-interface ViewTransition {
-  finished: Promise<void>;
-  ready: Promise<void>;
-  updateCallbackDone: Promise<void>;
-  skipTransition(): void;
-}
-
-interface CSSStyleDeclaration {
-  viewTransitionName: string;
-}
+export type AppRouter = typeof appRouter;

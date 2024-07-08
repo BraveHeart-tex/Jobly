@@ -1,5 +1,5 @@
 import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
-import { document } from "@/server/db/schema";
+import { document, field } from "@/server/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import * as documentService from "../services/document.service";
@@ -55,5 +55,14 @@ export const documentRouter = createTRPCRouter({
         ...input,
         userId,
       });
+    }),
+  addFields: protectedProcedure
+    .input(
+      z.object({
+        fields: z.array(createInsertSchema(field)),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      return documentService.addFields(input.fields);
     }),
 });

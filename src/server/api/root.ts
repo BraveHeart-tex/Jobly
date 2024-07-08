@@ -9,6 +9,4 @@ export const appRouter = createTRPCRouter({
   document: documentRouter,
 });
 
-export type AppRouter = typeof appRouter;
-
 export const createCaller = createCallerFactory(appRouter);

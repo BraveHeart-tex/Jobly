@@ -1,25 +1,15 @@
 "use client";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import EditableSectionTitle from "./EditableSectionTitle";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
-import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
-import { groupByN } from "@/lib/utils";
+import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import { generateEditorModules, groupByN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
-
-const AddEmploymentButton = () => {
-  return (
-    <Button
-      className="flex items-center gap-1 w-full hover:text-primary justify-start"
-      variant="ghost"
-    >
-      <PlusIcon /> Add employment
-    </Button>
-  );
-};
+import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
+import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
+import DocumentBuilderInput from "./DocumentBuilderInput";
+import EditableSectionTitle from "./EditableSectionTitle";
+import QuillEditor from "@/components/QuillEditor";
+import { Label } from "@/components/ui/label";
+import AddEmploymentButton from "./AddEmploymentButton";
 
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -36,7 +26,7 @@ const CvBuilderEmploymentHistorySection = () => {
   );
 
   const renderGroupItems = () => {
-    const groupedFields = groupByN(fields, 6);
+    const groupedFields = groupByN(fields, 7);
 
     return groupedFields.map((group) => {
       const jobTitleField = group[0] as SectionField;
@@ -54,8 +44,12 @@ const CvBuilderEmploymentHistorySection = () => {
       const employer = getFieldValueByFieldId(employerField?.id as number)
         ?.value as string;
 
-      const triggerTitle = jobTitle ? `${jobTitle} at ${employer}` : employer;
-      const description = `${startDate} - ${endDate}`;
+      let triggerTitle = jobTitle ? `${jobTitle} at ${employer}` : employer;
+      let description = `${startDate} - ${endDate}`;
+      if (!jobTitle && !employer) {
+        triggerTitle = "(Untitled)";
+        description = "";
+      }
 
       return (
         <CollapsibleSectionItemContainer
@@ -81,6 +75,24 @@ const CvBuilderEmploymentHistorySection = () => {
                 />
               </div>
               <DocumentBuilderInput field={cityField} />
+              <div className="w-full col-span-2">
+                <div className="flex flex-col gap-2">
+                  <Label className="text-foreground/80 font-normal w-full text-left">
+                    Description
+                  </Label>
+                  <QuillEditor
+                    modules={generateEditorModules({
+                      formatting: ["bold", "italic", "underline", "strike"],
+                      lists: true,
+                      links: true,
+                    })}
+                    value={""}
+                    onChange={() => {
+                      "";
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </CollapsibleSectionItemContainer>
@@ -102,11 +114,11 @@ const CvBuilderEmploymentHistorySection = () => {
         {fields.length > 0 ? (
           <div className="grid gap-2">
             {renderGroupItems()}
-            <AddEmploymentButton />
+            <AddEmploymentButton sectionId={section?.id as number} />
           </div>
         ) : (
           <div>
-            <AddEmploymentButton />
+            <AddEmploymentButton sectionId={section?.id as number} />
           </div>
         )}
       </div>

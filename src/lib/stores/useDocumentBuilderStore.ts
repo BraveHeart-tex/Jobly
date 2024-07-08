@@ -44,6 +44,8 @@ type DocumentBuilderActions = {
     fn: (documentData: DocumentBuilderConfig) => unknown,
   ) => void;
   callSaveDocumentDetailsFn: () => void;
+  addField: (field: SectionField) => void;
+  addFieldValue: (fieldValue: SectionFieldValue) => void;
 };
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -111,6 +113,12 @@ export const useDocumentBuilderStore = create<
           })),
         });
         setTimeout(() => get().callSaveDocumentDetailsFn());
+      },
+      addField: (field) => {
+        set({ fields: [...get().fields, field] });
+      },
+      addFieldValue: (fieldValue) => {
+        set({ fieldValues: [...get().fieldValues, fieldValue] });
       },
     }),
     {
