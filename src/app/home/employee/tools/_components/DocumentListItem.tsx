@@ -15,12 +15,12 @@ import {
 import { EMPLOYEE_ROUTES } from "@/lib/routes";
 import type { Document } from "@/server/db/schema";
 import { format } from "date-fns";
-import { AnimatePresence, motion } from "framer-motion";
 import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
+import { cn } from "@/lib/utils";
 
 type DocumentListItemProps = {
   item: Document;
@@ -29,7 +29,6 @@ type DocumentListItemProps = {
 const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const [isRenaming, setIsRenaming] = useState(false);
   const renameInputRef = useRef<HTMLInputElement>(null);
-  const [showRenameButton, setShowRenameButton] = useState(false);
   const { handleDeleteDocument, isDeletingDocument } = useDeleteDocument();
   const { updateDocument } = useUpdateDocument();
   const router = useRouter();
@@ -78,15 +77,13 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
   };
 
   return (
-    <article className="grid gap-2 rounded-md border p-4 bg-card">
-      <div className="flex items-center justify-between w-full">
+    <article className="grid gap-2 rounded-md border p-4 bg-card group">
+      <div className="grid grid-cols-12 gap-2">
         <div
-          className="flex items-center gap-1 w-full"
-          onMouseEnter={() => {
-            if (isRenaming) return;
-            setShowRenameButton(true);
-          }}
-          onMouseLeave={() => setShowRenameButton(false)}
+          className={cn(
+            "flex items-center gap-1 w-full col-span-11",
+            isRenaming && "col-span-12",
+          )}
         >
           {isRenaming ? (
             <Input
@@ -105,7 +102,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
           ) : (
             <Button
               variant="link"
-              className="text-foreground hover:text-primary hover:no-underline transition-all px-0 text-base"
+              className="text-foreground hover:text-primary hover:no-underline transition-all px-0 text-base truncate max-w-full"
               onClick={() => {
                 goToEditPage();
               }}
@@ -114,52 +111,33 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
             </Button>
           )}
           {!isRenaming && (
-            <div>
-              <Button
-                variant="ghost"
-                className="px-1 py-0 lg:hidden"
-                onClick={() => {
-                  setIsRenaming(true);
-                }}
-              >
-                <Pencil size={18} />
-              </Button>
-              <AnimatePresence>
-                {showRenameButton && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="hidden lg:block"
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="px-1 py-0 lg:opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-300 lg:-translate-y-1 group-hover:translate-y-0"
+                    onClick={() => {
+                      setIsRenaming(true);
+                    }}
                   >
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className="px-1 py-0"
-                            onClick={() => {
-                              setIsRenaming(true);
-                            }}
-                          >
-                            <Pencil size={18} />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Rename</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    <Pencil size={18} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Rename</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn("col-span-1", isRenaming ? "hidden" : "flex")}
+            >
               <Ellipsis size={18} />
             </Button>
           </PopoverTrigger>
@@ -187,4 +165,5 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
     </article>
   );
 };
+
 export default DocumentListItem;
