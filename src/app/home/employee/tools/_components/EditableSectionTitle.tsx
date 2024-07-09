@@ -30,7 +30,6 @@ const EditableSectionTitle = ({
   const spanRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [focused, setFocused] = useState(false);
-  const [showRenameButton, setShowRenameButton] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const value = section?.name;
 
@@ -82,9 +81,10 @@ const EditableSectionTitle = ({
 
   return (
     <div
-      className={cn("flex items-center gap-2 h-10 w-full", containerClassName)}
-      onMouseEnter={() => setShowRenameButton(true)}
-      onMouseLeave={() => setShowRenameButton(false)}
+      className={cn(
+        "flex items-center gap-2 h-10 w-full group",
+        containerClassName,
+      )}
     >
       <span
         ref={spanRef}
@@ -141,33 +141,24 @@ const EditableSectionTitle = ({
       )}
 
       {!isEditing && (
-        <AnimatePresence>
-          {showRenameButton && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="px-1 py-0"
-                      onClick={() => handleRenameClick()}
-                    >
-                      <Pencil size={18} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Rename</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="px-1 py-0"
+                  onClick={() => handleRenameClick()}
+                >
+                  <Pencil size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Rename</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       )}
     </div>
   );
