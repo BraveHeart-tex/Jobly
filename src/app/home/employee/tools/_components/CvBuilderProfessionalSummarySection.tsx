@@ -1,8 +1,8 @@
+"use client";
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
-import QuillEditor from "@/components/QuillEditor";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { generateEditorModules } from "@/lib/utils";
+import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 
 const CvBuilderProfessionalSummarySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -19,10 +19,6 @@ const CvBuilderProfessionalSummarySection = () => {
     (state) =>
       state.fieldValues.find((fieldValue) => fieldValue.fieldId === field?.id)
         ?.value,
-  );
-
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
   );
 
   if (!field) return;
@@ -59,18 +55,7 @@ const CvBuilderProfessionalSummarySection = () => {
           achievements, best qualities, and top skills.
         </p>
       </div>
-      <QuillEditor
-        modules={generateEditorModules({
-          formatting: ["bold", "italic", "underline", "strike"],
-          lists: true,
-          links: true,
-        })}
-        value={fieldValue || ""}
-        onChange={(value) => {
-          if (!field) return;
-          setFieldValue(field.id, value);
-        }}
-      />
+      <DocumentBuilderRichTextInput field={field} renderLabel={false} />
       <div className="w-full items-center gap-10 justify-between hidden lg:flex">
         <p className="text-sm text-muted-foreground">
           Tip: Aim for 400-600 characters in your application to boost your

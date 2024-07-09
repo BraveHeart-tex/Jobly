@@ -1,15 +1,14 @@
 "use client";
-import QuillEditor from "@/components/QuillEditor";
-import { Label } from "@/components/ui/label";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { generateEditorModules, groupEveryN } from "@/lib/utils";
+import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
+import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -25,9 +24,6 @@ const CvBuilderEmploymentHistorySection = () => {
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
-  );
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
   );
 
   const renderGroupItems = () => {
@@ -49,9 +45,6 @@ const CvBuilderEmploymentHistorySection = () => {
         ?.value as string;
       const employer = getFieldValueByFieldId(employerField?.id as number)
         ?.value as string;
-      const employmentDescription = getFieldValueByFieldId(
-        employmentDescriptionField?.id as number,
-      )?.value as string;
 
       let triggerTitle = jobTitle ? `${jobTitle} at ${employer}` : employer;
       let description = `${startDate} - ${endDate}`;
@@ -85,22 +78,9 @@ const CvBuilderEmploymentHistorySection = () => {
               </div>
               <DocumentBuilderInput field={cityField} />
               <div className="w-full col-span-2">
-                <div className="flex flex-col gap-2">
-                  <Label className="text-foreground/80 font-normal w-full text-left">
-                    Description
-                  </Label>
-                  <QuillEditor
-                    modules={generateEditorModules({
-                      formatting: ["bold", "italic", "underline", "strike"],
-                      lists: true,
-                      links: true,
-                    })}
-                    value={employmentDescription}
-                    onChange={(value) => {
-                      setFieldValue(employmentDescriptionField.id, value);
-                    }}
-                  />
-                </div>
+                <DocumentBuilderRichTextInput
+                  field={employmentDescriptionField}
+                />
               </div>
             </div>
           </div>
