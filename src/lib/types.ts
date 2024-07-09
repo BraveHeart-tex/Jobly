@@ -44,3 +44,5 @@ export type Trx = MySqlTransaction<
   typeof schema,
   ExtractTablesWithRelations<typeof schema>
 >;
+
+export type InferValueTypeFromConst<T> = T[keyof T];

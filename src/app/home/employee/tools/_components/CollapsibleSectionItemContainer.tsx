@@ -1,29 +1,10 @@
 "use client";
-import type React from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowLeftIcon,
-  ChevronDownIcon,
-  EllipsisIcon,
-  PencilIcon,
-  TrashIcon,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMedia } from "react-use";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { PopoverClose } from "@radix-ui/react-popover";
 import {
   Sheet,
   SheetContent,
@@ -32,6 +13,25 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  EllipsisIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { useMedia } from "react-use";
 
 type CollapsibleSectionItemContainerProps = {
   triggerTitle?: string;

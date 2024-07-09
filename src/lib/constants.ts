@@ -54,12 +54,15 @@ export const INTERNAL_SECTION_TAGS = {
   PERSONAL_DETAILS: "personal-details",
   PROFESSIONAL_SUMMARY: "professional-summary",
   EMPLOYMENT_HISTORY: "employment-history",
+  EDUCATION: "education",
   WEBSITES_SOCIAL_LINKS: "websites-social-links",
   SKILLS: "skills",
-  EDUCATION: "education",
   CUSTOM: "custom",
   INTERNSHIP: "internship",
 } as const;
+
+export type INTERNAL_SECTION_TAG =
+  (typeof INTERNAL_SECTION_TAGS)[keyof typeof INTERNAL_SECTION_TAGS];
 
 export const SECTION_DESCRIPTIONS_BY_TAG = {
   [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]:
@@ -71,5 +74,5 @@ export const SECTION_DESCRIPTIONS_BY_TAG = {
   [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]:
     "Feel free to include links to websites you'd like hiring managers to visit, such as your portfolio, LinkedIn profile, or personal website.",
   [INTERNAL_SECTION_TAGS.SKILLS]:
-    "Select five key skills that demonstrate your suitability for the position. Ensure they align with the essential skills listed in the job description, particularly when applying through an online system.",
+    "Select five key skills that demonstrate your suitability for the position. Ensure they align with the essential skills listed in the job description. (Particularly when applying through an online system.)",
 } as const;

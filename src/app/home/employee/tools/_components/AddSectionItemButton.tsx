@@ -1,21 +1,19 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type {
   Section,
   SectionField,
   SectionFieldValue,
 } from "@/server/db/schema";
-import {
-  type FieldTemplateOption,
-  getFieldInsertTemplate,
-} from "@/server/utils/document.service.utils";
+import { getFieldInsertTemplate } from "@/server/utils/document.service.utils";
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
 type AddSectionItemButtonProps = {
   sectionId: Section["id"];
-  templateOption: FieldTemplateOption;
+  templateOption: INTERNAL_SECTION_TAG;
   label: string;
 };
 

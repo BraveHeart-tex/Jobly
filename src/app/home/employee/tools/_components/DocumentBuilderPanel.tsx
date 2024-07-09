@@ -1,6 +1,8 @@
 "use client";
 import CvBuilderPersonalDetailsSection from "@/app/home/employee/tools/_components/CvBuilderPersonalDetailsSection";
 import CvBuilderProfessionalSummarySection from "@/app/home/employee/tools/_components/CvBuilderProfessionalSummarySection";
+import CvBuilderSkillsSection from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
+import CvBuilderWebsitesAndLinks from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import DocumentBuilderHeader from "@/app/home/employee/tools/_components/DocumentBuilderHeader";
 import DocumentBuilderViewToggle from "@/app/home/employee/tools/_components/DocumentBuilderViewToggle";
 import { useDocumentBuilderSearchParams } from "@/app/home/employee/tools/_hooks/useDocumentBuilderSearchParams";
@@ -11,17 +13,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  type INTERNAL_SECTION_TAG,
+  INTERNAL_SECTION_TAGS,
+} from "@/lib/constants";
 import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
+import type { Section } from "@/server/db/schema";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
 import { useRef } from "react";
-import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Section } from "@/server/db/schema";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import CvBuilderEducationSection from "./CvBuilderEducationSection";
+import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
@@ -29,7 +34,7 @@ const DocumentBuilderPanel = () => {
   const sections = useDocumentBuilderStore((state) => state.sections);
 
   const renderSection = ({ internalSectionTag }: Section) => {
-    const sectionsByTag: Record<string, React.JSX.Element> = {
+    const sectionsByTag: Record<INTERNAL_SECTION_TAG, React.JSX.Element> = {
       [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: (
         <CvBuilderPersonalDetailsSection />
       ),
@@ -40,11 +45,16 @@ const DocumentBuilderPanel = () => {
         <CvBuilderEmploymentHistorySection />
       ),
       [INTERNAL_SECTION_TAGS.EDUCATION]: <CvBuilderEducationSection />,
-      [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]: <></>,
+      [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]: (
+        <CvBuilderWebsitesAndLinks />
+      ),
+      [INTERNAL_SECTION_TAGS.SKILLS]: <CvBuilderSkillsSection />,
+      [INTERNAL_SECTION_TAGS.CUSTOM]: <></>,
+      [INTERNAL_SECTION_TAGS.INTERNSHIP]: <></>,
     };
 
     // TODO: Handle custom sections as well
-    return sectionsByTag[internalSectionTag] ?? null;
+    return sectionsByTag[internalSectionTag as INTERNAL_SECTION_TAG] ?? null;
   };
 
   return (
@@ -83,7 +93,7 @@ const DocumentBuilderPanel = () => {
       </div>
       <div className="grid gap-6 max-w-screen-2xl mx-auto">
         {sections
-          .toSorted((a, b) => a.displayOrder - b.displayOrder)
+          .sort((a, b) => a.displayOrder - b.displayOrder)
           .map((section) => {
             return (
               <div key={section.id} className="grid gap-2">

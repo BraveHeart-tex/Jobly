@@ -1,4 +1,5 @@
 "use server";
+import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import type {
   DocumentBuilderConfig,
   MakeFieldsRequired,
@@ -21,7 +22,6 @@ import {
   section as sectionSchema,
 } from "@/server/db/schema";
 import {
-  type FieldTemplateOption,
   getFieldInsertTemplate,
   getPredefinedDocumentSections,
 } from "@/server/utils/document.service.utils";
@@ -110,7 +110,7 @@ export const insertPredefinedSectionsAndFields = async ({
       const sectionId = sectionIds[i] as number;
       const sectionFields = getFieldInsertTemplate(
         sectionId,
-        section?.internalSectionTag as FieldTemplateOption,
+        section?.internalSectionTag as INTERNAL_SECTION_TAG,
       );
       const fieldIds = await insertFields(trx, sectionId, sectionFields);
 

@@ -1,4 +1,7 @@
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  type INTERNAL_SECTION_TAG,
+  INTERNAL_SECTION_TAGS,
+} from "@/lib/constants";
 import type {
   Document,
   Section,
@@ -7,12 +10,9 @@ import type {
   SectionInsertModel,
 } from "@/server/db/schema";
 
-export type FieldTemplateOption =
-  (typeof INTERNAL_SECTION_TAGS)[keyof typeof INTERNAL_SECTION_TAGS];
-
 export const getFieldInsertTemplate = (
   sectionId: Section["id"],
-  templateOption: FieldTemplateOption,
+  templateOption: INTERNAL_SECTION_TAG,
 ) => {
   const personalDetailsFields = getPersonalDetailsFields(sectionId);
   const professionalSummaryFields = getProfessionalSummaryFields(sectionId);

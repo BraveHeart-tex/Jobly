@@ -3,15 +3,15 @@ import {
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import EditableSectionTitle from "./EditableSectionTitle";
+import { groupEveryN } from "@/lib/utils";
+import type { SectionField } from "@/server/db/schema";
+import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import type { SectionField } from "@/server/db/schema";
-import { groupEveryN } from "@/lib/utils";
-import { useRemoveFields } from "../_hooks/useRemoveFields";
-import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
+import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
+import EditableSectionTitle from "./EditableSectionTitle";
 
 const CvBuilderEducationSection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -23,7 +23,7 @@ const CvBuilderEducationSection = () => {
   const fields = useDocumentBuilderStore((state) =>
     state.fields
       .filter((field) => field?.sectionId === section?.id)
-      .toSorted((a, b) => a?.id - b?.id),
+      .sort((a, b) => a?.id - b?.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,

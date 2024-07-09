@@ -6,13 +6,13 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
+import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
-import EditableSectionTitle from "./EditableSectionTitle";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
-import { useRemoveFields } from "../_hooks/useRemoveFields";
+import EditableSectionTitle from "./EditableSectionTitle";
 
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -24,7 +24,7 @@ const CvBuilderEmploymentHistorySection = () => {
   const fields = useDocumentBuilderStore((state) =>
     state.fields
       .filter((field) => field.sectionId === section?.id)
-      .toSorted((a, b) => a.id - b.id),
+      .sort((a, b) => a.id - b.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
