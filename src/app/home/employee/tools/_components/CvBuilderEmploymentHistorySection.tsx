@@ -68,12 +68,13 @@ const CvBuilderEmploymentHistorySection = () => {
           }}
         >
           <div className="grid gap-6">
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-2 gap-8">
               <DocumentBuilderInput field={jobTitleField} />
               <DocumentBuilderInput field={employerField} />
             </div>
-            <div className="grid gap-8 grid-cols-2">
-              <div className="grid gap-4 grid-cols-2">
+
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="grid grid-cols-2 gap-4 col-span-2 lg:col-span-1">
                 <DocumentBuilderDatePickerInput
                   field={startDateField}
                   showPresentToggle={false}
@@ -84,7 +85,9 @@ const CvBuilderEmploymentHistorySection = () => {
                   presentToggleLabel="Currently Working"
                 />
               </div>
-              <DocumentBuilderInput field={cityField} />
+              <div className="col-span-2 lg:col-span-1">
+                <DocumentBuilderInput field={cityField} />
+              </div>
               <div className="w-full col-span-2">
                 <DocumentBuilderRichTextInput
                   field={employmentDescriptionField}

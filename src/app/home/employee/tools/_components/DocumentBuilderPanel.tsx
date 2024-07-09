@@ -50,7 +50,7 @@ const DocumentBuilderPanel = () => {
   return (
     <div
       className={cn(
-        "bg-background min-h-screen p-4 xl:p-12 pb-20 h-screen relative w-1/2 hide-scrollbar",
+        "bg-background min-h-screen p-4 md:p-12 pb-20 h-screen relative w-1/2 hide-scrollbar",
         view === "builder" && "w-full xl:w-1/2",
         view === "preview" && "hidden xl:block",
       )}
@@ -79,7 +79,7 @@ const DocumentBuilderPanel = () => {
 
       <div className="max-w-screen-2xl mx-auto flex items-center justify-center">
         <DocumentBuilderHeader />
-        <DocumentBuilderViewToggle ref={builderContainerRef} />
+        <DocumentBuilderViewToggle />
       </div>
       <div className="grid gap-6 max-w-screen-2xl mx-auto">
         {sections

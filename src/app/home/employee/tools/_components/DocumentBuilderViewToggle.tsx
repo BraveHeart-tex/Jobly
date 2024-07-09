@@ -9,15 +9,12 @@ import {
   useScroll,
 } from "framer-motion";
 import { File } from "lucide-react";
-import { type RefObject, forwardRef, useState } from "react";
+import { useState } from "react";
 
-const DocumentBuilderViewToggle = forwardRef<HTMLDivElement>((_, ref) => {
+const DocumentBuilderViewToggle = () => {
   const { setView } = useDocumentBuilderSearchParams();
   const [shouldShowButtonText, setShouldShowButtonText] = useState(false);
-  const { scrollYProgress } = useScroll({
-    container: ref as RefObject<HTMLDivElement>,
-    layoutEffect: false,
-  });
+  const { scrollYProgress } = useScroll();
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setShouldShowButtonText(latest === 1 || latest === 0);
   });
@@ -58,6 +55,6 @@ const DocumentBuilderViewToggle = forwardRef<HTMLDivElement>((_, ref) => {
       <File size={24} />
     </Button>
   );
-});
+};
 
 export default DocumentBuilderViewToggle;

@@ -4,8 +4,6 @@ import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
-import { useEffect } from "react";
-
 type DocumentBuilderInputProps = {
   label?: string;
   doNotRenderLabel?: boolean;
@@ -40,14 +38,10 @@ const DocumentBuilderInput = ({
     }
   };
 
-  useEffect(() => {
-    if (field?.fieldName !== "Job Title") return;
-  }, [field]);
-
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 w-full",
+        "flex flex-col gap-2 w-full min-w-full",
         doNotRenderLabel && "pt-[21px]",
       )}
     >

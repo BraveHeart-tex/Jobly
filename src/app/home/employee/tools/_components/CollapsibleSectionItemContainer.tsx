@@ -3,7 +3,13 @@ import type React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDownIcon, TrashIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  EllipsisIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -11,6 +17,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMedia } from "react-use";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { PopoverClose } from "@radix-ui/react-popover";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 type CollapsibleSectionItemContainerProps = {
   triggerTitle?: string;
@@ -26,6 +47,8 @@ const CollapsibleSectionItemContainer = ({
   onDeleteItemClick,
 }: CollapsibleSectionItemContainerProps) => {
   const [open, setOpen] = useState(false);
+  const isMobile = useMedia("(max-width: 768px)", false);
+
   return (
     <div className="w-full relative group">
       <motion.div
@@ -48,17 +71,47 @@ const CollapsibleSectionItemContainer = ({
                 </span>
               </div>
             </Button>
-            <ChevronDownIcon
-              onClick={() => setOpen(!open)}
-              className={cn(
-                "mr-2 group-hover:text-primary text-muted-foreground transition-all cursor-pointer",
-                open ? "rotate-180" : "rotate-0",
-              )}
-            />
+            {isMobile ? (
+              <Popover>
+                <PopoverTrigger>
+                  <EllipsisIcon className="mr-2 group text-muted-foreground transition-all" />
+                </PopoverTrigger>
+                <PopoverContent className="p-0">
+                  <div className="flex flex-col">
+                    <Button
+                      variant="ghost"
+                      className="border-b rounded-none py-6 flex items-center gap-2 w-full justify-start"
+                    >
+                      <PencilIcon className="text-primary" size={18} />
+                      <span className="text-sm">Edit</span>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="py-6 flex items-center gap-2 w-full justify-start"
+                      onClick={onDeleteItemClick}
+                    >
+                      <TrashIcon className="text-primary" size={18} />
+                      <span className="text-sm">Delete</span>
+                    </Button>
+                  </div>
+                  <PopoverClose asChild>
+                    <Button className="rounded-none w-full">Cancel</Button>
+                  </PopoverClose>
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <ChevronDownIcon
+                onClick={() => setOpen(!open)}
+                className={cn(
+                  "mr-2 group-hover:text-primary text-muted-foreground transition-all cursor-pointer",
+                  open ? "rotate-180" : "rotate-0",
+                )}
+              />
+            )}
           </div>
         </div>
         <AnimatePresence initial={false}>
-          {open && (
+          {open && !isMobile && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{
@@ -102,6 +155,33 @@ const CollapsibleSectionItemContainer = ({
             <TooltipContent>Delete</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+      ) : null}
+      {isMobile ? (
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetContent showClose={false} className="min-w-full">
+            <SheetHeader className="space-y-1 items-center">
+              <SheetTitle>
+                <Button
+                  className="absolute top-1 left-1 size-8"
+                  onClick={() => setOpen(false)}
+                  size="icon"
+                  variant="secondary"
+                >
+                  <ArrowLeftIcon />
+                </Button>
+                {triggerTitle}
+              </SheetTitle>
+              <SheetDescription>
+                {triggerDescription || "(Not Specified)"}
+              </SheetDescription>
+            </SheetHeader>
+            <div className="mt-4">{children}</div>
+
+            <SheetFooter className="mt-4">
+              <Button onClick={() => setOpen(false)}>Done</Button>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
       ) : null}
     </div>
   );

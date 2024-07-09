@@ -28,7 +28,6 @@ const AddSectionItemButton = ({
   const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
   const fieldsToInsert = getFieldInsertTemplate(sectionId, templateOption);
 
-  // TODO: Will be using optimistic updates and set the id in the store
   const { mutate: addFields, isPending } =
     api.document.addFieldsWithValues.useMutation({
       onSuccess({ fieldIds, fieldValueIds }) {
