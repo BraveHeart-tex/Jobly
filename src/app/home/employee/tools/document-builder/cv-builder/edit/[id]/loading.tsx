@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Loading = () => {
   return (
-    <main className="grid xl:grid-cols-2 fixed top-0 z-50 w-full">
+    <main className="grid xl:grid-cols-2 w-full">
       <div className="bg-card min-h-screen p-10 overflow-auto max-h-screen">
         <div className="grid gap-4">
           <Skeleton className="h-12" />

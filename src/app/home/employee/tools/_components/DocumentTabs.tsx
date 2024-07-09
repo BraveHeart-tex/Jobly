@@ -129,7 +129,7 @@ const DocumentTabs = () => {
         )}
         {shouldRenderNotFound ? (
           <NoDocumentsFound
-            loading={isCreatingDocument}
+            loading={isCreatingDocument ? true : undefined}
             activeTab={activeTab}
             onCreateNewDocumentClick={() => handleCreateNewDocument()}
           />

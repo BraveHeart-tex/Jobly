@@ -159,7 +159,7 @@ const CollapsibleSectionItemContainer = ({
       ) : null}
       {isMobileOrTablet ? (
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetContent showClose={false} className="min-w-full">
+          <SheetContent showClose={undefined} className="min-w-full">
             <SheetHeader className="space-y-1 items-center">
               <SheetTitle>
                 <Button

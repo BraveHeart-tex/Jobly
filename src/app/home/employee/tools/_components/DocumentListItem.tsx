@@ -135,7 +135,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
                   >
                     <TooltipProvider>
                       <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger asChild>
                           <Button
                             variant="ghost"
                             className="px-1 py-0"
