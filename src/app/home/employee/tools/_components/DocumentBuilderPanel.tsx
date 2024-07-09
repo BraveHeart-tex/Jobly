@@ -21,6 +21,7 @@ import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySecti
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { Section } from "@/server/db/schema";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import CvBuilderEducationSection from "./CvBuilderEducationSection";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
@@ -38,9 +39,8 @@ const DocumentBuilderPanel = () => {
       [INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY]: (
         <CvBuilderEmploymentHistorySection />
       ),
-      [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]: (
-        <div>Websites and Links Section</div>
-      ),
+      [INTERNAL_SECTION_TAGS.EDUCATION]: <CvBuilderEducationSection />,
+      [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]: <></>,
     };
 
     // TODO: Handle custom sections as well

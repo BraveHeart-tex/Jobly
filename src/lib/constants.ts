@@ -57,11 +57,15 @@ export const INTERNAL_SECTION_TAGS = {
   WEBSITES_SOCIAL_LINKS: "websites-social-links",
   SKILLS: "skills",
   EDUCATION: "education",
+  CUSTOM: "custom",
+  INTERNSHIP: "internship",
 } as const;
 
 export const SECTION_DESCRIPTIONS_BY_TAG = {
   [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]:
-    "Craft 2-4 short and energetic sentences to captivate your reader! Highlight your role, experience, and most importantly, your greatest achievements, best qualities, and top skills.",
+    "Grab the reader's attention with 2-4 snappy lines showcasing your role, top wins, best traits, and key skills.",
   [INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY]:
     "List your key accomplishments from the past decade. Use bullet points and include specific metrics where possible (e.g., 'Increased X by Y% through Z initiative').",
+  [INTERNAL_SECTION_TAGS.EDUCATION]:
+    "Your diverse educational background highlights the unique value and skills you'll bring to the role.",
 } as const;

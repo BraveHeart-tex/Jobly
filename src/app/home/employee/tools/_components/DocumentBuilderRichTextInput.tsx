@@ -21,14 +21,14 @@ const DocumentBuilderRichTextInput = ({
   const setFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.setFieldValueByFieldId,
   );
-  const value = getFieldValueByFieldId(field.id)?.value ?? "";
+  const value = getFieldValueByFieldId(field?.id)?.value ?? "";
 
   return (
     <div className="w-full overflow-hidden">
       <div className="flex flex-col gap-2">
         {renderLabel ? (
           <Label className="text-foreground/80 font-normal w-full text-left">
-            {field.fieldName}
+            {field?.fieldName}
           </Label>
         ) : null}
         <QuillEditor
@@ -39,7 +39,7 @@ const DocumentBuilderRichTextInput = ({
           })}
           value={value}
           onChange={(value) => {
-            setFieldValueByFieldId(field.id, value);
+            setFieldValueByFieldId(field?.id, value);
           }}
         />
       </div>

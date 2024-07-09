@@ -1,30 +1,29 @@
-"use client";
 import {
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { groupEveryN } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
+import EditableSectionTitle from "./EditableSectionTitle";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import EditableSectionTitle from "./EditableSectionTitle";
-import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
+import type { SectionField } from "@/server/db/schema";
+import { groupEveryN } from "@/lib/utils";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
+import DocumentBuilderInput from "./DocumentBuilderInput";
+import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
+import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 
-const CvBuilderEmploymentHistorySection = () => {
+const CvBuilderEducationSection = () => {
   const section = useDocumentBuilderStore((state) =>
     state.sections.find(
       (section) =>
-        section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+        section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
     ),
   );
   const fields = useDocumentBuilderStore((state) =>
     state.fields
-      .filter((field) => field.sectionId === section?.id)
-      .sort((a, b) => a.id - b.id),
+      .filter((field) => field?.sectionId === section?.id)
+      .sort((a, b) => a?.id - b?.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -35,25 +34,30 @@ const CvBuilderEmploymentHistorySection = () => {
     const groupedFields = groupEveryN(fields, 6);
 
     return groupedFields.map((group) => {
-      const jobTitleField = group[0] as SectionField;
-      const startDateField = group[1] as SectionField;
-      const endDateField = group[2] as SectionField;
-      const employerField = group[3] as SectionField;
+      const schoolField = group[0] as SectionField;
+      const degreeField = group[1] as SectionField;
+      const startDateField = group[2] as SectionField;
+      const endDateField = group[3] as SectionField;
       const cityField = group[4] as SectionField;
-      const employmentDescriptionField = group[5] as SectionField;
+      const descriptionField = group[5] as SectionField;
 
-      const jobTitle = getFieldValueByFieldId(jobTitleField?.id as number)
+      const schoolTitle = getFieldValueByFieldId(schoolField?.id as number)
         ?.value as string;
       const startDate = getFieldValueByFieldId(startDateField?.id as number)
         ?.value as string;
       const endDate = getFieldValueByFieldId(endDateField?.id as number)
         ?.value as string;
-      const employer = getFieldValueByFieldId(employerField?.id as number)
+      const degree = getFieldValueByFieldId(degreeField?.id as number)
         ?.value as string;
 
-      let triggerTitle = jobTitle ? `${jobTitle} at ${employer}` : employer;
+      let triggerTitle =
+        degree && schoolTitle
+          ? `${degree} at ${schoolTitle}`
+          : degree
+            ? degree
+            : schoolTitle;
       let description = `${startDate} - ${endDate}`;
-      if (!jobTitle && !employer) {
+      if (!schoolTitle && !degree) {
         triggerTitle = "(Untitled)";
         description = "";
       }
@@ -69,8 +73,8 @@ const CvBuilderEmploymentHistorySection = () => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={jobTitleField} />
-              <DocumentBuilderInput field={employerField} />
+              <DocumentBuilderInput field={schoolField} />
+              <DocumentBuilderInput field={degreeField} />
             </div>
 
             <div className="grid gap-8 lg:grid-cols-2">
@@ -82,16 +86,14 @@ const CvBuilderEmploymentHistorySection = () => {
                 <DocumentBuilderDatePickerInput
                   field={endDateField}
                   showPresentToggle
-                  presentToggleLabel="Currently Working"
+                  presentToggleLabel="Currently study here"
                 />
               </div>
               <div className="col-span-2 lg:col-span-1">
                 <DocumentBuilderInput field={cityField} />
               </div>
               <div className="w-full col-span-2">
-                <DocumentBuilderRichTextInput
-                  field={employmentDescriptionField}
-                />
+                <DocumentBuilderRichTextInput field={descriptionField} />
               </div>
             </div>
           </div>
@@ -105,11 +107,7 @@ const CvBuilderEmploymentHistorySection = () => {
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
-          {
-            SECTION_DESCRIPTIONS_BY_TAG[
-              INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY
-            ]
-          }
+          {SECTION_DESCRIPTIONS_BY_TAG[INTERNAL_SECTION_TAGS.EDUCATION]}
         </p>
       </div>
       <div>
@@ -118,16 +116,16 @@ const CvBuilderEmploymentHistorySection = () => {
             {renderGroupItems()}
             <AddSectionItemButton
               sectionId={section?.id as number}
-              templateOption={INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY}
-              label="Add one more employment"
+              templateOption={INTERNAL_SECTION_TAGS.EDUCATION}
+              label="Add one more education"
             />
           </div>
         ) : (
           <div>
             <AddSectionItemButton
               sectionId={section?.id as number}
-              templateOption={INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY}
-              label="Add employment"
+              templateOption={INTERNAL_SECTION_TAGS.EDUCATION}
+              label="Add education"
             />
           </div>
         )}
@@ -136,4 +134,4 @@ const CvBuilderEmploymentHistorySection = () => {
   );
 };
 
-export default CvBuilderEmploymentHistorySection;
+export default CvBuilderEducationSection;

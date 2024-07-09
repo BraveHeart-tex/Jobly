@@ -36,7 +36,7 @@ const DocumentBuilderDatePickerInput = ({
   presentToggleLabel = "Present",
 }: DocumentBuilderDatePickerInputProps) => {
   const fieldValue = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId(field.id)?.value,
+    (state) => state.getFieldValueByFieldId(field?.id)?.value,
   );
   const isFieldValuePresent = fieldValue === "Present";
   const setFieldValue = useDocumentBuilderStore(
@@ -54,14 +54,14 @@ const DocumentBuilderDatePickerInput = ({
   );
   const [open, setOpen] = useState(false);
   const [isPresent, setIsPresent] = useState(isFieldValuePresent);
-  const label = field.fieldName;
+  const label = field?.fieldName;
 
   const handleCheckedChange = (checked: boolean) => {
     setIsPresent(checked);
     if (checked) {
       setYear(CURRENT_YEAR);
       setMonth(CURRENT_MONTH);
-      setFieldValue(field.id, "Present");
+      setFieldValue(field?.id, "Present");
     }
   };
 
@@ -89,7 +89,7 @@ const DocumentBuilderDatePickerInput = ({
               disabled={isPresent}
               onClick={() => {
                 setYear(year - 1);
-                setFieldValue(field.id, `${month} ${year - 1}`);
+                setFieldValue(field?.id, `${month} ${year - 1}`);
               }}
             >
               <ChevronLeftIcon />
@@ -103,7 +103,7 @@ const DocumentBuilderDatePickerInput = ({
               disabled={isPresent}
               onClick={() => {
                 setYear(year + 1);
-                setFieldValue(field.id, `${month} ${year + 1}`);
+                setFieldValue(field?.id, `${month} ${year + 1}`);
               }}
             >
               <ChevronRightIcon />
@@ -118,7 +118,7 @@ const DocumentBuilderDatePickerInput = ({
                 disabled={isPresent}
                 onClick={() => {
                   setMonth(monthItem);
-                  setFieldValue(field.id, `${monthItem} ${year}`);
+                  setFieldValue(field?.id, `${monthItem} ${year}`);
                 }}
               >
                 <p>{monthItem}</p>

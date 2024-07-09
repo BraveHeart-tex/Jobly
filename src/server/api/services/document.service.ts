@@ -1,6 +1,4 @@
 "use server";
-
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type {
   DocumentBuilderConfig,
   MakeFieldsRequired,
@@ -22,6 +20,11 @@ import {
   fieldValue as fieldValueSchema,
   section as sectionSchema,
 } from "@/server/db/schema";
+import {
+  type FieldTemplateOption,
+  getFieldInsertTemplate,
+  getPredefinedDocumentSections,
+} from "@/server/utils/document.service.utils";
 import { and, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
@@ -83,210 +86,48 @@ const insertFields = async (
   return results.map((result) => result[0].insertId);
 };
 
-const insertFieldValues = async (
+const insertFieldValue = async (
   trx: Trx,
-  fieldId: SectionField["id"],
-  fieldValues: Omit<SectionFieldValueInsertModel, "fieldId">[],
+  fieldValue: SectionFieldValueInsertModel,
 ) => {
-  await Promise.all(
-    fieldValues.map((fieldValue) =>
-      trx.insert(fieldValueSchema).values({
-        ...fieldValue,
-        fieldId,
-      }),
-    ),
-  );
+  await trx.insert(fieldValueSchema).values(fieldValue);
 };
 
 export const insertPredefinedSectionsAndFields = async ({
   user,
   documentId,
 }: { user: User; documentId: Document["id"] }) => {
-  const sections: SectionInsertModel[] = [
-    {
-      documentId,
-      name: "Personal Details",
-      displayOrder: 1,
-      internalSectionTag: INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
-    },
-    {
-      documentId,
-      name: "Professional Summary",
-      displayOrder: 2,
-      internalSectionTag: INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
-    },
-    {
-      documentId,
-      name: "Employment History",
-      displayOrder: 3,
-      fieldsContainerType: "collapsible",
-      internalSectionTag: INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
-    },
-    {
-      documentId,
-      name: "Websites & Social Links",
-      displayOrder: 4,
-      fieldsContainerType: "collapsible",
-      internalSectionTag: INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
-    },
-  ];
-
-  const sectionFields = [
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Wanted Job Title",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "First Name",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Last Name",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Email",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Phone",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Country",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "City",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Address",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Postal Code",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Driving License",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Nationality",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Place of Birth",
-      fieldType: "text",
-    },
-    {
-      sectionKey: "Personal Details",
-      fieldName: "Date of Birth",
-      fieldType: "date",
-    },
-    {
-      sectionKey: "Professional Summary",
-      fieldName: "Professional Summary",
-      fieldType: "richText",
-    },
-    {
-      sectionKey: "Employment History",
-      fieldName: "Job Title",
-      fieldType: "string",
-    },
-    {
-      sectionKey: "Employment History",
-      fieldName: "Start Date",
-      fieldType: "date",
-    },
-    {
-      sectionKey: "Employment History",
-      fieldName: "End Date",
-      fieldType: "date",
-    },
-    {
-      sectionKey: "Employment History",
-      fieldName: "Employer",
-      fieldType: "string",
-    },
-    {
-      sectionKey: "Employment History",
-      fieldName: "City",
-      fieldType: "string",
-    },
-    {
-      sectionKey: "Employment History",
-      fieldName: "Description",
-      fieldType: "richText",
-    },
-  ];
-
-  const generateSectionFieldValues = () => {
-    const defaultSectionFieldValues = [
-      {
-        fieldKey: "First Name",
-        value: user.firstName,
-      },
-      {
-        fieldKey: "Last Name",
-        value: user.lastName,
-      },
-      {
-        fieldKey: "Email",
-        value: user.email,
-      },
-    ];
-    return sectionFields.map((sectionField) => ({
-      fieldKey: sectionField.fieldName,
-      value:
-        defaultSectionFieldValues.find(
-          (value) => value.fieldKey === sectionField.fieldName,
-        )?.value || "",
-    }));
+  const sections = getPredefinedDocumentSections(documentId);
+  const DEFAULT_FIELDS: Record<string, string> = {
+    "First Name": user.firstName,
+    "Last Name": user.lastName,
+    Email: user.email,
   };
-
-  const sectionFieldValues = generateSectionFieldValues();
-
   await db.transaction(async (trx) => {
     const sectionIds = await insertSections(trx, sections);
-
     for (let i = 0; i < sectionIds.length; i++) {
       const section = sections[i];
       const sectionId = sectionIds[i] as number;
-
-      const selectedSectionFields = sectionFields.filter(
-        (field) => field.sectionKey === section?.name,
-      );
-
-      const fieldIds = await insertFields(
-        trx,
+      const sectionFields = getFieldInsertTemplate(
         sectionId,
-        selectedSectionFields,
+        section?.internalSectionTag as FieldTemplateOption,
       );
+      const fieldIds = await insertFields(trx, sectionId, sectionFields);
 
-      for (let j = 0; j < selectedSectionFields.length; j++) {
-        const field = selectedSectionFields[j];
-        const fieldId = fieldIds[j] as number;
+      const fieldsWithDefaultValues = sectionFields.map((field, index) => ({
+        ...field,
+        id: fieldIds[index] as SectionField["id"],
+        defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
+      }));
 
-        const selectedSectionFieldValues = sectionFieldValues.filter(
-          (fieldValue) => fieldValue.fieldKey === field?.fieldName,
-        );
-
-        await insertFieldValues(trx, fieldId, selectedSectionFieldValues);
-      }
+      await Promise.all(
+        fieldsWithDefaultValues.map((field) =>
+          insertFieldValue(trx, {
+            fieldId: field.id,
+            value: field.defaultValue,
+          }),
+        ),
+      );
     }
   });
 };
