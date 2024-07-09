@@ -58,7 +58,11 @@ const CvBuilderProfessionalSummarySection = () => {
           }
         </p>
       </div>
-      <DocumentBuilderRichTextInput field={field} renderLabel={false} />
+      <DocumentBuilderRichTextInput
+        field={field}
+        renderLabel={false}
+        placeholder="Seasoned software developer with over 8 years of experience and a proven track record of..."
+      />
       <div className="w-full items-center justify-between hidden lg:flex">
         <p className="text-sm text-muted-foreground">
           Tip: Aim for 400-600 characters in your application to boost your

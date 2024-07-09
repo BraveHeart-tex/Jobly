@@ -9,11 +9,13 @@ import type { SectionField } from "@/server/db/schema";
 type DocumentBuilderRichTextInputProps = {
   field: SectionField;
   renderLabel?: boolean;
+  placeholder?: string;
 };
 
 const DocumentBuilderRichTextInput = ({
   field,
   renderLabel = true,
+  placeholder = "",
 }: DocumentBuilderRichTextInputProps) => {
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -37,6 +39,7 @@ const DocumentBuilderRichTextInput = ({
             lists: true,
             links: true,
           })}
+          placeholder={placeholder}
           value={value}
           onChange={(value) => {
             setFieldValueByFieldId(field?.id, value);

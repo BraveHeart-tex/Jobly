@@ -83,7 +83,7 @@ const DocumentBuilderPanel = () => {
       </div>
       <div className="grid gap-6 max-w-screen-2xl mx-auto">
         {sections
-          .sort((a, b) => a.displayOrder - b.displayOrder)
+          .toSorted((a, b) => a.displayOrder - b.displayOrder)
           .map((section) => {
             return (
               <div key={section.id} className="grid gap-2">

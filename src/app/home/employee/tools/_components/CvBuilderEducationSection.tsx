@@ -23,7 +23,7 @@ const CvBuilderEducationSection = () => {
   const fields = useDocumentBuilderStore((state) =>
     state.fields
       .filter((field) => field?.sectionId === section?.id)
-      .sort((a, b) => a?.id - b?.id),
+      .toSorted((a, b) => a?.id - b?.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -93,7 +93,10 @@ const CvBuilderEducationSection = () => {
                 <DocumentBuilderInput field={cityField} />
               </div>
               <div className="w-full col-span-2">
-                <DocumentBuilderRichTextInput field={descriptionField} />
+                <DocumentBuilderRichTextInput
+                  field={descriptionField}
+                  placeholder="e.g. Graduated with High Honors"
+                />
               </div>
             </div>
           </div>

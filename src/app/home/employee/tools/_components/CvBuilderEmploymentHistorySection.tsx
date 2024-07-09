@@ -24,7 +24,7 @@ const CvBuilderEmploymentHistorySection = () => {
   const fields = useDocumentBuilderStore((state) =>
     state.fields
       .filter((field) => field.sectionId === section?.id)
-      .sort((a, b) => a.id - b.id),
+      .toSorted((a, b) => a.id - b.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -91,6 +91,7 @@ const CvBuilderEmploymentHistorySection = () => {
               <div className="w-full col-span-2">
                 <DocumentBuilderRichTextInput
                   field={employmentDescriptionField}
+                  placeholder="E.g. Designed and developed software solutions based on user needs and feedback."
                 />
               </div>
             </div>

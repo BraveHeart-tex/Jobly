@@ -104,6 +104,7 @@
   color: hsl(var(--foreground) / 0.8);
   overflow: auto;
   max-width: 100%;
+  font-size: 1rem;
 }
 
 .text-editor .ql-toolbar  {
@@ -113,4 +114,9 @@
   border-color: hsl(var(--input));
   background-color: hsl(var(--card));
   color: hsl(var(--card-foreground));
+}
+
+.text-editor .quill > .ql-container > .ql-editor.ql-blank::before {
+  color: hsl(var(--muted-foreground) / 0.9);
+  font-style: normal;
 }
