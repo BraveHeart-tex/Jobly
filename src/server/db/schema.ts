@@ -403,6 +403,7 @@ export const section = mysqlTable(
     internalSectionTag: varchar("internalSectionTag", {
       length: 256,
     }).notNull(),
+    metadata: text("metadata"),
   },
   (table) => {
     return {

@@ -1,3 +1,5 @@
+import type { InferValueTypeFromConst } from "./types";
+
 export const SHARED_ROUTES = {
   // Shared
   LOGIN: "/login",
@@ -53,7 +55,5 @@ export const EMPLOYER_ROUTES = {
   DASHBOARD: `${BASE_EMPLOYER_ROUTE}/dashboard`,
 } as const;
 
-export type EmployeeRoute =
-  (typeof EMPLOYEE_ROUTES)[keyof typeof EMPLOYEE_ROUTES];
-export type EmployerRoute =
-  (typeof EMPLOYER_ROUTES)[keyof typeof EMPLOYER_ROUTES];
+export type EmployeeRoute = InferValueTypeFromConst<typeof EMPLOYEE_ROUTES>;
+export type EmployerRoute = InferValueTypeFromConst<typeof EMPLOYER_ROUTES>;

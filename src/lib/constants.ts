@@ -1,3 +1,5 @@
+import type { InferValueTypeFromConst } from "./types";
+
 export const contentByPortalType = {
   employee: [
     "Find your dream job with just one click",
@@ -61,8 +63,9 @@ export const INTERNAL_SECTION_TAGS = {
   INTERNSHIP: "internship",
 } as const;
 
-export type INTERNAL_SECTION_TAG =
-  (typeof INTERNAL_SECTION_TAGS)[keyof typeof INTERNAL_SECTION_TAGS];
+export type INTERNAL_SECTION_TAG = InferValueTypeFromConst<
+  typeof INTERNAL_SECTION_TAGS
+>;
 
 export const SECTION_DESCRIPTIONS_BY_TAG = {
   [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]:

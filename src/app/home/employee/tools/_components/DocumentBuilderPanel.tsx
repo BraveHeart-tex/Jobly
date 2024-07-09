@@ -53,7 +53,6 @@ const DocumentBuilderPanel = () => {
       [INTERNAL_SECTION_TAGS.INTERNSHIP]: <></>,
     };
 
-    // TODO: Handle custom sections as well
     return sectionsByTag[internalSectionTag as INTERNAL_SECTION_TAG] ?? null;
   };
 

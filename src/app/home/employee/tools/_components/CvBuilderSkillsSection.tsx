@@ -4,6 +4,8 @@ import CvBuilderSkillLevelSelector from "@/app/home/employee/tools/_components/C
 import DocumentBuilderInput from "@/app/home/employee/tools/_components/DocumentBuilderInput";
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
 import { useRemoveFields } from "@/app/home/employee/tools/_hooks/useRemoveFields";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
@@ -18,10 +20,15 @@ const CvBuilderSkillsSection = () => {
       (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
     ),
   );
+  const sectionMetada = section?.metadata ? JSON.parse(section?.metadata) : {};
+  const showExperienceLevel = sectionMetada?.showExperienceLevel || false;
   const fields = useDocumentBuilderStore((state) =>
     state.fields
       .filter((field) => field.sectionId === section?.id)
       .sort((a, b) => a.id - b.id),
+  );
+  const setSectionValue = useDocumentBuilderStore(
+    (state) => state.setSectionValue,
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -46,7 +53,7 @@ const CvBuilderSkillsSection = () => {
       return (
         <CollapsibleSectionItemContainer
           triggerTitle={triggerTitle}
-          triggerDescription={description}
+          triggerDescription={!showExperienceLevel ? undefined : description}
           key={group[0]?.id}
           onDeleteItemClick={() => {
             removeFields(group.map((field) => field.id));
@@ -55,12 +62,25 @@ const CvBuilderSkillsSection = () => {
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
               <DocumentBuilderInput field={skillField} />
-              {/*<DocumentBuilderInput field={levelField} />*/}
-              <CvBuilderSkillLevelSelector field={levelField} />
+              <CvBuilderSkillLevelSelector
+                field={levelField}
+                disabled={!showExperienceLevel}
+              />
             </div>
           </div>
         </CollapsibleSectionItemContainer>
       );
+    });
+  };
+
+  const handleShowExperienceLevelChange = (checked: boolean) => {
+    setSectionValue({
+      sectionId: section?.id as number,
+      key: "metadata",
+      value: JSON.stringify({
+        ...sectionMetada,
+        showExperienceLevel: !checked,
+      }),
     });
   };
 
@@ -71,6 +91,15 @@ const CvBuilderSkillsSection = () => {
         <p className="text-sm text-muted-foreground">
           {SECTION_DESCRIPTIONS_BY_TAG[INTERNAL_SECTION_TAGS.SKILLS]}
         </p>
+        <div className="mt-2 flex items-center gap-2">
+          <Switch
+            checked={showExperienceLevel === false}
+            onCheckedChange={(checked) => {
+              handleShowExperienceLevelChange(checked);
+            }}
+          />
+          <Label>Don't show experience level</Label>
+        </div>
       </div>
       <div>
         {fields.length > 0 ? (

@@ -255,6 +255,9 @@ export const getPredefinedDocumentSections = (
     displayOrder: 6,
     fieldsContainerType: "collapsible",
     internalSectionTag: INTERNAL_SECTION_TAGS.SKILLS,
+    metadata: JSON.stringify({
+      showExperienceLevel: true,
+    }),
   },
 ];
 

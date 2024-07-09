@@ -13,6 +13,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
+import type { InferValueTypeFromConst } from "@/lib/types";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",
@@ -24,8 +25,7 @@ const DOCUMENT_ROUTE_MAP = {
   [DOCUMENT_TAB_VALUES.COVER_LETTER]: `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/cover-letters/edit`,
 };
 
-type DocumentTabValue =
-  (typeof DOCUMENT_TAB_VALUES)[keyof typeof DOCUMENT_TAB_VALUES];
+type DocumentTabValue = InferValueTypeFromConst<typeof DOCUMENT_TAB_VALUES>;
 
 const tabItems: {
   label: string;
