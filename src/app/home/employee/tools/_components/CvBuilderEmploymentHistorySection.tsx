@@ -12,6 +12,7 @@ import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
+import { useRemoveFields } from "../_hooks/useRemoveFields";
 
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -28,6 +29,7 @@ const CvBuilderEmploymentHistorySection = () => {
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
+  const { removeFields } = useRemoveFields();
 
   const renderGroupItems = () => {
     const groupedFields = groupEveryN(fields, 6);
@@ -61,6 +63,9 @@ const CvBuilderEmploymentHistorySection = () => {
           triggerTitle={triggerTitle}
           triggerDescription={description}
           key={group[0]?.id}
+          onDeleteItemClick={() => {
+            removeFields(group.map((field) => field.id));
+          }}
         >
           <div className="grid gap-6">
             <div className="grid grid-cols-2 gap-8">

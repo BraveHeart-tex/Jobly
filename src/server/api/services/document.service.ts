@@ -22,7 +22,7 @@ import {
   fieldValue as fieldValueSchema,
   section as sectionSchema,
 } from "@/server/db/schema";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const getUserDocuments = async (userId: User["id"]) => {
@@ -400,4 +400,13 @@ export const addFieldsWithValues = async (
     fieldIds: fieldInsertIds,
     fieldValueIds: fieldValueInsertIds,
   };
+};
+
+export const removeFields = async (fieldIds: SectionField["id"][]) => {
+  return Promise.all([
+    db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds)),
+    db
+      .delete(fieldValueSchema)
+      .where(inArray(fieldValueSchema.fieldId, fieldIds)),
+  ]);
 };

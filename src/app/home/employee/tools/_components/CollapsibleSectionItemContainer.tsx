@@ -3,27 +3,28 @@ import type React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, TrashIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type CollapsibleSectionItemContainerProps = {
   triggerTitle?: string;
   triggerDescription?: string;
   children: React.ReactNode;
-  onDeleteClick?: () => void;
+  onDeleteItemClick?: () => void;
 };
 
 const CollapsibleSectionItemContainer = ({
   triggerTitle,
   triggerDescription,
   children,
+  onDeleteItemClick,
 }: CollapsibleSectionItemContainerProps) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="w-full">
+    <div className="w-full relative group">
       <motion.div
         className={cn(
-          "rounded-md border flex flex-col transition-all w-full flex-1",
+          "rounded-md border flex flex-col transition-all w-full",
           open && "max-h-max",
         )}
       >
@@ -76,6 +77,19 @@ const CollapsibleSectionItemContainer = ({
           )}
         </AnimatePresence>
       </motion.div>
+      {onDeleteItemClick ? (
+        <Button
+          className={cn(
+            "absolute -right-9 top-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all text-muted-foreground ease-out",
+            triggerDescription && "top-4",
+          )}
+          onClick={onDeleteItemClick}
+          size="icon"
+          variant="ghost"
+        >
+          <TrashIcon />
+        </Button>
+      ) : null}
     </div>
   );
 };

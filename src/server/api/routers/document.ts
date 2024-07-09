@@ -65,4 +65,13 @@ export const documentRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return documentService.addFieldsWithValues(input.fields);
     }),
+  removeFields: protectedProcedure
+    .input(
+      z.object({
+        fieldIds: z.array(z.number().min(1)),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      return documentService.removeFields(input.fieldIds);
+    }),
 });
