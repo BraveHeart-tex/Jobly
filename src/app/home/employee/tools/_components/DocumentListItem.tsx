@@ -114,35 +114,47 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
             </Button>
           )}
           {!isRenaming && (
-            <AnimatePresence>
-              {showRenameButton && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Button
-                          variant="ghost"
-                          className="px-1 py-0"
-                          onClick={() => {
-                            setIsRenaming(true);
-                          }}
-                        >
-                          <Pencil size={18} />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Rename</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div>
+              <Button
+                variant="ghost"
+                className="px-1 py-0 lg:hidden"
+                onClick={() => {
+                  setIsRenaming(true);
+                }}
+              >
+                <Pencil size={18} />
+              </Button>
+              <AnimatePresence>
+                {showRenameButton && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="hidden lg:block"
+                  >
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button
+                            variant="ghost"
+                            className="px-1 py-0"
+                            onClick={() => {
+                              setIsRenaming(true);
+                            }}
+                          >
+                            <Pencil size={18} />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Rename</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           )}
         </div>
         <Popover>
