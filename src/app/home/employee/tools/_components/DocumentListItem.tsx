@@ -123,7 +123,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
                   transition={{ duration: 0.2 }}
                 >
                   <TooltipProvider>
-                    <Tooltip delayDuration={300}>
+                    <Tooltip>
                       <TooltipTrigger>
                         <Button
                           variant="ghost"

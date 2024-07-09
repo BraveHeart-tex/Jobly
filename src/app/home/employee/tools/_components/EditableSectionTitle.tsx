@@ -150,7 +150,7 @@ const EditableSectionTitle = ({
               transition={{ duration: 0.2 }}
             >
               <TooltipProvider>
-                <Tooltip delayDuration={300}>
+                <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
                       variant="ghost"

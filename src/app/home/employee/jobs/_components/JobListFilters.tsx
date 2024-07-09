@@ -68,7 +68,7 @@ const JobListFilters = () => {
   return (
     <Popover>
       <TooltipProvider>
-        <Tooltip delayDuration={300}>
+        <Tooltip>
           <TooltipTrigger asChild>
             <PopoverTrigger asChild>
               <Button>

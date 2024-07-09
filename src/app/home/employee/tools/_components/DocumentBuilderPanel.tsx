@@ -56,7 +56,7 @@ const DocumentBuilderPanel = () => {
       )}
       ref={builderContainerRef}
     >
-      <TooltipProvider delayDuration={300}>
+      <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Link

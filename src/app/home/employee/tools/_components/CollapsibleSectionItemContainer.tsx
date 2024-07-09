@@ -5,6 +5,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDownIcon, TrashIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type CollapsibleSectionItemContainerProps = {
   triggerTitle?: string;
@@ -78,17 +84,24 @@ const CollapsibleSectionItemContainer = ({
         </AnimatePresence>
       </motion.div>
       {onDeleteItemClick ? (
-        <Button
-          className={cn(
-            "absolute -right-9 top-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all text-muted-foreground ease-out",
-            triggerDescription && "top-4",
-          )}
-          onClick={onDeleteItemClick}
-          size="icon"
-          variant="ghost"
-        >
-          <TrashIcon />
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                className={cn(
+                  "absolute -right-9 top-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all text-muted-foreground ease-out",
+                  triggerDescription && "top-4",
+                )}
+                onClick={onDeleteItemClick}
+                size="icon"
+                variant="ghost"
+              >
+                <TrashIcon />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Delete</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       ) : null}
     </div>
   );
