@@ -1,5 +1,8 @@
 "use client";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  INTERNAL_SECTION_TAGS,
+  SECTION_DESCRIPTIONS_BY_TAG,
+} from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
@@ -94,9 +97,11 @@ const CvBuilderEmploymentHistorySection = () => {
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
-          List your key accomplishments from the past decade. Use bullet points
-          and include specific metrics where possible (e.g., 'Increased X by Y%
-          through Z initiative').
+          {
+            SECTION_DESCRIPTIONS_BY_TAG[
+              INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY
+            ]
+          }
         </p>
       </div>
       <div>

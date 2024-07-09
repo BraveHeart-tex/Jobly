@@ -55,6 +55,8 @@ export const INTERNAL_SECTION_TAGS = {
   PROFESSIONAL_SUMMARY: "professional-summary",
   EMPLOYMENT_HISTORY: "employment-history",
   WEBSITES_SOCIAL_LINKS: "websites-social-links",
+  SKILLS: "skills",
+  EDUCATION: "education",
 } as const;
 
 export const SECTION_DESCRIPTIONS_BY_TAG = {

@@ -1,6 +1,9 @@
 "use client";
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  INTERNAL_SECTION_TAGS,
+  SECTION_DESCRIPTIONS_BY_TAG,
+} from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 
@@ -50,9 +53,11 @@ const CvBuilderProfessionalSummarySection = () => {
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
-          Craft 2-4 short and energetic sentences to captivate your reader!
-          Highlight your role, experience, and most importantly, your greatest
-          achievements, best qualities, and top skills.
+          {
+            SECTION_DESCRIPTIONS_BY_TAG[
+              INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY
+            ]
+          }
         </p>
       </div>
       <DocumentBuilderRichTextInput field={field} renderLabel={false} />
