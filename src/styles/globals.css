@@ -38,81 +38,46 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    /* White */
     --foreground: 210 15% 15%;
-    /* Dark Gray */
     --card: 0 0% 100%;
-    /* White */
     --card-foreground: 210 15% 15%;
-    /* Dark Gray */
     --popover: 0 0% 100%;
-    /* White */
     --popover-foreground: 210 15% 15%;
-    /* Dark Gray */
     --primary: 215 80% 50%;
-    /* Blue */
     --primary-foreground: 0 0% 100%;
-    /* White */
     --secondary: 0 0% 95%;
-    /* Light Gray */
     --secondary-foreground: 210 15% 15%;
-    /* Dark Gray */
     --muted: 0 0% 95%;
-    /* Light Gray */
     --muted-foreground: 210 10% 50%;
-    /* Medium Gray */
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 80% 50%;
-    /* Red */
     --destructive-foreground: 0 0% 100%;
-    /* White */
     --border: 210 10% 90%;
-    /* Light Gray */
     --input: 210 10% 90%;
-    /* Light Gray */
     --ring: 215 80% 50%;
-    /* Blue */
     --radius: 0.5rem;
-    /* Border radius */
   }
   .dark {
     --background: 210 15% 15%;
-    /* Dark Gray */
     --foreground: 0 0% 95%;
-    /* White */
     --card: 210 10% 10%;
-    /* Darker Gray */
     --card-foreground: 0 0% 95%;
-    /* White */
     --popover: 210 10% 10%;
-    /* Darker Gray */
     --popover-foreground: 0 0% 95%;
-    /* White */
     --primary: 215 80% 50%;
-    /* Blue */
     --primary-foreground: 0 0% 100%;
-    /* White */
     --secondary: 210 10% 20%;
-    /* Dark Gray */
     --secondary-foreground: 0 0% 95%;
-    /* White */
     --muted: 210 10% 20%;
-    /* Dark Gray */
     --muted-foreground: 210 5% 80%;
-    /* Light Gray */
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 80% 50%;
-    /* Red */
     --destructive-foreground: 0 0% 95%;
-    /* White */
     --border: 210 10% 20%;
-    /* Dark Gray */
     --input: 210 10% 20%;
-    /* Dark Gray */
     --ring: 215 80% 50%;
-    /* Blue */
   }
 }
 
@@ -133,7 +98,9 @@
 }
 
 .text-editor .ql-editor {
-  min-height: 10em !important;
+  min-height: 10em;
+  background: hsl(var(--muted) / 0.3);
+  color: hsl(var(--foreground) / 0.8);
 }
 
 .text-editor .ql-toolbar  {
@@ -141,6 +108,6 @@
   border-top-right-radius: 0.5em;
   border-bottom: none;
   border-color: hsl(var(--input));
-  background-color: hsl(var(--muted) / 0.3);
-  color: hsl(var(--muted-foreground));
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
 }

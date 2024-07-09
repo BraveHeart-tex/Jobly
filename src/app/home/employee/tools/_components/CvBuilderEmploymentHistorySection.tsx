@@ -5,7 +5,7 @@ import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules, groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
-import AddEmploymentButton from "./AddEmploymentButton";
+import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
@@ -26,6 +26,9 @@ const CvBuilderEmploymentHistorySection = () => {
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
+  const setFieldValue = useDocumentBuilderStore(
+    (state) => state.setFieldValueByFieldId,
+  );
 
   const renderGroupItems = () => {
     const groupedFields = groupEveryN(fields, 6);
@@ -36,6 +39,7 @@ const CvBuilderEmploymentHistorySection = () => {
       const endDateField = group[2] as SectionField;
       const employerField = group[3] as SectionField;
       const cityField = group[4] as SectionField;
+      const employmentDescriptionField = group[5] as SectionField;
 
       const jobTitle = getFieldValueByFieldId(jobTitleField?.id as number)
         ?.value as string;
@@ -45,6 +49,9 @@ const CvBuilderEmploymentHistorySection = () => {
         ?.value as string;
       const employer = getFieldValueByFieldId(employerField?.id as number)
         ?.value as string;
+      const employmentDescription = getFieldValueByFieldId(
+        employmentDescriptionField?.id as number,
+      )?.value as string;
 
       let triggerTitle = jobTitle ? `${jobTitle} at ${employer}` : employer;
       let description = `${startDate} - ${endDate}`;
@@ -88,9 +95,9 @@ const CvBuilderEmploymentHistorySection = () => {
                       lists: true,
                       links: true,
                     })}
-                    value={""}
-                    onChange={() => {
-                      "";
+                    value={employmentDescription}
+                    onChange={(value) => {
+                      setFieldValue(employmentDescriptionField.id, value);
                     }}
                   />
                 </div>
@@ -116,11 +123,19 @@ const CvBuilderEmploymentHistorySection = () => {
         {fields.length > 0 ? (
           <div className="grid gap-2">
             {renderGroupItems()}
-            <AddEmploymentButton sectionId={section?.id as number} />
+            <AddSectionItemButton
+              sectionId={section?.id as number}
+              templateOption="employmentHistory"
+              label="Add one more employment"
+            />
           </div>
         ) : (
           <div>
-            <AddEmploymentButton sectionId={section?.id as number} />
+            <AddSectionItemButton
+              sectionId={section?.id as number}
+              templateOption="employmentHistory"
+              label="Add employment"
+            />
           </div>
         )}
       </div>

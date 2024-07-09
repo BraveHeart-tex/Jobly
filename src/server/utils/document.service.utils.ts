@@ -6,7 +6,7 @@ const TEMPLATE_OPTIONS = {
   CUSTOM_SECTION_ITEM: "customSectionItem",
 } as const;
 
-type FieldTemplateOption =
+export type FieldTemplateOption =
   (typeof TEMPLATE_OPTIONS)[keyof typeof TEMPLATE_OPTIONS];
 
 export const getFieldInsertTemplate = (

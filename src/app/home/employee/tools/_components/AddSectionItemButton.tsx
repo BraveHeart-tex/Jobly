@@ -6,19 +6,29 @@ import type {
   SectionField,
   SectionFieldValue,
 } from "@/server/db/schema";
-import { getFieldInsertTemplate } from "@/server/utils/document.service.utils";
+import {
+  type FieldTemplateOption,
+  getFieldInsertTemplate,
+} from "@/server/utils/document.service.utils";
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
-type AddEmploymentButtonProps = {
+type AddSectionItemButtonProps = {
   sectionId: Section["id"];
+  templateOption: FieldTemplateOption;
+  label: string;
 };
 
-const AddEmploymentButton = ({ sectionId }: AddEmploymentButtonProps) => {
+const AddSectionItemButton = ({
+  sectionId,
+  templateOption,
+  label,
+}: AddSectionItemButtonProps) => {
   const addField = useDocumentBuilderStore((state) => state.addField);
   const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
-  const fieldsToInsert = getFieldInsertTemplate(sectionId, "employmentHistory");
+  const fieldsToInsert = getFieldInsertTemplate(sectionId, templateOption);
 
+  // TODO: Will be using optimistic updates and set the id in the store
   const { mutate: addFields, isPending } =
     api.document.addFieldsWithValues.useMutation({
       onSuccess({ fieldIds, fieldValueIds }) {
@@ -42,7 +52,7 @@ const AddEmploymentButton = ({ sectionId }: AddEmploymentButtonProps) => {
       },
     });
 
-  const handleAddEmployment = () => {
+  const handleAddItem = () => {
     addFields({
       fields: fieldsToInsert,
     });
@@ -53,11 +63,11 @@ const AddEmploymentButton = ({ sectionId }: AddEmploymentButtonProps) => {
       className="flex items-center gap-1 w-full hover:text-primary justify-start"
       variant="ghost"
       disabled={isPending}
-      onClick={handleAddEmployment}
+      onClick={handleAddItem}
     >
-      <PlusIcon /> Add employment
+      <PlusIcon /> {label}
     </Button>
   );
 };
 
-export default AddEmploymentButton;
+export default AddSectionItemButton;
