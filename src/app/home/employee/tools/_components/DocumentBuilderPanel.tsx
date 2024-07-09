@@ -81,7 +81,7 @@ const DocumentBuilderPanel = () => {
         <DocumentBuilderHeader />
         <DocumentBuilderViewToggle ref={builderContainerRef} />
       </div>
-      <div className="grid gap-6">
+      <div className="grid gap-6 max-w-screen-2xl mx-auto">
         {sections
           .sort((a, b) => a.displayOrder - b.displayOrder)
           .map((section) => {

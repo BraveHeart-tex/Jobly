@@ -95,12 +95,15 @@
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   border-color: hsl(var(--input));
+  max-width: 100%;
 }
 
 .text-editor .ql-editor {
   min-height: 10em;
   background: hsl(var(--muted) / 0.3);
   color: hsl(var(--foreground) / 0.8);
+  overflow: auto;
+  max-width: 100%;
 }
 
 .text-editor .ql-toolbar  {

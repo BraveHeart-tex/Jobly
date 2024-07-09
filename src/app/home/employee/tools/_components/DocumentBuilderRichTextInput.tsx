@@ -24,23 +24,25 @@ const DocumentBuilderRichTextInput = ({
   const value = getFieldValueByFieldId(field.id)?.value ?? "";
 
   return (
-    <div className="flex flex-col gap-2">
-      {renderLabel ? (
-        <Label className="text-foreground/80 font-normal w-full text-left">
-          {field.fieldName}
-        </Label>
-      ) : null}
-      <QuillEditor
-        modules={generateEditorModules({
-          formatting: ["bold", "italic", "underline", "strike"],
-          lists: true,
-          links: true,
-        })}
-        value={value}
-        onChange={(value) => {
-          setFieldValueByFieldId(field.id, value);
-        }}
-      />
+    <div className="w-full overflow-hidden">
+      <div className="flex flex-col gap-2">
+        {renderLabel ? (
+          <Label className="text-foreground/80 font-normal w-full text-left">
+            {field.fieldName}
+          </Label>
+        ) : null}
+        <QuillEditor
+          modules={generateEditorModules({
+            formatting: ["bold", "italic", "underline", "strike"],
+            lists: true,
+            links: true,
+          })}
+          value={value}
+          onChange={(value) => {
+            setFieldValueByFieldId(field.id, value);
+          }}
+        />
+      </div>
     </div>
   );
 };

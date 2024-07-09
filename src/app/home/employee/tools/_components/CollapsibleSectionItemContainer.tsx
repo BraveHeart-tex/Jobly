@@ -89,7 +89,7 @@ const CollapsibleSectionItemContainer = ({
             <TooltipTrigger asChild>
               <Button
                 className={cn(
-                  "absolute -right-9 top-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all text-muted-foreground ease-out",
+                  "hidden absolute -right-9 top-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all text-muted-foreground ease-out lg:flex",
                   triggerDescription && "top-4",
                 )}
                 onClick={onDeleteItemClick}

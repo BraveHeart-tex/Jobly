@@ -6,6 +6,7 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
+import { cn } from "@/lib/utils";
 
 const CvBuilderProfessionalSummarySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -27,24 +28,21 @@ const CvBuilderProfessionalSummarySection = () => {
   if (!field) return;
 
   const renderCharCountIndicator = () => {
-    const charCount = fieldValue?.replace(/<[^>]*>/g, "")?.length;
-
-    if (!charCount) {
-      return <p>0 / 400+</p>;
-    }
-
-    if (charCount < 400) {
-      return (
-        <div className="flex items-center gap-2 text-orange-600">
-          <p>{charCount} / 400+</p>
-        </div>
-      );
-    }
+    // remove html tags
+    const charCount = fieldValue?.replace(/<[^>]*>/g, "")?.length ?? 0;
+    const maxCount = charCount >= 400 ? 600 : 400;
+    const colorClass =
+      charCount === 0
+        ? ""
+        : charCount < 400
+          ? "text-yellow-600"
+          : "text-green-600";
 
     return (
-      <div className="flex items-center gap-2 text-green-600">
-        <p>{charCount} / 600</p>
-      </div>
+      <p className={cn("tabular-nums whitespace-nowrap", colorClass)}>
+        {charCount} / {maxCount}
+        {maxCount === 400 ? "+" : ""}
+      </p>
     );
   };
 
@@ -61,7 +59,7 @@ const CvBuilderProfessionalSummarySection = () => {
         </p>
       </div>
       <DocumentBuilderRichTextInput field={field} renderLabel={false} />
-      <div className="w-full items-center gap-10 justify-between hidden lg:flex">
+      <div className="w-full items-center justify-between hidden lg:flex">
         <p className="text-sm text-muted-foreground">
           Tip: Aim for 400-600 characters in your application to boost your
           chances of landing an interview.

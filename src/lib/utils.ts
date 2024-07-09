@@ -101,7 +101,7 @@ export const generateEditorModules = (config: ToolbarConfig): StringMap => {
     .filter(([condition]) => condition)
     .map(([, item]) => item);
 
-  return { toolbar };
+  return { toolbar, clipboard: { matchVisual: false } };
 };
 
 export const matchPathnameToEditPath = (path: string): boolean => {
