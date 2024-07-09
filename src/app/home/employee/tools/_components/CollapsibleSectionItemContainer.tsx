@@ -47,7 +47,7 @@ const CollapsibleSectionItemContainer = ({
   onDeleteItemClick,
 }: CollapsibleSectionItemContainerProps) => {
   const [open, setOpen] = useState(false);
-  const isMobile = useMedia("(max-width: 768px)", false);
+  const isMobileOrTablet = useMedia("(max-width: 1024px)", false);
 
   return (
     <div className="w-full relative group">
@@ -71,7 +71,7 @@ const CollapsibleSectionItemContainer = ({
                 </span>
               </div>
             </Button>
-            {isMobile ? (
+            {isMobileOrTablet ? (
               <Popover>
                 <PopoverTrigger>
                   <EllipsisIcon className="mr-2 group text-muted-foreground transition-all" />
@@ -81,6 +81,7 @@ const CollapsibleSectionItemContainer = ({
                     <Button
                       variant="ghost"
                       className="border-b rounded-none py-6 flex items-center gap-2 w-full justify-start"
+                      onClick={() => setOpen(true)}
                     >
                       <PencilIcon className="text-primary" size={18} />
                       <span className="text-sm">Edit</span>
@@ -111,7 +112,7 @@ const CollapsibleSectionItemContainer = ({
           </div>
         </div>
         <AnimatePresence initial={false}>
-          {open && !isMobile && (
+          {open && !isMobileOrTablet && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{
@@ -156,7 +157,7 @@ const CollapsibleSectionItemContainer = ({
           </Tooltip>
         </TooltipProvider>
       ) : null}
-      {isMobile ? (
+      {isMobileOrTablet ? (
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetContent showClose={false} className="min-w-full">
             <SheetHeader className="space-y-1 items-center">
