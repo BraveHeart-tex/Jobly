@@ -68,4 +68,8 @@ export const SECTION_DESCRIPTIONS_BY_TAG = {
     "List your key accomplishments from the past decade. Use bullet points and include specific metrics where possible (e.g., 'Increased X by Y% through Z initiative').",
   [INTERNAL_SECTION_TAGS.EDUCATION]:
     "Your diverse educational background highlights the unique value and skills you'll bring to the role.",
+  [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]:
+    "Feel free to include links to websites you'd like hiring managers to visit, such as your portfolio, LinkedIn profile, or personal website.",
+  [INTERNAL_SECTION_TAGS.SKILLS]:
+    "Select five key skills that demonstrate your suitability for the position. Ensure they align with the essential skills listed in the job description, particularly when applying through an online system.",
 } as const;

@@ -19,16 +19,18 @@ export const getFieldInsertTemplate = (
   const employmentHistoryFields = getEmploymentHistoryFields(sectionId);
   const customSectionFields = getCustomSectionFields(sectionId);
   const educationSectionFields = getEducationSectionFields(sectionId);
+  const websitesAndSocialLinksSectionFields =
+    getWebsitesAndSocialLinksSectionFields(sectionId);
+  const skillSectionFields = getSkillSectionFields(sectionId);
 
   const templateMap = {
     [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: personalDetailsFields,
     [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]: professionalSummaryFields,
     [INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY]: employmentHistoryFields,
     [INTERNAL_SECTION_TAGS.EDUCATION]: educationSectionFields,
-    // TODO: WEBSITES_SOCIAL_LINKS
-    [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]: [],
-    // TODO: SKILLS
-    [INTERNAL_SECTION_TAGS.SKILLS]: [],
+    [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]:
+      websitesAndSocialLinksSectionFields,
+    [INTERNAL_SECTION_TAGS.SKILLS]: skillSectionFields,
     [INTERNAL_SECTION_TAGS.CUSTOM]: customSectionFields,
     [INTERNAL_SECTION_TAGS.INTERNSHIP]: employmentHistoryFields,
   };
@@ -263,3 +265,33 @@ export const generateFieldValue = (item: {
   fieldId: item.fieldId,
   value: item.defaultValue || "",
 });
+
+export const getWebsitesAndSocialLinksSectionFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "Label",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Link",
+    fieldType: "string",
+    sectionId,
+  },
+];
+
+export const getSkillSectionFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "Skill",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Level",
+    fieldType: "string",
+    sectionId,
+  },
+];
