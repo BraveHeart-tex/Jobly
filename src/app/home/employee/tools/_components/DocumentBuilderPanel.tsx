@@ -27,6 +27,7 @@ import type React from "react";
 import { useRef } from "react";
 import CvBuilderEducationSection from "./CvBuilderEducationSection";
 import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
+import CvBuilderCustomSectionOptions from "./CvBuilderCustomSectionOptions";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
@@ -101,6 +102,7 @@ const DocumentBuilderPanel = () => {
             );
           })}
       </div>
+      <CvBuilderCustomSectionOptions />
     </div>
   );
 };

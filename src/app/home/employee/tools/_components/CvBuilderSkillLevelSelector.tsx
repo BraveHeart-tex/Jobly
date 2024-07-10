@@ -17,24 +17,24 @@ type SKILL_LEVEL = InferValueTypeFromConst<typeof SKILL_LEVELS>;
 
 const SKILL_LEVEL_COLORS = {
   [SKILL_LEVELS.NOVICE]: {
-    indicator: "bg-red-500 dark:bg-red-300",
-    background: "bg-red-200 dark:bg-red-600",
+    indicator: "bg-red-600 dark:bg-red-300",
+    background: "bg-red-400 dark:bg-red-600",
   },
   [SKILL_LEVELS.BEGINNER]: {
-    indicator: "bg-orange-500 dark:bg-orange-300",
-    background: "bg-orange-200 dark:bg-orange-600",
+    indicator: "bg-orange-600 dark:bg-orange-300",
+    background: "bg-orange-400 dark:bg-orange-600",
   },
   [SKILL_LEVELS.SKILLFUL]: {
-    indicator: "bg-amber-500 dark:bg-amber-300",
-    background: "bg-amber-200 dark:bg-amber-600",
+    indicator: "bg-amber-600 dark:bg-amber-300",
+    background: "bg-amber-400 dark:bg-amber-600",
   },
   [SKILL_LEVELS.EXPERIENCED]: {
-    indicator: "bg-green-500 dark:bg-green-300",
-    background: "bg-green-200 dark:bg-green-600",
+    indicator: "bg-green-600 dark:bg-green-300",
+    background: "bg-green-400 dark:bg-green-600",
   },
   [SKILL_LEVELS.EXPERT]: {
-    indicator: "bg-indigo-500 dark:bg-indigo-300",
-    background: "bg-indigo-200 dark:bg-indigo-600",
+    indicator: "bg-indigo-600 dark:bg-indigo-300",
+    background: "bg-indigo-400 dark:bg-indigo-600",
   },
 };
 
