@@ -25,6 +25,7 @@ export const getFieldInsertTemplate = (
   const courseSectionFields = getCourseSectionFields(sectionId);
   const extraCurricularActivitiesSectionFields =
     getExtraCurricularActivitiesFields(sectionId);
+  const hobbiesSectionFields = getHobbiesSectionFields(sectionId);
 
   const templateMap = {
     [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: personalDetailsFields,
@@ -38,12 +39,11 @@ export const getFieldInsertTemplate = (
     [INTERNAL_SECTION_TAGS.INTERNSHIPS]: employmentHistoryFields,
     [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]:
       extraCurricularActivitiesSectionFields,
-    // TODO:
-    [INTERNAL_SECTION_TAGS.HOBBIES]: [],
+    [INTERNAL_SECTION_TAGS.HOBBIES]: hobbiesSectionFields,
+    [INTERNAL_SECTION_TAGS.COURSES]: courseSectionFields,
+
     // TODO:
     [INTERNAL_SECTION_TAGS.REFERENCES]: [],
-    [INTERNAL_SECTION_TAGS.COURSES]: courseSectionFields,
-    // TODO:
     [INTERNAL_SECTION_TAGS.LANGUAGES]: [],
   };
 
@@ -367,6 +367,16 @@ export const getExtraCurricularActivitiesFields = (
   {
     fieldName: "Description",
     fieldType: "richText",
+    sectionId,
+  },
+];
+
+export const getHobbiesSectionFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "What do you like?",
+    fieldType: "textarea",
     sectionId,
   },
 ];
