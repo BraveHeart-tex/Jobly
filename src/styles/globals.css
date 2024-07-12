@@ -130,6 +130,5 @@
 }
 
 .text-editor .quill > .ql-container > .ql-editor.ql-blank::before {
-  color: hsl(var(--muted-foreground) / 0.9);
-  font-style: normal;
+  @apply not-italic text-muted-foreground dark:text-muted-foreground/70 text-sm
 }
