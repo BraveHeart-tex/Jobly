@@ -30,6 +30,7 @@ import CvBuilderCustomSectionOptions from "./CvBuilderCustomSectionOptions";
 import CvBuilderEducationSection from "./CvBuilderEducationSection";
 import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
 import CvBuilderCoursesSection from "./CvBuilderCoursesSection";
+import CvBuilderInternshipsSection from "./CvBuilderInternshipsSection";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
@@ -55,8 +56,9 @@ const DocumentBuilderPanel = () => {
       [INTERNAL_SECTION_TAGS.CUSTOM]: (
         <CvBuilderCustomSection section={section} />
       ),
-      // TODO:
-      [INTERNAL_SECTION_TAGS.INTERNSHIPS]: <></>,
+      [INTERNAL_SECTION_TAGS.INTERNSHIPS]: (
+        <CvBuilderInternshipsSection section={section} />
+      ),
       // TODO:
       [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: <></>,
       // TODO:
