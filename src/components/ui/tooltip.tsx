@@ -6,10 +6,11 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const TooltipProvider = TooltipPrimitive.Provider;
+const DEFAULT_TOOLTIP_DELAY_DURATION = 400;
 
 const Tooltip = ({
   defaultOpen = false,
-  delayDuration = 400,
+  delayDuration = DEFAULT_TOOLTIP_DELAY_DURATION,
   ...props
 }: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>) => (
   <TooltipPrimitive.Root

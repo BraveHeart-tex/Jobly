@@ -55,7 +55,7 @@ const DocumentBuilderPanel = () => {
         <CvBuilderCustomSection section={section} />
       ),
       // TODO:
-      [INTERNAL_SECTION_TAGS.INTERNSHIP]: <></>,
+      [INTERNAL_SECTION_TAGS.INTERNSHIPS]: <></>,
       // TODO:
       [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: <></>,
       // TODO:

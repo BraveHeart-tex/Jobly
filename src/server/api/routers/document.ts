@@ -79,4 +79,9 @@ export const documentRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       return documentService.addSectionByInternalTag(input);
     }),
+  deleteSection: protectedProcedure
+    .input(z.object({ sectionId: z.number() }))
+    .mutation(async ({ input: { sectionId } }) => {
+      return documentService.deleteSection(sectionId);
+    }),
 });

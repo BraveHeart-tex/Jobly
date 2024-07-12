@@ -53,7 +53,7 @@ const ConfirmDialog = () => {
           <AlertDialogDescription>{message}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 self-end">
             <Button
               disabled={loading}
               variant="outline"

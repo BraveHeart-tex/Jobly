@@ -303,3 +303,7 @@ export const addSectionByInternalTag = async (data: SectionInsertModel) => {
     };
   });
 };
+
+export const deleteSection = async (sectionId: Section["id"]) => {
+  return db.delete(sectionSchema).where(eq(sectionSchema.id, sectionId));
+};

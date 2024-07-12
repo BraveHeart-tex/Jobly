@@ -51,7 +51,7 @@ const OTHER_SECTION_OPTIONS: OtherSectionOption[] = [
   {
     icon: BriefcaseBusinessIcon,
     name: "Internships",
-    internalSectionTag: INTERNAL_SECTION_TAGS.INTERNSHIP,
+    internalSectionTag: INTERNAL_SECTION_TAGS.INTERNSHIPS,
   },
   {
     icon: LanguagesIcon,

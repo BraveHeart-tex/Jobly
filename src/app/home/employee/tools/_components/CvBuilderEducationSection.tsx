@@ -13,6 +13,8 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 
+const EDUCATION_SECTION_ITEMS_COUNT = 6;
+
 const CvBuilderEducationSection = () => {
   const section = useDocumentBuilderStore((state) =>
     state.sections.find(
@@ -31,7 +33,7 @@ const CvBuilderEducationSection = () => {
   const { removeFields } = useRemoveFields();
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, 6);
+    const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
 
     return groupedFields.map((group) => {
       const schoolField = group[0] as SectionField;

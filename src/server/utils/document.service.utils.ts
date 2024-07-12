@@ -32,7 +32,7 @@ export const getFieldInsertTemplate = (
       websitesAndSocialLinksSectionFields,
     [INTERNAL_SECTION_TAGS.SKILLS]: skillSectionFields,
     [INTERNAL_SECTION_TAGS.CUSTOM]: customSectionFields,
-    [INTERNAL_SECTION_TAGS.INTERNSHIP]: employmentHistoryFields,
+    [INTERNAL_SECTION_TAGS.INTERNSHIPS]: employmentHistoryFields,
     // TODO:
     [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: [],
     // TODO:

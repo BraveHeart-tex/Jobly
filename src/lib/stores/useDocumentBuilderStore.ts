@@ -48,6 +48,7 @@ type DocumentBuilderActions = {
   addField: (field: SectionField) => void;
   addFieldValue: (fieldValue: SectionFieldValue) => void;
   removeFields: (fieldIds: SectionField["id"][]) => void;
+  removeSection: (sectionId: Section["id"]) => void;
 };
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -133,6 +134,22 @@ export const useDocumentBuilderStore = create<
           (fieldValue) => !fieldIds.includes(fieldValue.fieldId),
         );
         set({ fields: newFields, fieldValues: newFieldValues });
+      },
+      removeSection: (sectionId) => {
+        const newSections = get().sections.filter(
+          (section) => section.id !== sectionId,
+        );
+        const newFields = get().fields.filter(
+          (field) => field.sectionId !== sectionId,
+        );
+        const newFieldValues = get().fieldValues.filter((fieldValue) =>
+          newFields.map((field) => field.id).includes(fieldValue.fieldId),
+        );
+        set({
+          sections: newSections,
+          fields: newFields,
+          fieldValues: newFieldValues,
+        });
       },
     }),
     {

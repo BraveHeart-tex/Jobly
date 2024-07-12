@@ -14,6 +14,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
 
+const SKILL_SECTION_ITEMS_COUNT = 2;
+
 const CvBuilderSkillsSection = () => {
   const section = useDocumentBuilderStore((state) =>
     state.sections.find(
@@ -36,7 +38,7 @@ const CvBuilderSkillsSection = () => {
   const { removeFields } = useRemoveFields();
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, 2);
+    const groupedFields = groupEveryN(fields, SKILL_SECTION_ITEMS_COUNT);
 
     return groupedFields.map((group) => {
       const skillField = group[0] as SectionField;

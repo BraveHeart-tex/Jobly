@@ -7,12 +7,18 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DELETEABLE_INTERNAL_SECTION_TAGS,
+  type INTERNAL_SECTION_TAG,
+} from "@/lib/constants";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/server/db/schema";
 import { AnimatePresence, motion } from "framer-motion";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useDeleteSection } from "../_hooks/useDeleteSection";
 
 type EditableSectionTitleProps = {
   containerClassName?: string;
@@ -20,21 +26,29 @@ type EditableSectionTitleProps = {
   section: Section | undefined;
 };
 
+const PLACEHOLDER_OFFSET_PX = 26;
+
 const EditableSectionTitle = ({
   containerClassName,
   labelClassName,
   section,
 }: EditableSectionTitleProps) => {
-  const PLACEHOLDER_OFFSET_PX = 26;
+  const showConfirm = useConfirmStore((state) => state.showConfirmDialog);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const spanRef = useRef<HTMLSpanElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [focused, setFocused] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const value = section?.name;
+  const { deleteSection } = useDeleteSection();
 
   const setSectionValue = useDocumentBuilderStore(
     (state) => state.setSectionValue,
+  );
+
+  const isSectionDeleteable = DELETEABLE_INTERNAL_SECTION_TAGS.includes(
+    // @ts-ignore
+    section?.internalSectionTag as INTERNAL_SECTION_TAG,
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -63,6 +77,18 @@ const EditableSectionTitle = ({
     if (!spanRef.current) return 0;
 
     return spanRef.current.offsetWidth;
+  };
+
+  const handleDeleteSection = () => {
+    if (!section) return;
+    showConfirm({
+      title: "Delete Section",
+      message: "Are you sure you want to delete this section?",
+      primaryActionLabel: "Delete",
+      onConfirm: () => {
+        deleteSection({ sectionId: section.id });
+      },
+    });
   };
 
   const handleRenameClick = () => {
@@ -160,6 +186,28 @@ const EditableSectionTitle = ({
           </TooltipProvider>
         </div>
       )}
+      {!isEditing && isSectionDeleteable ? (
+        <>
+          <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="px-1 py-0"
+                    onClick={() => handleDeleteSection()}
+                  >
+                    <Trash size={18} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete Section</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

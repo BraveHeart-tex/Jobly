@@ -14,6 +14,8 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 
+const EMPLOYMENT_SECTION_ITEMS_COUNT = 6;
+
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>
     state.sections.find(
@@ -32,7 +34,7 @@ const CvBuilderEmploymentHistorySection = () => {
   const { removeFields } = useRemoveFields();
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, 6);
+    const groupedFields = groupEveryN(fields, EMPLOYMENT_SECTION_ITEMS_COUNT);
 
     return groupedFields.map((group) => {
       const jobTitleField = group[0] as SectionField;
