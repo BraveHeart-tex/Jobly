@@ -23,6 +23,8 @@ export const getFieldInsertTemplate = (
     getWebsitesAndSocialLinksSectionFields(sectionId);
   const skillSectionFields = getSkillSectionFields(sectionId);
   const courseSectionFields = getCourseSectionFields(sectionId);
+  const extraCurricularActivitiesSectionFields =
+    getExtraCurricularActivitiesFields(sectionId);
 
   const templateMap = {
     [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: personalDetailsFields,
@@ -34,8 +36,8 @@ export const getFieldInsertTemplate = (
     [INTERNAL_SECTION_TAGS.SKILLS]: skillSectionFields,
     [INTERNAL_SECTION_TAGS.CUSTOM]: customSectionFields,
     [INTERNAL_SECTION_TAGS.INTERNSHIPS]: employmentHistoryFields,
-    // TODO:
-    [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: [],
+    [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]:
+      extraCurricularActivitiesSectionFields,
     // TODO:
     [INTERNAL_SECTION_TAGS.HOBBIES]: [],
     // TODO:
@@ -330,6 +332,41 @@ export const getCourseSectionFields = (
   {
     fieldName: "End Date",
     fieldType: "date",
+    sectionId,
+  },
+];
+
+export const getExtraCurricularActivitiesFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "Function Title",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Start Date",
+    fieldType: "date",
+    sectionId,
+  },
+  {
+    fieldName: "End Date",
+    fieldType: "date",
+    sectionId,
+  },
+  {
+    fieldName: "Employer",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "City",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Description",
+    fieldType: "richText",
     sectionId,
   },
 ];
