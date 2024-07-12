@@ -22,6 +22,7 @@ export const getFieldInsertTemplate = (
   const websitesAndSocialLinksSectionFields =
     getWebsitesAndSocialLinksSectionFields(sectionId);
   const skillSectionFields = getSkillSectionFields(sectionId);
+  const courseSectionFields = getCourseSectionFields(sectionId);
 
   const templateMap = {
     [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: personalDetailsFields,
@@ -39,8 +40,7 @@ export const getFieldInsertTemplate = (
     [INTERNAL_SECTION_TAGS.HOBBIES]: [],
     // TODO:
     [INTERNAL_SECTION_TAGS.REFERENCES]: [],
-    // TODO:
-    [INTERNAL_SECTION_TAGS.COURSES]: [],
+    [INTERNAL_SECTION_TAGS.COURSES]: courseSectionFields,
     // TODO:
     [INTERNAL_SECTION_TAGS.LANGUAGES]: [],
   };
@@ -305,6 +305,31 @@ export const getSkillSectionFields = (
   {
     fieldName: "Level",
     fieldType: "string",
+    sectionId,
+  },
+];
+
+export const getCourseSectionFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "Course",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Institution",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Start Date",
+    fieldType: "date",
+    sectionId,
+  },
+  {
+    fieldName: "End Date",
+    fieldType: "date",
     sectionId,
   },
 ];
