@@ -33,6 +33,7 @@ import CvBuilderCoursesSection from "./CvBuilderCoursesSection";
 import CvBuilderInternshipsSection from "./CvBuilderInternshipsSection";
 import CvBuilderExtraCurricularSection from "./CvBuilderExtraCurricularSection";
 import CvBuilderHobbiesSection from "./CvBuilderHobbiesSection";
+import CvBuilderReferencesSection from "./CvBuilderReferencesSection";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
@@ -67,8 +68,9 @@ const DocumentBuilderPanel = () => {
       [INTERNAL_SECTION_TAGS.HOBBIES]: (
         <CvBuilderHobbiesSection section={section} />
       ),
-      // TODO:
-      [INTERNAL_SECTION_TAGS.REFERENCES]: <></>,
+      [INTERNAL_SECTION_TAGS.REFERENCES]: (
+        <CvBuilderReferencesSection section={section} />
+      ),
       [INTERNAL_SECTION_TAGS.COURSES]: (
         <CvBuilderCoursesSection section={section} />
       ),

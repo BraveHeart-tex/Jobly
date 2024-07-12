@@ -26,6 +26,7 @@ export const getFieldInsertTemplate = (
   const extraCurricularActivitiesSectionFields =
     getExtraCurricularActivitiesFields(sectionId);
   const hobbiesSectionFields = getHobbiesSectionFields(sectionId);
+  const referencesSectionFields = getReferencesSectionFields(sectionId);
 
   const templateMap = {
     [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: personalDetailsFields,
@@ -42,8 +43,7 @@ export const getFieldInsertTemplate = (
     [INTERNAL_SECTION_TAGS.HOBBIES]: hobbiesSectionFields,
     [INTERNAL_SECTION_TAGS.COURSES]: courseSectionFields,
 
-    // TODO:
-    [INTERNAL_SECTION_TAGS.REFERENCES]: [],
+    [INTERNAL_SECTION_TAGS.REFERENCES]: referencesSectionFields,
     [INTERNAL_SECTION_TAGS.LANGUAGES]: [],
   };
 
@@ -377,6 +377,31 @@ export const getHobbiesSectionFields = (
   {
     fieldName: "What do you like?",
     fieldType: "textarea",
+    sectionId,
+  },
+];
+
+export const getReferencesSectionFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "Referent's Full Name",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Company",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Phone",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Referent's Email",
+    fieldType: "string",
     sectionId,
   },
 ];
