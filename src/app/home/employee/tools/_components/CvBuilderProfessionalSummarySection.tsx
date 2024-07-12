@@ -5,8 +5,8 @@ import {
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import { cn } from "@/lib/utils";
+import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 
 const CvBuilderProfessionalSummarySection = () => {
   const section = useDocumentBuilderStore((state) =>

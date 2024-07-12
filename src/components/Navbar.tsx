@@ -6,8 +6,8 @@ import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
-import UserMenu from "./UserMenu";
 import NavbarContainer from "./NavbarContainer";
+import UserMenu from "./UserMenu";
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();

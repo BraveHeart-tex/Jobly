@@ -1,18 +1,18 @@
 "use client";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import DocumentBuilderInput from "./DocumentBuilderInput";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { MONTHS } from "@/lib/constants";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import type { SectionField } from "@/server/db/schema";
+import { MONTHS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import type { SectionField } from "@/server/db/schema";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useState } from "react";
+import DocumentBuilderInput from "./DocumentBuilderInput";
 
 const CURRENT_MONTH = MONTHS[new Date().getMonth()] ?? "";
 const CURRENT_YEAR = new Date().getFullYear();

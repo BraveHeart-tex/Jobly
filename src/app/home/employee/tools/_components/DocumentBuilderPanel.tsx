@@ -25,16 +25,17 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
 import { useRef } from "react";
+import CvBuilderCustomSection from "./CvBuilderCustomSection";
+import CvBuilderCustomSectionOptions from "./CvBuilderCustomSectionOptions";
 import CvBuilderEducationSection from "./CvBuilderEducationSection";
 import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
-import CvBuilderCustomSectionOptions from "./CvBuilderCustomSectionOptions";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
   const builderContainerRef = useRef<HTMLDivElement | null>(null);
   const sections = useDocumentBuilderStore((state) => state.sections);
 
-  const renderSection = ({ internalSectionTag }: Section) => {
+  const renderSection = (section: Section) => {
     const sectionsByTag: Record<INTERNAL_SECTION_TAG, React.JSX.Element> = {
       [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: (
         <CvBuilderPersonalDetailsSection />
@@ -50,11 +51,26 @@ const DocumentBuilderPanel = () => {
         <CvBuilderWebsitesAndLinks />
       ),
       [INTERNAL_SECTION_TAGS.SKILLS]: <CvBuilderSkillsSection />,
-      [INTERNAL_SECTION_TAGS.CUSTOM]: <></>,
+      [INTERNAL_SECTION_TAGS.CUSTOM]: (
+        <CvBuilderCustomSection section={section} />
+      ),
+      // TODO:
       [INTERNAL_SECTION_TAGS.INTERNSHIP]: <></>,
+      // TODO:
+      [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: <></>,
+      // TODO:
+      [INTERNAL_SECTION_TAGS.HOBBIES]: <></>,
+      // TODO:
+      [INTERNAL_SECTION_TAGS.REFERENCES]: <></>,
+      // TODO:
+      [INTERNAL_SECTION_TAGS.COURSES]: <></>,
+      // TODO:
+      [INTERNAL_SECTION_TAGS.LANGUAGES]: <></>,
     };
 
-    return sectionsByTag[internalSectionTag as INTERNAL_SECTION_TAG] ?? null;
+    return (
+      sectionsByTag[section.internalSectionTag as INTERNAL_SECTION_TAG] ?? null
+    );
   };
 
   return (

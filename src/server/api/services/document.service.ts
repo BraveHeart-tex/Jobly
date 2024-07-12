@@ -14,6 +14,7 @@ import {
   type Section,
   type SectionField,
   type SectionFieldInsertModel,
+  type SectionFieldValue,
   type SectionFieldValueInsertModel,
   type SectionInsertModel,
   document as documentSchema,
@@ -79,6 +80,19 @@ const insertFields = async (
       trx.insert(fieldSchema).values({
         ...field,
         sectionId,
+      }),
+    ),
+  );
+
+  return results.map((result) => result[0].insertId);
+};
+
+const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
+  const results = await Promise.all(
+    fieldIds.map((fieldId) =>
+      trx.insert(fieldValueSchema).values({
+        fieldId,
+        value: "",
       }),
     ),
   );
@@ -250,4 +264,42 @@ export const removeFields = async (fieldIds: SectionField["id"][]) => {
       .delete(fieldValueSchema)
       .where(inArray(fieldValueSchema.fieldId, fieldIds)),
   ]);
+};
+
+export const addSectionByInternalTag = async (data: SectionInsertModel) => {
+  return db.transaction(async (trx) => {
+    const [{ insertId: sectionId }] = await trx
+      .insert(sectionSchema)
+      .values(data);
+
+    const fieldsTemplate = getFieldInsertTemplate(
+      sectionId,
+      data.internalSectionTag as INTERNAL_SECTION_TAG,
+    );
+
+    const fieldIds = await insertFields(trx, sectionId, fieldsTemplate);
+    const fieldValueIds = await insertFieldValues(trx, fieldIds);
+
+    const section = {
+      ...data,
+      id: sectionId,
+    };
+
+    const fields = fieldsTemplate.map((field, index) => ({
+      ...field,
+      id: fieldIds[index] as SectionField["id"],
+    }));
+
+    const fieldValues = fieldValueIds.map((fieldValueId, index) => ({
+      id: fieldValueId as SectionFieldValue["id"],
+      fieldId: fieldIds[index] as SectionFieldValue["fieldId"],
+      value: "",
+    }));
+
+    return {
+      section,
+      fields,
+      fieldValues,
+    };
+  });
 };

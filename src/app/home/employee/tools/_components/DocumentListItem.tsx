@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import type { Document } from "@/server/db/schema";
 import { format } from "date-fns";
 import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
@@ -20,7 +21,6 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
-import { cn } from "@/lib/utils";
 
 type DocumentListItemProps = {
   item: Document;

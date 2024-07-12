@@ -33,6 +33,16 @@ export const getFieldInsertTemplate = (
     [INTERNAL_SECTION_TAGS.SKILLS]: skillSectionFields,
     [INTERNAL_SECTION_TAGS.CUSTOM]: customSectionFields,
     [INTERNAL_SECTION_TAGS.INTERNSHIP]: employmentHistoryFields,
+    // TODO:
+    [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: [],
+    // TODO:
+    [INTERNAL_SECTION_TAGS.HOBBIES]: [],
+    // TODO:
+    [INTERNAL_SECTION_TAGS.REFERENCES]: [],
+    // TODO:
+    [INTERNAL_SECTION_TAGS.COURSES]: [],
+    // TODO:
+    [INTERNAL_SECTION_TAGS.LANGUAGES]: [],
   };
 
   return templateMap[templateOption] ?? [];

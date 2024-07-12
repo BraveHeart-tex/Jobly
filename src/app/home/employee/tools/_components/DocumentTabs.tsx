@@ -3,6 +3,7 @@ import { useCreateDocument } from "@/app/home/employee/tools/_hooks/useCreateDoc
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import type { InferValueTypeFromConst } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/server/db/schema";
 import { motion } from "framer-motion";
@@ -13,7 +14,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
-import type { InferValueTypeFromConst } from "@/lib/types";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",

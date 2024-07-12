@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);

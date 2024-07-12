@@ -4,8 +4,8 @@ import { useDocumentBuilderSearchParams } from "@/app/home/employee/tools/_hooks
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
-import DebouncedDocumentSaver from "./DebouncedDocumentSaver";
 import { useNetworkState } from "react-use";
+import DebouncedDocumentSaver from "./DebouncedDocumentSaver";
 
 const DocumentBuilderPreview = () => {
   const { online, previous } = useNetworkState();

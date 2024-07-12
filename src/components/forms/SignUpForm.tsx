@@ -11,8 +11,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
-import { type RouterOutputs, api } from "@/trpc/react";
+import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import type { RouterOutputs } from "router-types";
 import { toast } from "sonner";
 
 type SignUpFormProps = {

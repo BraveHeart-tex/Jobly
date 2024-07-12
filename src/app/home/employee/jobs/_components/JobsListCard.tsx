@@ -2,8 +2,8 @@
 import { useJobsListPageSearchParams } from "@/app/home/employee/jobs/_hooks/useJobsListPageSearchParams";
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
-import type { RouterOutputs } from "@/trpc/react";
 import { forwardRef } from "react";
+import type { RouterOutputs } from "router-types";
 import CompanyLogo from "./CompanyLogo";
 
 type JobsListCardProps = {
