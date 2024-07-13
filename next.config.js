@@ -11,6 +11,10 @@ const config = {
   experimental: {
     serverComponentsExternalPackages: ["@node-rs/argon2"],
   },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+    return config;
+  },
 };
 
 export default config;

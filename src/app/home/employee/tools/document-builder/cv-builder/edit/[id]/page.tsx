@@ -9,6 +9,7 @@ import { api } from "@/trpc/server";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ClientOnly from "@/app/home/employee/tools/_components/ClientOnly";
 
 const EditCvPage = async ({ params }: { params: { id: string } }) => {
   const documentResponse = await api.document.getDocumentDetails({
@@ -54,7 +55,9 @@ const EditCvPage = async ({ params }: { params: { id: string } }) => {
     <main>
       <DocumentBuilderPanel />
       <DocumentInitializer documentData={documentResponse} />
-      <DocumentBuilderPreview />
+      <ClientOnly>
+        <DocumentBuilderPreview />
+      </ClientOnly>
     </main>
   );
 };

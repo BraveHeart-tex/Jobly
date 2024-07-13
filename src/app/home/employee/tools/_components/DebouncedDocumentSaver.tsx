@@ -32,7 +32,7 @@ const DebouncedDocumentSaver = () => {
   }, [userLostConnection, setSaveDocumentDetailsFn, saveDocumentDetails]);
 
   return (
-    <div className="flex items-center justify-between mt-2">
+    <div className="flex items-center justify-between">
       <div className="flex items-center gap-1 text-muted dark:text-muted-foreground">
         <div className="relative">
           {isSavingDocument ? (

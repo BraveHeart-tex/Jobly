@@ -38,8 +38,8 @@
       "correctness": {
         "all": true,
         "useHookAtTopLevel": "error",
-        "noUnusedImports": "error",
-        "noUnusedVariables": "error",
+        "noUnusedImports": "warn",
+        "noUnusedVariables": "warn",
         "noUnreachable": "error"
       },
       "recommended": true

@@ -132,3 +132,7 @@
 .text-editor .quill > .ql-container > .ql-editor.ql-blank::before {
   @apply not-italic text-muted-foreground dark:text-muted-foreground/70 text-sm
 }
+
+canvas.react-pdf__Page__canvas {
+  @apply w-full max-w-full overflow-auto h-full max-h-full mx-auto
+}
