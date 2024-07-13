@@ -61,7 +61,7 @@ const CvBuilderProfessionalSummarySection = () => {
       <DocumentBuilderRichTextInput
         field={field}
         renderLabel={false}
-        placeholder="Seasoned software developer with over 8 years of experience and a proven track record of..."
+        placeholder="E.g. Seasoned software developer with over 8 years of experience and a proven track record of..."
       />
       <div className="w-full items-center justify-between hidden lg:flex">
         <p className="text-sm text-muted-foreground">

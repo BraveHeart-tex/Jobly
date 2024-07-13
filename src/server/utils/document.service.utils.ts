@@ -27,6 +27,7 @@ export const getFieldInsertTemplate = (
     getExtraCurricularActivitiesFields(sectionId);
   const hobbiesSectionFields = getHobbiesSectionFields(sectionId);
   const referencesSectionFields = getReferencesSectionFields(sectionId);
+  const languagesSectionFields = getLanguagesSectionFields(sectionId);
 
   const templateMap = {
     [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: personalDetailsFields,
@@ -42,12 +43,11 @@ export const getFieldInsertTemplate = (
       extraCurricularActivitiesSectionFields,
     [INTERNAL_SECTION_TAGS.HOBBIES]: hobbiesSectionFields,
     [INTERNAL_SECTION_TAGS.COURSES]: courseSectionFields,
-
     [INTERNAL_SECTION_TAGS.REFERENCES]: referencesSectionFields,
-    [INTERNAL_SECTION_TAGS.LANGUAGES]: [],
+    [INTERNAL_SECTION_TAGS.LANGUAGES]: languagesSectionFields,
   };
 
-  return templateMap[templateOption] ?? [];
+  return templateMap[templateOption];
 };
 
 const getEmploymentHistoryFields = (
@@ -306,7 +306,7 @@ export const getSkillSectionFields = (
   },
   {
     fieldName: "Level",
-    fieldType: "string",
+    fieldType: "skillSelect",
     sectionId,
   },
 ];
@@ -402,6 +402,21 @@ export const getReferencesSectionFields = (
   {
     fieldName: "Referent's Email",
     fieldType: "string",
+    sectionId,
+  },
+];
+
+export const getLanguagesSectionFields = (
+  sectionId: Section["id"],
+): SectionFieldInsertModel[] => [
+  {
+    fieldName: "Language",
+    fieldType: "string",
+    sectionId,
+  },
+  {
+    fieldName: "Level",
+    fieldType: "select",
     sectionId,
   },
 ];
