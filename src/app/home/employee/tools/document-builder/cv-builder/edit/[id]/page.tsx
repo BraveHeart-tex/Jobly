@@ -1,7 +1,6 @@
 import DocumentBuilderPanel from "@/app/home/employee/tools/_components/DocumentBuilderPanel";
 import DocumentBuilderPreview from "@/app/home/employee/tools/_components/DocumentBuilderPreview";
 import DocumentInitializer from "@/app/home/employee/tools/_components/DocumentInitializer";
-import DocumentLoader from "@/app/home/employee/tools/_components/DocumentLoader";
 import { buttonVariants } from "@/components/ui/button";
 import { isErrorObject } from "@/lib/guards";
 import { EMPLOYEE_ROUTES } from "@/lib/routes";
@@ -54,7 +53,6 @@ const EditCvPage = async ({ params }: { params: { id: string } }) => {
   return (
     <main>
       <DocumentBuilderPanel />
-      <DocumentLoader />
       <DocumentInitializer documentData={documentResponse} />
       <DocumentBuilderPreview />
     </main>
