@@ -408,6 +408,7 @@ export const section = mysqlTable(
   (table) => {
     return {
       Section_id: primaryKey({ columns: [table.id], name: "Section_id" }),
+      documentId: index("documentId").on(table.documentId),
     };
   },
 );

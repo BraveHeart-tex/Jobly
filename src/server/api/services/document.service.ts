@@ -260,12 +260,7 @@ export const addFieldsWithValues = async (
 };
 
 export const removeFields = async (fieldIds: SectionField["id"][]) => {
-  return Promise.all([
-    db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds)),
-    db
-      .delete(fieldValueSchema)
-      .where(inArray(fieldValueSchema.fieldId, fieldIds)),
-  ]);
+  return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
 };
 
 export const addSectionByInternalTag = async (data: SectionInsertModel) => {
