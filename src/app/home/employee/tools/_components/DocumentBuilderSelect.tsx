@@ -1,6 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
 import {
   Select,
   SelectContent,
@@ -10,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import type { SectionField } from "@/server/db/schema";
 
 type DocumentBuilderSelectProps = {
   field: SectionField;

@@ -1,14 +1,14 @@
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import { groupEveryN } from "@/lib/utils";
 import type { Section, SectionField } from "@/server/db/schema";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import AddSectionItemButton from "./AddSectionItemButton";
-import EditableSectionTitle from "./EditableSectionTitle";
-import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import { groupEveryN } from "@/lib/utils";
+import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
+import DocumentBuilderInput from "./DocumentBuilderInput";
+import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
+import EditableSectionTitle from "./EditableSectionTitle";
 
 type CvBuilderInternshipsSectionProps = {
   section: Section;

@@ -1,7 +1,7 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { Section, SectionField } from "@/server/db/schema";
-import EditableSectionTitle from "./EditableSectionTitle";
 import DocumentBuilderTextarea from "./DocumentBuilderTextarea";
+import EditableSectionTitle from "./EditableSectionTitle";
 
 type CvBuilderHobbiesSectionProps = {
   section: Section;

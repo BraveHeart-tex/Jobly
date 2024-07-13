@@ -14,13 +14,15 @@ type SetSectionValueParams<K extends keyof Section> = {
   value: Section[K];
 };
 
+type SaveDocumentDetailsParams = Partial<DocumentBuilderConfig>;
+
 type DocumentBuilderState = {
   initialized: boolean;
   document: Document;
   sections: Section[];
   fields: SectionField[];
   fieldValues: SectionFieldValue[];
-  saveDocumentDetailsFn: (documentData: DocumentBuilderConfig) => unknown;
+  saveDocumentDetailsFn: (documentData: SaveDocumentDetailsParams) => unknown;
 };
 
 type DocumentBuilderActions = {
@@ -41,9 +43,9 @@ type DocumentBuilderActions = {
     newValue: string,
   ) => void;
   setSaveDocumentDetailsFn: (
-    fn: (documentData: DocumentBuilderConfig) => unknown,
+    fn: (documentData: SaveDocumentDetailsParams) => unknown,
   ) => void;
-  callSaveDocumentDetailsFn: () => void;
+  callSaveDocumentDetailsFn: (data: SaveDocumentDetailsParams) => void;
   addSection: (section: Section) => void;
   addField: (field: SectionField) => void;
   addFieldValue: (fieldValue: SectionFieldValue) => void;
@@ -66,9 +68,8 @@ export const useDocumentBuilderStore = create<
       fieldValues: [],
       setSaveDocumentDetailsFn: (fn) => set({ saveDocumentDetailsFn: fn }),
       saveDocumentDetailsFn: () => {},
-      callSaveDocumentDetailsFn: () => {
-        const state = get();
-        state.saveDocumentDetailsFn(state);
+      callSaveDocumentDetailsFn: (data) => {
+        get().saveDocumentDetailsFn(data);
       },
       initializeState: (initialState) => {
         set({
@@ -80,28 +81,32 @@ export const useDocumentBuilderStore = create<
         set({ document });
       },
       setDocumentValue: (key, value) => {
+        const document = get().document;
+        document[key] = value;
         set({
-          document: {
-            ...get().document,
-            [key]: value,
-          },
+          document,
         });
-
-        setTimeout(() => get().callSaveDocumentDetailsFn());
+        get().callSaveDocumentDetailsFn({
+          document,
+        });
       },
       setSectionValue: ({ sectionId, key, value }) => {
+        const sectionToUpdate = get().sections.find(
+          (section) => section.id === sectionId,
+        );
+        if (!sectionToUpdate) return;
+        sectionToUpdate[key] = value;
         set({
           sections: get().sections.map((section) => {
             if (section.id === sectionId) {
-              return {
-                ...section,
-                [key]: value,
-              };
+              return sectionToUpdate;
             }
             return section;
           }),
         });
-        setTimeout(() => get().callSaveDocumentDetailsFn());
+        get().callSaveDocumentDetailsFn({
+          sections: [sectionToUpdate],
+        });
       },
       getFieldValueByFieldId: (fieldId) => {
         return get().fieldValues.find(
@@ -109,13 +114,24 @@ export const useDocumentBuilderStore = create<
         );
       },
       setFieldValueByFieldId: (fieldId, newValue) => {
+        const fieldValueToUpdate = get().fieldValues.find(
+          (fieldValue) => fieldValue.fieldId === fieldId,
+        );
+        if (!fieldValueToUpdate) return;
+        fieldValueToUpdate.value = newValue;
+
         set({
-          fieldValues: get().fieldValues.map((fieldValue) => ({
-            ...fieldValue,
-            value: fieldValue.fieldId === fieldId ? newValue : fieldValue.value,
-          })),
+          fieldValues: get().fieldValues.map((fieldValue) => {
+            if (fieldValue.fieldId === fieldId) {
+              return fieldValueToUpdate;
+            }
+            return fieldValue;
+          }),
         });
-        setTimeout(() => get().callSaveDocumentDetailsFn());
+
+        get().callSaveDocumentDetailsFn({
+          fieldValues: [fieldValueToUpdate],
+        });
       },
       addSection: (section) => {
         set({ sections: [...get().sections, section] });

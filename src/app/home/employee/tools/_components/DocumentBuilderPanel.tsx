@@ -25,16 +25,16 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
 import { useRef } from "react";
+import CvBuilderCoursesSection from "./CvBuilderCoursesSection";
 import CvBuilderCustomSection from "./CvBuilderCustomSection";
 import CvBuilderCustomSectionOptions from "./CvBuilderCustomSectionOptions";
 import CvBuilderEducationSection from "./CvBuilderEducationSection";
 import CvBuilderEmploymentHistorySection from "./CvBuilderEmploymentHistorySection";
-import CvBuilderCoursesSection from "./CvBuilderCoursesSection";
-import CvBuilderInternshipsSection from "./CvBuilderInternshipsSection";
 import CvBuilderExtraCurricularSection from "./CvBuilderExtraCurricularSection";
 import CvBuilderHobbiesSection from "./CvBuilderHobbiesSection";
-import CvBuilderReferencesSection from "./CvBuilderReferencesSection";
+import CvBuilderInternshipsSection from "./CvBuilderInternshipsSection";
 import CvBuilderLanguagesSection from "./CvBuilderLanguagesSection";
+import CvBuilderReferencesSection from "./CvBuilderReferencesSection";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();

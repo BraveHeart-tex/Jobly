@@ -1,14 +1,14 @@
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import { groupEveryN } from "@/lib/utils";
 import type { Section, SectionField } from "@/server/db/schema";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
-import EditableSectionTitle from "./EditableSectionTitle";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
-import { groupEveryN } from "@/lib/utils";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderInput from "./DocumentBuilderInput";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import EditableSectionTitle from "./EditableSectionTitle";
 
 type CvBuilderReferencesSectionProps = {
   section: Section;

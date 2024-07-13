@@ -48,7 +48,7 @@ export const documentRouter = createTRPCRouter({
       return documentService.deleteDocument(documentId);
     }),
   saveDocumentDetails: protectedProcedure
-    .input(saveDocumentDetailsSchema)
+    .input(saveDocumentDetailsSchema.partial())
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return documentService.saveDocumentDetails({

@@ -185,40 +185,42 @@ export const getDocumentDetails = async ({
 };
 
 export const saveDocumentDetails = async (
-  input: SaveDocumentDetailsSchema & { userId: User["id"] },
+  input: Partial<SaveDocumentDetailsSchema> & { userId: User["id"] },
 ) => {
-  const { document, sections, fields, fieldValues, userId } = input;
-
-  if (document.userId !== userId) {
-    return {
-      error: "You do not have access to edit this document.",
-    };
-  }
+  const { document, sections, fields, fieldValues } = input;
 
   await db.transaction(async (trx) => {
-    await trx.insert(documentSchema).values(document).onDuplicateKeyUpdate({
-      set: document,
-    });
+    if (document) {
+      await trx.insert(documentSchema).values(document).onDuplicateKeyUpdate({
+        set: document,
+      });
+    }
 
-    const sectionInserts = sections.map((sectionData) =>
-      trx
-        .insert(sectionSchema)
-        .values(sectionData)
-        .onDuplicateKeyUpdate({ set: sectionData }),
-    );
+    const sectionInserts = sections
+      ? sections.map((sectionData) =>
+          trx
+            .insert(sectionSchema)
+            .values(sectionData)
+            .onDuplicateKeyUpdate({ set: sectionData }),
+        )
+      : [];
 
-    const fieldInserts = fields.map((fieldData) =>
-      trx.insert(fieldSchema).values(fieldData).onDuplicateKeyUpdate({
-        set: fieldData,
-      }),
-    );
+    const fieldInserts = fields
+      ? fields.map((fieldData) =>
+          trx.insert(fieldSchema).values(fieldData).onDuplicateKeyUpdate({
+            set: fieldData,
+          }),
+        )
+      : [];
 
-    const fieldValueInserts = fieldValues.map((fieldValueData) =>
-      trx
-        .insert(fieldValueSchema)
-        .values(fieldValueData)
-        .onDuplicateKeyUpdate({ set: fieldValueData }),
-    );
+    const fieldValueInserts = fieldValues
+      ? fieldValues.map((fieldValueData) =>
+          trx
+            .insert(fieldValueSchema)
+            .values(fieldValueData)
+            .onDuplicateKeyUpdate({ set: fieldValueData }),
+        )
+      : [];
 
     await Promise.all([
       ...sectionInserts,
