@@ -5,13 +5,16 @@ import debounce from "lodash.debounce";
 import { Check, Cloud, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useNetworkState } from "react-use";
-const SAVE_DOCUMENT_DEBOUNCE_DURATION = 600 as const;
+import { useLeavePageConfirm } from "../_hooks/useLeavePageConfirm";
+
+const SAVE_DOCUMENT_DEBOUNCE_DURATION = 500 as const;
 
 const DebouncedDocumentSaver = () => {
   const { online, previous } = useNetworkState();
   const userLostConnection = !online && previous;
   const { mutate: saveDocumentDetails, isPending: isSavingDocument } =
     api.document.saveDocumentDetails.useMutation();
+  useLeavePageConfirm(isSavingDocument);
   const setSaveDocumentDetailsFn = useDocumentBuilderStore(
     (state) => state.setSaveDocumentDetailsFn,
   );
