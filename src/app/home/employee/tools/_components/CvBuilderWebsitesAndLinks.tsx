@@ -11,7 +11,7 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
 
-const WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT = 2;
+export const WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT = 2;
 
 const CvBuilderWebsitesAndLinks = () => {
   const section = useDocumentBuilderStore((state) =>

@@ -1,10 +1,11 @@
 "use client";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
-import { removeHTMLTags } from "@/lib/utils";
+import { groupEveryN, removeHTMLTags } from "@/lib/utils";
 import {
   Document,
   Font,
+  Link,
   Page,
   StyleSheet,
   Text,
@@ -12,9 +13,14 @@ import {
 } from "@react-pdf/renderer";
 import Html from "react-pdf-html";
 import CommaSeparatedText from "./CommaSeperatedText";
-import { getFieldValue, transformDocumentBuilderData } from "./pdf.utils";
+import {
+  applyInlineStylesToLinks,
+  getFieldValue,
+  transformDocumentBuilderData,
+} from "./pdf.utils";
+import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 
-const BODY_FONT_SIZE = 9 as const;
+export const PDF_BODY_FONT_SIZE = 9 as const;
 
 Font.register({
   family: "EB Garamond",
@@ -51,16 +57,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   label: {
-    fontSize: BODY_FONT_SIZE,
+    fontSize: PDF_BODY_FONT_SIZE,
   },
   documentDescription: {
-    fontSize: BODY_FONT_SIZE,
+    fontSize: PDF_BODY_FONT_SIZE,
     marginTop: 5,
     textAlign: "center",
+  },
+  link: {
+    textDecoration: "underline",
+    color: "black",
+    fontSize: PDF_BODY_FONT_SIZE,
   },
   section: {
     padding: 10,
     paddingTop: 5,
+    paddingBottom: 15,
     width: "100%",
     borderTop: "1px solid #000",
   },
@@ -69,6 +81,11 @@ const styles = StyleSheet.create({
     fontSize: 8.5,
     letterSpacing: 1.1,
     width: "25%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    height: "100%",
   },
 });
 
@@ -81,6 +98,11 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const professionalSummarySection = transformedData.sections.find(
     (section) =>
       section.internalSectionTag === INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
+  );
+  const websitesAndLinksSection = transformedData.sections.find(
+    (section) =>
+      section.internalSectionTag ===
+      INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
   );
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
@@ -106,6 +128,16 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const professionalSummary = getProfessionalSummarySectionFieldValues(
     "Professional Summary",
   );
+
+  const websitesAndLinks = groupEveryN(
+    websitesAndLinksSection?.fields || [],
+    WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      label: group[0]?.value,
+      link: group[1]?.value,
+    };
+  });
 
   return (
     <Document>
@@ -133,6 +165,31 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             },
           ]}
         />
+        {websitesAndLinks.length > 0 ? (
+          <View style={styles.section}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.sectionLabel}>Links</Text>
+              <View
+                style={{
+                  width: "75%",
+                  fontSize: PDF_BODY_FONT_SIZE,
+                }}
+              >
+                {websitesAndLinks.map((item) => (
+                  <Link src={item.link} key={item.link} style={styles.link}>
+                    {item.label}
+                  </Link>
+                ))}
+              </View>
+            </View>
+          </View>
+        ) : null}
         {removeHTMLTags(professionalSummary || "")?.length ? (
           <View style={styles.section}>
             <View
@@ -150,10 +207,10 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
               >
                 <Html
                   style={{
-                    fontSize: BODY_FONT_SIZE,
+                    fontSize: PDF_BODY_FONT_SIZE,
                   }}
                 >
-                  {professionalSummary}
+                  {applyInlineStylesToLinks(professionalSummary)}
                 </Html>
               </View>
             </View>
@@ -195,7 +252,7 @@ const TwoColumnLayout = ({ items }: TwoColumnLayoutProps) => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              fontSize: BODY_FONT_SIZE,
+              fontSize: PDF_BODY_FONT_SIZE,
             }}
             key={item.label}
           >
