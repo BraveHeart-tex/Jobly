@@ -45,7 +45,7 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
   const shouldShowPreviousDocument = !isFirstRendering && isBusy;
 
   return (
-    <div className="relative">
+    <div className="h-full tems-center justify-center  bg-white">
       {shouldShowPreviousDocument && previousRenderValue ? (
         <Document
           key={previousRenderValue}
@@ -64,7 +64,6 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
 
       {render.value && (
         <Document
-          className={shouldShowPreviousDocument ? "rendering-document" : null}
           file={render.value}
           loading={null}
           onLoadSuccess={onDocumentLoad}

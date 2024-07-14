@@ -17,7 +17,7 @@ const DocumentBuilderPreviewFooter = () => {
           onClick={() => setCurrentPage(currentPage - 1)}
           size="icon"
           variant="ghost"
-          className="hover:bg-secondary text-muted rounded-full size-[30px]"
+          className="hover:bg-secondary text-muted rounded-full size-[30px] dark:bg-muted-foreground"
         >
           <ChevronLeftIcon size={24} />
         </Button>
@@ -29,7 +29,7 @@ const DocumentBuilderPreviewFooter = () => {
           onClick={() => setCurrentPage(currentPage + 1)}
           size="icon"
           variant="ghost"
-          className="hover:bg-secondary text-muted rounded-full size-[30px]"
+          className="hover:bg-secondary text-muted rounded-full size-[30px] dark:bg-muted-foreground"
         >
           <ChevronRightIcon size={24} />
         </Button>

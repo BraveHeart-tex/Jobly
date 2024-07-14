@@ -34,7 +34,7 @@ const DocumentBuilderPreviewContent = () => {
   }, []);
 
   return (
-    <div className="bg-background rounded-md h-full w-full overflow-auto hide-scrollbar">
+    <div className="rounded-md h-full w-full overflow-auto hide-scrollbar">
       <PDFViewer key={reRender}>
         <LondonTemplate data={resumeData} />
       </PDFViewer>
