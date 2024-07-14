@@ -14,7 +14,7 @@ import {
 import Html from "react-pdf-html";
 import CommaSeparatedText from "./CommaSeperatedText";
 import {
-  applyInlineStylesToLinks,
+  styleLinksAndCleanElements,
   getFieldValue,
   transformDocumentBuilderData,
 } from "./pdf.utils";
@@ -210,7 +210,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                     fontSize: PDF_BODY_FONT_SIZE,
                   }}
                 >
-                  {applyInlineStylesToLinks(professionalSummary)}
+                  {styleLinksAndCleanElements(professionalSummary)}
                 </Html>
               </View>
             </View>
