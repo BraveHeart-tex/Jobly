@@ -1,0 +1,44 @@
+import { Button } from "@/components/ui/button";
+import { usePDFViewerStore } from "@/lib/stores/usePDFViewerStore";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import DebouncedDocumentSaver from "./DebouncedDocumentSaver";
+
+const DocumentBuilderPreviewFooter = () => {
+  const currentPage = usePDFViewerStore((state) => state.currentPage);
+  const setCurrentPage = usePDFViewerStore((state) => state.setCurrentPage);
+  const numberOfPages = usePDFViewerStore((state) => state.numberOfPages);
+
+  return (
+    <div className="w-full flex items-center justify-between mt-2">
+      <DebouncedDocumentSaver />
+      <div className="flex items-center gap-2">
+        <Button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+          size="icon"
+          variant="ghost"
+          className="hover:bg-secondary text-muted rounded-full size-[30px]"
+        >
+          <ChevronLeftIcon size={24} />
+        </Button>
+        <span className="text-xs text-muted dark:text-muted-foreground tabular-nums">
+          {currentPage} of {numberOfPages}
+        </span>
+        <Button
+          disabled={currentPage === numberOfPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+          size="icon"
+          variant="ghost"
+          className="hover:bg-secondary text-muted rounded-full size-[30px]"
+        >
+          <ChevronRightIcon size={24} />
+        </Button>
+      </div>
+      <p className="text-xs text-muted dark:text-muted-foreground">
+        Automatically saved
+      </p>
+    </div>
+  );
+};
+
+export default DocumentBuilderPreviewFooter;

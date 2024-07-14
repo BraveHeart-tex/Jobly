@@ -14,14 +14,17 @@ interface PDFViewerProps {
   children: ReactElement;
 }
 const PDFViewer = ({ children }: PDFViewerProps) => {
+  const currentPage = usePDFViewerStore((state) => state.currentPage);
+  const setCurrentPage = usePDFViewerStore((state) => state.setCurrentPage);
+  const previousRenderValue = usePDFViewerStore(
+    (state) => state.previousRenderValue,
+  );
+  const setPreviousRenderValue = usePDFViewerStore(
+    (state) => state.setPreviousRenderValue,
+  );
+  const setNumberOfPages = usePDFViewerStore((state) => state.setNumberOfPages);
+
   const { width, height } = useViewportSize();
-  const {
-    currentPage,
-    previousRenderValue,
-    setCurrentPage,
-    setPreviousRenderValue,
-    setNumberOfPages,
-  } = usePDFViewerStore();
 
   const render = useAsync(async () => {
     if (!children) return null;
