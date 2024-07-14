@@ -145,6 +145,7 @@ export const useDocumentBuilderStore = create<
       },
       addSection: (section) => {
         set({ sections: [...get().sections, section] });
+        get().callPdfUpdaterCallback();
       },
       addField: (field) => {
         set({ fields: [...get().fields, field] });
@@ -160,6 +161,7 @@ export const useDocumentBuilderStore = create<
           (fieldValue) => !fieldIds.includes(fieldValue.fieldId),
         );
         set({ fields: newFields, fieldValues: newFieldValues });
+        get().callPdfUpdaterCallback();
       },
       removeSection: (sectionId) => {
         const newSections = get().sections.filter(
@@ -176,6 +178,7 @@ export const useDocumentBuilderStore = create<
           fields: newFields,
           fieldValues: newFieldValues,
         });
+        get().callPdfUpdaterCallback();
       },
     }),
     {

@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 13.4,
     textAlign: "center",
     fontWeight: "bold",
+    letterSpacing: 0.3,
   },
   label: {
     fontSize: PDF_BODY_FONT_SIZE,
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
   documentDescription: {
     fontSize: PDF_BODY_FONT_SIZE,
     marginTop: 5,
+    marginBottom: 10,
     textAlign: "center",
   },
   link: {
@@ -139,6 +141,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     };
   });
 
+  const shouldRenderWebsitesAndLinks =
+    websitesAndLinks.length > 0 && websitesAndLinks.some((item) => item.label);
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -165,7 +170,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             },
           ]}
         />
-        {websitesAndLinks.length > 0 ? (
+        {shouldRenderWebsitesAndLinks ? (
           <View style={styles.section}>
             <View
               style={{
@@ -179,11 +184,15 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 style={{
                   width: "75%",
                   fontSize: PDF_BODY_FONT_SIZE,
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 2,
                 }}
               >
-                {websitesAndLinks.map((item) => (
+                {websitesAndLinks.map((item, index) => (
                   <Link src={item.link} key={item.link} style={styles.link}>
                     {item.label}
+                    {index !== websitesAndLinks.length - 1 && ", "}
                   </Link>
                 ))}
               </View>
@@ -208,6 +217,11 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 <Html
                   style={{
                     fontSize: PDF_BODY_FONT_SIZE,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    marginTop: -9,
                   }}
                 >
                   {styleLinksAndCleanElements(professionalSummary)}
