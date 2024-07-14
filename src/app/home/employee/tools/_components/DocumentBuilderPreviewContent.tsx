@@ -3,8 +3,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import { useNetworkState } from "react-use";
-import LondonTemplate from "../../../../../components/pdfs/London/LondonTemplate";
-import PDFViewer from "../../../../../components/pdfs/PDFViewer";
+import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
+import PDFViewer from "@/components/pdfs/PDFViewer";
 
 const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;
 

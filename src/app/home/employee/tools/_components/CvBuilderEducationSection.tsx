@@ -13,7 +13,7 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 
-const EDUCATION_SECTION_ITEMS_COUNT = 6;
+export const EDUCATION_SECTION_ITEMS_COUNT = 6;
 
 const CvBuilderEducationSection = () => {
   const section = useDocumentBuilderStore((state) =>

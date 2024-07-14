@@ -20,6 +20,7 @@ import {
   styleLinksAndCleanElements,
   transformDocumentBuilderData,
 } from "../pdf.utils";
+import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
 
@@ -110,6 +111,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     (section) =>
       section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
   );
+  const educationSection = transformedData.sections.find(
+    (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
+  );
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -169,6 +173,28 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       return keys.filter((key) => key !== "id").some((key) => item[key]);
     });
 
+  const educationSectionItems = groupEveryN(
+    educationSection?.fields || [],
+    EDUCATION_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      school: group[0]?.value,
+      degree: group[1]?.value,
+      startDate: group[2]?.value,
+      endDate: group[3]?.value,
+      city: group[4]?.value,
+      description: group[5]?.value,
+    };
+  });
+
+  const shouldRenderEducationSectionItems =
+    educationSectionItems.length > 0 &&
+    educationSectionItems.some((item) => {
+      const keys = Object.keys(item) as Array<keyof typeof item>;
+      return keys.filter((key) => key !== "id").some((key) => item[key]);
+    });
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -205,7 +231,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 alignItems: "center",
               }}
             >
-              <Text style={styles.sectionLabel}>Links</Text>
+              <Text style={styles.sectionLabel}>
+                {websitesAndLinksSection?.name}
+              </Text>
               <View
                 style={{
                   width: "75%",
@@ -319,6 +347,88 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       >
                         {item.jobTitle}
                         {item.employer ? ` - ${item.employer}` : null}
+                      </Text>
+                      <Html
+                        style={{
+                          fontSize: PDF_BODY_FONT_SIZE,
+                          marginTop: -2,
+                        }}
+                      >
+                        {styleLinksAndCleanElements(item.description || "")}
+                      </Html>
+                    </View>
+                    <Text
+                      style={{
+                        width: "10%",
+                        textAlign: "right",
+                      }}
+                    >
+                      {item.city}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : null}
+
+        {/* EDUCATION */}
+        {shouldRenderEducationSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+              }}
+            >
+              {educationSection?.name}
+            </Text>
+
+            <View
+              style={{
+                display: "flex",
+              }}
+            >
+              {educationSectionItems.map((item) => (
+                <View key={item.id}>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "100%",
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        width: "30.5%",
+                      }}
+                    >
+                      {item.startDate}
+                      {item.endDate ? ` - ${item.endDate}` : null}
+                    </Text>
+                    <View
+                      style={{
+                        width: "80%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "medium",
+                          fontSize: 10.9,
+                        }}
+                      >
+                        {item.degree}
+                        {item.school ? ` - ${item.school}` : null}
                       </Text>
                       <Html
                         style={{
