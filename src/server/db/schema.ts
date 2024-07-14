@@ -1,3 +1,4 @@
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -400,9 +401,21 @@ export const section = mysqlTable(
       .default("static")
       .notNull(),
     displayOrder: int("displayOrder").notNull(),
-    internalSectionTag: varchar("internalSectionTag", {
-      length: 256,
-    }).notNull(),
+    internalSectionTag: mysqlEnum("internalSectionTag", [
+      INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
+      INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
+      INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+      INTERNAL_SECTION_TAGS.EDUCATION,
+      INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
+      INTERNAL_SECTION_TAGS.SKILLS,
+      INTERNAL_SECTION_TAGS.CUSTOM,
+      INTERNAL_SECTION_TAGS.INTERNSHIPS,
+      INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES,
+      INTERNAL_SECTION_TAGS.HOBBIES,
+      INTERNAL_SECTION_TAGS.REFERENCES,
+      INTERNAL_SECTION_TAGS.COURSES,
+      INTERNAL_SECTION_TAGS.LANGUAGES,
+    ]).notNull(),
     metadata: text("metadata"),
   },
   (table) => {

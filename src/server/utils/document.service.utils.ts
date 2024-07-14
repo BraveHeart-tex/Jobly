@@ -47,7 +47,7 @@ export const getFieldInsertTemplate = (
     [INTERNAL_SECTION_TAGS.LANGUAGES]: languagesSectionFields,
   };
 
-  return templateMap[templateOption];
+  return templateMap[templateOption] || [];
 };
 
 const getEmploymentHistoryFields = (

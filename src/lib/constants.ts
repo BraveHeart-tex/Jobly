@@ -66,15 +66,11 @@ export const INTERNAL_SECTION_TAGS = {
   REFERENCES: "references",
   COURSES: "courses",
   LANGUAGES: "languages",
-} as const;
+};
 
 export type INTERNAL_SECTION_TAG = InferValueTypeFromConst<
   typeof INTERNAL_SECTION_TAGS
 >;
-
-export const InternalSectionTagsEnum = INTERNAL_SECTION_TAGS as {
-  [key in keyof typeof INTERNAL_SECTION_TAGS]: INTERNAL_SECTION_TAG;
-};
 
 export const DELETEABLE_INTERNAL_SECTION_TAGS = [
   INTERNAL_SECTION_TAGS.CUSTOM,

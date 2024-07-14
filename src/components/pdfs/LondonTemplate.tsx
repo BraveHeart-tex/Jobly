@@ -1,4 +1,5 @@
 "use client";
+import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
 import { groupEveryN, removeHTMLTags } from "@/lib/utils";
@@ -14,11 +15,10 @@ import {
 import Html from "react-pdf-html";
 import CommaSeparatedText from "./CommaSeperatedText";
 import {
-  styleLinksAndCleanElements,
   getFieldValue,
+  styleLinksAndCleanElements,
   transformDocumentBuilderData,
 } from "./pdf.utils";
-import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
 
