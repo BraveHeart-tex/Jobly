@@ -15,9 +15,6 @@ const DebouncedDocumentSaver = () => {
   const { mutate: saveDocumentDetails, isPending: isSavingDocument } =
     api.document.saveDocumentDetails.useMutation();
   useLeavePageConfirm(isSavingDocument);
-  const setSaveDocumentDetailsFn = useDocumentBuilderStore(
-    (state) => state.setSaveDocumentDetailsFn,
-  );
 
   useEffect(() => {
     if (!userLostConnection) {
@@ -25,11 +22,15 @@ const DebouncedDocumentSaver = () => {
         saveDocumentDetails,
         SAVE_DOCUMENT_DEBOUNCE_DURATION,
       );
-      setSaveDocumentDetailsFn(debouncedSaveDocumentDetails);
+      useDocumentBuilderStore.setState({
+        saveDocumentDetailsFn: debouncedSaveDocumentDetails,
+      });
     } else {
-      setSaveDocumentDetailsFn(() => {});
+      useDocumentBuilderStore.setState({
+        saveDocumentDetailsFn: () => {},
+      });
     }
-  }, [userLostConnection, setSaveDocumentDetailsFn, saveDocumentDetails]);
+  }, [userLostConnection, saveDocumentDetails]);
 
   return (
     <div className="flex items-center justify-between">

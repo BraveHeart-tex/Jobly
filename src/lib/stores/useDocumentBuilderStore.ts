@@ -23,6 +23,7 @@ type DocumentBuilderState = {
   fields: SectionField[];
   fieldValues: SectionFieldValue[];
   saveDocumentDetailsFn: (documentData: SaveDocumentDetailsParams) => unknown;
+  pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
 };
 
 type DocumentBuilderActions = {
@@ -42,15 +43,13 @@ type DocumentBuilderActions = {
     fieldId: SectionField["id"],
     newValue: string,
   ) => void;
-  setSaveDocumentDetailsFn: (
-    fn: (documentData: SaveDocumentDetailsParams) => unknown,
-  ) => void;
   callSaveDocumentDetailsFn: (data: SaveDocumentDetailsParams) => void;
   addSection: (section: Section) => void;
   addField: (field: SectionField) => void;
   addFieldValue: (fieldValue: SectionFieldValue) => void;
   removeFields: (fieldIds: SectionField["id"][]) => void;
   removeSection: (sectionId: Section["id"]) => void;
+  callPdfUpdaterCallback: () => void;
 };
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -66,10 +65,18 @@ export const useDocumentBuilderStore = create<
       sections: [],
       fields: [],
       fieldValues: [],
-      setSaveDocumentDetailsFn: (fn) => set({ saveDocumentDetailsFn: fn }),
       saveDocumentDetailsFn: () => {},
+      pdfUpdaterCallback: () => {},
       callSaveDocumentDetailsFn: (data) => {
         get().saveDocumentDetailsFn(data);
+      },
+      callPdfUpdaterCallback: () => {
+        get().pdfUpdaterCallback({
+          document: get().document,
+          sections: get().sections,
+          fields: get().fields,
+          fieldValues: get().fieldValues,
+        });
       },
       initializeState: (initialState) => {
         set({
@@ -89,6 +96,7 @@ export const useDocumentBuilderStore = create<
         get().callSaveDocumentDetailsFn({
           document,
         });
+        get().callPdfUpdaterCallback();
       },
       setSectionValue: ({ sectionId, key, value }) => {
         const sectionToUpdate = get().sections.find(
@@ -107,6 +115,7 @@ export const useDocumentBuilderStore = create<
         get().callSaveDocumentDetailsFn({
           sections: [sectionToUpdate],
         });
+        get().callPdfUpdaterCallback();
       },
       getFieldValueByFieldId: (fieldId) => {
         return get().fieldValues.find(
@@ -132,6 +141,7 @@ export const useDocumentBuilderStore = create<
         get().callSaveDocumentDetailsFn({
           fieldValues: [fieldValueToUpdate],
         });
+        get().callPdfUpdaterCallback();
       },
       addSection: (section) => {
         set({ sections: [...get().sections, section] });
