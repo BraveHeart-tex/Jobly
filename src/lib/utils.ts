@@ -118,3 +118,7 @@ export const groupEveryN = <T>(array: T[], n: number): T[][] => {
 
   return result;
 };
+
+export const removeHTMLTags = (htmlString: string) => {
+  return htmlString.replace(/<[^>]*>/g, "");
+};

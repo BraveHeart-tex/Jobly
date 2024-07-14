@@ -5,7 +5,7 @@ import {
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { cn } from "@/lib/utils";
+import { cn, removeHTMLTags } from "@/lib/utils";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 
 const CvBuilderProfessionalSummarySection = () => {
@@ -28,8 +28,7 @@ const CvBuilderProfessionalSummarySection = () => {
   if (!field) return;
 
   const renderCharCountIndicator = () => {
-    // remove html tags
-    const charCount = fieldValue?.replace(/<[^>]*>/g, "")?.length ?? 0;
+    const charCount = removeHTMLTags(fieldValue || "")?.length;
     const maxCount = charCount >= 400 ? 600 : 400;
     const colorClass =
       charCount === 0

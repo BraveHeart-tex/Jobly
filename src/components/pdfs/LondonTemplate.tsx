@@ -1,6 +1,7 @@
 "use client";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
+import { removeHTMLTags } from "@/lib/utils";
 import {
   Document,
   Font,
@@ -9,12 +10,11 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import { getFieldValue, transformDocumentBuilderData } from "./pdf.utils";
+import Html from "react-pdf-html";
 import CommaSeparatedText from "./CommaSeperatedText";
+import { getFieldValue, transformDocumentBuilderData } from "./pdf.utils";
 
-type LondonTemplateProps = {
-  data: DocumentBuilderConfig;
-};
+const BODY_FONT_SIZE = 9 as const;
 
 Font.register({
   family: "EB Garamond",
@@ -34,6 +34,10 @@ Font.register({
   ],
 });
 
+type LondonTemplateProps = {
+  data: DocumentBuilderConfig;
+};
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
@@ -47,10 +51,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   label: {
-    fontSize: 9,
+    fontSize: BODY_FONT_SIZE,
   },
   documentDescription: {
-    fontSize: 9,
+    fontSize: BODY_FONT_SIZE,
     marginTop: 5,
     textAlign: "center",
   },
@@ -60,6 +64,12 @@ const styles = StyleSheet.create({
     width: "100%",
     borderTop: "1px solid #000",
   },
+  sectionLabel: {
+    textTransform: "uppercase",
+    fontSize: 8.5,
+    letterSpacing: 1.1,
+    width: "25%",
+  },
 });
 
 const LondonTemplate = ({ data }: LondonTemplateProps) => {
@@ -68,8 +78,17 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     (section) =>
       section.internalSectionTag === INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
   );
+  const professionalSummarySection = transformedData.sections.find(
+    (section) =>
+      section.internalSectionTag === INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
+  );
+
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
+  };
+
+  const getProfessionalSummarySectionFieldValues = (fieldName: string) => {
+    return getFieldValue(fieldName, professionalSummarySection?.fields);
   };
 
   const firstName = getPersonalDetailsSectionFieldValues("First Name");
@@ -84,6 +103,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const driversLicense =
     getPersonalDetailsSectionFieldValues("Driving License");
   const dateOfBirth = getPersonalDetailsSectionFieldValues("Date of Birth");
+  const professionalSummary = getProfessionalSummarySectionFieldValues(
+    "Professional Summary",
+  );
 
   return (
     <Document>
@@ -111,6 +133,32 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             },
           ]}
         />
+        {removeHTMLTags(professionalSummary || "")?.length ? (
+          <View style={styles.section}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.sectionLabel}>Profile</Text>
+              <View
+                style={{
+                  width: "75%",
+                }}
+              >
+                <Html
+                  style={{
+                    fontSize: BODY_FONT_SIZE,
+                  }}
+                >
+                  {professionalSummary}
+                </Html>
+              </View>
+            </View>
+          </View>
+        ) : null}
       </Page>
     </Document>
   );
@@ -147,7 +195,7 @@ const TwoColumnLayout = ({ items }: TwoColumnLayoutProps) => {
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              fontSize: 9,
+              fontSize: BODY_FONT_SIZE,
             }}
             key={item.label}
           >
