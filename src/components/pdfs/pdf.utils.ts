@@ -1,6 +1,6 @@
 import type { DocumentBuilderConfig } from "@/lib/types";
 import type { SectionField } from "@/server/db/schema";
-import { PDF_BODY_FONT_SIZE } from "./LondonTemplate";
+import { PDF_BODY_FONT_SIZE } from "./London/LondonTemplate";
 
 export type SectionFieldWithValue = SectionField & {
   value: string;

@@ -14,7 +14,7 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 
-const EMPLOYMENT_SECTION_ITEMS_COUNT = 6;
+export const EMPLOYMENT_SECTION_ITEMS_COUNT = 6;
 
 const CvBuilderEmploymentHistorySection = () => {
   const section = useDocumentBuilderStore((state) =>

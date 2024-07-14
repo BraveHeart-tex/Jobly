@@ -1,4 +1,5 @@
 "use client";
+import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
 import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
@@ -13,12 +14,12 @@ import {
   View,
 } from "@react-pdf/renderer";
 import Html from "react-pdf-html";
-import CommaSeparatedText from "./CommaSeperatedText";
+import CommaSeparatedText from "../CommaSeperatedText";
 import {
   getFieldValue,
   styleLinksAndCleanElements,
   transformDocumentBuilderData,
-} from "./pdf.utils";
+} from "../pdf.utils";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
 
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
-    height: "100%",
   },
 });
 
@@ -105,6 +105,10 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     (section) =>
       section.internalSectionTag ===
       INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
+  );
+  const employmentHistorySection = transformedData.sections.find(
+    (section) =>
+      section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
   );
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
@@ -140,9 +144,30 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       link: group[1]?.value,
     };
   });
-
   const shouldRenderWebsitesAndLinks =
     websitesAndLinks.length > 0 && websitesAndLinks.some((item) => item.label);
+
+  const employementHistoryItems = groupEveryN(
+    employmentHistorySection?.fields || [],
+    EMPLOYMENT_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      jobTitle: group[0]?.value,
+      startDate: group[1]?.value,
+      endDate: group[2]?.value,
+      employer: group[3]?.value,
+      city: group[4]?.value,
+      description: group[5]?.value,
+    };
+  });
+
+  const shouldRenderEmployementHistoryItems =
+    employementHistoryItems.length > 0 &&
+    employementHistoryItems.some((item) => {
+      const keys = Object.keys(item) as Array<keyof typeof item>;
+      return keys.filter((key) => key !== "id").some((key) => item[key]);
+    });
 
   return (
     <Document>
@@ -170,6 +195,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             },
           ]}
         />
+        {/* Websites and links */}
         {shouldRenderWebsitesAndLinks ? (
           <View style={styles.section}>
             <View
@@ -199,6 +225,8 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             </View>
           </View>
         ) : null}
+
+        {/* Professional Summary */}
         {removeHTMLTags(professionalSummary || "")?.length ? (
           <View style={styles.section}>
             <View
@@ -206,9 +234,17 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                justifyContent: "flex-start",
               }}
             >
-              <Text style={styles.sectionLabel}>Profile</Text>
+              <Text
+                style={{
+                  ...styles.sectionLabel,
+                  height: "100%",
+                }}
+              >
+                {professionalSummarySection?.name}
+              </Text>
               <View
                 style={{
                   width: "75%",
@@ -217,16 +253,93 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 <Html
                   style={{
                     fontSize: PDF_BODY_FONT_SIZE,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    marginTop: -9,
                   }}
                 >
                   {styleLinksAndCleanElements(professionalSummary)}
                 </Html>
               </View>
+            </View>
+          </View>
+        ) : null}
+
+        {/* EMPLOYMENT HISTORY */}
+        {shouldRenderEmployementHistoryItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+              }}
+            >
+              {employmentHistorySection?.name}
+            </Text>
+
+            <View
+              style={{
+                display: "flex",
+              }}
+            >
+              {employementHistoryItems.map((item) => (
+                <View key={item.id}>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "100%",
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        width: "30.5%",
+                      }}
+                    >
+                      {item.startDate}
+                      {item.endDate ? ` - ${item.endDate}` : null}
+                    </Text>
+                    <View
+                      style={{
+                        width: "80%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "medium",
+                          fontSize: 10.9,
+                        }}
+                      >
+                        {item.jobTitle}
+                        {item.employer ? ` - ${item.employer}` : null}
+                      </Text>
+                      <Html
+                        style={{
+                          fontSize: PDF_BODY_FONT_SIZE,
+                          marginTop: -2,
+                        }}
+                      >
+                        {styleLinksAndCleanElements(item.description || "")}
+                      </Html>
+                    </View>
+                    <Text
+                      style={{
+                        width: "10%",
+                        textAlign: "right",
+                      }}
+                    >
+                      {item.city}
+                    </Text>
+                  </View>
+                </View>
+              ))}
             </View>
           </View>
         ) : null}
