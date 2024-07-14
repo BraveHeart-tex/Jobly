@@ -49,7 +49,7 @@ const DebouncedDocumentSaver = () => {
             </>
           )}
         </div>
-        <span className="text-xs">
+        <span className="text-xs w-10">
           {isSavingDocument ? "Saving..." : "Saved"}
         </span>
       </div>

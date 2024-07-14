@@ -6,7 +6,7 @@ import { useAsync } from "react-use";
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { usePDFViewerStore } from "@/lib/stores/usePDFViewerStore";
-import { useViewportSize } from "../_hooks/useViewportSize";
+import { useViewportSize } from "../../app/home/employee/tools/_hooks/useViewportSize";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

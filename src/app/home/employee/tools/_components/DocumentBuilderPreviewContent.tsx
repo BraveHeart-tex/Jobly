@@ -3,8 +3,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import { useNetworkState } from "react-use";
-import MyDoc from "./MyDoc";
-import PDFViewer from "./PDFViewer";
+import LondonTemplate from "../../../../../components/pdfs/LondonTemplate";
+import PDFViewer from "../../../../../components/pdfs/PDFViewer";
 
 const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;
 
@@ -34,9 +34,9 @@ const DocumentBuilderPreviewContent = () => {
   }, []);
 
   return (
-    <div className="bg-background rounded-md h-full w-full overflow-auto">
+    <div className="bg-background rounded-md h-full w-full overflow-auto hide-scrollbar">
       <PDFViewer key={reRender}>
-        <MyDoc data={resumeData} />
+        <LondonTemplate data={resumeData} />
       </PDFViewer>
       {userLostConnection ? (
         <div className="w-full h-full flex items-center justify-center">
