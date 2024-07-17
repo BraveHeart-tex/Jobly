@@ -1,5 +1,7 @@
 "use client";
+import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
+import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
 import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
@@ -13,6 +15,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
 import CommaSeparatedText from "../CommaSeperatedText";
 import {
@@ -21,9 +24,6 @@ import {
   styleLinksAndCleanElements,
   transformDocumentBuilderData,
 } from "../pdf.utils";
-import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
-import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
-import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 13.4 as const;
