@@ -122,3 +122,13 @@ export const groupEveryN = <T>(array: T[], n: number): T[][] => {
 export const removeHTMLTags = (htmlString: string) => {
   return htmlString.replace(/<[^>]*>/g, "");
 };
+
+export const parseSectionMetadata = (metadata: string | null | undefined) => {
+  if (!metadata) return {};
+  try {
+    return JSON.parse(metadata);
+  } catch (error) {
+    console.info("Error parsing metadata:", error);
+    return {};
+  }
+};

@@ -14,7 +14,7 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
 
-const SKILL_SECTION_ITEMS_COUNT = 2;
+export const SKILL_SECTION_ITEMS_COUNT = 2;
 
 const CvBuilderSkillsSection = () => {
   const section = useDocumentBuilderStore((state) =>

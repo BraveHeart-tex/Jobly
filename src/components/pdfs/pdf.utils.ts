@@ -76,3 +76,15 @@ export const styleLinksAndCleanElements = (text: string): string => {
 
   return parsedDocument.body.innerHTML;
 };
+
+export const getIfItemsShouldRender = <T extends Record<string, unknown>>(
+  items: T[],
+): boolean => {
+  return (
+    items.length > 0 &&
+    items.some((item) => {
+      const keys = Object.keys(item) as Array<keyof T>;
+      return keys.filter((key) => key !== "id").some((key) => item[key]);
+    })
+  );
+};

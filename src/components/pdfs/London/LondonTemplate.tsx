@@ -3,7 +3,7 @@ import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_compo
 import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
-import { groupEveryN, removeHTMLTags } from "@/lib/utils";
+import { groupEveryN, parseSectionMetadata, removeHTMLTags } from "@/lib/utils";
 import {
   Document,
   Font,
@@ -17,11 +17,13 @@ import Html from "react-pdf-html";
 import CommaSeparatedText from "../CommaSeperatedText";
 import {
   getFieldValue,
+  getIfItemsShouldRender,
   styleLinksAndCleanElements,
   transformDocumentBuilderData,
 } from "../pdf.utils";
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
+import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 13.4 as const;
@@ -117,6 +119,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const educationSection = transformedData.sections.find(
     (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
   );
+  const skillsSection = transformedData.sections.find(
+    (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
+  );
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -169,12 +174,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     };
   });
 
-  const shouldRenderEmployementHistoryItems =
-    employementHistoryItems.length > 0 &&
-    employementHistoryItems.some((item) => {
-      const keys = Object.keys(item) as Array<keyof typeof item>;
-      return keys.filter((key) => key !== "id").some((key) => item[key]);
-    });
+  const shouldRenderEmployementHistoryItems = getIfItemsShouldRender(
+    employementHistoryItems,
+  );
 
   const educationSectionItems = groupEveryN(
     educationSection?.fields || [],
@@ -191,12 +193,23 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     };
   });
 
-  const shouldRenderEducationSectionItems =
-    educationSectionItems.length > 0 &&
-    educationSectionItems.some((item) => {
-      const keys = Object.keys(item) as Array<keyof typeof item>;
-      return keys.filter((key) => key !== "id").some((key) => item[key]);
-    });
+  const shouldRenderEducationSectionItems = getIfItemsShouldRender(
+    educationSectionItems,
+  );
+
+  const skillsSectionItems = groupEveryN(
+    skillsSection?.fields || [],
+    SKILL_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      name: group[0]?.value,
+      level: group[1]?.value,
+    };
+  });
+
+  const shouldRenderSkillsSectionItems =
+    getIfItemsShouldRender(skillsSectionItems);
 
   const htmlRenderers: HtmlRenderers = {
     ol: (props) => (
@@ -497,6 +510,55 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                   </View>
                 </View>
               ))}
+            </View>
+          </View>
+        ) : null}
+        {/* Skills */}
+        {shouldRenderSkillsSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Text style={styles.sectionLabel}>{skillsSection?.name}</Text>
+              <View
+                style={{
+                  display: "flex",
+                  gap: 20,
+                  marginLeft: 35,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  rowGap: 5,
+                  columnGap: 5,
+                }}
+              >
+                {skillsSectionItems.map((item) => (
+                  <View
+                    key={item.id}
+                    style={{
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "46%",
+                    }}
+                  >
+                    <Text>{item.name}</Text>
+                    {parseSectionMetadata(skillsSection?.metadata)
+                      .showExperienceLevel ? (
+                      <Text>{item.level}</Text>
+                    ) : null}
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         ) : null}
