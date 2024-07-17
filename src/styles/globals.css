@@ -138,3 +138,18 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+.react-pdf__Document {
+  &.previous-document {
+    canvas {
+      opacity: 0.5;
+    }
+  }
+
+  &.rendering-document {
+    position: absolute !important;
+    .react-pdf__Page {
+      box-shadow: none;
+    }
+  }
+}

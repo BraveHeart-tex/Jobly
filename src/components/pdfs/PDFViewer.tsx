@@ -7,6 +7,7 @@ import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import { usePDFViewerStore } from "@/lib/stores/usePDFViewerStore";
 import { useViewportSize } from "../../app/home/employee/tools/_hooks/useViewportSize";
+import { cn } from "@/lib/utils";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -42,14 +43,15 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
   const isFirstRendering = !previousRenderValue;
   const isLatestValueRendered = previousRenderValue === render.value;
   const isBusy = render.loading || !isLatestValueRendered;
+
   const shouldShowPreviousDocument = !isFirstRendering && isBusy;
 
   return (
-    <div className="h-full tems-center justify-center  bg-white">
+    <div className="h-full bg-white z-10 transition-all relative">
       {shouldShowPreviousDocument && previousRenderValue ? (
         <Document
           key={previousRenderValue}
-          className="previous-document opacity-5"
+          className={"previous-document h-full w-full"}
           file={previousRenderValue}
           loading={null}
         >
@@ -58,6 +60,9 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
             pageNumber={currentPage}
             renderAnnotationLayer={false}
             renderTextLayer={false}
+            width={width < 768 ? 0.7 * width : 0.4 * width}
+            height={width < 768 ? 0.7 * height : 0.4 * height}
+            loading={null}
           />
         </Document>
       ) : null}
@@ -66,6 +71,10 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
         <Document
           file={render.value}
           loading={null}
+          className={cn(
+            "z-10",
+            shouldShowPreviousDocument && "rendering-document hidden z-0",
+          )}
           onLoadSuccess={onDocumentLoad}
         >
           <Page
@@ -75,6 +84,7 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
             pageNumber={currentPage}
             width={width < 768 ? 0.7 * width : 0.4 * width}
             height={width < 768 ? 0.7 * height : 0.4 * height}
+            loading={null}
             onRenderSuccess={() => {
               if (render.value !== undefined) {
                 setPreviousRenderValue(render.value);

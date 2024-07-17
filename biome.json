@@ -12,7 +12,7 @@
     "formatWithErrors": false,
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules/**", ".next/**", ".idea"]
+    "ignore": ["node_modules/**", ".next/**", ".idea", "globals.css"]
   },
   "css": {
     "formatter": {
