@@ -13,7 +13,7 @@ type CvBuilderCoursesSectionProps = {
   section: Section;
 };
 
-const COURSES_SECTION_ITEMS_COUNT = 4;
+export const COURSES_SECTION_ITEMS_COUNT = 4;
 
 const CvBuilderCoursesSection = ({ section }: CvBuilderCoursesSectionProps) => {
   const fields = useDocumentBuilderStore((state) =>

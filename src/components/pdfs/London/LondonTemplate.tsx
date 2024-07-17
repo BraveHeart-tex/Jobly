@@ -1,4 +1,5 @@
 "use client";
+import { COURSES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCoursesSection";
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
 import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
@@ -128,6 +129,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const referencesSection = getSectionByTag(INTERNAL_SECTION_TAGS.REFERENCES);
   const hobbiesSection = getSectionByTag(INTERNAL_SECTION_TAGS.HOBBIES);
   const languagesSection = getSectionByTag(INTERNAL_SECTION_TAGS.LANGUAGES);
+  const coursesSection = getSectionByTag(INTERNAL_SECTION_TAGS.COURSES);
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -260,6 +262,19 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     };
   });
 
+  const coursesSectionItems = groupEveryN(
+    coursesSection?.fields || [],
+    COURSES_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      course: group[0]?.value,
+      institution: group[1]?.value,
+      startDate: group[2]?.value,
+      endDate: group[3]?.value,
+    };
+  });
+
   const shouldRenderReferencesSectionItems = getIfItemsShouldRender(
     referencesSectionItems,
   );
@@ -269,6 +284,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const shouldRenderLanguagesSectionItems = getIfItemsShouldRender(
     languagesSectionItems,
   );
+
+  const shouldRenderCoursesSectionItems =
+    getIfItemsShouldRender(coursesSectionItems);
 
   const htmlRenderers: HtmlRenderers = {
     ol: (props) => (
@@ -872,6 +890,81 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                   </View>
                 ))}
               </View>
+            </View>
+          </View>
+        ) : null}
+        {shouldRenderCoursesSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection:
+                coursesSectionItems.length === 1 &&
+                coursesSectionItems.every(
+                  (item) => !item.startDate && !item.endDate,
+                )
+                  ? "row"
+                  : "column",
+              gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+              }}
+            >
+              {coursesSection?.name}
+            </Text>
+            <View
+              style={{
+                display: "flex",
+                gap: 10,
+              }}
+            >
+              {coursesSectionItems.map((item) => (
+                <View key={item.id}>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        width:
+                          coursesSectionItems.length === 1 &&
+                          coursesSectionItems.every(
+                            (item) => !item.startDate && !item.endDate,
+                          )
+                            ? "0%"
+                            : "33%",
+                      }}
+                    >
+                      {item.startDate}
+                      {item.endDate ? ` - ${item.endDate}` : null}
+                    </Text>
+                    <View
+                      style={{
+                        width: "96%",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "medium",
+                          fontSize: 10.9,
+                        }}
+                      >
+                        {item.course}
+                        {item.institution
+                          ? `${item.course ? "-" : null} ${item.institution}`
+                          : null}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              ))}
             </View>
           </View>
         ) : null}
