@@ -2,6 +2,7 @@
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
 import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
+import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderLanguagesSection";
 import { REFERENCES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderReferencesSection";
 import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
 import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
@@ -126,6 +127,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const internshipsSection = getSectionByTag(INTERNAL_SECTION_TAGS.INTERNSHIPS);
   const referencesSection = getSectionByTag(INTERNAL_SECTION_TAGS.REFERENCES);
   const hobbiesSection = getSectionByTag(INTERNAL_SECTION_TAGS.HOBBIES);
+  const languagesSection = getSectionByTag(INTERNAL_SECTION_TAGS.LANGUAGES);
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -247,12 +249,25 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       referentEmail: group[3]?.value,
     };
   });
+  const languagesSectionItems = groupEveryN(
+    languagesSection?.fields || [],
+    LANGUAGES_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      language: group[0]?.value,
+      level: group[1]?.value,
+    };
+  });
 
   const shouldRenderReferencesSectionItems = getIfItemsShouldRender(
     referencesSectionItems,
   );
   const shouldRenderHobbiesSectionItems = hobbiesSection?.fields.some(
     (item) => item.value,
+  );
+  const shouldRenderLanguagesSectionItems = getIfItemsShouldRender(
+    languagesSectionItems,
   );
 
   const htmlRenderers: HtmlRenderers = {
@@ -807,6 +822,57 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             >
               {hobbiesSection?.fields.map((item) => item.value)}
             </Text>
+          </View>
+        ) : null}
+        {shouldRenderLanguagesSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+            }}
+          >
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.sectionLabel,
+                  width: "25%",
+                }}
+              >
+                {languagesSection?.name}
+              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  gap: 20,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  columnGap: 5,
+                  width: "75%",
+                }}
+              >
+                {languagesSectionItems.map((item) => (
+                  <View
+                    key={item.id}
+                    style={{
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "46%",
+                    }}
+                  >
+                    <Text>{item.language}</Text>
+                    <Text>{item.level}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
           </View>
         ) : null}
       </Page>

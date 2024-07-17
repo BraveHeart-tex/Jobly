@@ -13,7 +13,7 @@ type CvBuilderLanguagesSectionProps = {
   section: Section;
 };
 
-const LANGUAGES_SECTION_ITEMS_COUNT = 2;
+export const LANGUAGES_SECTION_ITEMS_COUNT = 2;
 const LANGUAGE_LEVELS = [
   "Native Speaker",
   "Highly Proficient",
