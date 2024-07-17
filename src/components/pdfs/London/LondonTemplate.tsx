@@ -125,6 +125,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const skillsSection = getSectionByTag(INTERNAL_SECTION_TAGS.SKILLS);
   const internshipsSection = getSectionByTag(INTERNAL_SECTION_TAGS.INTERNSHIPS);
   const referencesSection = getSectionByTag(INTERNAL_SECTION_TAGS.REFERENCES);
+  const hobbiesSection = getSectionByTag(INTERNAL_SECTION_TAGS.HOBBIES);
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -249,6 +250,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
 
   const shouldRenderReferencesSectionItems = getIfItemsShouldRender(
     referencesSectionItems,
+  );
+  const shouldRenderHobbiesSectionItems = hobbiesSection?.fields.some(
+    (item) => item.value,
   );
 
   const htmlRenderers: HtmlRenderers = {
@@ -774,6 +778,35 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 </>
               )}
             </View>
+          </View>
+        ) : null}
+        {shouldRenderHobbiesSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+                height: "100%",
+                width: "25%",
+              }}
+            >
+              {hobbiesSection?.name}
+            </Text>
+            <Text
+              style={{
+                width: "75%",
+                fontSize: PDF_BODY_FONT_SIZE,
+              }}
+            >
+              {hobbiesSection?.fields.map((item) => item.value)}
+            </Text>
           </View>
         ) : null}
       </Page>
