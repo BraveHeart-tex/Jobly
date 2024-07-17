@@ -14,13 +14,15 @@ type CvBuilderReferencesSectionProps = {
   section: Section;
 };
 
-const REFERENCES_SECTION_ITEMS_COUNT = 4;
+export const REFERENCES_SECTION_ITEMS_COUNT = 4;
 
 const CvBuilderReferencesSection = ({
   section,
 }: CvBuilderReferencesSectionProps) => {
-  const sectionMetada = section?.metadata ? JSON.parse(section?.metadata) : {};
-  const hideReferences = sectionMetada?.hideReferences || false;
+  const sectionMetadata = section?.metadata
+    ? JSON.parse(section?.metadata)
+    : {};
+  const hideReferences = sectionMetadata?.hideReferences || false;
   const fields = useDocumentBuilderStore((state) =>
     state.fields
       .filter((field) => field.sectionId === section?.id)
@@ -38,20 +40,20 @@ const CvBuilderReferencesSection = ({
     const groupedFields = groupEveryN(fields, REFERENCES_SECTION_ITEMS_COUNT);
 
     return groupedFields.map((group) => {
-      const referrentFullNameField = group[0] as SectionField;
+      const referentFullNameField = group[0] as SectionField;
       const companyField = group[1] as SectionField;
       const phoneField = group[2] as SectionField;
       const emailField = group[3] as SectionField;
 
-      const referrentFullName = getFieldValueByFieldId(
-        referrentFullNameField?.id as number,
+      const referentFullName = getFieldValueByFieldId(
+        referentFullNameField?.id as number,
       )?.value as string;
       const company = getFieldValueByFieldId(companyField?.id as number)
         ?.value as string;
 
       return (
         <CollapsibleSectionItemContainer
-          triggerTitle={referrentFullName || "(Not Specified)"}
+          triggerTitle={referentFullName || "(Not Specified)"}
           triggerDescription={company}
           key={group[0]?.id}
           onDeleteItemClick={() => {
@@ -60,7 +62,7 @@ const CvBuilderReferencesSection = ({
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={referrentFullNameField} />
+              <DocumentBuilderInput field={referentFullNameField} />
               <DocumentBuilderInput field={companyField} />
             </div>
             <div className="grid lg:grid-cols-2 gap-8">
@@ -78,7 +80,7 @@ const CvBuilderReferencesSection = ({
       sectionId: section?.id as number,
       key: "metadata",
       value: JSON.stringify({
-        ...sectionMetada,
+        ...sectionMetadata,
         hideReferences: checked,
       }),
     });

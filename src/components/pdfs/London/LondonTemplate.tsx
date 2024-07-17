@@ -2,9 +2,13 @@
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
 import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
+import { REFERENCES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderReferencesSection";
 import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
 import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  type INTERNAL_SECTION_TAG,
+  INTERNAL_SECTION_TAGS,
+} from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
 import { groupEveryN, parseSectionMetadata, removeHTMLTags } from "@/lib/utils";
 import {
@@ -100,33 +104,27 @@ const styles = StyleSheet.create({
 
 const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const transformedData = transformDocumentBuilderData(data);
-  const personalDetailsSection = transformedData.sections.find(
-    (section) =>
-      section.internalSectionTag === INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
+  const getSectionByTag = (sectionTag: INTERNAL_SECTION_TAG) => {
+    return transformedData.sections.find(
+      (section) => section.internalSectionTag === sectionTag,
+    );
+  };
+  const personalDetailsSection = getSectionByTag(
+    INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
   );
-  const professionalSummarySection = transformedData.sections.find(
-    (section) =>
-      section.internalSectionTag === INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
+  const professionalSummarySection = getSectionByTag(
+    INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
   );
-  const websitesAndLinksSection = transformedData.sections.find(
-    (section) =>
-      section.internalSectionTag ===
-      INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
+  const websitesAndLinksSection = getSectionByTag(
+    INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
   );
-  const employmentHistorySection = transformedData.sections.find(
-    (section) =>
-      section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+  const employmentHistorySection = getSectionByTag(
+    INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
   );
-  const educationSection = transformedData.sections.find(
-    (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
-  );
-  const skillsSection = transformedData.sections.find(
-    (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
-  );
-  const internshipsSection = transformedData.sections.find(
-    (section) =>
-      section.internalSectionTag === INTERNAL_SECTION_TAGS.INTERNSHIPS,
-  );
+  const educationSection = getSectionByTag(INTERNAL_SECTION_TAGS.EDUCATION);
+  const skillsSection = getSectionByTag(INTERNAL_SECTION_TAGS.SKILLS);
+  const internshipsSection = getSectionByTag(INTERNAL_SECTION_TAGS.INTERNSHIPS);
+  const referencesSection = getSectionByTag(INTERNAL_SECTION_TAGS.REFERENCES);
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -161,6 +159,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       link: group[1]?.value,
     };
   });
+
   const shouldRenderWebsitesAndLinks =
     websitesAndLinks.length > 0 && websitesAndLinks.some((item) => item.label);
 
@@ -233,6 +232,23 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
 
   const shouldRenderInternshipSectionItems = getIfItemsShouldRender(
     internshipsSectionItems,
+  );
+
+  const referencesSectionItems = groupEveryN(
+    referencesSection?.fields || [],
+    REFERENCES_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      referentFullName: group[0]?.value,
+      referentCompany: group[1]?.value,
+      referentPhone: group[2]?.value,
+      referentEmail: group[3]?.value,
+    };
+  });
+
+  const shouldRenderReferencesSectionItems = getIfItemsShouldRender(
+    referencesSectionItems,
   );
 
   const htmlRenderers: HtmlRenderers = {
@@ -412,7 +428,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                     </Text>
                     <View
                       style={{
-                        width: "80%",
+                        width: "82%",
                         display: "flex",
                         flexDirection: "column",
                       }}
@@ -495,7 +511,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                     </Text>
                     <View
                       style={{
-                        width: "80%",
+                        width: "82%",
                         display: "flex",
                         flexDirection: "column",
                       }}
@@ -550,17 +566,23 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 flexDirection: "row",
               }}
             >
-              <Text style={styles.sectionLabel}>{skillsSection?.name}</Text>
+              <Text
+                style={{
+                  ...styles.sectionLabel,
+                  width: "25%",
+                }}
+              >
+                {skillsSection?.name}
+              </Text>
               <View
                 style={{
                   display: "flex",
                   gap: 20,
-                  marginLeft: 35,
                   flexDirection: "row",
                   justifyContent: "space-between",
                   flexWrap: "wrap",
-                  rowGap: 5,
                   columnGap: 5,
+                  width: "75%",
                 }}
               >
                 {skillsSectionItems.map((item) => (
@@ -665,6 +687,92 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                   </View>
                 </View>
               ))}
+            </View>
+          </View>
+        ) : null}
+        {shouldRenderReferencesSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+                height: "100%",
+                width: "25%",
+              }}
+            >
+              {referencesSection?.name}
+            </Text>
+            <View
+              style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                width: "75%",
+              }}
+            >
+              {parseSectionMetadata(referencesSection?.metadata)
+                .hideReferences ? (
+                <Text
+                  style={{
+                    fontSize: 10.9,
+                  }}
+                >
+                  References available upon request
+                </Text>
+              ) : (
+                <>
+                  {referencesSectionItems.map(
+                    ({
+                      id,
+                      referentPhone,
+                      referentCompany,
+                      referentEmail,
+                      referentFullName,
+                    }) => (
+                      <View
+                        key={id}
+                        style={{
+                          fontSize: PDF_BODY_FONT_SIZE,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 8,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 10.9,
+                          }}
+                        >
+                          {referentFullName}
+                          {referentCompany ? ` from ${referentCompany}` : null}
+                        </Text>
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "100%",
+                            gap: 4,
+                          }}
+                        >
+                          <Text>{referentEmail}</Text>
+                          <Text>
+                            {referentEmail && referentPhone ? "- " : null}
+                            {referentPhone}
+                          </Text>
+                        </View>
+                      </View>
+                    ),
+                  )}
+                </>
+              )}
             </View>
           </View>
         ) : null}
