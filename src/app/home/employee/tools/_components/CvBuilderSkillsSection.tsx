@@ -95,6 +95,7 @@ const CvBuilderSkillsSection = () => {
         </p>
         <div className="mt-2 flex items-center gap-2">
           <Switch
+            disabled={fields.length === 0}
             checked={showExperienceLevel === false}
             onCheckedChange={(checked) => {
               handleShowExperienceLevelChange(checked);

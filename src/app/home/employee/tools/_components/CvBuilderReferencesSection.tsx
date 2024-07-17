@@ -90,6 +90,7 @@ const CvBuilderReferencesSection = ({
         <EditableSectionTitle section={section} />
         <div className="mt-2 flex items-center gap-2">
           <Switch
+            disabled={fields.length === 0}
             defaultChecked={hideReferences}
             onCheckedChange={(checked) => {
               handleHideReferencesChange(checked);

@@ -64,9 +64,14 @@ const CollapsibleSectionItemContainer = ({
               className="w-full h-full text-left flex items-center justify-start py-4 hover:bg-transparent bg-transparent hover:text-primary"
               onClick={() => setOpen(!open)}
             >
-              <div className="grid">
-                {triggerTitle}
-                <span className="text-xs text-muted-foreground">
+              <div className="grid min-h-9">
+                <span className="max-w-full truncate">{triggerTitle}</span>
+                <span
+                  className={cn(
+                    "text-xs text-muted-foreground opacity-100 transition-all ease-in",
+                    !triggerDescription && "opacity-0",
+                  )}
+                >
                   {triggerDescription}
                 </span>
               </div>
