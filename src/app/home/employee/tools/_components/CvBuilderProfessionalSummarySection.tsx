@@ -30,12 +30,14 @@ const CvBuilderProfessionalSummarySection = () => {
   const renderCharCountIndicator = () => {
     const charCount = removeHTMLTags(fieldValue || "")?.length;
     const maxCount = charCount >= 400 ? 600 : 400;
-    const colorClass =
-      charCount === 0
-        ? ""
-        : charCount < 400
-          ? "text-yellow-600"
-          : "text-green-600";
+    let colorClass = "";
+    if (charCount < 400) {
+      colorClass = "text-yellow-600";
+    } else if (charCount <= 600) {
+      colorClass = "text-green-600";
+    } else if (charCount > 600) {
+      colorClass = "text-red-600";
+    }
 
     return (
       <p className={cn("tabular-nums whitespace-nowrap", colorClass)}>
