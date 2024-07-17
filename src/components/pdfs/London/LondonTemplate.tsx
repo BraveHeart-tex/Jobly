@@ -21,6 +21,7 @@ import {
   transformDocumentBuilderData,
 } from "../pdf.utils";
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
+import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 13.4 as const;
@@ -197,6 +198,42 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       return keys.filter((key) => key !== "id").some((key) => item[key]);
     });
 
+  const htmlRenderers: HtmlRenderers = {
+    ol: (props) => (
+      <View
+        {...props}
+        style={{
+          ...props.style,
+          marginLeft: 0,
+        }}
+      >
+        {props.children}
+      </View>
+    ),
+    ul: (props) => (
+      <View
+        {...props}
+        style={{
+          ...props.style,
+          marginLeft: 0,
+        }}
+      >
+        {props.children}
+      </View>
+    ),
+    a: (props) => (
+      <Link
+        {...props}
+        style={{
+          ...props.style,
+          color: "black",
+        }}
+      >
+        {props.children}
+      </Link>
+    ),
+  };
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -285,6 +322,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                   style={{
                     fontSize: PDF_BODY_FONT_SIZE,
                   }}
+                  renderers={htmlRenderers}
                 >
                   {styleLinksAndCleanElements(professionalSummary)}
                 </Html>
@@ -356,6 +394,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                           fontSize: PDF_BODY_FONT_SIZE,
                           marginTop: -2,
                         }}
+                        renderers={htmlRenderers}
                       >
                         {styleLinksAndCleanElements(item.description || "")}
                       </Html>
@@ -431,13 +470,18 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                         }}
                       >
                         {item.degree}
-                        {item.school ? ` - ${item.school}` : null}
+                        {item.school
+                          ? `${item.degree ? " - " : null}${item.school}`
+                          : null}
                       </Text>
+
                       <Html
                         style={{
                           fontSize: PDF_BODY_FONT_SIZE,
                           marginTop: -2,
+                          gap: 0,
                         }}
+                        renderers={htmlRenderers}
                       >
                         {styleLinksAndCleanElements(item.description || "")}
                       </Html>
