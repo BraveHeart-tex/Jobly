@@ -15,6 +15,7 @@ export const EMPLOYEE_ROUTES = {
   RECOMENDED_JOBS: `${BASE_EMPLOYEE_ROUTE}/jobs/?recommended=true`,
   JOB_ALERTS: `${BASE_EMPLOYEE_ROUTE}/jobs/alerts`,
   JOB_HISTORY: `${BASE_EMPLOYEE_ROUTE}/jobs/?viewed=true`,
+  JOB_TRACKER: `${BASE_EMPLOYEE_ROUTE}/jobs/job-tracker`,
   BOOKMARKED_JOBS: `${BASE_EMPLOYEE_ROUTE}/jobs/?bookmarked=true`,
 
   APPLICATIONS: `${BASE_EMPLOYEE_ROUTE}/applications`,
@@ -24,6 +25,7 @@ export const EMPLOYEE_ROUTES = {
 
   EDIT_PROFILE: `${BASE_EMPLOYEE_ROUTE}/profile/edit`,
   PRIVACY_SETTINGS: `${BASE_EMPLOYEE_ROUTE}/profile/privacy-settings`,
+  MY_DOCUMENTS: `${BASE_EMPLOYEE_ROUTE}/profile/my-documents`,
 
   DOCUMENT_BUILDER: `${BASE_EMPLOYEE_ROUTE}/tools/document-builder`,
 } as const;

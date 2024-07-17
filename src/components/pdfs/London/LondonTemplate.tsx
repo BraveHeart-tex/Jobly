@@ -23,6 +23,8 @@ import {
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
+const DOCUMENT_TITLE_FONT_SIZE = 13.4 as const;
+const SECTION_LABEL_FONT_SIZE = 8.5 as const;
 
 Font.register({
   family: "EB Garamond",
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     fontFamily: "EB Garamond",
   },
   documentTitle: {
-    fontSize: 13.4,
+    fontSize: DOCUMENT_TITLE_FONT_SIZE,
     textAlign: "center",
     fontWeight: "bold",
     letterSpacing: 0.3,
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     textTransform: "uppercase",
-    fontSize: 8.5,
+    fontSize: SECTION_LABEL_FONT_SIZE,
     letterSpacing: 1.1,
     width: "25%",
     display: "flex",
