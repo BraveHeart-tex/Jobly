@@ -64,7 +64,12 @@ const CollapsibleSectionItemContainer = ({
               className="w-full h-full text-left flex items-center justify-start py-4 hover:bg-transparent bg-transparent hover:text-primary"
               onClick={() => setOpen(!open)}
             >
-              <div className="grid min-h-9">
+              <div
+                className={cn(
+                  "flex flex-col min-h-9",
+                  !triggerDescription && "justify-center",
+                )}
+              >
                 <span className="max-w-full truncate">{triggerTitle}</span>
                 <span
                   className={cn(
