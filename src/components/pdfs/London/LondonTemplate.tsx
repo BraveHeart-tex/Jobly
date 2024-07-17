@@ -1,6 +1,7 @@
 "use client";
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
+import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
 import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
 import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
@@ -122,6 +123,10 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const skillsSection = transformedData.sections.find(
     (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
   );
+  const internshipsSection = transformedData.sections.find(
+    (section) =>
+      section.internalSectionTag === INTERNAL_SECTION_TAGS.INTERNSHIPS,
+  );
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -159,7 +164,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const shouldRenderWebsitesAndLinks =
     websitesAndLinks.length > 0 && websitesAndLinks.some((item) => item.label);
 
-  const employementHistoryItems = groupEveryN(
+  const employmentHistoryItems = groupEveryN(
     employmentHistorySection?.fields || [],
     EMPLOYMENT_SECTION_ITEMS_COUNT,
   ).map((group) => {
@@ -174,8 +179,8 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     };
   });
 
-  const shouldRenderEmployementHistoryItems = getIfItemsShouldRender(
-    employementHistoryItems,
+  const shouldRenderEmploymentHistoryItems = getIfItemsShouldRender(
+    employmentHistoryItems,
   );
 
   const educationSectionItems = groupEveryN(
@@ -210,6 +215,25 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
 
   const shouldRenderSkillsSectionItems =
     getIfItemsShouldRender(skillsSectionItems);
+
+  const internshipsSectionItems = groupEveryN(
+    internshipsSection?.fields || [],
+    INTERNSHIP_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      jobTitle: group[0]?.value,
+      startDate: group[1]?.value,
+      endDate: group[2]?.value,
+      employer: group[3]?.value,
+      city: group[4]?.value,
+      description: group[5]?.value,
+    };
+  });
+
+  const shouldRenderInternshipSectionItems = getIfItemsShouldRender(
+    internshipsSectionItems,
+  );
 
   const htmlRenderers: HtmlRenderers = {
     ol: (props) => (
@@ -345,7 +369,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         ) : null}
 
         {/* EMPLOYMENT HISTORY */}
-        {shouldRenderEmployementHistoryItems ? (
+        {shouldRenderEmploymentHistoryItems ? (
           <View
             style={{
               ...styles.section,
@@ -367,7 +391,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 display: "flex",
               }}
             >
-              {employementHistoryItems.map((item) => (
+              {employmentHistoryItems.map((item) => (
                 <View key={item.id}>
                   <View
                     style={{
@@ -559,6 +583,88 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                   </View>
                 ))}
               </View>
+            </View>
+          </View>
+        ) : null}
+
+        {shouldRenderInternshipSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+              }}
+            >
+              {internshipsSection?.name}
+            </Text>
+
+            <View
+              style={{
+                display: "flex",
+              }}
+            >
+              {internshipsSectionItems.map((item) => (
+                <View key={item.id}>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "100%",
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        width: "30.5%",
+                      }}
+                    >
+                      {item.startDate}
+                      {item.endDate ? ` - ${item.endDate}` : null}
+                    </Text>
+                    <View
+                      style={{
+                        width: "80%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "medium",
+                          fontSize: 10.9,
+                        }}
+                      >
+                        {item.jobTitle}
+                        {item.employer ? ` - ${item.employer}` : null}
+                      </Text>
+                      <Html
+                        style={{
+                          fontSize: PDF_BODY_FONT_SIZE,
+                          marginTop: -2,
+                        }}
+                        renderers={htmlRenderers}
+                      >
+                        {styleLinksAndCleanElements(item.description || "")}
+                      </Html>
+                    </View>
+                    <Text
+                      style={{
+                        width: "10%",
+                        textAlign: "right",
+                      }}
+                    >
+                      {item.city}
+                    </Text>
+                  </View>
+                </View>
+              ))}
             </View>
           </View>
         ) : null}

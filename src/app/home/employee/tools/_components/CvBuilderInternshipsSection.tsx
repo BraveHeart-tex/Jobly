@@ -14,7 +14,7 @@ type CvBuilderInternshipsSectionProps = {
   section: Section;
 };
 
-const INTERSHIP_SECTION_ITEMS_COUNT = 6;
+export const INTERNSHIP_SECTION_ITEMS_COUNT = 6;
 const CvBuilderInternshipsSection = ({
   section,
 }: CvBuilderInternshipsSectionProps) => {
@@ -29,7 +29,7 @@ const CvBuilderInternshipsSection = ({
   const { removeFields } = useRemoveFields();
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, INTERSHIP_SECTION_ITEMS_COUNT);
+    const groupedFields = groupEveryN(fields, INTERNSHIP_SECTION_ITEMS_COUNT);
 
     return groupedFields.map((group) => {
       const jobTitleField = group[0] as SectionField;
