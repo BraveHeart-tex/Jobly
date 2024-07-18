@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
+import type { MappedSectionInsertModel } from "@/lib/types";
 import type { Section, SectionInsertModel } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import {
@@ -14,20 +15,25 @@ import {
   SlidersHorizontalIcon,
 } from "lucide-react";
 
-type OtherSectionOption = {
-  icon: LucideIcon;
-} & Omit<SectionInsertModel, "documentId" | "displayOrder">;
+type OtherSectionOption = Omit<
+  MappedSectionInsertModel,
+  "documentId" | "displayOrder"
+> & { icon: LucideIcon };
 
 const OTHER_SECTION_OPTIONS: OtherSectionOption[] = [
   {
     icon: SlidersHorizontalIcon,
     name: "Custom Section",
     internalSectionTag: INTERNAL_SECTION_TAGS.CUSTOM,
+    fieldsContainerType: "collapsible",
+    itemCountPerContainer: 5,
   },
   {
     icon: Flower2Icon,
     name: "Extra-curricular Activities",
     internalSectionTag: INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES,
+    fieldsContainerType: "collapsible",
+    itemCountPerContainer: 6,
   },
   {
     icon: GuitarIcon,
@@ -42,21 +48,29 @@ const OTHER_SECTION_OPTIONS: OtherSectionOption[] = [
     metadata: JSON.stringify({
       hideReferences: true,
     }),
+    fieldsContainerType: "collapsible",
+    itemCountPerContainer: 4,
   },
   {
     icon: BookOpenTextIcon,
     name: "Courses",
     internalSectionTag: INTERNAL_SECTION_TAGS.COURSES,
+    fieldsContainerType: "collapsible",
+    itemCountPerContainer: 4,
   },
   {
     icon: BriefcaseBusinessIcon,
     name: "Internships",
     internalSectionTag: INTERNAL_SECTION_TAGS.INTERNSHIPS,
+    fieldsContainerType: "collapsible",
+    itemCountPerContainer: 6,
   },
   {
     icon: LanguagesIcon,
     name: "Languages",
     internalSectionTag: INTERNAL_SECTION_TAGS.LANGUAGES,
+    fieldsContainerType: "collapsible",
+    itemCountPerContainer: 2,
   },
 ];
 
@@ -88,7 +102,12 @@ const CvBuilderCustomSectionOptions = () => {
     });
 
   const handleAddSection = (option: OtherSectionOption) => {
-    const { name, internalSectionTag, fieldsContainerType } = option;
+    const {
+      name,
+      internalSectionTag,
+      fieldsContainerType,
+      itemCountPerContainer,
+    } = option;
     const finalDisplayOrder =
       Math.max(...sections.map((section) => section.displayOrder)) + 1;
     const insertDto: SectionInsertModel = {
@@ -97,7 +116,9 @@ const CvBuilderCustomSectionOptions = () => {
       internalSectionTag,
       fieldsContainerType: fieldsContainerType || "collapsible",
       displayOrder: finalDisplayOrder,
+      itemCountPerContainer,
     };
+
     addSectionByInternalTag(insertDto);
   };
 

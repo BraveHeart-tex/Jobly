@@ -3,6 +3,7 @@ import type {
   Section,
   SectionField,
   SectionFieldValue,
+  SectionInsertModel,
 } from "@/server/db/schema";
 import type * as schema from "@/server/db/schema";
 import type { ExtractTablesWithRelations } from "drizzle-orm";
@@ -46,3 +47,22 @@ export type Trx = MySqlTransaction<
 >;
 
 export type InferValueTypeFromConst<T> = T[keyof T];
+
+type SectionBase = Omit<
+  SectionInsertModel,
+  "fieldsContainerType" | "itemCountPerContainer"
+>;
+
+type SectionNonCollapsible = SectionBase & {
+  fieldsContainerType?: "static";
+  itemCountPerContainer?: never;
+};
+
+type SectionCollapsible = SectionBase & {
+  fieldsContainerType: "collapsible";
+  itemCountPerContainer: number;
+};
+
+export type MappedSectionInsertModel =
+  | SectionNonCollapsible
+  | SectionCollapsible;

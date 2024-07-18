@@ -2,12 +2,12 @@ import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
+import type { MappedSectionInsertModel } from "@/lib/types";
 import type {
   Document,
   Section,
   SectionField,
   SectionFieldInsertModel,
-  SectionInsertModel,
 } from "@/server/db/schema";
 
 export const getFieldInsertTemplate = (
@@ -227,7 +227,7 @@ export const getProfessionalSummaryFields = (
 
 export const getPredefinedDocumentSections = (
   documentId: Document["id"],
-): SectionInsertModel[] => [
+): MappedSectionInsertModel[] => [
   {
     documentId,
     name: "Personal Details",
@@ -246,6 +246,7 @@ export const getPredefinedDocumentSections = (
     displayOrder: 3,
     fieldsContainerType: "collapsible",
     internalSectionTag: INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+    itemCountPerContainer: 6,
   },
   {
     documentId,
@@ -253,6 +254,7 @@ export const getPredefinedDocumentSections = (
     displayOrder: 4,
     fieldsContainerType: "collapsible",
     internalSectionTag: INTERNAL_SECTION_TAGS.EDUCATION,
+    itemCountPerContainer: 6,
   },
   {
     documentId,
@@ -260,6 +262,7 @@ export const getPredefinedDocumentSections = (
     displayOrder: 5,
     fieldsContainerType: "collapsible",
     internalSectionTag: INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
+    itemCountPerContainer: 2,
   },
   {
     documentId,
@@ -270,6 +273,7 @@ export const getPredefinedDocumentSections = (
     metadata: JSON.stringify({
       showExperienceLevel: true,
     }),
+    itemCountPerContainer: 2,
   },
 ];
 

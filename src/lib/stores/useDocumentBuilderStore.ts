@@ -145,7 +145,6 @@ export const useDocumentBuilderStore = create<
       },
       addSection: (section) => {
         set({ sections: [...get().sections, section] });
-        get().callPdfUpdaterCallback();
       },
       addField: (field) => {
         set({ fields: [...get().fields, field] });

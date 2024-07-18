@@ -1,3 +1,4 @@
+import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
 import type { SectionField } from "@/server/db/schema";
 import { PDF_BODY_FONT_SIZE } from "./London/LondonTemplate";
@@ -87,4 +88,13 @@ export const getIfItemsShouldRender = <T extends Record<string, unknown>>(
       return keys.filter((key) => key !== "id").some((key) => item[key]);
     })
   );
+};
+
+export const makeResumeTemplateData = (data: DocumentBuilderConfig) => {
+  const transformedData = transformDocumentBuilderData(data);
+  const getSectionByTag = (sectionTag: INTERNAL_SECTION_TAG) => {
+    return transformedData.sections.find(
+      (section) => section.internalSectionTag === sectionTag,
+    );
+  };
 };
