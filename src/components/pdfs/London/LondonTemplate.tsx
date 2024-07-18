@@ -2,6 +2,7 @@
 import { COURSES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCoursesSection";
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
+import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderExtraCurricularSection";
 import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
 import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderLanguagesSection";
 import { REFERENCES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderReferencesSection";
@@ -130,6 +131,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const hobbiesSection = getSectionByTag(INTERNAL_SECTION_TAGS.HOBBIES);
   const languagesSection = getSectionByTag(INTERNAL_SECTION_TAGS.LANGUAGES);
   const coursesSection = getSectionByTag(INTERNAL_SECTION_TAGS.COURSES);
+  const extraCurricularActivitiesSection = getSectionByTag(
+    INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES,
+  );
 
   const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
     return getFieldValue(fieldName, personalDetailsSection?.fields);
@@ -274,6 +278,24 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       endDate: group[3]?.value,
     };
   });
+
+  const extraCirricularActivitiesSectionItems = groupEveryN(
+    extraCurricularActivitiesSection?.fields || [],
+    EXTRA_CURRICULAR_SECTION_ITEMS_COUNT,
+  ).map((group) => {
+    return {
+      id: crypto.randomUUID(),
+      functionTitle: group[0]?.value,
+      startDate: group[1]?.value,
+      endDate: group[2]?.value,
+      employer: group[3]?.value,
+      city: group[4]?.value,
+      description: group[5]?.value,
+    };
+  });
+
+  const shouldRenderExtraCirricularActivitiesSectionItems =
+    getIfItemsShouldRender(extraCirricularActivitiesSectionItems);
 
   const shouldRenderReferencesSectionItems = getIfItemsShouldRender(
     referencesSectionItems,
@@ -958,9 +980,116 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       >
                         {item.course}
                         {item.institution
-                          ? `${item.course ? "-" : null} ${item.institution}`
+                          ? `${item.course ? " -" : null} ${item.institution}`
                           : null}
                       </Text>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : null}
+        {shouldRenderExtraCirricularActivitiesSectionItems ? (
+          <View
+            style={{
+              ...styles.section,
+              display: "flex",
+              flexDirection:
+                extraCirricularActivitiesSectionItems.length === 1 &&
+                extraCirricularActivitiesSectionItems.every(
+                  (item) => !item.startDate && !item.endDate,
+                )
+                  ? "row"
+                  : "column",
+              gap: 10,
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+                width:
+                  extraCirricularActivitiesSectionItems.length === 1 &&
+                  extraCirricularActivitiesSectionItems.every(
+                    (item) => !item.startDate && !item.endDate,
+                  )
+                    ? styles.sectionLabel.width
+                    : "100%",
+              }}
+            >
+              {extraCurricularActivitiesSection?.name}
+            </Text>
+            <View
+              style={{
+                display: "flex",
+                gap: 7,
+              }}
+            >
+              {extraCirricularActivitiesSectionItems.map((item) => (
+                <View key={item.id}>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      fontSize: PDF_BODY_FONT_SIZE,
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        width:
+                          extraCirricularActivitiesSectionItems.length === 1 &&
+                          extraCirricularActivitiesSectionItems.every(
+                            (item) => !item.startDate && !item.endDate,
+                          )
+                            ? "0%"
+                            : "33%",
+                      }}
+                    >
+                      {item.startDate}
+                      {item.endDate ? ` - ${item.endDate}` : null}
+                    </Text>
+                    <View
+                      style={{
+                        width: "96%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontWeight: "medium",
+                            fontSize: 10.9,
+                          }}
+                        >
+                          {item.functionTitle}
+                          {item.employer
+                            ? `${item.functionTitle ? " -" : null} ${item.employer}`
+                            : null}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: PDF_BODY_FONT_SIZE,
+                          }}
+                        >
+                          {item.city}
+                        </Text>
+                      </View>
+                      <Html
+                        style={{ fontSize: PDF_BODY_FONT_SIZE }}
+                        renderers={htmlRenderers}
+                      >
+                        {styleLinksAndCleanElements(item.description || "")}
+                      </Html>
                     </View>
                   </View>
                 </View>

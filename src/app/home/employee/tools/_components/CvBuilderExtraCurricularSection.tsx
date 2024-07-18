@@ -14,7 +14,7 @@ type CvBuilderExtraCurricularSectionProps = {
   section: Section;
 };
 
-const EXTRA_CURRICULAR_SECTION_ITEMS_COUNT = 6;
+export const EXTRA_CURRICULAR_SECTION_ITEMS_COUNT = 6;
 
 const CvBuilderExtraCurricularSection = ({
   section,
