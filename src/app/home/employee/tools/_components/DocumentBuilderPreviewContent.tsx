@@ -1,6 +1,7 @@
 "use client";
 import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
 import PDFViewer from "@/components/pdfs/PDFViewer";
+import { makeResumeTemplateData } from "@/components/pdfs/pdf.utils";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
@@ -12,12 +13,12 @@ const DocumentBuilderPreviewContent = () => {
   const [reRender, setReRender] = useState(0);
   const { online, previous } = useNetworkState();
   const { document, sections, fields, fieldValues } = useDocumentBuilderStore();
-  const resumeData = {
+  const resumeTemplateData = makeResumeTemplateData({
     document,
     sections,
     fields,
     fieldValues,
-  };
+  });
   const userLostConnection = !online && previous;
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const DocumentBuilderPreviewContent = () => {
   return (
     <div className="rounded-md h-full w-full overflow-auto hide-scrollbar">
       <PDFViewer key={reRender}>
-        <LondonTemplate data={resumeData} />
+        <LondonTemplate data={resumeTemplateData} />
       </PDFViewer>
       {userLostConnection ? (
         <div className="w-full h-full flex items-center justify-center">

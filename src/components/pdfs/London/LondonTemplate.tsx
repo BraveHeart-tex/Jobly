@@ -1,19 +1,5 @@
 "use client";
-import { COURSES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCoursesSection";
-import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
-import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
-import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderExtraCurricularSection";
-import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
-import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderLanguagesSection";
-import { REFERENCES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderReferencesSection";
-import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
-import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
-import {
-  type INTERNAL_SECTION_TAG,
-  INTERNAL_SECTION_TAGS,
-} from "@/lib/constants";
-import type { DocumentBuilderConfig } from "@/lib/types";
-import { groupEveryN, parseSectionMetadata, removeHTMLTags } from "@/lib/utils";
+import { parseSectionMetadata, removeHTMLTags } from "@/lib/utils";
 import {
   Document,
   Font,
@@ -27,10 +13,8 @@ import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/rende
 import Html from "react-pdf-html";
 import CommaSeparatedText from "../CommaSeperatedText";
 import {
-  getFieldValue,
-  getIfItemsShouldRender,
+  type makeResumeTemplateData,
   styleLinksAndCleanElements,
-  transformDocumentBuilderData,
 } from "../pdf.utils";
 
 export const PDF_BODY_FONT_SIZE = 9 as const;
@@ -56,7 +40,7 @@ Font.register({
 });
 
 type LondonTemplateProps = {
-  data: DocumentBuilderConfig;
+  data: ReturnType<typeof makeResumeTemplateData>;
 };
 
 const styles = StyleSheet.create({
@@ -106,209 +90,54 @@ const styles = StyleSheet.create({
 });
 
 const LondonTemplate = ({ data }: LondonTemplateProps) => {
-  const transformedData = transformDocumentBuilderData(data);
-  const getSectionByTag = (sectionTag: INTERNAL_SECTION_TAG) => {
-    return transformedData.sections.find(
-      (section) => section.internalSectionTag === sectionTag,
-    );
-  };
-  const personalDetailsSection = getSectionByTag(
-    INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
-  );
-  const professionalSummarySection = getSectionByTag(
-    INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
-  );
-  const websitesAndLinksSection = getSectionByTag(
-    INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
-  );
-  const employmentHistorySection = getSectionByTag(
-    INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
-  );
-  const educationSection = getSectionByTag(INTERNAL_SECTION_TAGS.EDUCATION);
-  const skillsSection = getSectionByTag(INTERNAL_SECTION_TAGS.SKILLS);
-  const internshipsSection = getSectionByTag(INTERNAL_SECTION_TAGS.INTERNSHIPS);
-  const referencesSection = getSectionByTag(INTERNAL_SECTION_TAGS.REFERENCES);
-  const hobbiesSection = getSectionByTag(INTERNAL_SECTION_TAGS.HOBBIES);
-  const languagesSection = getSectionByTag(INTERNAL_SECTION_TAGS.LANGUAGES);
-  const coursesSection = getSectionByTag(INTERNAL_SECTION_TAGS.COURSES);
-  const extraCurricularActivitiesSection = getSectionByTag(
-    INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES,
-  );
-
-  const getPersonalDetailsSectionFieldValues = (fieldName: string) => {
-    return getFieldValue(fieldName, personalDetailsSection?.fields);
-  };
-
-  const getProfessionalSummarySectionFieldValues = (fieldName: string) => {
-    return getFieldValue(fieldName, professionalSummarySection?.fields);
-  };
-
-  const firstName = getPersonalDetailsSectionFieldValues("First Name");
-  const lastName = getPersonalDetailsSectionFieldValues("Last Name");
-  const jobTitle = getPersonalDetailsSectionFieldValues("Wanted Job Title");
-  const address = getPersonalDetailsSectionFieldValues("Address");
-  const city = getPersonalDetailsSectionFieldValues("City");
-  const postalCode = getPersonalDetailsSectionFieldValues("Postal Code");
-  const placeOfBirth = getPersonalDetailsSectionFieldValues("Place of Birth");
-  const phone = getPersonalDetailsSectionFieldValues("Phone");
-  const email = getPersonalDetailsSectionFieldValues("Email");
-  const driversLicense =
-    getPersonalDetailsSectionFieldValues("Driving License");
-  const dateOfBirth = getPersonalDetailsSectionFieldValues("Date of Birth");
-  const professionalSummary = getProfessionalSummarySectionFieldValues(
-    "Professional Summary",
-  );
-
-  const websitesAndLinks = groupEveryN(
-    websitesAndLinksSection?.fields || [],
-    WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      label: group[0]?.value,
-      link: group[1]?.value,
-    };
-  });
-
-  const shouldRenderWebsitesAndLinks =
-    websitesAndLinks.length > 0 && websitesAndLinks.some((item) => item.label);
-
-  const employmentHistoryItems = groupEveryN(
-    employmentHistorySection?.fields || [],
-    EMPLOYMENT_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      jobTitle: group[0]?.value,
-      startDate: group[1]?.value,
-      endDate: group[2]?.value,
-      employer: group[3]?.value,
-      city: group[4]?.value,
-      description: group[5]?.value,
-    };
-  });
-
-  const shouldRenderEmploymentHistoryItems = getIfItemsShouldRender(
-    employmentHistoryItems,
-  );
-
-  const educationSectionItems = groupEveryN(
-    educationSection?.fields || [],
-    EDUCATION_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      school: group[0]?.value,
-      degree: group[1]?.value,
-      startDate: group[2]?.value,
-      endDate: group[3]?.value,
-      city: group[4]?.value,
-      description: group[5]?.value,
-    };
-  });
-
-  const shouldRenderEducationSectionItems = getIfItemsShouldRender(
-    educationSectionItems,
-  );
-
-  const skillsSectionItems = groupEveryN(
-    skillsSection?.fields || [],
-    SKILL_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      name: group[0]?.value,
-      level: group[1]?.value,
-    };
-  });
-
-  const shouldRenderSkillsSectionItems =
-    getIfItemsShouldRender(skillsSectionItems);
-
-  const internshipsSectionItems = groupEveryN(
-    internshipsSection?.fields || [],
-    INTERNSHIP_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      jobTitle: group[0]?.value,
-      startDate: group[1]?.value,
-      endDate: group[2]?.value,
-      employer: group[3]?.value,
-      city: group[4]?.value,
-      description: group[5]?.value,
-    };
-  });
-
-  const shouldRenderInternshipSectionItems = getIfItemsShouldRender(
-    internshipsSectionItems,
-  );
-
-  const referencesSectionItems = groupEveryN(
-    referencesSection?.fields || [],
-    REFERENCES_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      referentFullName: group[0]?.value,
-      referentCompany: group[1]?.value,
-      referentPhone: group[2]?.value,
-      referentEmail: group[3]?.value,
-    };
-  });
-  const languagesSectionItems = groupEveryN(
-    languagesSection?.fields || [],
-    LANGUAGES_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      language: group[0]?.value,
-      level: group[1]?.value,
-    };
-  });
-
-  const coursesSectionItems = groupEveryN(
-    coursesSection?.fields || [],
-    COURSES_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      course: group[0]?.value,
-      institution: group[1]?.value,
-      startDate: group[2]?.value,
-      endDate: group[3]?.value,
-    };
-  });
-
-  const extraCirricularActivitiesSectionItems = groupEveryN(
-    extraCurricularActivitiesSection?.fields || [],
-    EXTRA_CURRICULAR_SECTION_ITEMS_COUNT,
-  ).map((group) => {
-    return {
-      id: crypto.randomUUID(),
-      functionTitle: group[0]?.value,
-      startDate: group[1]?.value,
-      endDate: group[2]?.value,
-      employer: group[3]?.value,
-      city: group[4]?.value,
-      description: group[5]?.value,
-    };
-  });
-
-  const shouldRenderExtraCirricularActivitiesSectionItems =
-    getIfItemsShouldRender(extraCirricularActivitiesSectionItems);
-
-  const shouldRenderReferencesSectionItems = getIfItemsShouldRender(
-    referencesSectionItems,
-  );
-  const shouldRenderHobbiesSectionItems = hobbiesSection?.fields.some(
-    (item) => item.value,
-  );
-  const shouldRenderLanguagesSectionItems = getIfItemsShouldRender(
-    languagesSectionItems,
-  );
-
-  const shouldRenderCoursesSectionItems =
-    getIfItemsShouldRender(coursesSectionItems);
+  const {
+    personalDetailsSection,
+    extraCurricularActivitiesSection,
+    referencesSection,
+    internshipsSection,
+    professionalSummarySection,
+    skillsSection,
+    educationSection,
+    employmentHistorySection,
+    websitesAndLinksSection,
+    languagesSection,
+    hobbiesSection,
+    coursesSection,
+  } = data;
+  const {
+    firstName,
+    city,
+    driversLicense,
+    email,
+    jobTitle,
+    placeOfBirth,
+    dateOfBirth,
+    lastName,
+    address,
+    postalCode,
+    phone,
+  } = personalDetailsSection;
+  const { shouldRenderWebsitesAndLinks, websitesAndLinks } =
+    websitesAndLinksSection;
+  const { professionalSummary } = professionalSummarySection;
+  const { shouldRenderEmploymentHistoryItems, employmentHistoryItems } =
+    employmentHistorySection;
+  const { shouldRenderEducationSectionItems, educationSectionItems } =
+    educationSection;
+  const { shouldRenderSkillsSectionItems, skillsSectionItems } = skillsSection;
+  const { internshipsSectionItems, shouldRenderInternshipSectionItems } =
+    internshipsSection;
+  const { shouldRenderReferencesSectionItems, referencesSectionItems } =
+    referencesSection;
+  const { shouldRenderHobbiesSectionItems, hobbies } = hobbiesSection;
+  const { shouldRenderLanguagesSectionItems, languagesSectionItems } =
+    languagesSection;
+  const { coursesSectionItems, shouldRenderCoursesSectionItems } =
+    coursesSection;
+  const {
+    shouldRenderExtraCurricularActivitiesSectionItems,
+    extraCurricularActivitiesSectionItems,
+  } = extraCurricularActivitiesSection;
 
   const htmlRenderers: HtmlRenderers = {
     ol: (props) => (
@@ -583,7 +412,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       >
                         {item.degree}
                         {item.school
-                          ? `${item.degree ? " - " : null}${item.school}`
+                          ? `${item.degree ? " - " : ""}${item.school}`
                           : null}
                       </Text>
 
@@ -707,7 +536,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       }}
                     >
                       {item.startDate}
-                      {item.endDate ? ` - ${item.endDate}` : null}
+                      {item.endDate ? ` - ${item.endDate}` : ""}
                     </Text>
                     <View
                       style={{
@@ -723,7 +552,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                         }}
                       >
                         {item.jobTitle}
-                        {item.employer ? ` - ${item.employer}` : null}
+                        {item.employer ? ` - ${item.employer}` : ""}
                       </Text>
                       <Html
                         style={{
@@ -811,7 +640,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                           }}
                         >
                           {referentFullName}
-                          {referentCompany ? ` from ${referentCompany}` : null}
+                          {referentCompany ? ` from ${referentCompany}` : ""}
                         </Text>
                         <View
                           style={{
@@ -823,7 +652,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                         >
                           <Text>{referentEmail}</Text>
                           <Text>
-                            {referentEmail && referentPhone ? "- " : null}
+                            {referentEmail && referentPhone ? "- " : ""}
                             {referentPhone}
                           </Text>
                         </View>
@@ -860,7 +689,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                 fontSize: PDF_BODY_FONT_SIZE,
               }}
             >
-              {hobbiesSection?.fields.map((item) => item.value)}
+              {hobbies}
             </Text>
           </View>
         ) : null}
@@ -933,6 +762,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             <Text
               style={{
                 ...styles.sectionLabel,
+                width: "23%",
               }}
             >
               {coursesSection?.name}
@@ -941,6 +771,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
               style={{
                 display: "flex",
                 gap: 10,
+                width: "98%",
               }}
             >
               {coursesSectionItems.map((item) => (
@@ -965,7 +796,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       }}
                     >
                       {item.startDate}
-                      {item.endDate ? ` - ${item.endDate}` : null}
+                      {item.endDate ? ` - ${item.endDate}` : ""}
                     </Text>
                     <View
                       style={{
@@ -980,7 +811,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       >
                         {item.course}
                         {item.institution
-                          ? `${item.course ? " -" : null} ${item.institution}`
+                          ? `${item.course ? " -" : ""} ${item.institution}`
                           : null}
                       </Text>
                     </View>
@@ -990,14 +821,14 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
             </View>
           </View>
         ) : null}
-        {shouldRenderExtraCirricularActivitiesSectionItems ? (
+        {shouldRenderExtraCurricularActivitiesSectionItems ? (
           <View
             style={{
               ...styles.section,
               display: "flex",
               flexDirection:
-                extraCirricularActivitiesSectionItems.length === 1 &&
-                extraCirricularActivitiesSectionItems.every(
+                extraCurricularActivitiesSectionItems.length === 1 &&
+                extraCurricularActivitiesSectionItems.every(
                   (item) => !item.startDate && !item.endDate,
                 )
                   ? "row"
@@ -1009,8 +840,8 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
               style={{
                 ...styles.sectionLabel,
                 width:
-                  extraCirricularActivitiesSectionItems.length === 1 &&
-                  extraCirricularActivitiesSectionItems.every(
+                  extraCurricularActivitiesSectionItems.length === 1 &&
+                  extraCurricularActivitiesSectionItems.every(
                     (item) => !item.startDate && !item.endDate,
                   )
                     ? styles.sectionLabel.width
@@ -1023,9 +854,16 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
               style={{
                 display: "flex",
                 gap: 7,
+                width:
+                  extraCurricularActivitiesSectionItems.length === 1 &&
+                  extraCurricularActivitiesSectionItems.every(
+                    (item) => !item.startDate && !item.endDate,
+                  )
+                    ? "96%"
+                    : "99%",
               }}
             >
-              {extraCirricularActivitiesSectionItems.map((item) => (
+              {extraCurricularActivitiesSectionItems.map((item) => (
                 <View key={item.id}>
                   <View
                     style={{
@@ -1038,8 +876,8 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                     <Text
                       style={{
                         width:
-                          extraCirricularActivitiesSectionItems.length === 1 &&
-                          extraCirricularActivitiesSectionItems.every(
+                          extraCurricularActivitiesSectionItems.length === 1 &&
+                          extraCurricularActivitiesSectionItems.every(
                             (item) => !item.startDate && !item.endDate,
                           )
                             ? "0%"
@@ -1047,7 +885,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                       }}
                     >
                       {item.startDate}
-                      {item.endDate ? ` - ${item.endDate}` : null}
+                      {item.endDate ? ` - ${item.endDate}` : ""}
                     </Text>
                     <View
                       style={{
@@ -1073,8 +911,8 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
                         >
                           {item.functionTitle}
                           {item.employer
-                            ? `${item.functionTitle ? " -" : null} ${item.employer}`
-                            : null}
+                            ? `${item.functionTitle ? " -" : ""} ${item.employer}`
+                            : ""}
                         </Text>
                         <Text
                           style={{
