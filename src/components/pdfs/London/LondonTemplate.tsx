@@ -129,7 +129,6 @@ const htmlRenderers: HtmlRenderers = {
 
 const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const { personalDetailsSection } = data;
-
   const {
     firstName,
     city,
@@ -147,124 +146,131 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   const renderSections = () => {
     const sections = Object.values(exclude(data, ["personalDetailsSection"]));
 
-    return sections.map((section) => {
-      if (
-        section.internalSectionTag ===
-        INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY
-      ) {
-        return (
-          <ProfessionalSummarySection
-            professionalSummarySection={
-              section as MakeResumeDataReturn["professionalSummarySection"]
-            }
-          />
-        );
-      }
+    return sections
+      .sort((a, b) => a.displayOrder - b.displayOrder)
+      .map((section) => {
+        if (
+          section.internalSectionTag ===
+          INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY
+        ) {
+          return (
+            <ProfessionalSummarySection
+              professionalSummarySection={
+                section as MakeResumeDataReturn["professionalSummarySection"]
+              }
+            />
+          );
+        }
 
-      if (
-        section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY
-      ) {
-        return (
-          <EmploymentHistorySection
-            employmentHistorySection={
-              section as MakeResumeDataReturn["employmentHistorySection"]
-            }
-          />
-        );
-      }
+        if (
+          section.internalSectionTag ===
+          INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY
+        ) {
+          return (
+            <EmploymentHistorySection
+              employmentHistorySection={
+                section as MakeResumeDataReturn["employmentHistorySection"]
+              }
+            />
+          );
+        }
 
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION) {
-        return (
-          <EducationSection
-            educationSection={
-              section as MakeResumeDataReturn["educationSection"]
-            }
-          />
-        );
-      }
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION) {
+          return (
+            <EducationSection
+              educationSection={
+                section as MakeResumeDataReturn["educationSection"]
+              }
+            />
+          );
+        }
 
-      if (
-        section.internalSectionTag ===
-        INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS
-      ) {
-        return (
-          <WebsitesAndLinksSection
-            websitesAndLinksSection={
-              section as MakeResumeDataReturn["websitesAndLinksSection"]
-            }
-          />
-        );
-      }
+        if (
+          section.internalSectionTag ===
+          INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS
+        ) {
+          return (
+            <WebsitesAndLinksSection
+              websitesAndLinksSection={
+                section as MakeResumeDataReturn["websitesAndLinksSection"]
+              }
+            />
+          );
+        }
 
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS) {
-        return (
-          <SkillsSection
-            skillsSection={section as MakeResumeDataReturn["skillsSection"]}
-          />
-        );
-      }
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS) {
+          return (
+            <SkillsSection
+              skillsSection={section as MakeResumeDataReturn["skillsSection"]}
+            />
+          );
+        }
 
-      // TODO: Handle custom sections
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM) {
-        return <></>;
-      }
+        // TODO: Handle custom sections
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM) {
+          return (
+            <View>
+              <Text>HAHAHA CUSTOM SECTİON GO BRRR</Text>
+            </View>
+          );
+        }
 
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.INTERNSHIPS) {
-        return (
-          <InternshipsSection
-            internshipsSection={
-              section as MakeResumeDataReturn["internshipsSection"]
-            }
-          />
-        );
-      }
-      if (
-        section.internalSectionTag ===
-        INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES
-      ) {
-        return (
-          <ExtraCurricularActivitiesSection
-            extraCurricularActivitiesSection={
-              section as MakeResumeDataReturn["extraCurricularActivitiesSection"]
-            }
-          />
-        );
-      }
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.HOBBIES) {
-        return (
-          <HobbiesSection
-            hobbiesSection={section as MakeResumeDataReturn["hobbiesSection"]}
-          />
-        );
-      }
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.REFERENCES) {
-        return (
-          <ReferencesSection
-            referencesSection={
-              section as MakeResumeDataReturn["referencesSection"]
-            }
-          />
-        );
-      }
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.INTERNSHIPS) {
+          return (
+            <InternshipsSection
+              internshipsSection={
+                section as MakeResumeDataReturn["internshipsSection"]
+              }
+            />
+          );
+        }
+        if (
+          section.internalSectionTag ===
+          INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES
+        ) {
+          return (
+            <ExtraCurricularActivitiesSection
+              extraCurricularActivitiesSection={
+                section as MakeResumeDataReturn["extraCurricularActivitiesSection"]
+              }
+            />
+          );
+        }
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.HOBBIES) {
+          return (
+            <HobbiesSection
+              hobbiesSection={section as MakeResumeDataReturn["hobbiesSection"]}
+            />
+          );
+        }
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.REFERENCES) {
+          return (
+            <ReferencesSection
+              referencesSection={
+                section as MakeResumeDataReturn["referencesSection"]
+              }
+            />
+          );
+        }
 
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.COURSES) {
-        return (
-          <CoursesSection
-            coursesSection={section as MakeResumeDataReturn["coursesSection"]}
-          />
-        );
-      }
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.COURSES) {
+          return (
+            <CoursesSection
+              coursesSection={section as MakeResumeDataReturn["coursesSection"]}
+            />
+          );
+        }
 
-      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.LANGUAGES) {
-        return (
-          <LanguagesSection
-            languagesSection={
-              section as MakeResumeDataReturn["languagesSection"]
-            }
-          />
-        );
-      }
-    });
+        if (section.internalSectionTag === INTERNAL_SECTION_TAGS.LANGUAGES) {
+          return (
+            <LanguagesSection
+              languagesSection={
+                section as MakeResumeDataReturn["languagesSection"]
+              }
+            />
+          );
+        }
+      });
   };
 
   return (
@@ -1208,5 +1214,7 @@ const LanguagesSection = ({
     </>
   );
 };
+
+const CustomSection = () => {};
 
 export default LondonTemplate;

@@ -3,8 +3,8 @@ import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
 import PDFViewer from "@/components/pdfs/PDFViewer";
 import {
   type MakeResumeDataReturn,
+  makeCustomResumeSectionsData,
   makeResumeTemplateData,
-  sortSectionsByDisplayOrder,
 } from "@/components/pdfs/pdf.utils";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
@@ -16,16 +16,20 @@ const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;
 const DocumentBuilderPreviewContent = () => {
   const [reRender, setReRender] = useState(0);
   const { online, previous } = useNetworkState();
-  const { document, sections, fields, fieldValues } = useDocumentBuilderStore();
-  const resumeTemplateData = sortSectionsByDisplayOrder(
-    makeResumeTemplateData({
-      document,
-      sections,
-      fields,
-      fieldValues,
-    }),
-  ) as unknown as MakeResumeDataReturn;
   const userLostConnection = !online && previous;
+  const { document, sections, fields, fieldValues } = useDocumentBuilderStore();
+  const resumeTemplateData = makeResumeTemplateData({
+    document,
+    sections,
+    fields,
+    fieldValues,
+  }) as unknown as MakeResumeDataReturn;
+  const customSections = makeCustomResumeSectionsData({
+    document,
+    sections,
+    fields,
+    fieldValues,
+  });
 
   useEffect(() => {
     const updatePdfProps = () => {
@@ -43,7 +47,12 @@ const DocumentBuilderPreviewContent = () => {
   return (
     <div className="rounded-md h-full w-full overflow-auto hide-scrollbar">
       <PDFViewer key={reRender}>
-        <LondonTemplate data={resumeTemplateData} />
+        <LondonTemplate
+          data={{
+            ...resumeTemplateData,
+            ...customSections,
+          }}
+        />
       </PDFViewer>
       {userLostConnection ? (
         <div className="w-full h-full flex items-center justify-center">

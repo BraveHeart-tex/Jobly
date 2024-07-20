@@ -14,7 +14,7 @@ type CvBuilderCustomSectionProps = {
   section: Section;
 };
 
-const CUSTOM_SECTION_ITEMS_COUNT = 5;
+export const CUSTOM_SECTION_ITEMS_COUNT = 5;
 
 const CvBuilderCustomSection = ({ section }: CvBuilderCustomSectionProps) => {
   const fields = useDocumentBuilderStore((state) =>

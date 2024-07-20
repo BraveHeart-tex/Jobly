@@ -1,4 +1,5 @@
 import { COURSES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCoursesSection";
+import { CUSTOM_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCustomSection";
 import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
 import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
 import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderExtraCurricularSection";
@@ -137,6 +138,13 @@ export const makeResumeTemplateData = (data: DocumentBuilderConfig) => {
     languagesSection,
     coursesSection,
     extraCurricularActivitiesSection,
+  };
+};
+
+export const makeCustomResumeSectionsData = (data: DocumentBuilderConfig) => {
+  const transformedData = transformDocumentBuilderData(data);
+  return {
+    ...makeCustomSectionData(transformedData),
   };
 };
 
@@ -504,26 +512,31 @@ const makeExtraCurricularActivitiesSectionData = (
   };
 };
 
-export function sortSectionsByDisplayOrder(sections: MakeResumeDataReturn) {
-  const sectionArray = Object.values(sections);
+const makeCustomSectionData = (transformedData: TransformedResumeData) => {
+  const customSections = transformedData.sections
+    .filter(
+      (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM,
+    )
+    .map((customSection, index) => {
+      const sectionItems = groupEveryN(
+        customSection?.fields || [],
+        CUSTOM_SECTION_ITEMS_COUNT,
+      ).map((group) => {
+        return {
+          id: crypto.randomUUID(),
+          name: group[0]?.value,
+          city: group[1]?.value,
+          startDate: group[2]?.value,
+          endDate: group[3]?.value,
+          description: group[4]?.value,
+        };
+      });
 
-  sectionArray.sort((a, b) => a.displayOrder - b.displayOrder);
+      return {
+        ...exclude(customSection, ["fields"]),
+        customSectionItems: sectionItems,
+      };
+    });
 
-  const sortedSections: Record<
-    keyof MakeResumeDataReturn,
-    MakeResumeDataReturn
-  > = {} as Record<keyof MakeResumeDataReturn, MakeResumeDataReturn>;
-
-  for (const section of sectionArray) {
-    for (const key in sections) {
-      const objectKey = key as keyof MakeResumeDataReturn;
-      if (sections[objectKey].id === section.id) {
-        // @ts-ignore
-        sortedSections[objectKey] = section;
-        break;
-      }
-    }
-  }
-
-  return sortedSections;
-}
+  return customSections;
+};
