@@ -15,7 +15,6 @@ import {
   type SectionField,
   type SectionFieldInsertModel,
   type SectionFieldValue,
-  type SectionFieldValueInsertModel,
   type SectionInsertModel,
   document as documentSchema,
   field as fieldSchema,
@@ -103,13 +102,6 @@ const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
   return result.map((item) => item.id);
 };
 
-const insertFieldValue = async (
-  trx: Trx,
-  fieldValue: SectionFieldValueInsertModel,
-) => {
-  await trx.insert(fieldValueSchema).values(fieldValue);
-};
-
 export const insertPredefinedSectionsAndFields = async ({
   user,
   documentId,
@@ -123,6 +115,7 @@ export const insertPredefinedSectionsAndFields = async ({
 
   await db.transaction(async (trx) => {
     const sectionIds = await insertSections(trx, sections);
+
     for (let i = 0; i < sectionIds.length; i++) {
       const section = sections[i];
       const sectionId = sectionIds[i] as number;
@@ -130,6 +123,7 @@ export const insertPredefinedSectionsAndFields = async ({
         sectionId,
         section?.internalSectionTag as INTERNAL_SECTION_TAG,
       );
+
       const fieldIds = await insertFields(trx, sectionId, sectionFields);
 
       const fieldsWithDefaultValues = sectionFields.map((field, index) => ({
@@ -138,13 +132,11 @@ export const insertPredefinedSectionsAndFields = async ({
         defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
       }));
 
-      await Promise.all(
-        fieldsWithDefaultValues.map((field) =>
-          insertFieldValue(trx, {
-            fieldId: field.id,
-            value: field.defaultValue,
-          }),
-        ),
+      await trx.insert(fieldValueSchema).values(
+        fieldsWithDefaultValues.map((field) => ({
+          fieldId: field.id,
+          value: field.defaultValue,
+        })),
       );
     }
   });
