@@ -115,30 +115,36 @@ export const insertPredefinedSectionsAndFields = async ({
 
   await db.transaction(async (trx) => {
     const sectionIds = await insertSections(trx, sections);
+    const fieldInsertDTOs: SectionFieldInsertModel[] = [];
 
-    for (let i = 0; i < sectionIds.length; i++) {
-      const section = sections[i];
-      const sectionId = sectionIds[i] as number;
-      const sectionFields = getFieldInsertTemplate(
-        sectionId,
-        section?.internalSectionTag as INTERNAL_SECTION_TAG,
-      );
+    for (const [index, sectionId] of sectionIds.entries()) {
+      const section = sections[index];
+      if (section) {
+        const sectionFields = getFieldInsertTemplate(
+          sectionId,
+          section.internalSectionTag,
+        );
 
-      const fieldIds = await insertFields(trx, sectionId, sectionFields);
-
-      const fieldsWithDefaultValues = sectionFields.map((field, index) => ({
-        ...field,
-        id: fieldIds[index] as SectionField["id"],
-        defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
-      }));
-
-      await trx.insert(fieldValueSchema).values(
-        fieldsWithDefaultValues.map((field) => ({
-          fieldId: field.id,
-          value: field.defaultValue,
-        })),
-      );
+        fieldInsertDTOs.push(...sectionFields);
+      }
     }
+
+    const fieldIds = (
+      await trx.insert(fieldSchema).values(fieldInsertDTOs).$returningId()
+    ).map((item) => item.id);
+
+    const sectionFields = fieldInsertDTOs.map((field, index) => ({
+      ...field,
+      id: fieldIds[index] as SectionField["id"],
+      defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
+    }));
+
+    await trx.insert(fieldValueSchema).values(
+      sectionFields.map((field) => ({
+        fieldId: field.id,
+        value: field.defaultValue ?? "",
+      })),
+    );
   });
 };
 
