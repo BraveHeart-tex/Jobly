@@ -7,7 +7,7 @@ import type {
 } from "@/lib/types";
 import { exclude } from "@/lib/utils";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
-import { db } from "@/server/db";
+import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   type Document,
   type DocumentInsertModel,
@@ -15,7 +15,6 @@ import {
   type SectionField,
   type SectionFieldInsertModel,
   type SectionFieldValue,
-  type SectionFieldValueInsertModel,
   type SectionInsertModel,
   document as documentSchema,
   field as fieldSchema,
@@ -63,11 +62,12 @@ export const createDocument = async (
 };
 
 const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
-  const results = await Promise.all(
-    sections.map((section) => trx.insert(sectionSchema).values(section)),
-  );
+  const result = await trx
+    .insert(sectionSchema)
+    .values(sections.map((section) => section))
+    .$returningId();
 
-  return results.map((result) => result[0].insertId);
+  return result.map((item) => item.id);
 };
 
 const insertFields = async (
@@ -75,36 +75,31 @@ const insertFields = async (
   sectionId: Section["id"],
   fields: Omit<SectionFieldInsertModel, "sectionId">[],
 ) => {
-  const results = await Promise.all(
-    fields.map((field) =>
-      trx.insert(fieldSchema).values({
+  const result = await trx
+    .insert(fieldSchema)
+    .values(
+      fields.map((field) => ({
         ...field,
         sectionId,
-      }),
-    ),
-  );
+      })),
+    )
+    .$returningId();
 
-  return results.map((result) => result[0].insertId);
+  return result.map((item) => item.id);
 };
 
 const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
-  const results = await Promise.all(
-    fieldIds.map((fieldId) =>
-      trx.insert(fieldValueSchema).values({
+  const result = await trx
+    .insert(fieldValueSchema)
+    .values(
+      fieldIds.map((fieldId) => ({
         fieldId,
         value: "",
-      }),
-    ),
-  );
+      })),
+    )
+    .$returningId();
 
-  return results.map((result) => result[0].insertId);
-};
-
-const insertFieldValue = async (
-  trx: Trx,
-  fieldValue: SectionFieldValueInsertModel,
-) => {
-  await trx.insert(fieldValueSchema).values(fieldValue);
+  return result.map((item) => item.id);
 };
 
 export const insertPredefinedSectionsAndFields = async ({
@@ -117,32 +112,39 @@ export const insertPredefinedSectionsAndFields = async ({
     "Last Name": user.lastName,
     Email: user.email,
   };
+
   await db.transaction(async (trx) => {
     const sectionIds = await insertSections(trx, sections);
-    for (let i = 0; i < sectionIds.length; i++) {
-      const section = sections[i];
-      const sectionId = sectionIds[i] as number;
-      const sectionFields = getFieldInsertTemplate(
-        sectionId,
-        section?.internalSectionTag as INTERNAL_SECTION_TAG,
-      );
-      const fieldIds = await insertFields(trx, sectionId, sectionFields);
+    const fieldInsertDTOs: SectionFieldInsertModel[] = [];
 
-      const fieldsWithDefaultValues = sectionFields.map((field, index) => ({
-        ...field,
-        id: fieldIds[index] as SectionField["id"],
-        defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
-      }));
+    for (const [index, sectionId] of sectionIds.entries()) {
+      const section = sections[index];
+      if (section) {
+        const sectionFields = getFieldInsertTemplate(
+          sectionId,
+          section.internalSectionTag,
+        );
 
-      await Promise.all(
-        fieldsWithDefaultValues.map((field) =>
-          insertFieldValue(trx, {
-            fieldId: field.id,
-            value: field.defaultValue,
-          }),
-        ),
-      );
+        fieldInsertDTOs.push(...sectionFields);
+      }
     }
+
+    const fieldIds = (
+      await trx.insert(fieldSchema).values(fieldInsertDTOs).$returningId()
+    ).map((item) => item.id);
+
+    const sectionFields = fieldInsertDTOs.map((field, index) => ({
+      ...field,
+      id: fieldIds[index] as SectionField["id"],
+      defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
+    }));
+
+    await trx.insert(fieldValueSchema).values(
+      sectionFields.map((field) => ({
+        fieldId: field.id,
+        value: field.defaultValue ?? "",
+      })),
+    );
   });
 };
 
@@ -197,66 +199,65 @@ export const saveDocumentDetails = async (
     }
 
     const sectionInserts = sections
-      ? sections.map((sectionData) =>
-          trx
-            .insert(sectionSchema)
-            .values(sectionData)
-            .onDuplicateKeyUpdate({ set: sectionData }),
-        )
-      : [];
+      ? trx
+          .insert(sectionSchema)
+          .values(sections.map((sectionData) => sectionData))
+          .onDuplicateKeyUpdate({
+            set: buildConflictUpdateColumns(sectionSchema, [
+              "id",
+              "documentId",
+            ]),
+          })
+      : undefined;
 
     const fieldInserts = fields
-      ? fields.map((fieldData) =>
-          trx.insert(fieldSchema).values(fieldData).onDuplicateKeyUpdate({
-            set: fieldData,
-          }),
-        )
-      : [];
+      ? trx
+          .insert(fieldSchema)
+          .values(fields.map((fieldData) => fieldData))
+          .onDuplicateKeyUpdate({
+            set: buildConflictUpdateColumns(fieldSchema, ["id", "sectionId"]),
+          })
+      : undefined;
 
     const fieldValueInserts = fieldValues
-      ? fieldValues.map((fieldValueData) =>
-          trx
-            .insert(fieldValueSchema)
-            .values(fieldValueData)
-            .onDuplicateKeyUpdate({ set: fieldValueData }),
-        )
-      : [];
+      ? trx
+          .insert(fieldValueSchema)
+          .values(fieldValues.map((fieldValue) => fieldValue))
+          .onDuplicateKeyUpdate({
+            set: buildConflictUpdateColumns(fieldValueSchema, [
+              "fieldId",
+              "id",
+            ]),
+          })
+      : undefined;
 
-    await Promise.all([
-      ...sectionInserts,
-      ...fieldInserts,
-      ...fieldValueInserts,
-    ]);
+    await Promise.all([sectionInserts, fieldInserts, fieldValueInserts]);
   });
 };
 
 export const addFieldsWithValues = async (
   fields: SectionFieldInsertModel[],
 ) => {
-  const fieldInsertIds = await db.transaction(async (trx) => {
-    const results = await Promise.all(
-      fields.map((field) => trx.insert(fieldSchema).values(field)),
-    );
-    return results.map((result) => result[0].insertId);
-  });
-
-  const fieldValueInsertIds = await db.transaction(async (trx) => {
-    const results = await Promise.all(
-      fieldInsertIds.map((fieldId) =>
-        trx.insert(fieldValueSchema).values({
-          fieldId,
+  return await db.transaction(async (trx) => {
+    const fieldInsertIds = await trx
+      .insert(fieldSchema)
+      .values(fields)
+      .$returningId();
+    const fieldValueInsertIds = await trx
+      .insert(fieldValueSchema)
+      .values(
+        fieldInsertIds.map((item) => ({
+          fieldId: item.id,
           value: "",
-        }),
-      ),
-    );
+        })),
+      )
+      .$returningId();
 
-    return results.map((result) => result[0].insertId);
+    return {
+      fieldInsertIds: fieldInsertIds.map((item) => item.id),
+      fieldValueInsertIds: fieldValueInsertIds.map((item) => item.id),
+    };
   });
-
-  return {
-    fieldIds: fieldInsertIds,
-    fieldValueIds: fieldValueInsertIds,
-  };
 };
 
 export const removeFields = async (fieldIds: SectionField["id"][]) => {

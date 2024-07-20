@@ -66,6 +66,7 @@ const DocumentTabs = () => {
         "We encountered a problem while creating the document. Please try again later.",
       );
     }
+
     const route = DOCUMENT_ROUTE_MAP[activeTab];
     router.push(`${route}/${documentInsertId}`);
   };

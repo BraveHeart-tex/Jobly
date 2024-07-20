@@ -28,14 +28,14 @@ const AddSectionItemButton = ({
 
   const { mutate: addFields, isPending } =
     api.document.addFieldsWithValues.useMutation({
-      onSuccess({ fieldIds, fieldValueIds }) {
+      onSuccess({ fieldInsertIds, fieldValueInsertIds }) {
         const fieldsWithId = fieldsToInsert.map((field, index) => ({
           ...field,
-          id: fieldIds[index] as SectionField["id"],
+          id: fieldInsertIds[index] as SectionField["id"],
         }));
         const fieldValues: SectionFieldValue[] = fieldsWithId.map(
           (field, index) => ({
-            id: fieldValueIds[index] as SectionFieldValue["id"],
+            id: fieldValueInsertIds[index] as SectionFieldValue["id"],
             fieldId: field.id,
             value: "",
           }),

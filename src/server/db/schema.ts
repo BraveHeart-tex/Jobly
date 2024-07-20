@@ -62,7 +62,7 @@ export const session = mysqlTable(
 export const company = mysqlTable(
   "Company",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     name: varchar("name", { length: 512 }).notNull(),
     bio: text("bio"),
     website: varchar("website", { length: 512 }),
@@ -90,7 +90,7 @@ export const company = mysqlTable(
 export const job = mysqlTable(
   "Job",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     companyId: int("companyId")
       .notNull()
       .references(() => company.id, {
@@ -137,7 +137,7 @@ export const job = mysqlTable(
 export const application = mysqlTable(
   "Application",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
       .notNull()
       .references(() => user.id, {
@@ -192,7 +192,7 @@ export const jobRelations = relations(job, ({ one }) => ({
 export const jobSkill = mysqlTable(
   "JobSkill",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     jobId: int("jobId")
       .notNull()
       .references(() => job.id, {
@@ -218,7 +218,7 @@ export const jobSkillRelations = relations(jobSkill, ({ one }) => ({
 export const userProfile = mysqlTable(
   "UserProfile",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
       .notNull()
       .references(() => user.id, {
@@ -249,7 +249,7 @@ export const userProfile = mysqlTable(
 export const userFollowsCompany = mysqlTable(
   "UserFollowsCompany",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     companyId: int("companyId")
       .notNull()
       .references(() => company.id, {
@@ -276,7 +276,7 @@ export const userFollowsCompany = mysqlTable(
 export const resumeView = mysqlTable(
   "ResumeView",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     viewerCompanyId: int("viewerCompanyId").references(() => company.id, {
       onDelete: "cascade",
     }),
@@ -297,7 +297,7 @@ export const resumeView = mysqlTable(
 export const userBookmarksJob = mysqlTable(
   "UserBookmarksJob",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
       .notNull()
       .references(() => user.id, {
@@ -327,7 +327,7 @@ export const userBookmarksJob = mysqlTable(
 export const userViewsJob = mysqlTable(
   "UserViewsJob",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     viewerUserId: int("viewerUserId")
       .notNull()
       .references(() => user.id, {
@@ -355,7 +355,7 @@ export const userViewsJob = mysqlTable(
 export const document = mysqlTable(
   "Document",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     title: varchar("title", { length: 512 }).notNull(),
     userId: int("userId")
       .references(() => user.id, { onDelete: "cascade" })
@@ -389,7 +389,7 @@ export const documentRelations = relations(document, ({ one, many }) => ({
 export const section = mysqlTable(
   "Section",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     documentId: int("documentId")
       .references(() => document.id, { onDelete: "cascade" })
       .notNull(),
@@ -439,7 +439,7 @@ export const sectionRelations = relations(section, ({ one, many }) => ({
 export const field = mysqlTable(
   "Field",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     sectionId: int("sectionId")
       .references(() => section.id, { onDelete: "cascade" })
       .notNull(),
@@ -465,7 +465,7 @@ export const fieldRelations = relations(field, ({ one, many }) => ({
 export const fieldValue = mysqlTable(
   "FieldValue",
   {
-    id: int("id").autoincrement().notNull(),
+    id: int("id").primaryKey().autoincrement().notNull(),
     fieldId: int("fieldId")
       .references(() => field.id, { onDelete: "cascade" })
       .notNull(),
