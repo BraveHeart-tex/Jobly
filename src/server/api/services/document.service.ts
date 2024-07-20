@@ -148,7 +148,6 @@ export const insertPredefinedSectionsAndFields = async ({
   });
 };
 
-// TODO: Refactor this as well
 export const getDocumentDetails = async ({
   id,
   userId,
