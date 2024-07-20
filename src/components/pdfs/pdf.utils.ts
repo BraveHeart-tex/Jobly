@@ -512,6 +512,33 @@ const makeExtraCurricularActivitiesSectionData = (
   };
 };
 
+export type CustomSection = {
+  customSectionItems: {
+    id: string;
+    name: string | undefined;
+    city: string | undefined;
+    startDate: string | undefined;
+    endDate: string | undefined;
+    description: string | undefined;
+  }[];
+  fields: {
+    value: string;
+    id: number;
+    sectionId: number;
+    fieldName: string;
+    fieldType: string;
+  }[];
+  id: number;
+  documentId: number;
+  name: string;
+  fieldsContainerType: "collapsible" | "static";
+  displayOrder: number;
+  internalSectionTag: INTERNAL_SECTION_TAG;
+  itemCountPerContainer: number;
+  metadata: string | null;
+  shouldRenderCustomSectionItems: boolean;
+};
+
 const makeCustomSectionData = (transformedData: TransformedResumeData) => {
   const customSections = transformedData.sections
     .filter(
@@ -532,9 +559,13 @@ const makeCustomSectionData = (transformedData: TransformedResumeData) => {
         };
       });
 
+      const shouldRenderCustomSectionItems =
+        getIfItemsShouldRender(sectionItems);
+
       return {
         ...exclude(customSection, ["fields"]),
         customSectionItems: sectionItems,
+        shouldRenderCustomSectionItems,
       };
     });
 

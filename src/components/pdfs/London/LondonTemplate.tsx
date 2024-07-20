@@ -14,6 +14,7 @@ import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/rende
 import Html from "react-pdf-html";
 import CommaSeparatedText from "../CommaSeperatedText";
 import {
+  type CustomSection,
   type MakeResumeDataReturn,
   type makeResumeTemplateData,
   styleLinksAndCleanElements,
@@ -209,9 +210,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         // TODO: Handle custom sections
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM) {
           return (
-            <View>
-              <Text>HAHAHA CUSTOM SECTİON GO BRRR</Text>
-            </View>
+            <CustomResumeSection
+              customSection={section as unknown as CustomSection}
+            />
           );
         }
 
@@ -1215,6 +1216,114 @@ const LanguagesSection = ({
   );
 };
 
-const CustomSection = () => {};
+const CustomResumeSection = ({
+  customSection,
+}: {
+  customSection: CustomSection;
+}) => {
+  const { shouldRenderCustomSectionItems, customSectionItems } = customSection;
+
+  return (
+    <>
+      {shouldRenderCustomSectionItems ? (
+        <View
+          style={{
+            ...styles.section,
+            display: "flex",
+            flexDirection:
+              customSectionItems.length === 1 &&
+              customSectionItems.every(
+                (item) => !item.startDate && !item.endDate,
+              )
+                ? "row"
+                : "column",
+            gap: 10,
+          }}
+        >
+          <Text
+            style={{
+              ...styles.sectionLabel,
+              width: "23%",
+            }}
+          >
+            {customSection?.name}
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              gap: 10,
+              width: "98%",
+            }}
+          >
+            {customSectionItems.map((item) => (
+              <View key={item.id}>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    fontSize: PDF_BODY_FONT_SIZE,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{
+                      width:
+                        customSectionItems.length === 1 &&
+                        customSectionItems.every(
+                          (item) => !item.startDate && !item.endDate,
+                        )
+                          ? "0%"
+                          : "33%",
+                    }}
+                  >
+                    {item.startDate}
+                    {item.endDate ? ` - ${item.endDate}` : ""}
+                  </Text>
+                  <View
+                    style={{
+                      width: "96%",
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontWeight: "medium",
+                          fontSize: 10.9,
+                        }}
+                      >
+                        {item.name}
+                      </Text>
+                      <Html
+                        style={{
+                          fontSize: PDF_BODY_FONT_SIZE,
+                        }}
+                        renderers={htmlRenderers}
+                      >
+                        {styleLinksAndCleanElements(item.description || "")}
+                      </Html>
+                    </View>
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: PDF_BODY_FONT_SIZE,
+                    }}
+                  >
+                    {item.city}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : null}
+    </>
+  );
+};
 
 export default LondonTemplate;
