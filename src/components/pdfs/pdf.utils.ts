@@ -12,9 +12,8 @@ import {
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
-import { groupEveryN } from "@/lib/utils";
+import { exclude, groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
-import { omit } from "next/dist/shared/lib/router/utils/omit";
 import { PDF_BODY_FONT_SIZE } from "./London/LondonTemplate";
 
 export type SectionFieldWithValue = SectionField & {
@@ -125,7 +124,6 @@ export const makeResumeTemplateData = (data: DocumentBuilderConfig) => {
   const extraCurricularActivitiesSection =
     makeExtraCurricularActivitiesSectionData(transformedData);
 
-  // TODO: Will sort all of them by section's displayOrder
   return {
     personalDetailsSection,
     professionalSummarySection,
@@ -143,6 +141,7 @@ export const makeResumeTemplateData = (data: DocumentBuilderConfig) => {
 };
 
 type TransformedResumeData = ReturnType<typeof transformDocumentBuilderData>;
+export type MakeResumeDataReturn = ReturnType<typeof makeResumeTemplateData>;
 
 const getSectionByTag = (
   sections: TransformedResumeData["sections"],
@@ -178,7 +177,7 @@ const makePersonalDetailsSectionData = (
   const dateOfBirth = getPersonalDetailsSectionFieldValues("Date of Birth");
 
   return {
-    ...omit(personalDetailsSection, ["fields"]),
+    ...exclude(personalDetailsSection, ["fields"]),
     firstName,
     lastName,
     jobTitle,
@@ -210,7 +209,7 @@ const makeProfessionalSummarySectionData = (
   );
 
   return {
-    ...omit(professionalSummarySection, ["fields"]),
+    ...exclude(professionalSummarySection, ["fields"]),
     professionalSummary,
   };
 };
@@ -237,7 +236,7 @@ const makeWebsitesAndLinksSectionData = (
     websitesAndLinks.length > 0 && websitesAndLinks.some((item) => item.label);
 
   return {
-    ...omit(websitesAndLinksSection, ["fields"]),
+    ...exclude(websitesAndLinksSection, ["fields"]),
     websitesAndLinks,
     shouldRenderWebsitesAndLinks,
   };
@@ -271,7 +270,7 @@ const makeEmploymentHistorySectionData = (
   );
 
   return {
-    ...omit(employmentHistorySection, ["fields"]),
+    ...exclude(employmentHistorySection, ["fields"]),
     employmentHistoryItems,
     shouldRenderEmploymentHistoryItems,
   };
@@ -303,7 +302,7 @@ const makeEducationSectionData = (transformedData: TransformedResumeData) => {
   );
 
   return {
-    ...omit(educationSection, ["fields"]),
+    ...exclude(educationSection, ["fields"]),
     educationSectionItems,
     shouldRenderEducationSectionItems,
   };
@@ -330,7 +329,7 @@ const makeSkillsSectionData = (transformedData: TransformedResumeData) => {
     getIfItemsShouldRender(skillsSectionItems);
 
   return {
-    ...omit(skillsSection, ["fields"]),
+    ...exclude(skillsSection, ["fields"]),
     skillsSectionItems,
     shouldRenderSkillsSectionItems,
   };
@@ -361,7 +360,7 @@ const makeInternshipsSectionData = (transformedData: TransformedResumeData) => {
   );
 
   return {
-    ...omit(internshipsSection, ["fields"]),
+    ...exclude(internshipsSection, ["fields"]),
     internshipsSectionItems,
     shouldRenderInternshipSectionItems,
   };
@@ -391,7 +390,7 @@ const makeReferencesSectionData = (transformedData: TransformedResumeData) => {
   );
 
   return {
-    ...omit(referencesSection, ["fields"]),
+    ...exclude(referencesSection, ["fields"]),
     referencesSectionItems,
     shouldRenderReferencesSectionItems,
   };
@@ -409,7 +408,7 @@ const makeHobbiesSectionData = (transformedData: TransformedResumeData) => {
   );
 
   return {
-    ...omit(hobbiesSection, ["fields"]),
+    ...exclude(hobbiesSection, ["fields"]),
     hobbies,
     shouldRenderHobbiesSectionItems,
   };
@@ -437,7 +436,7 @@ const makeLanguagesSectionData = (transformedData: TransformedResumeData) => {
   );
 
   return {
-    ...omit(languagesSection, ["fields"]),
+    ...exclude(languagesSection, ["fields"]),
     languagesSectionItems,
     shouldRenderLanguagesSectionItems,
   };
@@ -466,7 +465,7 @@ const makeCoursesSectionData = (transformedData: TransformedResumeData) => {
     getIfItemsShouldRender(coursesSectionItems);
 
   return {
-    ...omit(coursesSection, ["fields"]),
+    ...exclude(coursesSection, ["fields"]),
     coursesSectionItems,
     shouldRenderCoursesSectionItems,
   };
@@ -499,8 +498,32 @@ const makeExtraCurricularActivitiesSectionData = (
     getIfItemsShouldRender(extraCurricularActivitiesSectionItems);
 
   return {
-    ...omit(extraCurricularActivitiesSection, ["fields"]),
+    ...exclude(extraCurricularActivitiesSection, ["fields"]),
     extraCurricularActivitiesSectionItems,
     shouldRenderExtraCurricularActivitiesSectionItems,
   };
 };
+
+export function sortSectionsByDisplayOrder(sections: MakeResumeDataReturn) {
+  const sectionArray = Object.values(sections);
+
+  sectionArray.sort((a, b) => a.displayOrder - b.displayOrder);
+
+  const sortedSections: Record<
+    keyof MakeResumeDataReturn,
+    MakeResumeDataReturn
+  > = {} as Record<keyof MakeResumeDataReturn, MakeResumeDataReturn>;
+
+  for (const section of sectionArray) {
+    for (const key in sections) {
+      const objectKey = key as keyof MakeResumeDataReturn;
+      if (sections[objectKey].id === section.id) {
+        // @ts-ignore
+        sortedSections[objectKey] = section;
+        break;
+      }
+    }
+  }
+
+  return sortedSections;
+}

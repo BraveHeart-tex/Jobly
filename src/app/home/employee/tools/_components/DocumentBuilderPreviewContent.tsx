@@ -1,7 +1,11 @@
 "use client";
 import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
 import PDFViewer from "@/components/pdfs/PDFViewer";
-import { makeResumeTemplateData } from "@/components/pdfs/pdf.utils";
+import {
+  type MakeResumeDataReturn,
+  makeResumeTemplateData,
+  sortSectionsByDisplayOrder,
+} from "@/components/pdfs/pdf.utils";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
@@ -13,12 +17,14 @@ const DocumentBuilderPreviewContent = () => {
   const [reRender, setReRender] = useState(0);
   const { online, previous } = useNetworkState();
   const { document, sections, fields, fieldValues } = useDocumentBuilderStore();
-  const resumeTemplateData = makeResumeTemplateData({
-    document,
-    sections,
-    fields,
-    fieldValues,
-  });
+  const resumeTemplateData = sortSectionsByDisplayOrder(
+    makeResumeTemplateData({
+      document,
+      sections,
+      fields,
+      fieldValues,
+    }),
+  ) as unknown as MakeResumeDataReturn;
   const userLostConnection = !online && previous;
 
   useEffect(() => {

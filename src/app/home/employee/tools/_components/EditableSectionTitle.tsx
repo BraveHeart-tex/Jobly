@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  DELETEABLE_INTERNAL_SECTION_TAGS,
+  DELETABLE_INTERNAL_SECTION_TAGS,
   type INTERNAL_SECTION_TAG,
 } from "@/lib/constants";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
@@ -46,7 +46,7 @@ const EditableSectionTitle = ({
     (state) => state.setSectionValue,
   );
 
-  const isSectionDeleteable = DELETEABLE_INTERNAL_SECTION_TAGS.includes(
+  const isSectionDeleteable = DELETABLE_INTERNAL_SECTION_TAGS.includes(
     // @ts-ignore
     section?.internalSectionTag as INTERNAL_SECTION_TAG,
   );
