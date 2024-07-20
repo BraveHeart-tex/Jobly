@@ -128,13 +128,7 @@ const htmlRenderers: HtmlRenderers = {
 };
 
 const LondonTemplate = ({ data }: LondonTemplateProps) => {
-  const {
-    personalDetailsSection,
-    referencesSection,
-    languagesSection,
-    hobbiesSection,
-    coursesSection,
-  } = data;
+  const { personalDetailsSection } = data;
 
   const {
     firstName,
@@ -149,14 +143,6 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
     postalCode,
     phone,
   } = personalDetailsSection;
-
-  const { shouldRenderReferencesSectionItems, referencesSectionItems } =
-    referencesSection;
-  const { shouldRenderHobbiesSectionItems, hobbies } = hobbiesSection;
-  const { shouldRenderLanguagesSectionItems, languagesSectionItems } =
-    languagesSection;
-  const { coursesSectionItems, shouldRenderCoursesSectionItems } =
-    coursesSection;
 
   const renderSections = () => {
     const sections = Object.values(exclude(data, ["personalDetailsSection"]));
@@ -244,6 +230,40 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
           />
         );
       }
+      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.HOBBIES) {
+        return (
+          <HobbiesSection
+            hobbiesSection={section as MakeResumeDataReturn["hobbiesSection"]}
+          />
+        );
+      }
+      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.REFERENCES) {
+        return (
+          <ReferencesSection
+            referencesSection={
+              section as MakeResumeDataReturn["referencesSection"]
+            }
+          />
+        );
+      }
+
+      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.COURSES) {
+        return (
+          <CoursesSection
+            coursesSection={section as MakeResumeDataReturn["coursesSection"]}
+          />
+        );
+      }
+
+      if (section.internalSectionTag === INTERNAL_SECTION_TAGS.LANGUAGES) {
+        return (
+          <LanguagesSection
+            languagesSection={
+              section as MakeResumeDataReturn["languagesSection"]
+            }
+          />
+        );
+      }
     });
   };
 
@@ -275,250 +295,6 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
           ]}
         />
         {renderSections()}
-
-        {shouldRenderReferencesSectionItems ? (
-          <View
-            style={{
-              ...styles.section,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                ...styles.sectionLabel,
-                height: "100%",
-                width: "25%",
-              }}
-            >
-              {referencesSection?.name}
-            </Text>
-            <View
-              style={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-                width: "75%",
-              }}
-            >
-              {parseSectionMetadata(referencesSection?.metadata)
-                .hideReferences ? (
-                <Text
-                  style={{
-                    fontSize: 10.9,
-                  }}
-                >
-                  References available upon request
-                </Text>
-              ) : (
-                <>
-                  {referencesSectionItems.map(
-                    ({
-                      id,
-                      referentPhone,
-                      referentCompany,
-                      referentEmail,
-                      referentFullName,
-                    }) => (
-                      <View
-                        key={id}
-                        style={{
-                          fontSize: PDF_BODY_FONT_SIZE,
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 8,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: 10.9,
-                          }}
-                        >
-                          {referentFullName}
-                          {referentCompany ? ` from ${referentCompany}` : ""}
-                        </Text>
-                        <View
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            width: "100%",
-                            gap: 4,
-                          }}
-                        >
-                          <Text>{referentEmail}</Text>
-                          <Text>
-                            {referentEmail && referentPhone ? "- " : ""}
-                            {referentPhone}
-                          </Text>
-                        </View>
-                      </View>
-                    ),
-                  )}
-                </>
-              )}
-            </View>
-          </View>
-        ) : null}
-        {shouldRenderHobbiesSectionItems ? (
-          <View
-            style={{
-              ...styles.section,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                ...styles.sectionLabel,
-                height: "100%",
-                width: "25%",
-              }}
-            >
-              {hobbiesSection?.name}
-            </Text>
-            <Text
-              style={{
-                width: "75%",
-                fontSize: PDF_BODY_FONT_SIZE,
-              }}
-            >
-              {hobbies}
-            </Text>
-          </View>
-        ) : null}
-        {shouldRenderLanguagesSectionItems ? (
-          <View
-            style={{
-              ...styles.section,
-            }}
-          >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <Text
-                style={{
-                  ...styles.sectionLabel,
-                  width: "25%",
-                }}
-              >
-                {languagesSection?.name}
-              </Text>
-              <View
-                style={{
-                  display: "flex",
-                  gap: 20,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  columnGap: 5,
-                  width: "75%",
-                }}
-              >
-                {languagesSectionItems.map((item) => (
-                  <View
-                    key={item.id}
-                    style={{
-                      fontSize: PDF_BODY_FONT_SIZE,
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "46%",
-                    }}
-                  >
-                    <Text>{item.language}</Text>
-                    <Text>{item.level}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </View>
-        ) : null}
-        {shouldRenderCoursesSectionItems ? (
-          <View
-            style={{
-              ...styles.section,
-              display: "flex",
-              flexDirection:
-                coursesSectionItems.length === 1 &&
-                coursesSectionItems.every(
-                  (item) => !item.startDate && !item.endDate,
-                )
-                  ? "row"
-                  : "column",
-              gap: 10,
-            }}
-          >
-            <Text
-              style={{
-                ...styles.sectionLabel,
-                width: "23%",
-              }}
-            >
-              {coursesSection?.name}
-            </Text>
-            <View
-              style={{
-                display: "flex",
-                gap: 10,
-                width: "98%",
-              }}
-            >
-              {coursesSectionItems.map((item) => (
-                <View key={item.id}>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      fontSize: PDF_BODY_FONT_SIZE,
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        width:
-                          coursesSectionItems.length === 1 &&
-                          coursesSectionItems.every(
-                            (item) => !item.startDate && !item.endDate,
-                          )
-                            ? "0%"
-                            : "33%",
-                      }}
-                    >
-                      {item.startDate}
-                      {item.endDate ? ` - ${item.endDate}` : ""}
-                    </Text>
-                    <View
-                      style={{
-                        width: "96%",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontWeight: "medium",
-                          fontSize: 10.9,
-                        }}
-                      >
-                        {item.course}
-                        {item.institution
-                          ? `${item.course ? " -" : ""} ${item.institution}`
-                          : null}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-        ) : null}
       </Page>
     </Document>
   );
@@ -1135,6 +911,297 @@ const ExtraCurricularActivitiesSection = ({
                 </View>
               </View>
             ))}
+          </View>
+        </View>
+      ) : null}
+    </>
+  );
+};
+
+const HobbiesSection = ({
+  hobbiesSection,
+}: { hobbiesSection: MakeResumeDataReturn["hobbiesSection"] }) => {
+  const { hobbies, shouldRenderHobbiesSectionItems } = hobbiesSection;
+  return (
+    <>
+      {shouldRenderHobbiesSectionItems ? (
+        <View
+          style={{
+            ...styles.section,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text
+            style={{
+              ...styles.sectionLabel,
+              height: "100%",
+              width: "25%",
+            }}
+          >
+            {hobbiesSection?.name}
+          </Text>
+          <Text
+            style={{
+              width: "75%",
+              fontSize: PDF_BODY_FONT_SIZE,
+            }}
+          >
+            {hobbies}
+          </Text>
+        </View>
+      ) : null}
+    </>
+  );
+};
+
+const ReferencesSection = ({
+  referencesSection,
+}: {
+  referencesSection: MakeResumeDataReturn["referencesSection"];
+}) => {
+  const { shouldRenderReferencesSectionItems, referencesSectionItems } =
+    referencesSection;
+  return (
+    <>
+      {shouldRenderReferencesSectionItems ? (
+        <View
+          style={{
+            ...styles.section,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text
+            style={{
+              ...styles.sectionLabel,
+              height: "100%",
+              width: "25%",
+            }}
+          >
+            {referencesSection?.name}
+          </Text>
+          <View
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
+              width: "75%",
+            }}
+          >
+            {parseSectionMetadata(referencesSection?.metadata)
+              .hideReferences ? (
+              <Text
+                style={{
+                  fontSize: 10.9,
+                }}
+              >
+                References available upon request
+              </Text>
+            ) : (
+              <>
+                {referencesSectionItems.map(
+                  ({
+                    id,
+                    referentPhone,
+                    referentCompany,
+                    referentEmail,
+                    referentFullName,
+                  }) => (
+                    <View
+                      key={id}
+                      style={{
+                        fontSize: PDF_BODY_FONT_SIZE,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 8,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 10.9,
+                        }}
+                      >
+                        {referentFullName}
+                        {referentCompany ? ` from ${referentCompany}` : ""}
+                      </Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "100%",
+                          gap: 4,
+                        }}
+                      >
+                        <Text>{referentEmail}</Text>
+                        <Text>
+                          {referentEmail && referentPhone ? "- " : ""}
+                          {referentPhone}
+                        </Text>
+                      </View>
+                    </View>
+                  ),
+                )}
+              </>
+            )}
+          </View>
+        </View>
+      ) : null}
+    </>
+  );
+};
+
+const CoursesSection = ({
+  coursesSection,
+}: { coursesSection: MakeResumeDataReturn["coursesSection"] }) => {
+  const { shouldRenderCoursesSectionItems, coursesSectionItems } =
+    coursesSection;
+
+  return (
+    <>
+      {shouldRenderCoursesSectionItems ? (
+        <View
+          style={{
+            ...styles.section,
+            display: "flex",
+            flexDirection:
+              coursesSectionItems.length === 1 &&
+              coursesSectionItems.every(
+                (item) => !item.startDate && !item.endDate,
+              )
+                ? "row"
+                : "column",
+            gap: 10,
+          }}
+        >
+          <Text
+            style={{
+              ...styles.sectionLabel,
+              width: "23%",
+            }}
+          >
+            {coursesSection?.name}
+          </Text>
+          <View
+            style={{
+              display: "flex",
+              gap: 10,
+              width: "98%",
+            }}
+          >
+            {coursesSectionItems.map((item) => (
+              <View key={item.id}>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    fontSize: PDF_BODY_FONT_SIZE,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{
+                      width:
+                        coursesSectionItems.length === 1 &&
+                        coursesSectionItems.every(
+                          (item) => !item.startDate && !item.endDate,
+                        )
+                          ? "0%"
+                          : "33%",
+                    }}
+                  >
+                    {item.startDate}
+                    {item.endDate ? ` - ${item.endDate}` : ""}
+                  </Text>
+                  <View
+                    style={{
+                      width: "96%",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "medium",
+                        fontSize: 10.9,
+                      }}
+                    >
+                      {item.course}
+                      {item.institution
+                        ? `${item.course ? " -" : ""} ${item.institution}`
+                        : null}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : null}
+    </>
+  );
+};
+
+const LanguagesSection = ({
+  languagesSection,
+}: {
+  languagesSection: MakeResumeDataReturn["languagesSection"];
+}) => {
+  const { shouldRenderLanguagesSectionItems, languagesSectionItems } =
+    languagesSection;
+  return (
+    <>
+      {shouldRenderLanguagesSectionItems ? (
+        <View
+          style={{
+            ...styles.section,
+          }}
+        >
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Text
+              style={{
+                ...styles.sectionLabel,
+                width: "25%",
+              }}
+            >
+              {languagesSection?.name}
+            </Text>
+            <View
+              style={{
+                display: "flex",
+                gap: 20,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                columnGap: 5,
+                width: "75%",
+              }}
+            >
+              {languagesSectionItems.map((item) => (
+                <View
+                  key={item.id}
+                  style={{
+                    fontSize: PDF_BODY_FONT_SIZE,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "46%",
+                  }}
+                >
+                  <Text>{item.language}</Text>
+                  <Text>{item.level}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
       ) : null}
