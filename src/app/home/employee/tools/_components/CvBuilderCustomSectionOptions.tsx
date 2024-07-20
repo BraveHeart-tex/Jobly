@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { MappedSectionInsertModel } from "@/lib/types";
 import type { Section, SectionInsertModel } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import {
@@ -16,8 +15,8 @@ import {
 } from "lucide-react";
 
 type OtherSectionOption = Omit<
-  MappedSectionInsertModel,
-  "documentId" | "displayOrder"
+  SectionInsertModel,
+  "documentId" | "displayOrder" | "defaultName"
 > & { icon: LucideIcon };
 
 const OTHER_SECTION_OPTIONS: OtherSectionOption[] = [
@@ -117,6 +116,7 @@ const CvBuilderCustomSectionOptions = () => {
       fieldsContainerType: fieldsContainerType || "collapsible",
       displayOrder: finalDisplayOrder,
       itemCountPerContainer,
+      defaultName: name,
     };
 
     addSectionByInternalTag(insertDto);

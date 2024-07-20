@@ -2,12 +2,12 @@ import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import type { MappedSectionInsertModel } from "@/lib/types";
 import type {
   Document,
   Section,
   SectionField,
   SectionFieldInsertModel,
+  SectionInsertModel,
 } from "@/server/db/schema";
 
 export const getFieldInsertTemplate = (
@@ -227,55 +227,64 @@ export const getProfessionalSummaryFields = (
 
 export const getPredefinedDocumentSections = (
   documentId: Document["id"],
-): MappedSectionInsertModel[] => [
-  {
-    documentId,
-    name: "Personal Details",
-    displayOrder: 1,
-    internalSectionTag: INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
-  },
-  {
-    documentId,
-    name: "Professional Summary",
-    displayOrder: 2,
-    internalSectionTag: INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
-  },
-  {
-    documentId,
-    name: "Employment History",
-    displayOrder: 3,
-    fieldsContainerType: "collapsible",
-    internalSectionTag: INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
-    itemCountPerContainer: 6,
-  },
-  {
-    documentId,
-    name: "Education",
-    displayOrder: 4,
-    fieldsContainerType: "collapsible",
-    internalSectionTag: INTERNAL_SECTION_TAGS.EDUCATION,
-    itemCountPerContainer: 6,
-  },
-  {
-    documentId,
-    name: "Websites & Social Links",
-    displayOrder: 5,
-    fieldsContainerType: "collapsible",
-    internalSectionTag: INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
-    itemCountPerContainer: 2,
-  },
-  {
-    documentId,
-    name: "Skills",
-    displayOrder: 6,
-    fieldsContainerType: "collapsible",
-    internalSectionTag: INTERNAL_SECTION_TAGS.SKILLS,
-    metadata: JSON.stringify({
-      showExperienceLevel: true,
-    }),
-    itemCountPerContainer: 2,
-  },
-];
+): SectionInsertModel[] => {
+  return [
+    {
+      documentId,
+      name: "Personal Details",
+      displayOrder: 1,
+      internalSectionTag: INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
+    },
+    {
+      documentId,
+      name: "Professional Summary",
+      displayOrder: 2,
+      internalSectionTag: INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
+    },
+    {
+      documentId,
+      name: "Employment History",
+      displayOrder: 3,
+      fieldsContainerType:
+        "collapsible" as SectionInsertModel["fieldsContainerType"],
+      internalSectionTag: INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+      itemCountPerContainer: 6,
+    },
+    {
+      documentId,
+      name: "Education",
+      displayOrder: 4,
+      fieldsContainerType:
+        "collapsible" as SectionInsertModel["fieldsContainerType"],
+      internalSectionTag: INTERNAL_SECTION_TAGS.EDUCATION,
+      itemCountPerContainer: 6,
+    },
+    {
+      documentId,
+      name: "Websites & Social Links",
+      displayOrder: 5,
+      fieldsContainerType:
+        "collapsible" as SectionInsertModel["fieldsContainerType"],
+      internalSectionTag: INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
+      itemCountPerContainer: 2,
+    },
+    {
+      documentId,
+      name: "Skills",
+      displayOrder: 6,
+      fieldsContainerType:
+        "collapsible" as SectionInsertModel["fieldsContainerType"],
+      internalSectionTag: INTERNAL_SECTION_TAGS.SKILLS,
+      metadata: JSON.stringify({
+        showExperienceLevel: true,
+      }),
+      itemCountPerContainer: 2,
+    },
+  ].map((item) => ({
+    ...item,
+    defaultName: item.name,
+  }));
+};
 
 export const generateFieldValue = (item: {
   fieldId: SectionField["id"];

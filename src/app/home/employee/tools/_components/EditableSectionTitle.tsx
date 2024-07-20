@@ -16,7 +16,7 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/server/db/schema";
 import { AnimatePresence, motion } from "framer-motion";
-import { Pencil, Trash } from "lucide-react";
+import { Pencil, RotateCcw, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useDeleteSection } from "../_hooks/useDeleteSection";
 
@@ -46,7 +46,7 @@ const EditableSectionTitle = ({
     (state) => state.setSectionValue,
   );
 
-  const isSectionDeleteable = DELETABLE_INTERNAL_SECTION_TAGS.includes(
+  const isSectionDeletable = DELETABLE_INTERNAL_SECTION_TAGS.includes(
     // @ts-ignore
     section?.internalSectionTag as INTERNAL_SECTION_TAG,
   );
@@ -100,6 +100,16 @@ const EditableSectionTitle = ({
         0,
         renameInputElement?.value?.length,
       );
+    });
+  };
+
+  const handleResetSectionNameClick = () => {
+    if (!section) return;
+
+    setSectionValue({
+      sectionId: section.id,
+      key: "name",
+      value: section.defaultName,
     });
   };
 
@@ -167,26 +177,46 @@ const EditableSectionTitle = ({
       )}
 
       {!isEditing && (
-        <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="px-1 py-0"
-                  onClick={() => handleRenameClick()}
-                >
-                  <Pencil size={18} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Rename</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <>
+          <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300 flex items-center gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="px-1 py-0"
+                    onClick={() => handleRenameClick()}
+                  >
+                    <Pencil size={18} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Rename</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            {section.name !== section.defaultName ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="px-1 py-0"
+                      onClick={() => handleResetSectionNameClick()}
+                    >
+                      <RotateCcw size={18} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Reset section name to default</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : null}
+          </div>
+        </>
       )}
-      {!isEditing && isSectionDeleteable ? (
+      {!isEditing && isSectionDeletable ? (
         <>
           <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300">
             <TooltipProvider>

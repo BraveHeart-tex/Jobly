@@ -1,0 +1,1 @@
+ALTER TABLE `Section` ADD `defaultName` varchar(100) NOT NULL;

@@ -416,6 +416,7 @@ export const section = mysqlTable(
       INTERNAL_SECTION_TAGS.COURSES,
       INTERNAL_SECTION_TAGS.LANGUAGES,
     ]).notNull(),
+    defaultName: varchar("defaultName", { length: 100 }).notNull(),
     itemCountPerContainer: int("itemCountPerContainer").default(0).notNull(),
     metadata: text("metadata"),
   },

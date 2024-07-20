@@ -60,6 +60,7 @@ export const exclude = <T extends Record<string, unknown>, K extends keyof T>(
   baseObject: T,
   keysToRemove: K[],
 ): Omit<T, K> => {
+  if (!baseObject) return {} as Omit<T, K>;
   return (Object.keys(baseObject) as K[]).reduce(
     (acc, key) => {
       if (!keysToRemove.includes(key)) {

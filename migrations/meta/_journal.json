@@ -127,6 +127,13 @@
       "when": 1721279776224,
       "tag": "0017_chilly_angel",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1721476686977,
+      "tag": "0018_motionless_captain_america",
+      "breakpoints": true
     }
   ]
 }
