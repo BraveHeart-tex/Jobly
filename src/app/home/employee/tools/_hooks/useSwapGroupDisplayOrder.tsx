@@ -1,10 +1,9 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { Section, SectionField } from "@/server/db/schema";
 import type { DragEndEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export const useSwapGroupDisplayOrder = (groupedFields: SectionField[][]) => {
-  // biome-ignore lint/style/noNonNullAssertion: <explanation>
-  const sectionId = groupedFields[0]![0]!.sectionId as Section["id"];
   const allFields = useDocumentBuilderStore((state) => state.fields);
   const setFields = useDocumentBuilderStore((state) => state.setFields);
   const callSaveDocumentDetailsFn = useDocumentBuilderStore(
@@ -23,48 +22,25 @@ export const useSwapGroupDisplayOrder = (groupedFields: SectionField[][]) => {
       (over.id as string).split("-")[1] as string,
     );
 
-    const activeGroup = groupedFields[activeGroupIndex] as SectionField[];
     const overGroup = groupedFields[overGroupIndex] as SectionField[];
 
-    if (!activeGroup || !overGroup || activeGroup.length !== overGroup.length)
-      return;
-
-    const tempActiveDisplayOrders = activeGroup.map(
-      (item) => item.displayOrder,
-    );
-
-    const tempOverDisplayOrders = overGroup.map((item) => item.displayOrder);
-
-    for (let i = 0; i < activeGroup.length; i++) {
-      if (i < overGroup.length) {
-        // @ts-ignore
-        activeGroup[i].displayOrder = tempOverDisplayOrders[i];
-      }
-    }
-
-    for (let i = 0; i < overGroup.length; i++) {
-      if (i < activeGroup.length) {
-        // @ts-ignore
-        overGroup[i].displayOrder = tempActiveDisplayOrders[i];
-      }
-    }
-
-    const updatedGroupFields = groupedFields.flatMap((group, groupIndex) => {
-      if (groupIndex === activeGroupIndex) {
-        return activeGroup;
-      }
-      if (groupIndex === overGroupIndex) {
-        return overGroup;
-      }
-      return group;
+    const newGroupFields = arrayMove(
+      groupedFields,
+      activeGroupIndex,
+      overGroupIndex,
+    ).flatMap((group, groupIndex) => {
+      return group.map((field, index) => {
+        return {
+          ...field,
+          displayOrder: index + 1 + groupIndex * overGroup.length,
+        };
+      });
     });
 
     setFields(
       allFields
         .map((field) => {
-          const tempItem = updatedGroupFields.find(
-            (item) => item.id === field.id,
-          );
+          const tempItem = newGroupFields.find((item) => item.id === field.id);
           if (tempItem) {
             return tempItem;
           }
@@ -74,7 +50,7 @@ export const useSwapGroupDisplayOrder = (groupedFields: SectionField[][]) => {
     );
 
     callSaveDocumentDetailsFn({
-      fields: updatedGroupFields,
+      fields: newGroupFields,
     });
   };
 
