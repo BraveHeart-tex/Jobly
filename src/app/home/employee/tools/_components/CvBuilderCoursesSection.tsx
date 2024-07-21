@@ -59,6 +59,7 @@ const CvBuilderCoursesSection = ({ section }: CvBuilderCoursesSectionProps) => {
 
       return (
         <CollapsibleSectionItemContainer
+          id={"TODO"}
           triggerTitle={triggerTitle}
           triggerDescription={triggerDescription}
           key={group[0]?.id}

@@ -445,6 +445,7 @@ export const field = mysqlTable(
       .notNull(),
     fieldName: varchar("fieldName", { length: 100 }).notNull(),
     fieldType: varchar("fieldType", { length: 100 }).notNull(),
+    displayOrder: int("displayOrder").notNull(),
   },
   (table) => {
     return {

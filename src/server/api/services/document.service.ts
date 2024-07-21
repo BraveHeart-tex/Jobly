@@ -25,7 +25,7 @@ import {
   getFieldInsertTemplate,
   getPredefinedDocumentSections,
 } from "@/server/utils/document.service.utils";
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const getUserDocuments = async (userId: User["id"]) => {
@@ -161,6 +161,7 @@ export const getDocumentDetails = async ({
       sections: {
         with: {
           fields: {
+            orderBy: () => asc(fieldSchema.displayOrder),
             with: {
               fieldValues: true,
             },

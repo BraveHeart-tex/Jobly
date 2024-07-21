@@ -50,6 +50,7 @@ type DocumentBuilderActions = {
   removeFields: (fieldIds: SectionField["id"][]) => void;
   removeSection: (sectionId: Section["id"]) => void;
   callPdfUpdaterCallback: () => void;
+  setFields: (fields: SectionField[]) => void;
 };
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -177,6 +178,10 @@ export const useDocumentBuilderStore = create<
           fields: newFields,
           fieldValues: newFieldValues,
         });
+        get().callPdfUpdaterCallback();
+      },
+      setFields: (fields) => {
+        set({ fields });
         get().callPdfUpdaterCallback();
       },
     }),

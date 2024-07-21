@@ -20,6 +20,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -29,11 +31,13 @@ import {
   PencilIcon,
   TrashIcon,
 } from "lucide-react";
+import { GripVertical } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { useMedia } from "react-use";
 
 type CollapsibleSectionItemContainerProps = {
+  id: number | string;
   triggerTitle?: string;
   triggerDescription?: string;
   children: React.ReactNode;
@@ -45,12 +49,31 @@ const CollapsibleSectionItemContainer = ({
   triggerDescription,
   children,
   onDeleteItemClick,
+  id,
 }: CollapsibleSectionItemContainerProps) => {
   const [open, setOpen] = useState(false);
   const isMobileOrTablet = useMedia("(max-width: 1024px)", false);
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   return (
-    <div className="w-full relative group">
+    <div
+      className="w-full relative group"
+      ref={setNodeRef}
+      style={{
+        transition,
+        transform: CSS.Transform.toString(transform),
+      }}
+      {...attributes}
+    >
+      {!open ? (
+        <div
+          {...listeners}
+          className="absolute -left-5 top-6 cursor-grab hidden pointer-events-none group-hover:block group-hover:pointer-events-auto"
+        >
+          <GripVertical size={20} />
+        </div>
+      ) : null}
       <motion.div
         className={cn(
           "rounded-md border flex flex-col transition-all w-full",

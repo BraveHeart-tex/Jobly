@@ -22,6 +22,9 @@ const AddSectionItemButton = ({
   templateOption,
   label,
 }: AddSectionItemButtonProps) => {
+  const sectionFields = useDocumentBuilderStore((state) =>
+    state.fields.filter((field) => field.sectionId === sectionId),
+  );
   const addField = useDocumentBuilderStore((state) => state.addField);
   const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
   const fieldsToInsert = getFieldInsertTemplate(sectionId, templateOption);
@@ -50,8 +53,17 @@ const AddSectionItemButton = ({
     });
 
   const handleAddItem = () => {
+    const availableFieldDisplayOrder = sectionFields.reduce(
+      (max, field) => Math.max(max, field.displayOrder),
+      0,
+    );
+    const mappedFieldsToInsert = fieldsToInsert.map((field, index) => ({
+      ...field,
+      displayOrder: availableFieldDisplayOrder + index + 1,
+    }));
+
     addFields({
-      fields: fieldsToInsert,
+      fields: mappedFieldsToInsert,
     });
   };
 
