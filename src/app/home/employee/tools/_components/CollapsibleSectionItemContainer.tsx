@@ -37,7 +37,7 @@ import { useState } from "react";
 import { useMedia } from "react-use";
 
 type CollapsibleSectionItemContainerProps = {
-  id: number | string;
+  id: `${string}-${number}`;
   triggerTitle?: string;
   triggerDescription?: string;
   children: React.ReactNode;

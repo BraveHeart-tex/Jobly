@@ -4,8 +4,8 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
-import { DndContext, type DragEndEvent, closestCenter } from "@dnd-kit/core";
+import type { Section, SectionField } from "@/server/db/schema";
+import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -17,6 +17,7 @@ import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
+import { useSwapGroupDisplayOrder } from "../_hooks/useSwapGroupDisplayOrder";
 
 export const EDUCATION_SECTION_ITEMS_COUNT = 6;
 
@@ -26,83 +27,18 @@ const CvBuilderEducationSection = () => {
       (section) =>
         section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
     ),
-  );
-  const allFields = useDocumentBuilderStore((state) => state.fields);
+  ) as Section;
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field?.sectionId === section?.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
-  const setFields = useDocumentBuilderStore((state) => state.setFields);
-  const callSaveDocumentDetailsFn = useDocumentBuilderStore(
-    (state) => state.callSaveDocumentDetailsFn,
-  );
-  const { removeFields } = useRemoveFields();
-
-  // TODO: Move this to hook
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over?.id || !active.id) return;
-
-    const activeGroupIndex = Number.parseInt(
-      (active.id as string).split("-")[1] as string,
-    );
-    const overGroupIndex = Number.parseInt(
-      (over.id as string).split("-")[1] as string,
-    );
-
-    const activeGroup = groupedFields[activeGroupIndex] as SectionField[];
-    const overGroup = groupedFields[overGroupIndex] as SectionField[];
-
-    if (!activeGroup || !overGroup || activeGroup.length !== overGroup.length)
-      return;
-
-    const tempActiveDisplayOrders = activeGroup.map(
-      (item) => item.displayOrder,
-    );
-
-    const tempOverDisplayOrders = overGroup.map((item) => item.displayOrder);
-
-    for (let i = 0; i < activeGroup.length; i++) {
-      if (i < overGroup.length) {
-        // @ts-ignore
-        activeGroup[i].displayOrder = tempOverDisplayOrders[i];
-      }
-    }
-
-    for (let i = 0; i < overGroup.length; i++) {
-      if (i < activeGroup.length) {
-        // @ts-ignore
-        overGroup[i].displayOrder = tempActiveDisplayOrders[i];
-      }
-    }
-
-    setFields(
-      allFields
-        .map((field) => {
-          const activeItem = activeGroup.find((item) => item.id === field.id);
-          if (activeItem) {
-            return activeItem;
-          }
-
-          const overItem = overGroup.find((item) => item.id === field.id);
-          if (overItem) {
-            return overItem;
-          }
-
-          return field;
-        })
-        .sort((a, b) => a.displayOrder - b.displayOrder),
-    );
-
-    callSaveDocumentDetailsFn({
-      fields: [...activeGroup, ...overGroup],
-    });
-  };
-
   const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
+
+  const { removeFields } = useRemoveFields();
+  const { handleDragEnd, updateFieldOrdersOnDelete } =
+    useSwapGroupDisplayOrder(groupedFields);
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
@@ -141,7 +77,9 @@ const CvBuilderEducationSection = () => {
           triggerDescription={description}
           key={group[0]?.id}
           onDeleteItemClick={() => {
-            removeFields(group.map((field) => field.id));
+            const removedFieldIds = group.map((field) => field.id);
+            removeFields(removedFieldIds);
+            updateFieldOrdersOnDelete(section.id, removedFieldIds);
           }}
         >
           <div className="grid gap-6">
