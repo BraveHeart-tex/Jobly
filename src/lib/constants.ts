@@ -101,6 +101,7 @@ export const FIELDS_DND_INDEX_PREFIXES = {
   WEBSITES_AND_LINKS: "websitesAndLinks",
   SKILLS: "skills",
   CUSTOM: "custom",
+  INTERNSHIPS: "internships",
 } as const;
 
 export type FIELD_DND_INDEX_PREFIX = InferValueTypeFromConst<

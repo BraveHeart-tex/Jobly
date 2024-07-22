@@ -93,7 +93,7 @@ const CollapsibleSectionItemContainer = ({
                 variant="ghost"
                 size="icon"
                 {...listeners}
-                className="cursor-grab lg:pointer-events-none lg:group-hover:pointer-events-auto lg:opacity-0 lg:group-hover:opacity-100 absolute -left-7 lg:-left-8 top-4 z-10 w-8 h-8 text-muted-foreground transition-all"
+                className="cursor-grab lg:pointer-events-none lg:group-hover:pointer-events-auto lg:opacity-0 lg:group-hover:opacity-100 absolute -left-7 lg:-left-8 top-[19px] z-10 w-8 h-8 text-muted-foreground transition-all"
               >
                 <GripVertical />
               </Button>
