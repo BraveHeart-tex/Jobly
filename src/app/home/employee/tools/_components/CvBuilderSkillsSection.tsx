@@ -7,12 +7,14 @@ import { useRemoveFields } from "@/app/home/employee/tools/_hooks/useRemoveField
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
+  FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { SectionField } from "@/server/db/schema";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const SKILL_SECTION_ITEMS_COUNT = 2;
 
@@ -25,9 +27,7 @@ const CvBuilderSkillsSection = () => {
   const sectionMetada = section?.metadata ? JSON.parse(section?.metadata) : {};
   const showExperienceLevel = sectionMetada?.showExperienceLevel || false;
   const fields = useDocumentBuilderStore((state) =>
-    state.fields
-      .filter((field) => field.sectionId === section?.id)
-      .sort((a, b) => a.id - b.id),
+    state.fields.filter((field) => field.sectionId === section?.id),
   );
   const setSectionValue = useDocumentBuilderStore(
     (state) => state.setSectionValue,
@@ -36,11 +36,10 @@ const CvBuilderSkillsSection = () => {
     (state) => state.getFieldValueByFieldId,
   );
   const { removeFields } = useRemoveFields();
+  const groupedFields = groupEveryN(fields, SKILL_SECTION_ITEMS_COUNT);
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, SKILL_SECTION_ITEMS_COUNT);
-
-    return groupedFields.map((group) => {
+    return groupedFields.map((group, index) => {
       const skillField = group[0] as SectionField;
       const levelField = group[1] as SectionField;
 
@@ -54,6 +53,7 @@ const CvBuilderSkillsSection = () => {
 
       return (
         <CollapsibleSectionItemContainer
+          id={`${FIELDS_DND_INDEX_PREFIXES.SKILLS}-${index}`}
           triggerTitle={triggerTitle}
           triggerDescription={!showExperienceLevel ? undefined : description}
           key={group[0]?.id}
@@ -107,7 +107,12 @@ const CvBuilderSkillsSection = () => {
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            {renderGroupItems()}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.SKILLS}
+            >
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.SKILLS}
