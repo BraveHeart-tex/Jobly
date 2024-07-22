@@ -19,6 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { FIELD_DND_INDEX_PREFIX } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -37,7 +38,7 @@ import { useEffect, useState } from "react";
 import { useMedia } from "react-use";
 
 type CollapsibleSectionItemContainerProps = {
-  id: `${string}-${number}`;
+  id: `${FIELD_DND_INDEX_PREFIX}-${number}`;
   triggerTitle?: string;
   triggerDescription?: string;
   children: React.ReactNode;

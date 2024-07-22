@@ -1,15 +1,11 @@
 import {
+  FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { Section, SectionField } from "@/server/db/schema";
-import { DndContext, closestCenter } from "@dnd-kit/core";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
@@ -18,6 +14,7 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import { useSwapGroupDisplayOrder } from "../_hooks/useSwapGroupDisplayOrder";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const EDUCATION_SECTION_ITEMS_COUNT = 6;
 
@@ -29,7 +26,7 @@ const CvBuilderEducationSection = () => {
     ),
   ) as Section;
   const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field?.sectionId === section?.id),
+    state.fields.filter((field) => field?.sectionId === section.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -37,8 +34,7 @@ const CvBuilderEducationSection = () => {
   const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
 
   const { removeFields } = useRemoveFields();
-  const { handleDragEnd, updateFieldOrdersOnDelete } =
-    useSwapGroupDisplayOrder(groupedFields);
+  const { updateFieldOrdersOnDelete } = useSwapGroupDisplayOrder(groupedFields);
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
@@ -72,7 +68,7 @@ const CvBuilderEducationSection = () => {
 
       return (
         <CollapsibleSectionItemContainer
-          id={`education-${index}`}
+          id={`${FIELDS_DND_INDEX_PREFIXES.EDUCATION}-${index}`}
           triggerTitle={triggerTitle}
           triggerDescription={description}
           key={group[0]?.id}
@@ -127,17 +123,12 @@ const CvBuilderEducationSection = () => {
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            <DndContext
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.EDUCATION}
             >
-              <SortableContext
-                items={groupedFields.map((_, index) => `education-${index}`)}
-                strategy={verticalListSortingStrategy}
-              >
-                {renderGroupItems()}
-              </SortableContext>
-            </DndContext>
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.EDUCATION}

@@ -3,7 +3,7 @@ import type { InferValueTypeFromConst } from "./types";
 export const contentByPortalType = {
   employee: [
     "Find your dream job with just one click",
-    "Discover endless opportunities aligned with your passions",
+    "Discover endless opportunities align with your passions",
     "Land interviews and secure your dream job",
   ],
   employer: [
@@ -94,3 +94,12 @@ export const SECTION_DESCRIPTIONS_BY_TAG = {
   [INTERNAL_SECTION_TAGS.SKILLS]:
     "Select five key skills that demonstrate your suitability for the position. Ensure they align with the essential skills listed in the job description. (Particularly when applying through an online system.)",
 } as const;
+
+export const FIELDS_DND_INDEX_PREFIXES = {
+  EMPLOYMENT: "employment",
+  EDUCATION: "education",
+} as const;
+
+export type FIELD_DND_INDEX_PREFIX = InferValueTypeFromConst<
+  typeof FIELDS_DND_INDEX_PREFIXES
+>;
