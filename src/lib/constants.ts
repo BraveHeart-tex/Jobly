@@ -105,6 +105,7 @@ export const FIELDS_DND_INDEX_PREFIXES = {
   EXTRA_CURRICULAR_ACTIVITIES: "extraCurricularActivities",
   REFERENCES: "references",
   COURSES: "courses",
+  LANGUAGES: "languages",
 } as const;
 
 export type FIELD_DND_INDEX_PREFIX = InferValueTypeFromConst<

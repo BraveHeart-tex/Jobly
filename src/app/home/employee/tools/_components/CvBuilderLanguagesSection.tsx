@@ -1,4 +1,7 @@
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  FIELDS_DND_INDEX_PREFIXES,
+  INTERNAL_SECTION_TAGS,
+} from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { Section, SectionField } from "@/server/db/schema";
@@ -8,6 +11,7 @@ import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderSelect from "./DocumentBuilderSelect";
 import EditableSectionTitle from "./EditableSectionTitle";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 type CvBuilderLanguagesSectionProps = {
   section: Section;
@@ -38,11 +42,10 @@ const CvBuilderLanguagesSection = ({
     (state) => state.getFieldValueByFieldId,
   );
   const { removeFields } = useRemoveFields();
+  const groupedFields = groupEveryN(fields, LANGUAGES_SECTION_ITEMS_COUNT);
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, LANGUAGES_SECTION_ITEMS_COUNT);
-
-    return groupedFields.map((group) => {
+    return groupedFields.map((group, index) => {
       const languageField = group[0] as SectionField;
       const levelField = group[1] as SectionField;
 
@@ -53,6 +56,7 @@ const CvBuilderLanguagesSection = ({
 
       return (
         <CollapsibleSectionItemContainer
+          id={`${FIELDS_DND_INDEX_PREFIXES.LANGUAGES}-${index}`}
           triggerTitle={language || "(Not Specified)"}
           triggerDescription={level}
           key={group[0]?.id}
@@ -84,7 +88,12 @@ const CvBuilderLanguagesSection = ({
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            {renderGroupItems()}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.LANGUAGES}
+            >
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.LANGUAGES}
