@@ -1,10 +1,11 @@
 import {
+  FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
+import type { Section, SectionField } from "@/server/db/schema";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
@@ -12,6 +13,7 @@ import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const EDUCATION_SECTION_ITEMS_COUNT = 6;
 
@@ -21,21 +23,19 @@ const CvBuilderEducationSection = () => {
       (section) =>
         section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
     ),
-  );
+  ) as Section;
   const fields = useDocumentBuilderStore((state) =>
-    state.fields
-      .filter((field) => field?.sectionId === section?.id)
-      .sort((a, b) => a?.id - b?.id),
+    state.fields.filter((field) => field?.sectionId === section.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
+  const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
+
   const { removeFields } = useRemoveFields();
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
-
-    return groupedFields.map((group) => {
+    return groupedFields.map((group, index) => {
       const schoolField = group[0] as SectionField;
       const degreeField = group[1] as SectionField;
       const startDateField = group[2] as SectionField;
@@ -66,11 +66,13 @@ const CvBuilderEducationSection = () => {
 
       return (
         <CollapsibleSectionItemContainer
+          id={`${FIELDS_DND_INDEX_PREFIXES.EDUCATION}-${index}`}
           triggerTitle={triggerTitle}
           triggerDescription={description}
           key={group[0]?.id}
           onDeleteItemClick={() => {
-            removeFields(group.map((field) => field.id));
+            const removedFieldIds = group.map((field) => field.id);
+            removeFields(removedFieldIds);
           }}
         >
           <div className="grid gap-6">
@@ -118,7 +120,12 @@ const CvBuilderEducationSection = () => {
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            {renderGroupItems()}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.EDUCATION}
+            >
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.EDUCATION}

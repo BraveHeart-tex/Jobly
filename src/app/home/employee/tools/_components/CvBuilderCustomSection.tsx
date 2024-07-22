@@ -1,4 +1,7 @@
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  FIELDS_DND_INDEX_PREFIXES,
+  INTERNAL_SECTION_TAGS,
+} from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { Section, SectionField } from "@/server/db/schema";
@@ -9,6 +12,7 @@ import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 type CvBuilderCustomSectionProps = {
   section: Section;
@@ -18,19 +22,16 @@ export const CUSTOM_SECTION_ITEMS_COUNT = 5;
 
 const CvBuilderCustomSection = ({ section }: CvBuilderCustomSectionProps) => {
   const fields = useDocumentBuilderStore((state) =>
-    state.fields
-      .filter((field) => field.sectionId === section?.id)
-      .sort((a, b) => a.id - b.id),
+    state.fields.filter((field) => field.sectionId === section?.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
   const { removeFields } = useRemoveFields();
+  const groupedFields = groupEveryN(fields, CUSTOM_SECTION_ITEMS_COUNT);
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, CUSTOM_SECTION_ITEMS_COUNT);
-
-    return groupedFields.map((group) => {
+    return groupedFields.map((group, index) => {
       const nameField = group[0] as SectionField;
       const cityField = group[1] as SectionField;
       const startDateField = group[2] as SectionField;
@@ -61,6 +62,7 @@ const CvBuilderCustomSection = ({ section }: CvBuilderCustomSectionProps) => {
 
       return (
         <CollapsibleSectionItemContainer
+          id={`${FIELDS_DND_INDEX_PREFIXES.CUSTOM}-${index}`}
           triggerTitle={triggerTitle}
           triggerDescription={triggerDescription}
           key={group[0]?.id}
@@ -104,7 +106,12 @@ const CvBuilderCustomSection = ({ section }: CvBuilderCustomSectionProps) => {
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            {renderGroupItems()}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.CUSTOM}
+            >
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.CUSTOM}

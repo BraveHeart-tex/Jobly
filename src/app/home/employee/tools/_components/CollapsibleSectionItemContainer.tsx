@@ -19,7 +19,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import type { FIELD_DND_INDEX_PREFIX } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { PopoverClose } from "@radix-ui/react-popover";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -29,11 +32,13 @@ import {
   PencilIcon,
   TrashIcon,
 } from "lucide-react";
+import { GripVertical } from "lucide-react";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMedia } from "react-use";
 
 type CollapsibleSectionItemContainerProps = {
+  id: `${FIELD_DND_INDEX_PREFIX}-${number}`;
   triggerTitle?: string;
   triggerDescription?: string;
   children: React.ReactNode;
@@ -45,12 +50,58 @@ const CollapsibleSectionItemContainer = ({
   triggerDescription,
   children,
   onDeleteItemClick,
+  id,
 }: CollapsibleSectionItemContainerProps) => {
   const [open, setOpen] = useState(false);
   const isMobileOrTablet = useMedia("(max-width: 1024px)", false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    isOver,
+    isSorting,
+  } = useSortable({ id });
+
+  const shouldShowDeleteButton =
+    onDeleteItemClick && !isDragging && !isOver && !isSorting;
+  const shouldShowDragButton = !open && !isDragging && !isOver && !isSorting;
+
+  useEffect(() => {
+    if ((isDragging || isOver || isSorting) && open) {
+      setOpen(false);
+    }
+  }, [isDragging, isOver, isSorting, open]);
 
   return (
-    <div className="w-full relative group">
+    <div
+      className="w-full relative group"
+      ref={setNodeRef}
+      style={{
+        transition,
+        transform: CSS.Transform.toString(transform),
+      }}
+      {...attributes}
+    >
+      {shouldShowDragButton ? (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                {...listeners}
+                className="cursor-grab lg:pointer-events-none lg:group-hover:pointer-events-auto lg:opacity-0 lg:group-hover:opacity-100 absolute -left-7 lg:-left-8 top-[19px] z-10 w-8 h-8 text-muted-foreground transition-all"
+              >
+                <GripVertical />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Click and drag to move</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : null}
       <motion.div
         className={cn(
           "rounded-md border flex flex-col transition-all w-full",
@@ -62,7 +113,10 @@ const CollapsibleSectionItemContainer = ({
             <Button
               variant="ghost"
               className="w-full h-full text-left flex items-center justify-start py-4 hover:bg-transparent bg-transparent hover:text-primary"
-              onClick={() => setOpen(!open)}
+              onClick={() => {
+                if (isDragging || isSorting || isOver) return;
+                setOpen(!open);
+              }}
             >
               <div
                 className={cn(
@@ -147,7 +201,7 @@ const CollapsibleSectionItemContainer = ({
           )}
         </AnimatePresence>
       </motion.div>
-      {onDeleteItemClick ? (
+      {shouldShowDeleteButton ? (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

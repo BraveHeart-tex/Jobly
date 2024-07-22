@@ -4,12 +4,14 @@ import DocumentBuilderInput from "@/app/home/employee/tools/_components/Document
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
 import { useRemoveFields } from "@/app/home/employee/tools/_hooks/useRemoveFields";
 import {
+  FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
+import type { Section, SectionField } from "@/server/db/schema";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT = 2;
 
@@ -20,24 +22,21 @@ const CvBuilderWebsitesAndLinks = () => {
         section.internalSectionTag ===
         INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
     ),
-  );
+  ) as Section;
   const fields = useDocumentBuilderStore((state) =>
-    state.fields
-      .filter((field) => field?.sectionId === section?.id)
-      .sort((a, b) => a?.id - b?.id),
+    state.fields.filter((field) => field?.sectionId === section.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
   const { removeFields } = useRemoveFields();
+  const groupedFields = groupEveryN(
+    fields,
+    WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT,
+  );
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(
-      fields,
-      WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT,
-    );
-
-    return groupedFields.map((group) => {
+    return groupedFields.map((group, index) => {
       const labelField = group[0] as SectionField;
       const linkField = group[1] as SectionField;
 
@@ -51,11 +50,13 @@ const CvBuilderWebsitesAndLinks = () => {
 
       return (
         <CollapsibleSectionItemContainer
+          id={`${FIELDS_DND_INDEX_PREFIXES.WEBSITES_AND_LINKS}-${index}`}
           triggerTitle={triggerTitle}
           triggerDescription={description}
           key={group[0]?.id}
           onDeleteItemClick={() => {
-            removeFields(group.map((field) => field.id));
+            const deletedFieldIds = group.map((field) => field.id);
+            removeFields(deletedFieldIds);
           }}
         >
           <div className="grid gap-6">
@@ -84,7 +85,12 @@ const CvBuilderWebsitesAndLinks = () => {
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            {renderGroupItems()}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.WEBSITES_AND_LINKS}
+            >
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS}

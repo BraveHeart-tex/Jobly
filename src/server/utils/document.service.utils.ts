@@ -52,178 +52,183 @@ export const getFieldInsertTemplate = (
 
 const getEmploymentHistoryFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Job Title",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "Start Date",
-    sectionId,
-    fieldType: "date",
-  },
-  {
-    fieldName: "End Date",
-    sectionId,
-    fieldType: "date",
-  },
-  {
-    fieldName: "Employer",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "City",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "Description",
-    sectionId,
-    fieldType: "richText",
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Job Title",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "Start Date",
+      sectionId,
+      fieldType: "date",
+    },
+    {
+      fieldName: "End Date",
+      sectionId,
+      fieldType: "date",
+    },
+    {
+      fieldName: "Employer",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "City",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "Description",
+      sectionId,
+      fieldType: "richText",
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 const getCustomSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Activity name, job title, book title etc.",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "City",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "Start Date",
-    sectionId,
-    fieldType: "date",
-  },
-  {
-    fieldName: "End Date",
-    sectionId,
-    fieldType: "date",
-  },
-  {
-    fieldName: "Description",
-    sectionId,
-    fieldType: "richText",
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Activity name, job title, book title etc.",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "City",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "Start Date",
+      sectionId,
+      fieldType: "date",
+    },
+    {
+      fieldName: "End Date",
+      sectionId,
+      fieldType: "date",
+    },
+    {
+      fieldName: "Description",
+      sectionId,
+      fieldType: "richText",
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getEducationSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "School",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "Degree",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "Start Date",
-    sectionId,
-    fieldType: "date",
-  },
-  {
-    fieldName: "End Date",
-    sectionId,
-    fieldType: "date",
-  },
-  {
-    fieldName: "City",
-    sectionId,
-    fieldType: "string",
-  },
-  {
-    fieldName: "Description",
-    sectionId,
-    fieldType: "richText",
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "School",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "Degree",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "Start Date",
+      sectionId,
+      fieldType: "date",
+    },
+    {
+      fieldName: "End Date",
+      sectionId,
+      fieldType: "date",
+    },
+    {
+      fieldName: "City",
+      sectionId,
+      fieldType: "string",
+    },
+    {
+      fieldName: "Description",
+      sectionId,
+      fieldType: "richText",
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getPersonalDetailsFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Wanted Job Title",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "First Name",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Last Name",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Email",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Phone",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Country",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "City",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Address",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Postal Code",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Driving License",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Place of Birth",
-    fieldType: "text",
-    sectionId,
-  },
-  {
-    fieldName: "Date of Birth",
-    fieldType: "text",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Wanted Job Title",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "First Name",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Last Name",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Email",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Phone",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Country",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "City",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Address",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Postal Code",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Driving License",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Place of Birth",
+      fieldType: "text",
+      sectionId,
+    },
+    {
+      fieldName: "Date of Birth",
+      fieldType: "text",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getProfessionalSummaryFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Professional Summary",
-    fieldType: "richText",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Professional Summary",
+      fieldType: "richText",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getPredefinedDocumentSections = (
   documentId: Document["id"],
@@ -296,140 +301,147 @@ export const generateFieldValue = (item: {
 
 export const getWebsitesAndSocialLinksSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Label",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Link",
-    fieldType: "string",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Label",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Link",
+      fieldType: "string",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getSkillSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Skill",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Level",
-    fieldType: "skillSelect",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Skill",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Level",
+      fieldType: "skillSelect",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getCourseSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Course",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Institution",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Start Date",
-    fieldType: "date",
-    sectionId,
-  },
-  {
-    fieldName: "End Date",
-    fieldType: "date",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Course",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Institution",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Start Date",
+      fieldType: "date",
+      sectionId,
+    },
+    {
+      fieldName: "End Date",
+      fieldType: "date",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getExtraCurricularActivitiesFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Function Title",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Start Date",
-    fieldType: "date",
-    sectionId,
-  },
-  {
-    fieldName: "End Date",
-    fieldType: "date",
-    sectionId,
-  },
-  {
-    fieldName: "Employer",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "City",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Description",
-    fieldType: "richText",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Function Title",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Start Date",
+      fieldType: "date",
+      sectionId,
+    },
+    {
+      fieldName: "End Date",
+      fieldType: "date",
+      sectionId,
+    },
+    {
+      fieldName: "Employer",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "City",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Description",
+      fieldType: "richText",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getHobbiesSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "What do you like?",
-    fieldType: "textarea",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "What do you like?",
+      fieldType: "textarea",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getReferencesSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Referent's Full Name",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Company",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Phone",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Referent's Email",
-    fieldType: "string",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Referent's Full Name",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Company",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Phone",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Referent's Email",
+      fieldType: "string",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getLanguagesSectionFields = (
   sectionId: Section["id"],
-): SectionFieldInsertModel[] => [
-  {
-    fieldName: "Language",
-    fieldType: "string",
-    sectionId,
-  },
-  {
-    fieldName: "Level",
-    fieldType: "select",
-    sectionId,
-  },
-];
+): SectionFieldInsertModel[] =>
+  [
+    {
+      fieldName: "Language",
+      fieldType: "string",
+      sectionId,
+    },
+    {
+      fieldName: "Level",
+      fieldType: "select",
+      sectionId,
+    },
+  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));

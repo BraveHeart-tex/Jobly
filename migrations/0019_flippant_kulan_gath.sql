@@ -1,0 +1,1 @@
+ALTER TABLE `Field` ADD `displayOrder` int NOT NULL;
