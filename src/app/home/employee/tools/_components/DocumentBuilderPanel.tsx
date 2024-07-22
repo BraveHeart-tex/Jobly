@@ -88,7 +88,7 @@ const DocumentBuilderPanel = () => {
   return (
     <div
       className={cn(
-        "bg-background min-h-screen px-4 md:p-12 py-14 h-screen relative w-1/2 hide-scrollbar",
+        "bg-background min-h-screen px-6 md:p-12 py-14 h-screen relative w-1/2 hide-scrollbar",
         view === "builder" && "w-full xl:w-1/2",
         view === "preview" && "hidden xl:block",
       )}
