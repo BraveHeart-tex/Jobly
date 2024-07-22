@@ -98,6 +98,7 @@ export const SECTION_DESCRIPTIONS_BY_TAG = {
 export const FIELDS_DND_INDEX_PREFIXES = {
   EMPLOYMENT: "employment",
   EDUCATION: "education",
+  WEBSITES_AND_LINKS: "websitesAndLinks",
 } as const;
 
 export type FIELD_DND_INDEX_PREFIX = InferValueTypeFromConst<

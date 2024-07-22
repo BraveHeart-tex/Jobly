@@ -13,7 +13,6 @@ import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
-import { useSwapGroupDisplayOrder } from "../_hooks/useSwapGroupDisplayOrder";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const EDUCATION_SECTION_ITEMS_COUNT = 6;
@@ -34,7 +33,6 @@ const CvBuilderEducationSection = () => {
   const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
 
   const { removeFields } = useRemoveFields();
-  const { updateFieldOrdersOnDelete } = useSwapGroupDisplayOrder(groupedFields);
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
@@ -75,7 +73,6 @@ const CvBuilderEducationSection = () => {
           onDeleteItemClick={() => {
             const removedFieldIds = group.map((field) => field.id);
             removeFields(removedFieldIds);
-            updateFieldOrdersOnDelete(section.id, removedFieldIds);
           }}
         >
           <div className="grid gap-6">

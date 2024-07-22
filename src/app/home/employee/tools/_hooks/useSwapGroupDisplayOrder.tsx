@@ -1,5 +1,5 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Section, SectionField } from "@/server/db/schema";
+import type { SectionField } from "@/server/db/schema";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 
@@ -54,42 +54,5 @@ export const useSwapGroupDisplayOrder = (groupedFields: SectionField[][]) => {
     });
   };
 
-  const mapItemDisplayOrderByIndex = (item: SectionField, index: number) => ({
-    ...item,
-    displayOrder: index + 1,
-  });
-
-  const updateFieldOrdersOnDelete = (
-    sectionId: Section["id"],
-    deletedFieldIds: SectionField["id"][],
-  ) => {
-    const mappedSectionFields = allFields
-      .filter(
-        (field) =>
-          field.sectionId === sectionId && !deletedFieldIds.includes(field.id),
-      )
-      .map(mapItemDisplayOrderByIndex);
-
-    if (mappedSectionFields.length === 0) return;
-
-    setFields(
-      allFields
-        .map((field) => {
-          const foundField = mappedSectionFields.find(
-            (item) => item.id === field.id,
-          );
-          if (foundField) {
-            return foundField;
-          }
-          return field;
-        })
-        .sort((a, b) => a.displayOrder - b.displayOrder),
-    );
-
-    callSaveDocumentDetailsFn({
-      fields: mappedSectionFields,
-    });
-  };
-
-  return { handleDragEnd, updateFieldOrdersOnDelete };
+  return { handleDragEnd };
 };
