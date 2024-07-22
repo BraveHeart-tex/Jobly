@@ -1,6 +1,9 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import {
+  FIELDS_DND_INDEX_PREFIXES,
+  INTERNAL_SECTION_TAGS,
+} from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { Section, SectionField } from "@/server/db/schema";
@@ -9,6 +12,7 @@ import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 type CvBuilderReferencesSectionProps = {
   section: Section;
@@ -24,9 +28,7 @@ const CvBuilderReferencesSection = ({
     : {};
   const hideReferences = sectionMetadata?.hideReferences || false;
   const fields = useDocumentBuilderStore((state) =>
-    state.fields
-      .filter((field) => field.sectionId === section?.id)
-      .sort((a, b) => a.id - b.id),
+    state.fields.filter((field) => field.sectionId === section?.id),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
@@ -35,11 +37,10 @@ const CvBuilderReferencesSection = ({
   const setSectionValue = useDocumentBuilderStore(
     (state) => state.setSectionValue,
   );
+  const groupedFields = groupEveryN(fields, REFERENCES_SECTION_ITEMS_COUNT);
 
   const renderGroupItems = () => {
-    const groupedFields = groupEveryN(fields, REFERENCES_SECTION_ITEMS_COUNT);
-
-    return groupedFields.map((group) => {
+    return groupedFields.map((group, index) => {
       const referentFullNameField = group[0] as SectionField;
       const companyField = group[1] as SectionField;
       const phoneField = group[2] as SectionField;
@@ -53,6 +54,7 @@ const CvBuilderReferencesSection = ({
 
       return (
         <CollapsibleSectionItemContainer
+          id={`${FIELDS_DND_INDEX_PREFIXES.REFERENCES}-${index}`}
           triggerTitle={referentFullName || "(Not Specified)"}
           triggerDescription={company}
           key={group[0]?.id}
@@ -107,7 +109,12 @@ const CvBuilderReferencesSection = ({
       <div>
         {fields.length > 0 ? (
           <div className="grid gap-2">
-            {renderGroupItems()}
+            <SectionFieldsDndContext
+              groupedFields={groupedFields}
+              indexPrefix={FIELDS_DND_INDEX_PREFIXES.REFERENCES}
+            >
+              {renderGroupItems()}
+            </SectionFieldsDndContext>
             <AddSectionItemButton
               sectionId={section?.id as number}
               templateOption={INTERNAL_SECTION_TAGS.REFERENCES}
