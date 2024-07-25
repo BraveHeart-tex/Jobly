@@ -2,6 +2,7 @@ import AddSectionItemButton from "@/app/home/employee/tools/_components/AddSecti
 import CollapsibleSectionItemContainer from "@/app/home/employee/tools/_components/CollapsibleSectionItemContainer";
 import CvBuilderSkillLevelSelector from "@/app/home/employee/tools/_components/CvBuilderSkillLevelSelector";
 import DocumentBuilderInput from "@/app/home/employee/tools/_components/DocumentBuilderInput";
+import DraggableSectionContainer from "@/app/home/employee/tools/_components/DraggableSectionContainer";
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
 import { useRemoveFields } from "@/app/home/employee/tools/_hooks/useRemoveFields";
 import { Label } from "@/components/ui/label";
@@ -87,7 +88,7 @@ const CvBuilderSkillsSection = () => {
   };
 
   return (
-    <div className="grid gap-2">
+    <DraggableSectionContainer sectionId={section.id}>
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
@@ -129,7 +130,7 @@ const CvBuilderSkillsSection = () => {
           </div>
         )}
       </div>
-    </div>
+    </DraggableSectionContainer>
   );
 };
 

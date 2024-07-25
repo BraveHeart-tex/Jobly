@@ -20,6 +20,8 @@ const CvBuilderPersonalDetailsSection = () => {
     state.fields.filter((field) => field.sectionId === section?.id),
   );
 
+  if (!section) return null;
+
   return (
     <>
       <EditableSectionTitle section={section} />

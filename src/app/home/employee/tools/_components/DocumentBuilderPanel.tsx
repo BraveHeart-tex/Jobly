@@ -5,6 +5,7 @@ import CvBuilderSkillsSection from "@/app/home/employee/tools/_components/CvBuil
 import CvBuilderWebsitesAndLinks from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
 import DocumentBuilderHeader from "@/app/home/employee/tools/_components/DocumentBuilderHeader";
 import DocumentBuilderViewToggle from "@/app/home/employee/tools/_components/DocumentBuilderViewToggle";
+import SectionsDndContext from "@/app/home/employee/tools/_components/SectionsDndContext";
 import { useDocumentBuilderSearchParams } from "@/app/home/employee/tools/_hooks/useDocumentBuilderSearchParams";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -120,15 +121,17 @@ const DocumentBuilderPanel = () => {
         <DocumentBuilderViewToggle />
       </div>
       <div className="grid gap-6 max-w-screen-2xl mx-auto">
-        {sections
-          .sort((a, b) => a.displayOrder - b.displayOrder)
-          .map((section) => {
-            return (
-              <div key={section.id} className="grid gap-2">
-                {renderSection(section)}
-              </div>
-            );
-          })}
+        <SectionsDndContext>
+          {sections
+            .sort((a, b) => a.displayOrder - b.displayOrder)
+            .map((section) => {
+              return (
+                <div key={section.id} className="grid gap-2">
+                  {renderSection(section)}
+                </div>
+              );
+            })}
+        </SectionsDndContext>
       </div>
       <CvBuilderCustomSectionOptions />
     </div>

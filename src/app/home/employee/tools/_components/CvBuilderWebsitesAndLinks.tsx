@@ -1,6 +1,7 @@
 import AddSectionItemButton from "@/app/home/employee/tools/_components/AddSectionItemButton";
 import CollapsibleSectionItemContainer from "@/app/home/employee/tools/_components/CollapsibleSectionItemContainer";
 import DocumentBuilderInput from "@/app/home/employee/tools/_components/DocumentBuilderInput";
+import DraggableSectionContainer from "@/app/home/employee/tools/_components/DraggableSectionContainer";
 import EditableSectionTitle from "@/app/home/employee/tools/_components/EditableSectionTitle";
 import { useRemoveFields } from "@/app/home/employee/tools/_hooks/useRemoveFields";
 import {
@@ -71,7 +72,7 @@ const CvBuilderWebsitesAndLinks = () => {
   };
 
   return (
-    <div className="grid gap-2">
+    <DraggableSectionContainer sectionId={section.id}>
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
@@ -107,7 +108,7 @@ const CvBuilderWebsitesAndLinks = () => {
           </div>
         )}
       </div>
-    </div>
+    </DraggableSectionContainer>
   );
 };
 

@@ -1,3 +1,4 @@
+import DraggableSectionContainer from "@/app/home/employee/tools/_components/DraggableSectionContainer";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -89,7 +90,7 @@ const CvBuilderReferencesSection = ({
   };
 
   return (
-    <div className="grid gap-2">
+    <DraggableSectionContainer sectionId={section.id} className="grid gap-2">
       <div className="grid gap-2">
         <EditableSectionTitle section={section} />
         <div className="mt-2 flex items-center gap-2">
@@ -131,7 +132,7 @@ const CvBuilderReferencesSection = ({
           </div>
         )}
       </div>
-    </div>
+    </DraggableSectionContainer>
   );
 };
 export default CvBuilderReferencesSection;
