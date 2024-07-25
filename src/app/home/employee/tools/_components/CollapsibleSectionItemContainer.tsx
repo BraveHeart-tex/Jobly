@@ -34,7 +34,7 @@ import {
 } from "lucide-react";
 import { GripVertical } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMedia } from "react-use";
 
 type CollapsibleSectionItemContainerProps = {
@@ -67,13 +67,7 @@ const CollapsibleSectionItemContainer = ({
 
   const shouldShowDeleteButton =
     onDeleteItemClick && !isDragging && !isOver && !isSorting;
-  const shouldShowDragButton = !open && !isDragging && !isOver && !isSorting;
-
-  useEffect(() => {
-    if ((isDragging || isOver || isSorting) && open) {
-      setOpen(false);
-    }
-  }, [isDragging, isOver, isSorting, open]);
+  const shouldShowDragButton = !isDragging && !isOver && !isSorting;
 
   return (
     <div
@@ -81,7 +75,7 @@ const CollapsibleSectionItemContainer = ({
       ref={setNodeRef}
       style={{
         transition,
-        transform: CSS.Transform.toString(transform),
+        transform: CSS.Translate.toString(transform),
       }}
       {...attributes}
     >

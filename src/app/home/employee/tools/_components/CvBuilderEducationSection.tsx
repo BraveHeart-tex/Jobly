@@ -1,3 +1,4 @@
+import DraggableSectionContainer from "@/app/home/employee/tools/_components/DraggableSectionContainer";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
@@ -110,7 +111,7 @@ const CvBuilderEducationSection = () => {
   };
 
   return (
-    <div className="grid gap-2">
+    <DraggableSectionContainer sectionId={section.id}>
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
@@ -142,7 +143,7 @@ const CvBuilderEducationSection = () => {
           </div>
         )}
       </div>
-    </div>
+    </DraggableSectionContainer>
   );
 };
 
