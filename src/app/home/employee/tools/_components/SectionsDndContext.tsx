@@ -1,10 +1,20 @@
 "use client";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { Section } from "@/server/db/schema";
-import { DndContext, type DragEndEvent, closestCenter } from "@dnd-kit/core";
+import {
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
+  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import type { ReactNode } from "react";
@@ -19,6 +29,14 @@ const SectionsDndContext = ({ children }: SectionsDndContextProps) => {
 
   const getSectionIndexById = (id: Section["id"]) =>
     sections.findIndex((section) => section.id === id);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -40,7 +58,11 @@ const SectionsDndContext = ({ children }: SectionsDndContextProps) => {
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <SortableContext items={sections} strategy={verticalListSortingStrategy}>
         {children}
       </SortableContext>
