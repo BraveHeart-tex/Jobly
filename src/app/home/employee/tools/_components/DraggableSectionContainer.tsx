@@ -45,7 +45,7 @@ const DraggableSectionContainer = ({
         transform: CSS.Translate.toString(transform),
       }}
       {...attributes}
-      className={cn("grid gap-2 relative group", className)}
+      className={cn("grid gap-2 relative group/container", className)}
     >
       {children}
       {shouldShowDragButton ? (
@@ -56,7 +56,7 @@ const DraggableSectionContainer = ({
                 variant="ghost"
                 size="icon"
                 {...listeners}
-                className="cursor-grab lg:pointer-events-none lg:group-hover:pointer-events-auto lg:opacity-0 lg:group-hover:opacity-100 absolute -left-7 lg:-left-8 top-[19px] z-10 w-8 h-8 text-muted-foreground transition-all"
+                className="cursor-grab lg:pointer-events-none lg:group-hover/container:pointer-events-auto lg:opacity-0 lg:group-hover/container:opacity-100 absolute -left-7 lg:-left-8 top-1 z-10 w-8 h-8 text-muted-foreground transition-all"
               >
                 <GripVertical />
               </Button>
