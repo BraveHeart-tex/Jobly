@@ -25,8 +25,10 @@ const CvBuilderSkillsSection = () => {
       (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
     ),
   );
-  const sectionMetada = section?.metadata ? JSON.parse(section?.metadata) : {};
-  const showExperienceLevel = sectionMetada?.showExperienceLevel || false;
+  const sectionMetadata = section?.metadata
+    ? JSON.parse(section?.metadata)
+    : {};
+  const showExperienceLevel = sectionMetadata?.showExperienceLevel || false;
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field.sectionId === section?.id),
   );
@@ -81,14 +83,14 @@ const CvBuilderSkillsSection = () => {
       sectionId: section?.id as number,
       key: "metadata",
       value: JSON.stringify({
-        ...sectionMetada,
+        ...sectionMetadata,
         showExperienceLevel: !checked,
       }),
     });
   };
 
   return (
-    <DraggableSectionContainer sectionId={section.id}>
+    <DraggableSectionContainer sectionId={section?.id as number}>
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">
