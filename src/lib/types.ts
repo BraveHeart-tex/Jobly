@@ -13,7 +13,7 @@ import type {
   MySql2QueryResultHKT,
 } from "drizzle-orm/mysql2";
 import type { LucideIcon } from "lucide-react";
-import type { EmployeeRoute, EmployerRoute } from "./routes";
+import type { CandidateRoute, EmployerRoute } from "./routes";
 
 export type NavigationMenuItem = {
   triggerLabel: string;
@@ -22,7 +22,7 @@ export type NavigationMenuItem = {
 
 export type NavigationMenuItemLink = {
   title: string;
-  href: EmployeeRoute | EmployerRoute;
+  href: CandidateRoute | EmployerRoute;
   description: string;
   icon: LucideIcon;
 };

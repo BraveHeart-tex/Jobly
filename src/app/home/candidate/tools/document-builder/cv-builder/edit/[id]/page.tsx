@@ -1,15 +1,15 @@
+import ClientOnly from "@/app/home/candidate/tools/_components/ClientOnly";
+import DocumentBuilderPanel from "@/app/home/candidate/tools/_components/DocumentBuilderPanel";
+import DocumentBuilderPreview from "@/app/home/candidate/tools/_components/DocumentBuilderPreview";
+import DocumentInitializer from "@/app/home/candidate/tools/_components/DocumentInitializer";
 import { buttonVariants } from "@/components/ui/button";
 import { isErrorObject } from "@/lib/guards";
-import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import DocumentBuilderPanel from "@/app/home/candidate/tools/_components/DocumentBuilderPanel";
-import DocumentBuilderPreview from "@/app/home/candidate/tools/_components/DocumentBuilderPreview";
-import DocumentInitializer from "@/app/home/candidate/tools/_components/DocumentInitializer";
-import ClientOnly from "@/app/home/candidate/tools/_components/ClientOnly";
 
 const EditCvPage = async ({ params }: { params: { id: string } }) => {
   const documentResponse = await api.document.getDocumentDetails({
@@ -35,7 +35,7 @@ const EditCvPage = async ({ params }: { params: { id: string } }) => {
             {documentResponse.error}
           </p>
           <Link
-            href={EMPLOYEE_ROUTES.DOCUMENT_BUILDER}
+            href={CANDIDATE_ROUTES.DOCUMENT_BUILDER}
             className={cn(
               buttonVariants({
                 variant: "default",

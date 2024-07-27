@@ -27,46 +27,46 @@ import {
   UserIcon,
   UsersIcon,
 } from "lucide-react";
-import { EMPLOYEE_ROUTES, EMPLOYER_ROUTES } from "./routes";
+import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "./routes";
 
-export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
+export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
   {
     triggerLabel: "Jobs",
     linkItems: [
       {
         title: "Find Jobs",
         description: "Search and explore job opportunities.",
-        href: EMPLOYEE_ROUTES.JOBS,
+        href: CANDIDATE_ROUTES.JOBS,
         icon: SearchIcon,
       },
       {
         title: "Recommended Jobs",
         description: "View jobs tailored to your profile and preferences.",
-        href: EMPLOYEE_ROUTES.RECOMENDED_JOBS,
+        href: CANDIDATE_ROUTES.RECOMMENDED_JOBS,
         icon: ThumbsUpIcon,
       },
       {
         title: "View History",
         description: "See the job posting you looked at.",
-        href: EMPLOYEE_ROUTES.JOB_HISTORY,
+        href: CANDIDATE_ROUTES.JOB_HISTORY,
         icon: HistoryIcon,
       },
       {
         title: "Saved Jobs",
         description: "Access your saved job listings.",
-        href: EMPLOYEE_ROUTES.BOOKMARKED_JOBS,
+        href: CANDIDATE_ROUTES.BOOKMARKED_JOBS,
         icon: BookmarkIcon,
       },
       {
         title: "Job Alerts",
         description: "Manage your job alert settings.",
-        href: EMPLOYEE_ROUTES.JOB_ALERTS,
+        href: CANDIDATE_ROUTES.JOB_ALERTS,
         icon: BellIcon,
       },
       {
         title: "Job Tracker",
         description: "Track and organiza your job applications and interviews.",
-        href: EMPLOYEE_ROUTES.JOB_TRACKER,
+        href: CANDIDATE_ROUTES.JOB_TRACKER,
         icon: NotebookPenIcon,
       },
     ],
@@ -77,19 +77,19 @@ export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       {
         title: "My Applications",
         description: "Track your submitted job applications.",
-        href: EMPLOYEE_ROUTES.APPLICATIONS,
+        href: CANDIDATE_ROUTES.APPLICATIONS,
         icon: FileTextIcon,
       },
       {
         title: "Draft Applications",
         description: "Complete your unfinished job applications.",
-        href: EMPLOYEE_ROUTES.UNFINISHED_APPLICATIONS,
+        href: CANDIDATE_ROUTES.UNFINISHED_APPLICATIONS,
         icon: FilePen,
       },
       {
         title: "Interviews",
         description: "Manage your upcoming interviews.",
-        href: EMPLOYEE_ROUTES.INTERVIEWS,
+        href: CANDIDATE_ROUTES.INTERVIEWS,
         icon: CalendarIcon,
       },
     ],
@@ -100,25 +100,25 @@ export const EMPLOYEE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       {
         title: "Edit Profile",
         description: "Update your professional profile.",
-        href: EMPLOYEE_ROUTES.EDIT_PROFILE,
+        href: CANDIDATE_ROUTES.EDIT_PROFILE,
         icon: UserIcon,
       },
 
       {
         title: "Privacy Settings",
         description: "Manage your account privacy and visibility.",
-        href: EMPLOYEE_ROUTES.PRIVACY_SETTINGS,
+        href: CANDIDATE_ROUTES.PRIVACY_SETTINGS,
         icon: LockIcon,
       },
       {
         title: "Document Builder",
-        href: EMPLOYEE_ROUTES.DOCUMENT_BUILDER,
+        href: CANDIDATE_ROUTES.DOCUMENT_BUILDER,
         description: "Visually craft your CV or cover letter within minutes.",
         icon: PencilRuler,
       },
       {
         title: "My Documents",
-        href: EMPLOYEE_ROUTES.MY_DOCUMENTS,
+        href: CANDIDATE_ROUTES.MY_DOCUMENTS,
         description: "Manage your uploaded documents.",
         icon: FilesIcon,
       },
@@ -156,7 +156,7 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
       {
         title: "All Applications",
         description: "View all received job applications.",
-        href: EMPLOYER_ROUTES.ALL_APLICATIONS,
+        href: EMPLOYER_ROUTES.ALL_APPLICATIONS,
         icon: Inbox,
       },
       {
@@ -244,12 +244,12 @@ export const useNavigationLinks = () => {
   const userRole = useCurrentUserStore((state) => state?.user?.role);
 
   if (userRole === "candidate") {
-    return EMPLOYEE_NAVIGATION_LINKS;
+    return CANDIDATE_NAVIGATION_LINKS;
   }
 
   if (userRole === "employer") {
     return EMPLOYER_NAVIGATION_LINKS;
   }
 
-  return EMPLOYEE_NAVIGATION_LINKS;
+  return CANDIDATE_NAVIGATION_LINKS;
 };

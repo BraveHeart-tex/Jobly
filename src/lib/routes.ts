@@ -7,27 +7,27 @@ export const SHARED_ROUTES = {
   HOME: "/home",
 } as const;
 
-const BASE_EMPLOYEE_ROUTE = "/home/candidate";
+const BASE_CANDIDATE_ROUTE = "/home/candidate";
 const BASE_EMPLOYER_ROUTE = "/home/employer";
 
-export const EMPLOYEE_ROUTES = {
-  JOBS: `${BASE_EMPLOYEE_ROUTE}/jobs`,
-  RECOMENDED_JOBS: `${BASE_EMPLOYEE_ROUTE}/jobs/?recommended=true`,
-  JOB_ALERTS: `${BASE_EMPLOYEE_ROUTE}/jobs/alerts`,
-  JOB_HISTORY: `${BASE_EMPLOYEE_ROUTE}/jobs/?viewed=true`,
-  JOB_TRACKER: `${BASE_EMPLOYEE_ROUTE}/jobs/job-tracker`,
-  BOOKMARKED_JOBS: `${BASE_EMPLOYEE_ROUTE}/jobs/?bookmarked=true`,
+export const CANDIDATE_ROUTES = {
+  JOBS: `${BASE_CANDIDATE_ROUTE}/jobs`,
+  RECOMMENDED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobs/?recommended=true`,
+  JOB_ALERTS: `${BASE_CANDIDATE_ROUTE}/jobs/alerts`,
+  JOB_HISTORY: `${BASE_CANDIDATE_ROUTE}/jobs/?viewed=true`,
+  JOB_TRACKER: `${BASE_CANDIDATE_ROUTE}/jobs/job-tracker`,
+  BOOKMARKED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobs/?bookmarked=true`,
 
-  APPLICATIONS: `${BASE_EMPLOYEE_ROUTE}/applications`,
-  UNFINISHED_APPLICATIONS: `${BASE_EMPLOYEE_ROUTE}/applications?unfinished=true`,
+  APPLICATIONS: `${BASE_CANDIDATE_ROUTE}/applications`,
+  UNFINISHED_APPLICATIONS: `${BASE_CANDIDATE_ROUTE}/applications?unfinished=true`,
 
-  INTERVIEWS: `${BASE_EMPLOYEE_ROUTE}/interviews`,
+  INTERVIEWS: `${BASE_CANDIDATE_ROUTE}/interviews`,
 
-  EDIT_PROFILE: `${BASE_EMPLOYEE_ROUTE}/profile/edit`,
-  PRIVACY_SETTINGS: `${BASE_EMPLOYEE_ROUTE}/profile/privacy-settings`,
-  MY_DOCUMENTS: `${BASE_EMPLOYEE_ROUTE}/profile/my-documents`,
+  EDIT_PROFILE: `${BASE_CANDIDATE_ROUTE}/profile/edit`,
+  PRIVACY_SETTINGS: `${BASE_CANDIDATE_ROUTE}/profile/privacy-settings`,
+  MY_DOCUMENTS: `${BASE_CANDIDATE_ROUTE}/profile/my-documents`,
 
-  DOCUMENT_BUILDER: `${BASE_EMPLOYEE_ROUTE}/tools/document-builder`,
+  DOCUMENT_BUILDER: `${BASE_CANDIDATE_ROUTE}/tools/document-builder`,
 } as const;
 
 export const EMPLOYER_ROUTES = {
@@ -38,7 +38,7 @@ export const EMPLOYER_ROUTES = {
   EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/expired`,
 
   // Candidates
-  ALL_APLICATIONS: `${BASE_EMPLOYER_ROUTE}/candidates/applications`,
+  ALL_APPLICATIONS: `${BASE_EMPLOYER_ROUTE}/candidates/applications`,
   CANDIDATE_PIPELINE: `${BASE_EMPLOYER_ROUTE}/candidates/pipeline`,
   INTERVIEWS: `${BASE_EMPLOYER_ROUTE}/candidates/interviews`,
   TALENT_POOL: `${BASE_EMPLOYER_ROUTE}/candidates/talent-pool`,
@@ -57,5 +57,5 @@ export const EMPLOYER_ROUTES = {
   DASHBOARD: `${BASE_EMPLOYER_ROUTE}/dashboard`,
 } as const;
 
-export type EmployeeRoute = InferValueTypeFromConst<typeof EMPLOYEE_ROUTES>;
+export type CandidateRoute = InferValueTypeFromConst<typeof CANDIDATE_ROUTES>;
 export type EmployerRoute = InferValueTypeFromConst<typeof EMPLOYER_ROUTES>;

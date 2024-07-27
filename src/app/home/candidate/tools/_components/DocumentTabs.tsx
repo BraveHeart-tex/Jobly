@@ -2,7 +2,7 @@
 import { useCreateDocument } from "@/app/home/candidate/tools/_hooks/useCreateDocument";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import { CANDIDATE_ROUTES } from "@/lib/routes";
 import type { InferValueTypeFromConst } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/server/db/schema";
@@ -21,8 +21,8 @@ const DOCUMENT_TAB_VALUES = {
 } as const;
 
 const DOCUMENT_ROUTE_MAP = {
-  [DOCUMENT_TAB_VALUES.RESUME]: `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/cv-builder/edit`,
-  [DOCUMENT_TAB_VALUES.COVER_LETTER]: `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/cover-letters/edit`,
+  [DOCUMENT_TAB_VALUES.RESUME]: `${CANDIDATE_ROUTES.DOCUMENT_BUILDER}/cv-builder/edit`,
+  [DOCUMENT_TAB_VALUES.COVER_LETTER]: `${CANDIDATE_ROUTES.DOCUMENT_BUILDER}/cover-letters/edit`,
 };
 
 type DocumentTabValue = InferValueTypeFromConst<typeof DOCUMENT_TAB_VALUES>;

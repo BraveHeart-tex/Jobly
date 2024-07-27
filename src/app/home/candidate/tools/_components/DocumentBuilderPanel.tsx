@@ -18,7 +18,7 @@ import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import type { Section } from "@/server/db/schema";
@@ -99,7 +99,7 @@ const DocumentBuilderPanel = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              href={EMPLOYEE_ROUTES.DOCUMENT_BUILDER}
+              href={CANDIDATE_ROUTES.DOCUMENT_BUILDER}
               className={cn(
                 buttonVariants({
                   variant: "outline",

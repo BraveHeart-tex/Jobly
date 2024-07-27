@@ -12,7 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { EMPLOYEE_ROUTES } from "@/lib/routes";
+import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/server/db/schema";
 import { format } from "date-fns";
@@ -35,7 +35,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const updatedAtDate = new Date(item.updatedAt as string);
 
   const goToEditPage = () => {
-    const basePath = `${EMPLOYEE_ROUTES.DOCUMENT_BUILDER}/${item.type === "resume" ? "cv-builder" : "cover-letters"}/edit`;
+    const basePath = `${CANDIDATE_ROUTES.DOCUMENT_BUILDER}/${item.type === "resume" ? "cv-builder" : "cover-letters"}/edit`;
     router.push(`${basePath}/${item.id}`);
   };
 
