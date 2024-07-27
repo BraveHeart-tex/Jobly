@@ -11,13 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
+import type { User } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import type { RouterOutputs } from "router-types";
 import { toast } from "sonner";
 
 type SignUpFormProps = {
-  portalType?: "employer" | "employee";
+  portalType?: User["role"];
 };
 
 const SignUpForm = ({ portalType }: SignUpFormProps) => {
@@ -62,15 +63,12 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
     signUpUser(
       {
         ...values,
-        role: portalType ?? "employee",
+        role: portalType ?? "candidate",
       },
       {
         onSettled: (data) => {
           if (!data) return;
           onSettled(data);
-        },
-        onError: (error) => {
-          toast.error(error.message);
         },
       },
     );
@@ -144,7 +142,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
           <Button type="submit" className="w-full" disabled={isPending}>
             Sign Up
           </Button>
-          {portalType === "employee" && (
+          {portalType === "candidate" && (
             <Button
               type="button"
               variant="outline"

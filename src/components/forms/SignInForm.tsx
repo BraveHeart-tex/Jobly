@@ -11,13 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { type SignInSchema, signInSchema } from "@/schemas/signInSchema";
+import type { User } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import type { RouterOutputs } from "router-types";
 import { toast } from "sonner";
 
 type SignInFormProps = {
-  portalType?: "employer" | "employee";
+  portalType?: User["role"];
 };
 
 const SignInForm = ({ portalType }: SignInFormProps) => {
@@ -89,7 +90,7 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
           <Button type="submit" className="w-full" disabled={isPending}>
             Sign In
           </Button>
-          {portalType === "employee" && (
+          {portalType === "candidate" && (
             <Button
               type="button"
               variant="outline"

@@ -2,13 +2,14 @@ import SignUpForm from "@/components/forms/SignUpForm";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { APP_NAME, contentByPortalType } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
-import { generateRandomNumber } from "@/lib/utils";
+import { capitalizeWord, generateRandomNumber } from "@/lib/utils";
+import type { User } from "@/server/db/schema";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type SignUpPageSearchParams = {
-  portalType?: "employer" | "employee";
+  portalType?: User["role"];
 };
 
 type SignUpPageProps = {
@@ -22,11 +23,10 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
     redirect(SHARED_ROUTES.HOME);
   }
 
-  const portalType = searchParams.portalType ?? "employee";
+  const portalType = searchParams.portalType ?? "candidate";
   const contentIndex = generateRandomNumber(1, 4);
-  const supportiveHeading = contentByPortalType[portalType][
-    contentIndex - 1
-  ] as string;
+  const supportiveHeading =
+    contentByPortalType[portalType][contentIndex - 1] || "";
 
   return (
     <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
@@ -55,10 +55,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
               />
             </div>
             <h1 className="text-3xl font-bold">
-              Sign Up to {APP_NAME}{" "}
-              {portalType === "employer" && (
-                <span className="text-primary">for employers</span>
-              )}
+              {APP_NAME} - {capitalizeWord(portalType)} Sign Up
             </h1>
           </div>
           <SignUpForm portalType={portalType} />

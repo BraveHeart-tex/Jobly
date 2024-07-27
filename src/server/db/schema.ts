@@ -28,7 +28,7 @@ export const user = mysqlTable(
     firstName: varchar("firstName", { length: 255 }).notNull(),
     lastName: varchar("lastName", { length: 255 }).notNull(),
     hashedPassword: varchar("hashedPassword", { length: 255 }).notNull(),
-    role: mysqlEnum("role", ["employer", "employee"]).notNull(),
+    role: mysqlEnum("role", ["employer", "candidate"]).notNull(),
   },
   (table) => {
     return {

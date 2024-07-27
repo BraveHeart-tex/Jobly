@@ -6,10 +6,11 @@ import { APP_NAME } from "@/lib/constants";
 import { TRPCReactProvider } from "@/trpc/react";
 import { GeistSans } from "geist/font/sans";
 import type React from "react";
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: APP_NAME,
-  description: `${APP_NAME} is a modern job portal that is meant for both employers and employees. Streamline your job/talent search with ${APP_NAME}.`,
+  description: `${APP_NAME} is a modern job portal that is meant for both employers and candidates. Streamline your job/talent search with ${APP_NAME}.`,
 };
 
 export default function RootLayout({
@@ -22,6 +23,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Toaster richColors closeButton />
             <ConfirmDialog />
+            <Navbar />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>

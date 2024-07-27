@@ -1,9 +1,10 @@
+import type { User } from "@/server/db/schema";
 import type { InferValueTypeFromConst } from "./types";
 
-export const contentByPortalType = {
-  employee: [
+export const contentByPortalType: Record<User["role"], string[]> = {
+  candidate: [
     "Find your dream job with just one click",
-    "Discover endless opportunities align with your passions",
+    "Discover endless opportunities aligned with your passions",
     "Land interviews and secure your dream job",
   ],
   employer: [

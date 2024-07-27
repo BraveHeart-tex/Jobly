@@ -1,13 +1,13 @@
-import { COURSES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCoursesSection";
-import { CUSTOM_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderCustomSection";
-import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEducationSection";
-import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderEmploymentHistorySection";
-import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderExtraCurricularSection";
-import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderInternshipsSection";
-import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderLanguagesSection";
-import { REFERENCES_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderReferencesSection";
-import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderSkillsSection";
-import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/employee/tools/_components/CvBuilderWebsitesAndLinks";
+import { COURSES_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderCoursesSection";
+import { CUSTOM_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderCustomSection";
+import { EDUCATION_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderEducationSection";
+import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderEmploymentHistorySection";
+import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderExtraCurricularSection";
+import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderInternshipsSection";
+import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderLanguagesSection";
+import { REFERENCES_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderReferencesSection";
+import { SKILL_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderSkillsSection";
+import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/app/home/candidate/tools/_components/CvBuilderWebsitesAndLinks";
 import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,

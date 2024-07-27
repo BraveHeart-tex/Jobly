@@ -28,6 +28,9 @@ export const getAvatarPlaceholder = (text: string): string => {
   return initials.join("").slice(0, 2);
 };
 
+export const capitalizeWord = (word: string) =>
+  word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+
 export const generateReadableEnumLabel = (
   enumValue: string | null,
   separator = "-",
@@ -35,9 +38,7 @@ export const generateReadableEnumLabel = (
   if (!enumValue) return "";
   const words = enumValue.split(separator);
 
-  const capitalizedWords = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
-  );
+  const capitalizedWords = words.map(capitalizeWord);
 
   return capitalizedWords.join(" ");
 };
@@ -107,7 +108,7 @@ export const generateEditorModules = (config: ToolbarConfig): StringMap => {
 };
 
 export const matchPathnameToEditPath = (path: string): boolean => {
-  const pattern = /^\/home\/employee\/tools\/.*\/edit\/\d+$/;
+  const pattern = /^\/home\/candidate\/tools\/.*\/edit\/\d+$/;
   return pattern.test(path);
 };
 

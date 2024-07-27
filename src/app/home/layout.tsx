@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import type React from "react";
 
 type AppLayoutProps = {
@@ -6,12 +5,7 @@ type AppLayoutProps = {
 };
 
 const AppLayout = ({ children }: AppLayoutProps) => {
-  return (
-    <main>
-      <Navbar />
-      {children}
-    </main>
-  );
+  return <main>{children}</main>;
 };
 
 export default AppLayout;

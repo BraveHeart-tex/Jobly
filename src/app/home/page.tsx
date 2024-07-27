@@ -1,7 +1,7 @@
 import { validateRequestByRole } from "@/lib/auth/actions";
 
 const AppHomePage = async () => {
-  await validateRequestByRole(["employee", "employer"]);
+  await validateRequestByRole(["candidate", "employer"]);
 
   return <div>AppHomePage</div>;
 };

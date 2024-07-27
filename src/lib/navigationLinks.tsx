@@ -243,7 +243,7 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
 export const useNavigationLinks = () => {
   const userRole = useCurrentUserStore((state) => state?.user?.role);
 
-  if (userRole === "employee") {
+  if (userRole === "candidate") {
     return EMPLOYEE_NAVIGATION_LINKS;
   }
 
@@ -251,5 +251,5 @@ export const useNavigationLinks = () => {
     return EMPLOYER_NAVIGATION_LINKS;
   }
 
-  return [];
+  return EMPLOYEE_NAVIGATION_LINKS;
 };

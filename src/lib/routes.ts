@@ -7,7 +7,7 @@ export const SHARED_ROUTES = {
   HOME: "/home",
 } as const;
 
-const BASE_EMPLOYEE_ROUTE = "/home/employee";
+const BASE_EMPLOYEE_ROUTE = "/home/candidate";
 const BASE_EMPLOYER_ROUTE = "/home/employer";
 
 export const EMPLOYEE_ROUTES = {
