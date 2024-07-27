@@ -571,3 +571,24 @@ const makeCustomSectionData = (transformedData: TransformedResumeData) => {
 
   return customSections;
 };
+
+export const preparePdfData = (data: DocumentBuilderConfig) => {
+  const { document, sections, fields, fieldValues } = data;
+  const resumeTemplateData = makeResumeTemplateData({
+    document,
+    sections,
+    fields,
+    fieldValues,
+  }) as unknown as MakeResumeDataReturn;
+  const customSections = makeCustomResumeSectionsData({
+    document,
+    sections,
+    fields,
+    fieldValues,
+  });
+
+  return {
+    ...resumeTemplateData,
+    ...customSections,
+  };
+};

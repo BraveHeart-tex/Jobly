@@ -1,11 +1,7 @@
 "use client";
 import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
 import PDFViewer from "@/components/pdfs/PDFViewer";
-import {
-  type MakeResumeDataReturn,
-  makeCustomResumeSectionsData,
-  makeResumeTemplateData,
-} from "@/components/pdfs/pdf.utils";
+import { preparePdfData } from "@/components/pdfs/pdf.utils";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
@@ -18,18 +14,6 @@ const DocumentBuilderPreviewContent = () => {
   const { online, previous } = useNetworkState();
   const userLostConnection = !online && previous;
   const { document, sections, fields, fieldValues } = useDocumentBuilderStore();
-  const resumeTemplateData = makeResumeTemplateData({
-    document,
-    sections,
-    fields,
-    fieldValues,
-  }) as unknown as MakeResumeDataReturn;
-  const customSections = makeCustomResumeSectionsData({
-    document,
-    sections,
-    fields,
-    fieldValues,
-  });
 
   useEffect(() => {
     const updatePdfProps = () => {
@@ -48,10 +32,12 @@ const DocumentBuilderPreviewContent = () => {
     <div className="rounded-md h-full w-full overflow-auto hide-scrollbar">
       <PDFViewer key={reRender}>
         <LondonTemplate
-          data={{
-            ...resumeTemplateData,
-            ...customSections,
-          }}
+          data={preparePdfData({
+            document,
+            sections,
+            fields,
+            fieldValues,
+          })}
         />
       </PDFViewer>
       {userLostConnection ? (

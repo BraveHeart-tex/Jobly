@@ -21,6 +21,12 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
+import { pdf } from "@react-pdf/renderer";
+import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
+import { isErrorObject } from "@/lib/guards";
+import { preparePdfData } from "@/components/pdfs/pdf.utils";
 
 type DocumentListItemProps = {
   item: Document;
@@ -32,6 +38,8 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const { handleDeleteDocument, isDeletingDocument } = useDeleteDocument();
   const { updateDocument } = useUpdateDocument();
   const router = useRouter();
+  const utils = api.useUtils();
+
   const updatedAtDate = new Date(item.updatedAt as string);
 
   const goToEditPage = () => {
@@ -39,19 +47,47 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
     router.push(`${basePath}/${item.id}`);
   };
 
+  const handleDownloadPDF = async () => {
+    const documentDataResponse = await utils.document.getDocumentDetails.fetch({
+      id: item.id,
+    });
+
+    if (isErrorObject(documentDataResponse)) {
+      return toast.error(documentDataResponse.error);
+    }
+
+    if (item.type === "resume") {
+      const blob = await pdf(
+        <LondonTemplate data={preparePdfData(documentDataResponse)} />,
+      ).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${item.title}.pdf`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+    } else {
+      toast.info(
+        "You can download only resumes as PDF at the moment. Coming soon...",
+      );
+    }
+  };
+
   const documentActions = [
     {
       label: "Download PDF",
       icon: <FileDown size={18} />,
-      onClick: () => {},
+      onClick: handleDownloadPDF,
     },
     {
       label: "Edit Document",
       icon: <FilePen size={18} />,
-      onClick: () => goToEditPage(),
+      onClick: goToEditPage,
     },
     {
       label: "Delete Document",
+      variant: "destructive" as const,
       icon: <Trash2 size={18} />,
       onClick: () => {
         handleDeleteDocument(item.id);
@@ -147,7 +183,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
                 <Button
                   key={action.label}
                   disabled={action.disabled}
-                  variant="ghost"
+                  variant={action.variant || "ghost"}
                   className="flex items-center justify-start w-full gap-2"
                   onClick={action.onClick}
                 >
