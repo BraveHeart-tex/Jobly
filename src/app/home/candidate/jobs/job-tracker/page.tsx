@@ -1,4 +1,6 @@
 import PageContainer from "@/components/PageContainer";
+import ClientOnly from "../../tools/_components/ClientOnly";
+import { KanbanBoard } from "@/components/jobTrackerBoard/JobTrackerBoard";
 
 const JobTrackerPage = () => {
   return (
@@ -13,6 +15,11 @@ const JobTrackerPage = () => {
           </p>
         </div>
       </PageContainer>
+      <div className="mt-8">
+        <ClientOnly>
+          <KanbanBoard />
+        </ClientOnly>
+      </div>
     </main>
   );
 };
