@@ -65,7 +65,7 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       },
       {
         title: "Job Tracker",
-        description: "Track and organiza your job applications and interviews.",
+        description: "Track and organize your job applications and interviews.",
         href: CANDIDATE_ROUTES.JOB_TRACKER,
         icon: NotebookPenIcon,
       },

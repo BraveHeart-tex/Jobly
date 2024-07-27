@@ -1,13 +1,14 @@
 import { validateRequestByRole } from "@/lib/auth/actions";
 import DocumentTabs from "../_components/DocumentTabs";
+import PageContainer from "@/components/PageContainer";
 
 const DocumentsPage = async () => {
   await validateRequestByRole(["candidate"]);
   return (
     <main>
-      <div className="mx-auto w-full max-w-screen-2xl mt-10 p-1">
+      <PageContainer>
         <DocumentTabs />
-      </div>
+      </PageContainer>
     </main>
   );
 };
