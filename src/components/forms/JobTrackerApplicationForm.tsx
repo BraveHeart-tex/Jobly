@@ -24,11 +24,78 @@ import {
   jobTrackerApplicationSchema,
 } from "@/schemas/jobTrackerApplicationSchema";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import { api } from "@/trpc/react";
+
+type JobTrackerApplicationFormProps = {
+  defaultValues?: Partial<JobTrackerApplicationSchema>;
+  onFormSubmit?: (values: JobTrackerApplicationSchema) => void;
+};
 
 const JobTrackerApplicationForm = ({
   defaultValues,
-}: { defaultValues?: Partial<JobTrackerApplicationSchema> }) => {
-  const userId = useCurrentUserStore((state) => state.user?.id);
+  onFormSubmit,
+}: JobTrackerApplicationFormProps) => {
+  const apiUtils = api.useUtils();
+  const { mutate: addJobTrackerApplication, isPending } =
+    api.jobTracker.addJobTrackerApplication.useMutation({
+      onMutate: async (variables) => {
+        await apiUtils.jobTracker.getJobTrackerApplications.cancel();
+
+        const previousData =
+          apiUtils.jobTracker.getJobTrackerApplications.getData();
+
+        apiUtils.jobTracker.getJobTrackerApplications.setData(
+          undefined,
+          (oldData) => {
+            if (!oldData) return oldData;
+            return [
+              ...oldData,
+              {
+                ...variables,
+                id: crypto.randomUUID() as unknown as number,
+                userId,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              },
+            ];
+          },
+        );
+
+        return { previousData };
+      },
+      onError: (_err, _newJob, context) => {
+        apiUtils.jobTracker.getJobTrackerApplications.setData(
+          undefined,
+          context?.previousData,
+        );
+      },
+      onSettled: (id) => {
+        apiUtils.jobTracker.getJobTrackerApplications.invalidate();
+
+        if (!id) return;
+
+        apiUtils.jobTracker.getJobTrackerApplications.setData(
+          undefined,
+          (oldData) => {
+            if (!oldData) return oldData;
+            // find the item with the string id
+            const optimisticItem = oldData.find(
+              (item) => typeof item.id === "string",
+            );
+
+            if (!optimisticItem) return oldData;
+
+            return oldData.map((oldItem) => {
+              if (oldItem.id === optimisticItem.id) {
+                oldItem.id = id;
+              }
+              return oldItem;
+            });
+          },
+        );
+      },
+    });
+  const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const form = useExtendedForm<JobTrackerApplicationSchema>(
     jobTrackerApplicationSchema,
     {
@@ -39,7 +106,16 @@ const JobTrackerApplicationForm = ({
     },
   );
 
-  const onSubmit = (values: JobTrackerApplicationSchema) => {};
+  const onSubmit = (values: JobTrackerApplicationSchema) => {
+    if (isPending) return;
+
+    addJobTrackerApplication(values, {
+      onSuccess: () => {
+        form.reset();
+        onFormSubmit?.(values);
+      },
+    });
+  };
 
   return (
     <Form {...form}>
@@ -142,11 +218,20 @@ const JobTrackerApplicationForm = ({
         />
         <div className="mt-4 flex items-center gap-1">
           <DialogClose asChild>
-            <Button type="button" variant="outline" className="w-full lg:w-max">
+            <Button
+              disabled={isPending}
+              type="button"
+              variant="outline"
+              className="w-full lg:w-max"
+            >
               Cancel
             </Button>
           </DialogClose>
-          <Button type="submit" className="w-full lg:w-max">
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="w-full lg:w-max"
+          >
             Submit
           </Button>
         </div>

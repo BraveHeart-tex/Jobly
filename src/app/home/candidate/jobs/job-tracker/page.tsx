@@ -1,8 +1,11 @@
 import PageContainer from "@/components/PageContainer";
 import ClientOnly from "../../tools/_components/ClientOnly";
-import { KanbanBoard } from "@/components/jobTrackerBoard/JobTrackerBoard";
+import { JobTrackerApplicationsBoard } from "@/components/jobTrackerBoard/JobTrackerBoard";
+import { api } from "@/trpc/server";
 
-const JobTrackerPage = () => {
+const JobTrackerPage = async () => {
+  const data = await api.jobTracker.getJobTrackerApplications();
+
   return (
     <main>
       <PageContainer>
@@ -15,9 +18,9 @@ const JobTrackerPage = () => {
           </p>
         </div>
       </PageContainer>
-      <div className="mt-8">
+      <div className="mt-4">
         <ClientOnly>
-          <KanbanBoard />
+          <JobTrackerApplicationsBoard data={data} />
         </ClientOnly>
       </div>
     </main>
