@@ -1,4 +1,5 @@
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
+import type { InferValueTypeFromConst } from "@/lib/types";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -7,6 +8,7 @@ import {
 } from "drizzle-orm";
 import {
   datetime,
+  decimal,
   index,
   int,
   mysqlEnum,
@@ -487,6 +489,24 @@ export const fieldValueRelations = relations(fieldValue, ({ one }) => ({
   }),
 }));
 
+export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
+  id: int("id").primaryKey().autoincrement().notNull(),
+  status: mysqlEnum("status", [
+    "shortlist",
+    "applied",
+    "interview",
+    "offer",
+    "rejected",
+  ]).notNull(),
+  userId: int("userId").references(() => user.id, { onDelete: "cascade" }),
+  jobTitle: varchar("jobTitle", { length: 512 }),
+  location: varchar("location", { length: 512 }),
+  url: text("url"),
+  salary: decimal("salary", { precision: 10, scale: 2 }),
+  notes: text("notes"),
+  jobDescription: text("jobDescription"),
+});
+
 export type User = InferSelectModel<typeof user>;
 
 export type JobInsertModel = InferInsertModel<typeof job>;
@@ -506,3 +526,14 @@ export type SectionFieldInsertModel = InferInsertModel<typeof field>;
 
 export type SectionFieldValue = InferSelectModel<typeof fieldValue>;
 export type SectionFieldValueInsertModel = InferInsertModel<typeof fieldValue>;
+
+export type JobTrackerApplication = InferSelectModel<
+  typeof jobTrackerApplications
+>;
+export type JobTrackerApplicationInsertModel = InferInsertModel<
+  typeof jobTrackerApplications
+>;
+
+export type JobTrackerApplicationStatus = InferValueTypeFromConst<
+  typeof jobTrackerApplications.status.enumValues
+>;
