@@ -1,5 +1,4 @@
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
-import type { InferValueTypeFromConst } from "@/lib/types";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -499,8 +498,8 @@ export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
     "rejected",
   ]).notNull(),
   userId: int("userId").references(() => user.id, { onDelete: "cascade" }),
-  jobTitle: varchar("jobTitle", { length: 512 }),
-  location: varchar("location", { length: 512 }),
+  jobTitle: varchar("jobTitle", { length: 512 }).notNull(),
+  location: varchar("location", { length: 512 }).notNull(),
   url: text("url"),
   salary: decimal("salary", { precision: 10, scale: 2 }),
   notes: text("notes"),
@@ -541,6 +540,4 @@ export type JobTrackerApplicationInsertModel = InferInsertModel<
   typeof jobTrackerApplications
 >;
 
-export type JobTrackerApplicationStatus = InferValueTypeFromConst<
-  typeof jobTrackerApplications.status.enumValues
->;
+export type JobTrackerApplicationStatus = JobTrackerApplication["status"];

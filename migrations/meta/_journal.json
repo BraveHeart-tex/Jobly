@@ -162,6 +162,13 @@
       "when": 1722164167084,
       "tag": "0022_bouncy_spyke",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1722184374787,
+      "tag": "0023_sturdy_white_tiger",
+      "breakpoints": true
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { useDndContext, type UniqueIdentifier } from "@dnd-kit/core";
+import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { type ReactNode, useMemo } from "react";
 import { cva } from "class-variance-authority";
@@ -7,9 +7,10 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { type Job, JobCard } from "./JobCard";
 import AddJobTrackerDrawer from "./AddJobTrackerDrawer";
+import type { JobTrackerApplicationStatus } from "@/server/db/schema";
 
 export interface Column {
-  id: UniqueIdentifier;
+  id: JobTrackerApplicationStatus;
   title: string;
 }
 
@@ -32,7 +33,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
   }, [tasks]);
 
   const { setNodeRef, transform, transition, isDragging } = useSortable({
-    id: column.id,
+    id: column.id as UniqueIdentifier,
     data: {
       type: "Column",
       column,
@@ -80,7 +81,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
         </CardContent>
       </ScrollArea>
       <CardFooter className="p-0 mt-auto">
-        <AddJobTrackerDrawer />
+        <AddJobTrackerDrawer status={column.id} />
       </CardFooter>
     </Card>
   );

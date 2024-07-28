@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -7,10 +8,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
+import JobTrackerApplicationForm from "../forms/JobTrackerApplicationForm";
+import type { JobTrackerApplicationStatus } from "@/server/db/schema";
 
-const AddJobTrackerDrawer = () => {
+type AddJobTrackerDrawerProps = {
+  status: JobTrackerApplicationStatus;
+};
+
+const AddJobTrackerDrawer = ({ status }: AddJobTrackerDrawerProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -22,14 +28,21 @@ const AddJobTrackerDrawer = () => {
           Add Job
         </Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="min-w-full lg:min-w-[600px]">
         <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
+          <SheetTitle>Add Job Application</SheetTitle>
           <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            Use the form below to add your job application to track it with
+            ease!
           </SheetDescription>
         </SheetHeader>
+        <div className="mt-8">
+          <JobTrackerApplicationForm
+            defaultValues={{
+              status,
+            }}
+          />
+        </div>
       </SheetContent>
     </Sheet>
   );
