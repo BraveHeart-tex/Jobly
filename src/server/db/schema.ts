@@ -505,6 +505,13 @@ export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
   salary: decimal("salary", { precision: 10, scale: 2 }),
   notes: text("notes"),
   jobDescription: text("jobDescription"),
+  createdAt: datetime("createdAt", { mode: "string" })
+    .default(sql`(now())`)
+    .notNull(),
+  updatedAt: datetime("updatedAt", { mode: "string" })
+    .default(sql`(now())`)
+    .notNull()
+    .$onUpdate(() => sql`(now())`),
 });
 
 export type User = InferSelectModel<typeof user>;
