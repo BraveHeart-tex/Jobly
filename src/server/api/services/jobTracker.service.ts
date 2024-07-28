@@ -1,7 +1,10 @@
 import type { JobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
 import { db } from "@/server/db";
-import { jobTrackerApplications } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import {
+  type JobTrackerApplication,
+  jobTrackerApplications,
+} from "@/server/db/schema";
+import { and, eq } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const getJobTrackerApplications = async (userId: User["id"]) => {
@@ -19,4 +22,21 @@ export const createJobTrackerApplication = async (
     .$returningId();
 
   return response?.id;
+};
+
+export const deleteJobTrackerApplication = async ({
+  id,
+  userId,
+}: {
+  id: JobTrackerApplication["id"];
+  userId: JobTrackerApplication["userId"];
+}) => {
+  return db
+    .delete(jobTrackerApplications)
+    .where(
+      and(
+        eq(jobTrackerApplications.id, id),
+        eq(jobTrackerApplications.userId, userId),
+      ),
+    );
 };

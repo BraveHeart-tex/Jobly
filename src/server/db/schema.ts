@@ -497,7 +497,9 @@ export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
     "offer",
     "rejected",
   ]).notNull(),
-  userId: int("userId").references(() => user.id, { onDelete: "cascade" }),
+  userId: int("userId")
+    .references(() => user.id, { onDelete: "cascade" })
+    .notNull(),
   jobTitle: varchar("jobTitle", { length: 512 }).notNull(),
   location: varchar("location", { length: 512 }).notNull(),
   url: text("url"),
