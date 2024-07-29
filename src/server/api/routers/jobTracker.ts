@@ -52,7 +52,7 @@ export const jobTrackerRouter = createTRPCRouter({
   updateStatusAndOrder: protectedProcedure
     .input(
       z.object({
-        data: createSelectSchema(jobTrackerApplications).partial().array(),
+        data: createInsertSchema(jobTrackerApplications).array(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

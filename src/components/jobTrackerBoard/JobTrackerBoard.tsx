@@ -1,11 +1,10 @@
 "use client";
+import { useUpdateDisplayOrderByStatus } from "@/components/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
 import {
   type ColumnId,
   useJobTrackerBoardStore,
 } from "@/lib/stores/useJobTrackerBoardStore";
-import { groupBy } from "@/lib/utils";
 import type { JobTrackerApplication } from "@/server/db/schema";
-import { api } from "@/trpc/react";
 import {
   type Announcements,
   DndContext,
@@ -34,8 +33,7 @@ type JobTrackerApplicationsBoardProps = {
 export function JobTrackerApplicationsBoard({
   data,
 }: JobTrackerApplicationsBoardProps) {
-  const { mutate: updateApplicationStatusAndDisplayOrders } =
-    api.jobTracker.updateStatusAndOrder.useMutation();
+  const { updateDisplayOrderByStatus } = useUpdateDisplayOrderByStatus();
   const columns = useJobTrackerBoardStore((state) => state.columns);
   const trackedApplications = useJobTrackerBoardStore(
     (state) => state.trackedApplications,
@@ -172,26 +170,7 @@ export function JobTrackerApplicationsBoard({
 
   const onDragEnd = () => {
     const tmpTrackedApplications = [...trackedApplications];
-    const groupedApplications = groupBy(tmpTrackedApplications, "status");
-
-    for (const status of Object.keys(groupedApplications)) {
-      const grouped = groupedApplications[status];
-      if (grouped !== undefined) {
-        groupedApplications[status] = grouped.map((item, index) => ({
-          ...item,
-          displayOrder: index + 1,
-        }));
-      }
-    }
-
-    const updatedTrackedApplications =
-      Object.values(groupedApplications).flat();
-
-    setTrackedApplications(updatedTrackedApplications);
-
-    updateApplicationStatusAndDisplayOrders({
-      data: updatedTrackedApplications,
-    });
+    updateDisplayOrderByStatus(tmpTrackedApplications);
   };
 
   function onDragStart(event: DragStartEvent) {

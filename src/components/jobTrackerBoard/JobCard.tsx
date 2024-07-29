@@ -1,5 +1,6 @@
 "use client";
 import JobTrackerApplicationForm from "@/components/forms/JobTrackerApplicationForm";
+import { useUpdateDisplayOrderByStatus } from "@/components/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -18,7 +19,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
-import { groupBy } from "@/lib/utils";
 import type { JobTrackerApplication } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useSortable } from "@dnd-kit/sortable";
@@ -42,8 +42,7 @@ export interface TaskDragData {
 }
 
 export function JobCard({ job, isOverlay }: JobCardProps) {
-  const { mutate: updateApplicationStatusAndDisplayOrders } =
-    api.jobTracker.updateStatusAndOrder.useMutation();
+  const { updateDisplayOrderByStatus } = useUpdateDisplayOrderByStatus();
   const [isOpen, setIsOpen] = useState(false);
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
   const trackedApplications = useJobTrackerBoardStore(
@@ -59,30 +58,11 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
         setIsOpen(false);
         const previousTrackedApplications = trackedApplications;
 
-        const groupedApplications = groupBy(
+        updateDisplayOrderByStatus(
           previousTrackedApplications.filter(
             (application) => application.id !== job.id,
           ),
-          "status",
         );
-
-        for (const status of Object.keys(groupedApplications)) {
-          const grouped = groupedApplications[status];
-          if (grouped !== undefined) {
-            groupedApplications[status] = grouped.map((item, index) => ({
-              ...item,
-              displayOrder: index + 1,
-            }));
-          }
-        }
-
-        const updatedTrackedApplications =
-          Object.values(groupedApplications).flat();
-
-        setTrackedApplications(updatedTrackedApplications);
-        updateApplicationStatusAndDisplayOrders({
-          data: updatedTrackedApplications,
-        });
 
         toast.success("Job application removed successfully.");
         return { previousTrackedApplications };

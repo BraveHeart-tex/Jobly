@@ -72,7 +72,7 @@ export const deleteJobTrackerApplicationByStatus = async ({
 };
 
 export const saveJobTrackerApplicationDetails = async (
-  data: Partial<JobTrackerApplication>[],
+  data: JobTrackerApplicationInsertModel[],
 ) => {
   return db
     .insert(jobTrackerApplications)
