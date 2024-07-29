@@ -8,9 +8,9 @@ import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useBookmark } from "../_hooks/useBookmark";
 import { useDeleteBookmark } from "../_hooks/useDeleteBookmark";
+import { useJobsListPageSearchParams } from "../_hooks/useJobsListPageSearchParams";
 import { useMarkJobAsViewed } from "../_hooks/useMarkJobAsViewed";
 import CompanyLogo from "./CompanyLogo";
-import { useJobsListPageSearchParams } from "../_hooks/useJobsListPageSearchParams";
 
 type JobDetailsProps = {
   currentJobId: number;

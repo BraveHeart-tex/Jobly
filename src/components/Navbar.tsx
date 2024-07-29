@@ -2,16 +2,16 @@ import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import { APP_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
+import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import NavbarContainer from "./NavbarContainer";
 import UserMenu from "./UserMenu";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button, buttonVariants } from "./ui/button";
-import { ChevronDownIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();

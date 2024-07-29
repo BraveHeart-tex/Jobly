@@ -1,10 +1,31 @@
+"use client";
+import JobTrackerApplicationForm from "@/components/forms/JobTrackerApplicationForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
+import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import type { JobTrackerApplication } from "@/server/db/schema";
+import { api } from "@/trpc/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
-import { GripVertical } from "lucide-react";
+import { GripVertical, TrashIcon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface JobCardProps {
   job: JobTrackerApplication;
@@ -19,6 +40,37 @@ export interface TaskDragData {
 }
 
 export function JobCard({ job, isOverlay }: JobCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+  const trackedApplications = useJobTrackerBoardStore(
+    (state) => state.trackedApplications,
+  );
+  const setTrackedApplications = useJobTrackerBoardStore(
+    (state) => state.setTrackedApplications,
+  );
+
+  const { mutate: deleteJobTrackerApplication, isPending } =
+    api.jobTracker.deleteJobTrackerApplication.useMutation({
+      onMutate: () => {
+        setIsOpen(false);
+        const previousTrackedApplications = trackedApplications;
+        setTrackedApplications((prevApplications) => {
+          return prevApplications.filter(
+            (application) => application.id !== job.id,
+          );
+        });
+
+        toast.success("Job application removed successfully.");
+        return { previousTrackedApplications };
+      },
+      onError: (_err, _newJob, context) => {
+        toast.error("Something went wrong, please try again later");
+        setTrackedApplications(context?.previousTrackedApplications || []);
+      },
+      onSettled: () => {
+        setIsOpen(false);
+      },
+    });
   const {
     setNodeRef,
     attributes,
@@ -42,7 +94,7 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
     transform: CSS.Translate.toString(transform),
   };
 
-  const variants = cva("", {
+  const variants = cva("cursor-pointer", {
     variants: {
       dragging: {
         over: "ring-2 opacity-30",
@@ -51,28 +103,73 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
     },
   });
 
+  const handleApplicationDelete = () => {
+    showConfirmDialog({
+      title: "Are you sure you want to delete this job application?",
+      message: "This action cannot be undone.",
+      primaryActionLabel: "Yes",
+      onConfirm: () => {
+        deleteJobTrackerApplication({
+          id: job.id,
+        });
+      },
+    });
+  };
+
   return (
-    <Card
-      ref={setNodeRef}
-      style={style}
-      className={variants({
-        dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
-      })}
-    >
-      <CardHeader className="px-3 py-3 space-between flex flex-row border-b-2 border-secondary relative">
-        <Button
-          variant={"ghost"}
-          {...attributes}
-          {...listeners}
-          className="p-1 -ml-2 h-auto cursor-grab"
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Card
+          ref={setNodeRef}
+          style={style}
+          className={variants({
+            dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
+          })}
         >
-          <span className="sr-only">Move job application</span>
-          <GripVertical />
-        </Button>
-      </CardHeader>
-      <CardContent className="px-3 pt-3 pb-6 text-left whitespace-pre-wrap">
-        {job.jobTitle}
-      </CardContent>
-    </Card>
+          <CardHeader className="px-3 py-3 space-between flex flex-row border-b-2 border-secondary relative">
+            <Button
+              variant={"ghost"}
+              {...attributes}
+              {...listeners}
+              className="p-1 -ml-2 h-auto cursor-grab"
+            >
+              <span className="sr-only">Move job application</span>
+              <GripVertical />
+            </Button>
+          </CardHeader>
+          <CardContent className="px-3 pt-3 pb-6 text-left whitespace-pre-wrap">
+            {job.jobTitle}
+          </CardContent>
+        </Card>
+      </SheetTrigger>
+      <SheetContent onOpenAutoFocus={(event) => event.preventDefault()}>
+        <SheetHeader>
+          <SheetTitle className="flex items-center gap-2">
+            {job.jobTitle}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={handleApplicationDelete}
+                    disabled={isPending}
+                  >
+                    <TrashIcon size={20} />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Delete application</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </SheetTitle>
+          <SheetDescription>
+            Use the form below to edit the job application details
+          </SheetDescription>
+        </SheetHeader>
+        <div className="mt-8">
+          <JobTrackerApplicationForm defaultValues={job} />
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

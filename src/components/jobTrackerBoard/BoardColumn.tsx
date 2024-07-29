@@ -54,7 +54,7 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
   };
 
   const variants = cva(
-    "h-[calc(100vh-250px)] max-h-[calc(100vh-250px)] w-[300px] max-w-full flex flex-col flex-shrink-0 snap-center",
+    "h-[calc(100vh-250px)] max-h-[calc(100vh-250px)] w-[300px] max-w-full flex flex-col flex-shrink-0 snap-center overflow-hidden",
     {
       variants: {
         dragging: {
@@ -85,7 +85,7 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
           column.id === "rejected" && "bg-red-50 dark:bg-red-900",
         )}
       >
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-2">
           {<ColumnIcon size={20} />}
           {column.title}
         </span>
@@ -100,7 +100,11 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
         </CardContent>
       </ScrollArea>
       <CardFooter className="p-0 mt-auto">
-        <AddJobTrackerDrawer status={column.id} />
+        <AddJobTrackerDrawer
+          defaultValues={{
+            status: column.id,
+          }}
+        />
       </CardFooter>
     </Card>
   );

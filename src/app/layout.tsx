@@ -1,12 +1,12 @@
 import "@/styles/globals.css";
 import ConfirmDialog from "@/components/ConfirmDialog";
+import Navbar from "@/components/Navbar";
 import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
 import { TRPCReactProvider } from "@/trpc/react";
 import { GeistSans } from "geist/font/sans";
 import type React from "react";
-import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: APP_NAME,

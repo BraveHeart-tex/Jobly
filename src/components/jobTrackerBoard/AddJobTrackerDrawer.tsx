@@ -8,15 +8,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import type { JobTrackerApplication } from "@/server/db/schema";
 import { PlusIcon } from "lucide-react";
 import JobTrackerApplicationForm from "../forms/JobTrackerApplicationForm";
-import type { JobTrackerApplicationStatus } from "@/server/db/schema";
 
 type AddJobTrackerDrawerProps = {
-  status: JobTrackerApplicationStatus;
+  defaultValues: Partial<JobTrackerApplication>;
 };
 
-const AddJobTrackerDrawer = ({ status }: AddJobTrackerDrawerProps) => {
+const AddJobTrackerDrawer = ({ defaultValues }: AddJobTrackerDrawerProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -37,11 +37,7 @@ const AddJobTrackerDrawer = ({ status }: AddJobTrackerDrawerProps) => {
           </SheetDescription>
         </SheetHeader>
         <div className="mt-8">
-          <JobTrackerApplicationForm
-            defaultValues={{
-              status,
-            }}
-          />
+          <JobTrackerApplicationForm defaultValues={defaultValues} />
         </div>
       </SheetContent>
     </Sheet>

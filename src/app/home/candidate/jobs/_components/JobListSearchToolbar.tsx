@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import JobListSearchInput from "./JobListSearchInput";
 import { useJobsListPageSearchParams } from "../_hooks/useJobsListPageSearchParams";
 import JobListFilters from "./JobListFilters";
+import JobListSearchInput from "./JobListSearchInput";
 import JoblistLocationInput from "./JoblistLocationInput";
 
 const JobListSearchToolbar = () => {
