@@ -16,10 +16,10 @@ export const jobTrackerRouter = createTRPCRouter({
         userId: ctx.user.id,
       });
     }),
-  deleteJobTrackerApplication: protectedProcedure
+  deleteById: protectedProcedure
     .input(createSelectSchema(jobTrackerApplications).pick({ id: true }))
     .mutation(async ({ ctx, input }) => {
-      return jobTrackerService.deleteJobTrackerApplication({
+      return jobTrackerService.deleteJobTrackerApplicationById({
         id: input.id,
         userId: ctx.user.id,
       });
@@ -33,6 +33,18 @@ export const jobTrackerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return jobTrackerService.updateJobTrackerApplication({
         ...input,
+        userId: ctx.user.id,
+      });
+    }),
+  deleteByStatus: protectedProcedure
+    .input(
+      createSelectSchema(jobTrackerApplications).pick({
+        status: true,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return jobTrackerService.deleteJobTrackerApplicationByStatus({
+        status: input.status,
         userId: ctx.user.id,
       });
     }),

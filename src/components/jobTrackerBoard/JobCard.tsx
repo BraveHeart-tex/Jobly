@@ -51,7 +51,7 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
   );
 
   const { mutate: deleteJobTrackerApplication, isPending } =
-    api.jobTracker.deleteJobTrackerApplication.useMutation({
+    api.jobTracker.deleteById.useMutation({
       onMutate: () => {
         setIsOpen(false);
         const previousTrackedApplications = trackedApplications;

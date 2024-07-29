@@ -1,5 +1,5 @@
 import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { capitalizeString, cn } from "@/lib/utils";
 import type {
   JobTrackerApplication,
   JobTrackerApplicationStatus,
@@ -21,8 +21,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { PlusIcon } from "lucide-react";
+import { ListXIcon, PlusIcon } from "lucide-react";
 import JobTrackerApplicationForm from "../forms/JobTrackerApplicationForm";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent,
+} from "../ui/tooltip";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
+import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 export interface Column {
   id: JobTrackerApplicationStatus;
@@ -43,6 +53,31 @@ interface BoardColumnProps {
 }
 
 export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+  const trackedApplications = useJobTrackerBoardStore(
+    (state) => state.trackedApplications,
+  );
+  const setTrackedApplications = useJobTrackerBoardStore(
+    (state) => state.setTrackedApplications,
+  );
+  const { mutate: deleteJobTrackerApplicationByStatus, isPending } =
+    api.jobTracker.deleteByStatus.useMutation({
+      onMutate: (variables) => {
+        const oldApplications = trackedApplications;
+        setTrackedApplications((prevApplications) => {
+          return prevApplications.filter(
+            (job) => job.status !== variables.status,
+          );
+        });
+
+        return { oldApplications };
+      },
+      onError: (_error, _variables, context) => {
+        toast.error("Something went wrong, please try again later.");
+        setTrackedApplications(context?.oldApplications ?? []);
+      },
+    });
+
   const [open, setOpen] = useState(false);
   const tasksIds = useMemo(() => {
     return jobs.map((jobs) => jobs.id);
@@ -78,6 +113,22 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
 
   const ColumnIcon = JOB_TRACKER_COLUMN_TO_ICON_MAP[column.id];
 
+  const handleDeleteColumnItems = () => {
+    if (isPending) return;
+    showConfirmDialog({
+      title: `Are your sure you want to ${deleteColumnItemsDescriptor}?`,
+      message: "This action cannot be undone.",
+      primaryActionLabel: "Yes",
+      onConfirm: () => {
+        deleteJobTrackerApplicationByStatus({
+          status: column.id,
+        });
+      },
+    });
+  };
+
+  const deleteColumnItemsDescriptor = `delete all "${capitalizeString(column.id)}${column.id.endsWith("ed") ? "" : "ed"}" jobs`;
+
   return (
     <Card
       ref={setNodeRef}
@@ -96,10 +147,28 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
           column.id === "rejected" && "bg-red-50 dark:bg-red-900",
         )}
       >
-        <span className="flex items-center gap-2">
-          {<ColumnIcon size={20} />}
-          {column.title}
-        </span>
+        <div className="w-full flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            {<ColumnIcon size={20} />}
+            {column.title}
+          </span>
+          {jobs.length > 0 ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  className="ml-auto"
+                  onClick={handleDeleteColumnItems}
+                  disabled={isPending}
+                >
+                  <ListXIcon size={24} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  {capitalizeString(deleteColumnItemsDescriptor)}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : null}
+        </div>
       </CardHeader>
       <ScrollArea>
         <CardContent className="flex flex-grow flex-col gap-2 p-2">

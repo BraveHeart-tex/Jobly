@@ -26,7 +26,7 @@ export const createJobTrackerApplication = async (
   return response?.id;
 };
 
-export const deleteJobTrackerApplication = async ({
+export const deleteJobTrackerApplicationById = async ({
   id,
   userId,
 }: {
@@ -53,6 +53,20 @@ export const updateJobTrackerApplication = async (
       and(
         eq(jobTrackerApplications.id, data.id),
         eq(jobTrackerApplications.userId, data.userId),
+      ),
+    );
+};
+
+export const deleteJobTrackerApplicationByStatus = async ({
+  userId,
+  status,
+}: Pick<JobTrackerApplicationInsertModel, "userId" | "status">) => {
+  return db
+    .delete(jobTrackerApplications)
+    .where(
+      and(
+        eq(jobTrackerApplications.status, status),
+        eq(jobTrackerApplications.userId, userId),
       ),
     );
 };
