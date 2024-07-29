@@ -148,9 +148,12 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
           </CardContent>
         </Card>
       </SheetTrigger>
-      <SheetContent onOpenAutoFocus={(event) => event.preventDefault()}>
+      <SheetContent
+        className="min-w-full lg:min-w-[30%] lg:w-[1000px]"
+        onOpenAutoFocus={(event) => event.preventDefault()}
+      >
         <SheetHeader>
-          <SheetTitle className="flex items-center gap-2">
+          <SheetTitle className="flex items-center gap-2 justify-center lg:justify-start">
             {job.jobTitle}
             <TooltipProvider>
               <Tooltip>

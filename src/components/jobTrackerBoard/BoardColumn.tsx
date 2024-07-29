@@ -120,7 +120,7 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
               Add Job
             </Button>
           </SheetTrigger>
-          <SheetContent className="min-w-full lg:min-w-[600px]">
+          <SheetContent className="min-w-full lg:min-w-[30%] lg:w-[1000px]">
             <SheetHeader>
               <SheetTitle>Add Job Application</SheetTitle>
               <SheetDescription>
