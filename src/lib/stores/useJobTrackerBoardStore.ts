@@ -1,4 +1,7 @@
-import type { JobTrackerApplicationStatus } from "@/server/db/schema";
+import type {
+  JobTrackerApplication,
+  JobTrackerApplicationStatus,
+} from "@/server/db/schema";
 import { create } from "zustand";
 
 const defaultCols = [
@@ -29,8 +32,16 @@ type JobTrackerBoardStore = {
   setColumns: (
     columns: Column[] | ((prevColumns: Column[]) => Column[]),
   ) => void;
-  activeColumn: Column | null;
-  setActiveColumn: (column: Column) => void;
+  trackedApplications: JobTrackerApplication[];
+  setTrackedApplications: (
+    applications:
+      | JobTrackerApplication[]
+      | ((
+          prevApplications: JobTrackerApplication[],
+        ) => JobTrackerApplication[]),
+  ) => void;
+  activeJob: JobTrackerApplication | null;
+  setActiveJob: (job: JobTrackerApplication | null) => void;
 };
 
 export const useJobTrackerBoardStore = create<JobTrackerBoardStore>(
@@ -44,9 +55,18 @@ export const useJobTrackerBoardStore = create<JobTrackerBoardStore>(
       }
       set({ columns: params });
     },
-    activeColumn: null,
-    setActiveColumn: (column: Column) => {
-      set({ activeColumn: column });
+    trackedApplications: [],
+    setTrackedApplications: (params) => {
+      if (typeof params === "function") {
+        const newApplications = params(get().trackedApplications);
+        set({ trackedApplications: newApplications });
+        return;
+      }
+      set({ trackedApplications: params });
+    },
+    activeJob: null,
+    setActiveJob: (job: JobTrackerApplication | null) => {
+      set({ activeJob: job });
     },
   }),
 );

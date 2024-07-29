@@ -66,7 +66,7 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
           {...listeners}
           className="p-1 -ml-2 h-auto cursor-grab"
         >
-          <span className="sr-only">Move task</span>
+          <span className="sr-only">Move job application</span>
           <GripVertical />
         </Button>
       </CardHeader>

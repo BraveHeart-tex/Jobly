@@ -18,7 +18,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { BoardColumn, BoardContainer } from "./BoardColumn";
 import { JobCard } from "./JobCard";
@@ -33,16 +33,21 @@ export function JobTrackerApplicationsBoard({
   data,
 }: JobTrackerApplicationsBoardProps) {
   const columns = useJobTrackerBoardStore((state) => state.columns);
+  const trackedApplications = useJobTrackerBoardStore(
+    (state) => state.trackedApplications,
+  );
+  const setTrackedApplications = useJobTrackerBoardStore(
+    (state) => state.setTrackedApplications,
+  );
+  const activeJob = useJobTrackerBoardStore((state) => state.activeJob);
+  const setActiveJob = useJobTrackerBoardStore((state) => state.setActiveJob);
 
   const pickedUpApplicationColumn = useRef<ColumnId | null>(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  const [trackedApplications, setTrackedApplications] =
-    useState<JobTrackerApplication[]>(data);
-
-  const [activeJob, setActiveJob] = useState<JobTrackerApplication | null>(
-    null,
-  );
+  useEffect(() => {
+    setTrackedApplications(data);
+  }, [data, setTrackedApplications]);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
