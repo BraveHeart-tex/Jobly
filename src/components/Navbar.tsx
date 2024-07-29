@@ -2,15 +2,16 @@ import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
 import { APP_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
+import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ColorModeToggle from "./ColorModeToggle";
 import NavbarContainer from "./NavbarContainer";
 import UserMenu from "./UserMenu";
+import { Button, buttonVariants } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Button } from "./ui/button";
-import { ChevronDownIcon } from "lucide-react";
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();
@@ -64,8 +65,18 @@ const Navbar = async () => {
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline">Candidate Login</Button>
-                    <Button>Sign Up</Button>
+                    <Link
+                      href={`${SHARED_ROUTES.LOGIN}?portalType=candidate`}
+                      className={cn(buttonVariants({ variant: "outline" }))}
+                    >
+                      Candidate Login
+                    </Link>
+                    <Link
+                      href={`${SHARED_ROUTES["SIGN-UP"]}?portalType=candidate`}
+                      className={cn(buttonVariants({ variant: "default" }))}
+                    >
+                      Sign Up
+                    </Link>
                   </div>
                 </div>
                 <div className="grid gap-4 px-4 mt-4">
@@ -76,8 +87,18 @@ const Navbar = async () => {
                     </p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
-                    <Button variant="outline">Employer Login</Button>
-                    <Button>Sign Up</Button>
+                    <Link
+                      href={`${SHARED_ROUTES.LOGIN}?portalType=employer`}
+                      className={cn(buttonVariants({ variant: "outline" }))}
+                    >
+                      Employer Login
+                    </Link>
+                    <Link
+                      href={`${SHARED_ROUTES["SIGN-UP"]}?portalType=employer`}
+                      className={cn(buttonVariants({ variant: "default" }))}
+                    >
+                      Sign Up
+                    </Link>
                   </div>
                 </div>
               </PopoverContent>

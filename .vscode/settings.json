@@ -50,5 +50,6 @@
     "**/env/**": true,
     "**/venv/**": true,
     "env-*": true
-  }
+  },
+  "cSpell.words": ["lucide", "sonner", "TRPC"]
 }

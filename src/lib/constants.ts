@@ -1,4 +1,13 @@
+import type { ColumnId } from "@/lib/stores/useJobTrackerBoardStore";
 import type { User } from "@/server/db/schema";
+import {
+  BriefcaseBusinessIcon,
+  CircleCheckIcon,
+  ContactIcon,
+  HeartIcon,
+  type LucideIcon,
+  XIcon,
+} from "lucide-react";
 import type { InferValueTypeFromConst } from "./types";
 
 export const contentByPortalType: Record<User["role"], string[]> = {
@@ -112,3 +121,11 @@ export const FIELDS_DND_INDEX_PREFIXES = {
 export type FIELD_DND_INDEX_PREFIX = InferValueTypeFromConst<
   typeof FIELDS_DND_INDEX_PREFIXES
 >;
+
+export const JOB_TRACKER_COLUMN_TO_ICON_MAP: Record<ColumnId, LucideIcon> = {
+  applied: BriefcaseBusinessIcon,
+  interview: ContactIcon,
+  offer: CircleCheckIcon,
+  rejected: XIcon,
+  shortlist: HeartIcon,
+};

@@ -544,7 +544,7 @@ const makeCustomSectionData = (transformedData: TransformedResumeData) => {
     .filter(
       (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM,
     )
-    .map((customSection, index) => {
+    .map((customSection) => {
       const sectionItems = groupEveryN(
         customSection?.fields || [],
         CUSTOM_SECTION_ITEMS_COUNT,

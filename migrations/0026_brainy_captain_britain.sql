@@ -1,0 +1,1 @@
+ALTER TABLE `JobTrackerApplication` ADD `displayOrder` int NOT NULL;
