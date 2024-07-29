@@ -1,4 +1,6 @@
 "use client";
+import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
+import type { JobTrackerApplication } from "@/server/db/schema";
 import {
   type Announcements,
   DndContext,
@@ -21,7 +23,6 @@ import type { Column } from "./BoardColumn";
 import { type Job, JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import { hasDraggableData } from "./utils";
-import type { JobTrackerApplication } from "@/server/db/schema";
 
 const defaultCols = [
   {
@@ -55,9 +56,12 @@ type JobTrackerApplicationsBoardProps = {
 export function JobTrackerApplicationsBoard({
   data,
 }: JobTrackerApplicationsBoardProps) {
-  const [columns, setColumns] = useState<Column[]>(defaultCols);
+  const columns = useJobTrackerBoardStore((state) => state.columns);
+  const setColumns = useJobTrackerBoardStore((state) => state.setColumns);
+
   const pickedUpTaskColumn = useRef<ColumnId | null>(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
+
   const [jobs, setJobs] = useState<Job[]>(
     data.map((item) => ({
       id: item.id,
