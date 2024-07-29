@@ -500,6 +500,7 @@ export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
   userId: int("userId")
     .references(() => user.id, { onDelete: "cascade" })
     .notNull(),
+  company: varchar("company", { length: 512 }).notNull(),
   jobTitle: varchar("jobTitle", { length: 512 }).notNull(),
   location: varchar("location", { length: 512 }).notNull(),
   url: text("url"),

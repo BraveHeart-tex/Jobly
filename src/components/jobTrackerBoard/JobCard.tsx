@@ -26,6 +26,7 @@ import { cva } from "class-variance-authority";
 import { GripVertical, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 
 interface JobCardProps {
   job: JobTrackerApplication;
@@ -126,7 +127,7 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
             dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
           })}
         >
-          <CardHeader className="px-3 py-3 space-between flex flex-row border-b-2 border-secondary relative">
+          <CardHeader className="px-3 py-3 lg:py-1 space-between flex flex-row border-b-2 border-secondary relative">
             <Button
               variant={"ghost"}
               {...attributes}
@@ -138,7 +139,12 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
             </Button>
           </CardHeader>
           <CardContent className="px-3 pt-3 pb-6 text-left whitespace-pre-wrap">
-            {job.jobTitle}
+            <div className="flex items-center gap-2">
+              <Avatar>
+                <AvatarFallback>{job.company.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <span className="font-medium">{job.jobTitle}</span>
+            </div>
           </CardContent>
         </Card>
       </SheetTrigger>
