@@ -3,10 +3,13 @@ import {
   type ColumnId,
   useJobTrackerBoardStore,
 } from "@/lib/stores/useJobTrackerBoardStore";
+import { groupBy } from "@/lib/utils";
 import type { JobTrackerApplication } from "@/server/db/schema";
+import { api } from "@/trpc/react";
 import {
   type Announcements,
   DndContext,
+  type DragEndEvent,
   type DragOverEvent,
   DragOverlay,
   type DragStartEvent,
@@ -32,6 +35,8 @@ type JobTrackerApplicationsBoardProps = {
 export function JobTrackerApplicationsBoard({
   data,
 }: JobTrackerApplicationsBoardProps) {
+  const { mutate: updateApplicationStatusAndDisplayOrders } =
+    api.jobTracker.updateStatusAndOrder.useMutation();
   const columns = useJobTrackerBoardStore((state) => state.columns);
   const trackedApplications = useJobTrackerBoardStore(
     (state) => state.trackedApplications,
@@ -166,35 +171,32 @@ export function JobTrackerApplicationsBoard({
     },
   };
 
-  return (
-    <DndContext
-      accessibility={{
-        announcements,
-      }}
-      sensors={sensors}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-    >
-      <BoardContainer>
-        <SortableContext items={columnsId}>
-          {columns.map((col) => (
-            <BoardColumn
-              key={col.id}
-              column={col}
-              jobs={trackedApplications.filter((job) => job.status === col.id)}
-            />
-          ))}
-        </SortableContext>
-      </BoardContainer>
+  const onDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (active.id === over?.id) return;
 
-      {createPortal(
-        <DragOverlay>
-          {activeJob && <JobCard job={activeJob} isOverlay />}
-        </DragOverlay>,
-        document.body,
-      )}
-    </DndContext>
-  );
+    const tmpTrackedApplications = [...trackedApplications];
+    const groupedApplications = groupBy(tmpTrackedApplications, "status");
+
+    for (const status of Object.keys(groupedApplications)) {
+      const grouped = groupedApplications[status];
+      if (grouped !== undefined) {
+        groupedApplications[status] = grouped.map((item, index) => ({
+          ...item,
+          displayOrder: index + 1,
+        }));
+      }
+    }
+
+    const updatedTrackedApplications =
+      Object.values(groupedApplications).flat();
+
+    setTrackedApplications(updatedTrackedApplications);
+
+    updateApplicationStatusAndDisplayOrders({
+      data: updatedTrackedApplications,
+    });
+  };
 
   function onDragStart(event: DragStartEvent) {
     if (!hasDraggableData(event.active)) return;
@@ -261,4 +263,37 @@ export function JobTrackerApplicationsBoard({
       });
     }
   }
+
+  return (
+    <DndContext
+      accessibility={{
+        announcements,
+      }}
+      sensors={sensors}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDragEnd={onDragEnd}
+    >
+      <BoardContainer>
+        <SortableContext items={columnsId}>
+          {columns.map((col) => (
+            <BoardColumn
+              key={col.id}
+              column={col}
+              jobs={trackedApplications
+                .filter((job) => job.status === col.id)
+                .sort((a, b) => a.displayOrder - b.displayOrder)}
+            />
+          ))}
+        </SortableContext>
+      </BoardContainer>
+
+      {createPortal(
+        <DragOverlay>
+          {activeJob && <JobCard job={activeJob} isOverlay />}
+        </DragOverlay>,
+        document.body,
+      )}
+    </DndContext>
+  );
 }

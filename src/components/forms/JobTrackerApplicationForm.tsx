@@ -11,10 +11,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
+import { compareMatchingKeys } from "@/lib/utils";
 import {
   type JobTrackerApplicationSchema,
   jobTrackerApplicationSchema,
 } from "@/schemas/jobTrackerApplicationSchema";
+import type { JobTrackerApplication } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import {
   BanknoteIcon,
@@ -24,12 +27,9 @@ import {
   MapPinIcon,
   PencilIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 import { DialogClose } from "../ui/dialog";
 import { Textarea } from "../ui/textarea";
-import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
-import type { JobTrackerApplication } from "@/server/db/schema";
-import { toast } from "sonner";
-import { compareMatchingKeys } from "@/lib/utils";
 
 type JobTrackerApplicationFormProps = {
   defaultValues?: Partial<JobTrackerApplicationSchema>;
@@ -100,6 +100,9 @@ const JobTrackerApplicationForm = ({
         setApplications(context?.oldApplications ?? []);
       },
     });
+  const availableDisplayOrder = trackedApplications.filter(
+    (item) => item.status === defaultValues?.status,
+  ).length;
   const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const form = useExtendedForm<JobTrackerApplicationSchema>(
     jobTrackerApplicationSchema,
@@ -107,6 +110,7 @@ const JobTrackerApplicationForm = ({
       defaultValues: {
         ...defaultValues,
         userId,
+        displayOrder: defaultValues?.displayOrder || availableDisplayOrder + 1,
       },
     },
   );

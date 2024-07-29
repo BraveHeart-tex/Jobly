@@ -1,6 +1,7 @@
 import { jobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
 import { jobTrackerApplications } from "@/server/db/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+import { z } from "zod";
 import * as jobTrackerService from "../services/jobTracker.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -47,5 +48,19 @@ export const jobTrackerRouter = createTRPCRouter({
         status: input.status,
         userId: ctx.user.id,
       });
+    }),
+  updateStatusAndOrder: protectedProcedure
+    .input(
+      z.object({
+        data: createSelectSchema(jobTrackerApplications).partial().array(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return jobTrackerService.saveJobTrackerApplicationDetails(
+        input.data.map((item) => ({
+          ...item,
+          userId: ctx.user.id,
+        })),
+      );
     }),
 });

@@ -1,10 +1,10 @@
 import type { MakeFieldsRequired } from "@/lib/types";
 import type { JobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
-import { db } from "@/server/db";
+import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   type JobTrackerApplication,
-  jobTrackerApplications,
   type JobTrackerApplicationInsertModel,
+  jobTrackerApplications,
 } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import type { User } from "lucia";
@@ -69,4 +69,15 @@ export const deleteJobTrackerApplicationByStatus = async ({
         eq(jobTrackerApplications.userId, userId),
       ),
     );
+};
+
+export const saveJobTrackerApplicationDetails = async (
+  data: Partial<JobTrackerApplication>[],
+) => {
+  return db
+    .insert(jobTrackerApplications)
+    .values(data)
+    .onDuplicateKeyUpdate({
+      set: buildConflictUpdateColumns(jobTrackerApplications, ["id"]),
+    });
 };
