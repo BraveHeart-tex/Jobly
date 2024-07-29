@@ -19,6 +19,7 @@ import { api } from "@/trpc/react";
 import {
   BanknoteIcon,
   BriefcaseBusinessIcon,
+  Building2Icon,
   LinkIcon,
   MapPinIcon,
   PencilIcon,
@@ -47,21 +48,45 @@ const JobTrackerApplicationForm = ({
       },
     },
   );
+  const mode = form.watch("id") ? ("edit" as const) : ("create" as const);
 
   const onSubmit = (values: JobTrackerApplicationSchema) => {
     if (isPending) return;
 
-    addJobTrackerApplication(values, {
-      onSuccess: () => {
-        form.reset();
-        onFormSubmit?.(values);
-      },
-    });
+    // TODO:
+    if (mode === "create") {
+      addJobTrackerApplication(values, {
+        onSuccess: () => {
+          form.reset();
+          onFormSubmit?.(values);
+        },
+      });
+    }
+
+    // TODO:
+    if (mode === "edit") {
+    }
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="company"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="flex items-center gap-1 mb-1">
+                <Building2Icon size={16} />
+                Company
+              </FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="jobTitle"
@@ -174,7 +199,7 @@ const JobTrackerApplicationForm = ({
             type="submit"
             className="w-full lg:w-max"
           >
-            Submit
+            {mode === "edit" ? "Update" : "Create"}
           </Button>
         </div>
       </form>

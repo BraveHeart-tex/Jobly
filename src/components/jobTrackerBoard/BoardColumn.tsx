@@ -11,8 +11,18 @@ import { cva } from "class-variance-authority";
 import { type ReactNode, useMemo } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import AddJobTrackerDrawer from "./AddJobTrackerDrawer";
 import { JobCard } from "./JobCard";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { PlusIcon } from "lucide-react";
+import JobTrackerApplicationForm from "../forms/JobTrackerApplicationForm";
 
 export interface Column {
   id: JobTrackerApplicationStatus;
@@ -100,11 +110,33 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
         </CardContent>
       </ScrollArea>
       <CardFooter className="p-0 mt-auto">
-        <AddJobTrackerDrawer
-          defaultValues={{
-            status: column.id,
-          }}
-        />
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              className="w-full rounded-t-none flex items-center gap-1"
+              variant="secondary"
+            >
+              <PlusIcon size={17} />
+              Add Job
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="min-w-full lg:min-w-[600px]">
+            <SheetHeader>
+              <SheetTitle>Add Job Application</SheetTitle>
+              <SheetDescription>
+                Use the form below to add your job application to track it with
+                ease!
+              </SheetDescription>
+            </SheetHeader>
+            <div className="mt-8">
+              <JobTrackerApplicationForm
+                defaultValues={{
+                  status: column.id,
+                }}
+              />
+            </div>
+          </SheetContent>
+        </Sheet>
       </CardFooter>
     </Card>
   );

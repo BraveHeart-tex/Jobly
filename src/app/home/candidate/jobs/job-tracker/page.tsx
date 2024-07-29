@@ -14,7 +14,8 @@ const JobTrackerPage = async () => {
             Job Tracker Board
           </h1>
           <p className="text-muted-foreground">
-            Track and organize your job applications and interviews.
+            Track / organize your job applications and interviews. Click on the
+            job card to see more.
           </p>
         </div>
       </PageContainer>
