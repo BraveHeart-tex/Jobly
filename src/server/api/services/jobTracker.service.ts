@@ -1,8 +1,10 @@
+import type { MakeFieldsRequired } from "@/lib/types";
 import type { JobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
 import { db } from "@/server/db";
 import {
   type JobTrackerApplication,
   jobTrackerApplications,
+  type JobTrackerApplicationInsertModel,
 } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import type { User } from "lucia";
@@ -37,6 +39,20 @@ export const deleteJobTrackerApplication = async ({
       and(
         eq(jobTrackerApplications.id, id),
         eq(jobTrackerApplications.userId, userId),
+      ),
+    );
+};
+
+export const updateJobTrackerApplication = async (
+  data: MakeFieldsRequired<JobTrackerApplicationInsertModel, "id" | "userId">,
+) => {
+  return db
+    .update(jobTrackerApplications)
+    .set(data)
+    .where(
+      and(
+        eq(jobTrackerApplications.id, data.id),
+        eq(jobTrackerApplications.userId, data.userId),
       ),
     );
 };

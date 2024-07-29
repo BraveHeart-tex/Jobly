@@ -8,7 +8,7 @@ import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { JobCard } from "./JobCard";
@@ -43,6 +43,7 @@ interface BoardColumnProps {
 }
 
 export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
+  const [open, setOpen] = useState(false);
   const tasksIds = useMemo(() => {
     return jobs.map((jobs) => jobs.id);
   }, [jobs]);
@@ -110,7 +111,7 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
         </CardContent>
       </ScrollArea>
       <CardFooter className="p-0 mt-auto">
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button
               className="w-full rounded-t-none flex items-center gap-1"
@@ -132,6 +133,9 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
               <JobTrackerApplicationForm
                 defaultValues={{
                   status: column.id,
+                }}
+                onFormSubmit={() => {
+                  setOpen(false);
                 }}
               />
             </div>

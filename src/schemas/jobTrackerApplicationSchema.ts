@@ -7,6 +7,7 @@ export const jobTrackerApplicationSchema = createInsertSchema(
   {
     jobTitle: z.string().min(1).max(512).default(""),
     location: z.string().min(1).max(512).default(""),
+    company: z.string().min(1).max(512).default(""),
     url: z
       .union([z.string().url("Please enter a valid URL"), z.literal("")])
       .default(""),

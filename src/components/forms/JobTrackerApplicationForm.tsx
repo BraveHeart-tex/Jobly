@@ -26,18 +26,54 @@ import {
 } from "lucide-react";
 import { DialogClose } from "../ui/dialog";
 import { Textarea } from "../ui/textarea";
+import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
+import type { JobTrackerApplication } from "@/server/db/schema";
+import { toast } from "sonner";
 
 type JobTrackerApplicationFormProps = {
   defaultValues?: Partial<JobTrackerApplicationSchema>;
-  onFormSubmit?: (values: JobTrackerApplicationSchema) => void;
+  onFormSubmit?: () => void;
 };
 
 const JobTrackerApplicationForm = ({
   defaultValues,
   onFormSubmit,
 }: JobTrackerApplicationFormProps) => {
+  const trackedApplications = useJobTrackerBoardStore(
+    (state) => state.trackedApplications,
+  );
+  const setApplications = useJobTrackerBoardStore(
+    (state) => state.setTrackedApplications,
+  );
   const { mutate: addJobTrackerApplication, isPending } =
-    api.jobTracker.addJobTrackerApplication.useMutation();
+    api.jobTracker.addJobTrackerApplication.useMutation({
+      onMutate: (variables) => {
+        onFormSubmit?.();
+        const oldApplications = trackedApplications;
+        const newApplication = {
+          ...variables,
+          id: crypto.randomUUID() as unknown as number,
+          updatedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+        } as JobTrackerApplication;
+        setApplications((prev) => [...prev, newApplication]);
+        return { oldApplications };
+      },
+      onError: (_error, _variables, context) => {
+        toast.error("Something went wrong, please try again later");
+        setApplications(context?.oldApplications ?? []);
+      },
+      onSuccess(insertId) {
+        setApplications((prev) => {
+          return prev.map((application) => {
+            if (typeof application.id === "string") {
+              application.id = insertId as number;
+            }
+            return application;
+          });
+        });
+      },
+    });
   const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const form = useExtendedForm<JobTrackerApplicationSchema>(
     jobTrackerApplicationSchema,
@@ -55,12 +91,7 @@ const JobTrackerApplicationForm = ({
 
     // TODO:
     if (mode === "create") {
-      addJobTrackerApplication(values, {
-        onSuccess: () => {
-          form.reset();
-          onFormSubmit?.(values);
-        },
-      });
+      addJobTrackerApplication(values);
     }
 
     // TODO:

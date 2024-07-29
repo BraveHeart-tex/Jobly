@@ -1,6 +1,6 @@
 import { jobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
 import { jobTrackerApplications } from "@/server/db/schema";
-import { createSelectSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import * as jobTrackerService from "../services/jobTracker.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -21,6 +21,18 @@ export const jobTrackerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return jobTrackerService.deleteJobTrackerApplication({
         id: input.id,
+        userId: ctx.user.id,
+      });
+    }),
+  updateJobTrackerApplication: protectedProcedure
+    .input(
+      createInsertSchema(jobTrackerApplications).required({
+        id: true,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return jobTrackerService.updateJobTrackerApplication({
+        ...input,
         userId: ctx.user.id,
       });
     }),
