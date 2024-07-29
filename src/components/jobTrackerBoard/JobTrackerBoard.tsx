@@ -21,7 +21,6 @@ import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BoardColumn, BoardContainer } from "./BoardColumn";
-import type { Column } from "./BoardColumn";
 import { JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import { hasDraggableData } from "./utils";
@@ -34,15 +33,12 @@ export function JobTrackerApplicationsBoard({
   data,
 }: JobTrackerApplicationsBoardProps) {
   const columns = useJobTrackerBoardStore((state) => state.columns);
-  const setColumns = useJobTrackerBoardStore((state) => state.setColumns);
 
-  const pickedUpTaskColumn = useRef<ColumnId | null>(null);
+  const pickedUpApplicationColumn = useRef<ColumnId | null>(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
   const [trackedApplications, setTrackedApplications] =
     useState<JobTrackerApplication[]>(data);
-
-  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 
   const [activeJob, setActiveJob] = useState<JobTrackerApplication | null>(
     null,
@@ -77,9 +73,12 @@ export function JobTrackerApplicationsBoard({
       if (!hasDraggableData(active)) return;
 
       if (active.data.current?.type === "Job") {
-        pickedUpTaskColumn.current = active.data.current.job.status;
+        pickedUpApplicationColumn.current = active.data.current.job.status;
         const { jobsInColumn, jobPosition, column } =
-          getDraggingApplicationData(active.id, pickedUpTaskColumn.current);
+          getDraggingApplicationData(
+            active.id,
+            pickedUpApplicationColumn.current,
+          );
         return `Picked up Job application ${
           active.data.current.job.jobTitle
         } at position: ${jobPosition + 1} of ${
@@ -105,21 +104,23 @@ export function JobTrackerApplicationsBoard({
       ) {
         const { jobsInColumn, jobPosition, column } =
           getDraggingApplicationData(over.id, over.data.current.job.status);
-        if (over.data.current.job.status !== pickedUpTaskColumn.current) {
-          return `Task ${
+        if (
+          over.data.current.job.status !== pickedUpApplicationColumn.current
+        ) {
+          return `Job Application ${
             active.data.current.job.jobTitle
           } was moved over column ${column?.title} in position ${
             jobPosition + 1
           } of ${jobsInColumn.length}`;
         }
-        return `Task was moved over position ${jobPosition + 1} of ${
+        return `Job Application was moved over position ${jobPosition + 1} of ${
           jobsInColumn.length
         } in column ${column?.title}`;
       }
     },
     onDragEnd({ active, over }) {
       if (!hasDraggableData(active) || !hasDraggableData(over)) {
-        pickedUpTaskColumn.current = null;
+        pickedUpApplicationColumn.current = null;
         return;
       }
       if (
@@ -140,19 +141,21 @@ export function JobTrackerApplicationsBoard({
       ) {
         const { jobsInColumn, jobPosition, column } =
           getDraggingApplicationData(over.id, over.data.current.job.status);
-        if (over.data.current.job.status !== pickedUpTaskColumn.current) {
-          return `Task was dropped into column ${column?.title} in position ${
+        if (
+          over.data.current.job.status !== pickedUpApplicationColumn.current
+        ) {
+          return `Job Application was dropped into column ${column?.title} in position ${
             jobPosition + 1
           } of ${jobsInColumn.length}`;
         }
-        return `Task was dropped into position ${jobPosition + 1} of ${
+        return `Job Application was dropped into position ${jobPosition + 1} of ${
           jobsInColumn.length
         } in column ${column?.title}`;
       }
-      pickedUpTaskColumn.current = null;
+      pickedUpApplicationColumn.current = null;
     },
     onDragCancel({ active }) {
-      pickedUpTaskColumn.current = null;
+      pickedUpApplicationColumn.current = null;
       if (!hasDraggableData(active)) return;
       return `Dragging ${active.data.current?.type} cancelled.`;
     },
@@ -181,15 +184,6 @@ export function JobTrackerApplicationsBoard({
 
       {createPortal(
         <DragOverlay>
-          {activeColumn && (
-            <BoardColumn
-              isOverlay
-              column={activeColumn}
-              jobs={trackedApplications.filter(
-                (job) => job.status === activeColumn.id,
-              )}
-            />
-          )}
           {activeJob && <JobCard job={activeJob} isOverlay />}
         </DragOverlay>,
         document.body,
@@ -248,14 +242,13 @@ export function JobTrackerApplicationsBoard({
 
     const isOverAColumn = overData?.type === "Column";
 
-    // Im dropping a Task over a column
     if (isActiveAJob && isOverAColumn) {
       setTimeout(() => {
         setTrackedApplications((applications) => {
           const activeIndex = applications.findIndex((t) => t.id === activeId);
-          const activeTask = applications[activeIndex];
-          if (activeTask) {
-            activeTask.status = overId as ColumnId;
+          const activeApplication = applications[activeIndex];
+          if (activeApplication) {
+            activeApplication.status = overId as ColumnId;
             return arrayMove(applications, activeIndex, activeIndex);
           }
           return applications;
