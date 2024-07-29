@@ -1,10 +1,12 @@
 "use client";
-import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
+import {
+  type ColumnId,
+  useJobTrackerBoardStore,
+} from "@/lib/stores/useJobTrackerBoardStore";
 import type { JobTrackerApplication } from "@/server/db/schema";
 import {
   type Announcements,
   DndContext,
-  type DragEndEvent,
   type DragOverEvent,
   DragOverlay,
   type DragStartEvent,
@@ -20,34 +22,9 @@ import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BoardColumn, BoardContainer } from "./BoardColumn";
 import type { Column } from "./BoardColumn";
-import { type Job, JobCard } from "./JobCard";
+import { JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import { hasDraggableData } from "./utils";
-
-const defaultCols = [
-  {
-    id: "shortlist" as const,
-    title: "Shortlist",
-  },
-  {
-    id: "applied" as const,
-    title: "Applied",
-  },
-  {
-    id: "interview" as const,
-    title: "Interview",
-  },
-  {
-    id: "offer" as const,
-    title: "Offer",
-  },
-  {
-    id: "rejected" as const,
-    title: "Rejected",
-  },
-] satisfies Column[];
-
-export type ColumnId = (typeof defaultCols)[number]["id"];
 
 type JobTrackerApplicationsBoardProps = {
   data: JobTrackerApplication[];
@@ -62,17 +39,14 @@ export function JobTrackerApplicationsBoard({
   const pickedUpTaskColumn = useRef<ColumnId | null>(null);
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns]);
 
-  const [jobs, setJobs] = useState<Job[]>(
-    data.map((item) => ({
-      id: item.id,
-      columnId: item.status,
-      content: item.jobTitle,
-    })),
-  );
+  const [trackedApplications, setTrackedApplications] =
+    useState<JobTrackerApplication[]>(data);
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 
-  const [activeJob, setActiveJob] = useState<Job | null>(null);
+  const [activeJob, setActiveJob] = useState<JobTrackerApplication | null>(
+    null,
+  );
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -82,9 +56,14 @@ export function JobTrackerApplicationsBoard({
     }),
   );
 
-  function getDraggingTaskData(taskId: UniqueIdentifier, columnId: ColumnId) {
-    const jobsInColumn = jobs.filter((task) => task.columnId === columnId);
-    const jobPosition = jobsInColumn.findIndex((task) => task.id === taskId);
+  function getDraggingApplicationData(
+    jobId: UniqueIdentifier,
+    columnId: ColumnId,
+  ) {
+    const jobsInColumn = trackedApplications.filter(
+      (job) => job.status === columnId,
+    );
+    const jobPosition = jobsInColumn.findIndex((job) => job.id === jobId);
     const column = columns.find((col) => col.id === columnId);
     return {
       jobsInColumn,
@@ -96,21 +75,13 @@ export function JobTrackerApplicationsBoard({
   const announcements: Announcements = {
     onDragStart({ active }) {
       if (!hasDraggableData(active)) return;
-      if (active.data.current?.type === "Column") {
-        const startColumnIdx = columnsId.findIndex((id) => id === active.id);
-        const startColumn = columns[startColumnIdx];
-        return `Picked up Column ${startColumn?.title} at position: ${
-          startColumnIdx + 1
-        } of ${columnsId.length}`;
-      }
-      if (active.data.current?.type === "Task") {
-        pickedUpTaskColumn.current = active.data.current.task.columnId;
-        const { jobsInColumn, jobPosition, column } = getDraggingTaskData(
-          active.id,
-          pickedUpTaskColumn.current,
-        );
-        return `Picked up Task ${
-          active.data.current.task.content
+
+      if (active.data.current?.type === "Job") {
+        pickedUpTaskColumn.current = active.data.current.job.status;
+        const { jobsInColumn, jobPosition, column } =
+          getDraggingApplicationData(active.id, pickedUpTaskColumn.current);
+        return `Picked up Job application ${
+          active.data.current.job.jobTitle
         } at position: ${jobPosition + 1} of ${
           jobsInColumn.length
         } in column ${column?.title}`;
@@ -129,16 +100,14 @@ export function JobTrackerApplicationsBoard({
         } at position ${overColumnIdx + 1} of ${columnsId.length}`;
       }
       if (
-        active.data.current?.type === "Task" &&
-        over.data.current?.type === "Task"
+        active.data.current?.type === "Job" &&
+        over.data.current?.type === "Job"
       ) {
-        const { jobsInColumn, jobPosition, column } = getDraggingTaskData(
-          over.id,
-          over.data.current.task.columnId,
-        );
-        if (over.data.current.task.columnId !== pickedUpTaskColumn.current) {
+        const { jobsInColumn, jobPosition, column } =
+          getDraggingApplicationData(over.id, over.data.current.job.status);
+        if (over.data.current.job.status !== pickedUpTaskColumn.current) {
           return `Task ${
-            active.data.current.task.content
+            active.data.current.job.jobTitle
           } was moved over column ${column?.title} in position ${
             jobPosition + 1
           } of ${jobsInColumn.length}`;
@@ -166,14 +135,12 @@ export function JobTrackerApplicationsBoard({
         }`;
       }
       if (
-        active.data.current?.type === "Task" &&
-        over.data.current?.type === "Task"
+        active.data.current?.type === "Job" &&
+        over.data.current?.type === "Job"
       ) {
-        const { jobsInColumn, jobPosition, column } = getDraggingTaskData(
-          over.id,
-          over.data.current.task.columnId,
-        );
-        if (over.data.current.task.columnId !== pickedUpTaskColumn.current) {
+        const { jobsInColumn, jobPosition, column } =
+          getDraggingApplicationData(over.id, over.data.current.job.status);
+        if (over.data.current.job.status !== pickedUpTaskColumn.current) {
           return `Task was dropped into column ${column?.title} in position ${
             jobPosition + 1
           } of ${jobsInColumn.length}`;
@@ -198,7 +165,6 @@ export function JobTrackerApplicationsBoard({
       }}
       sensors={sensors}
       onDragStart={onDragStart}
-      onDragEnd={onDragEnd}
       onDragOver={onDragOver}
     >
       <BoardContainer>
@@ -207,7 +173,7 @@ export function JobTrackerApplicationsBoard({
             <BoardColumn
               key={col.id}
               column={col}
-              tasks={jobs.filter((task) => task.columnId === col.id)}
+              jobs={trackedApplications.filter((job) => job.status === col.id)}
             />
           ))}
         </SortableContext>
@@ -219,10 +185,12 @@ export function JobTrackerApplicationsBoard({
             <BoardColumn
               isOverlay
               column={activeColumn}
-              tasks={jobs.filter((task) => task.columnId === activeColumn.id)}
+              jobs={trackedApplications.filter(
+                (job) => job.status === activeColumn.id,
+              )}
             />
           )}
-          {activeJob && <JobCard task={activeJob} isOverlay />}
+          {activeJob && <JobCard job={activeJob} isOverlay />}
         </DragOverlay>,
         document.body,
       )}
@@ -232,43 +200,10 @@ export function JobTrackerApplicationsBoard({
   function onDragStart(event: DragStartEvent) {
     if (!hasDraggableData(event.active)) return;
     const data = event.active.data.current;
-    if (data?.type === "Column") {
-      setActiveColumn(data.column);
-      return;
+
+    if (data?.type === "Job") {
+      setActiveJob(data.job);
     }
-
-    if (data?.type === "Task") {
-      setActiveJob(data.task);
-      return;
-    }
-  }
-
-  function onDragEnd(event: DragEndEvent) {
-    setActiveColumn(null);
-    setActiveJob(null);
-
-    const { active, over } = event;
-    if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    if (!hasDraggableData(active)) return;
-
-    const activeData = active.data.current;
-
-    if (activeId === overId) return;
-
-    const isActiveAColumn = activeData?.type === "Column";
-    if (!isActiveAColumn) return;
-
-    setColumns((columns) => {
-      const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
-
-      const overColumnIndex = columns.findIndex((col) => col.id === overId);
-
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
-    });
   }
 
   function onDragOver(event: DragOverEvent) {
@@ -285,29 +220,28 @@ export function JobTrackerApplicationsBoard({
     const activeData = active.data.current;
     const overData = over.data.current;
 
-    const isActiveATask = activeData?.type === "Task";
-    const isOverATask = overData?.type === "Task";
+    const isActiveAJob = activeData?.type === "Job";
+    const isOverAJob = overData?.type === "Job";
 
-    if (!isActiveATask) return;
+    if (!isActiveAJob) return;
 
-    // Im dropping a Task over another Task
-    if (isActiveATask && isOverATask) {
+    if (isActiveAJob && isOverAJob) {
       setTimeout(() => {
-        setJobs((tasks) => {
-          const activeIndex = tasks.findIndex((t) => t.id === activeId);
-          const overIndex = tasks.findIndex((t) => t.id === overId);
-          const activeTask = tasks[activeIndex];
-          const overTask = tasks[overIndex];
+        setTrackedApplications((applications) => {
+          const activeIndex = applications.findIndex((t) => t.id === activeId);
+          const overIndex = applications.findIndex((t) => t.id === overId);
+          const activeApplication = applications[activeIndex];
+          const overApplication = applications[overIndex];
           if (
-            activeTask &&
-            overTask &&
-            activeTask.columnId !== overTask.columnId
+            activeApplication &&
+            overApplication &&
+            activeApplication.status !== overApplication.status
           ) {
-            activeTask.columnId = overTask.columnId;
-            return arrayMove(tasks, activeIndex, overIndex - 1);
+            activeApplication.status = overApplication.status;
+            return arrayMove(applications, activeIndex, overIndex - 1);
           }
 
-          return arrayMove(tasks, activeIndex, overIndex);
+          return arrayMove(applications, activeIndex, overIndex);
         });
       });
     }
@@ -315,16 +249,16 @@ export function JobTrackerApplicationsBoard({
     const isOverAColumn = overData?.type === "Column";
 
     // Im dropping a Task over a column
-    if (isActiveATask && isOverAColumn) {
+    if (isActiveAJob && isOverAColumn) {
       setTimeout(() => {
-        setJobs((tasks) => {
-          const activeIndex = tasks.findIndex((t) => t.id === activeId);
-          const activeTask = tasks[activeIndex];
+        setTrackedApplications((applications) => {
+          const activeIndex = applications.findIndex((t) => t.id === activeId);
+          const activeTask = applications[activeIndex];
           if (activeTask) {
-            activeTask.columnId = overId as ColumnId;
-            return arrayMove(tasks, activeIndex, activeIndex);
+            activeTask.status = overId as ColumnId;
+            return arrayMove(applications, activeIndex, activeIndex);
           }
-          return tasks;
+          return applications;
         });
       });
     }

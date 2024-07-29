@@ -1,31 +1,24 @@
-import type { UniqueIdentifier } from "@dnd-kit/core";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import type { JobTrackerApplication } from "@/server/db/schema";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { cva } from "class-variance-authority";
 import { GripVertical } from "lucide-react";
-import type { ColumnId } from "./JobTrackerBoard";
-
-export interface Job {
-  id: UniqueIdentifier;
-  columnId: ColumnId;
-  content: string;
-}
 
 interface JobCardProps {
-  task: Job;
+  job: JobTrackerApplication;
   isOverlay?: boolean;
 }
 
-export type TaskType = "Task";
+export type JobType = "Job";
 
 export interface TaskDragData {
-  type: TaskType;
-  task: Job;
+  type: JobType;
+  job: JobTrackerApplication;
 }
 
-export function JobCard({ task, isOverlay }: JobCardProps) {
+export function JobCard({ job, isOverlay }: JobCardProps) {
   const {
     setNodeRef,
     attributes,
@@ -34,13 +27,13 @@ export function JobCard({ task, isOverlay }: JobCardProps) {
     transition,
     isDragging,
   } = useSortable({
-    id: task.id,
+    id: job.id,
     data: {
-      type: "Task",
-      task,
+      type: "Job",
+      job,
     } satisfies TaskDragData,
     attributes: {
-      roleDescription: "Task",
+      roleDescription: "Job",
     },
   });
 
@@ -78,7 +71,7 @@ export function JobCard({ task, isOverlay }: JobCardProps) {
         </Button>
       </CardHeader>
       <CardContent className="px-3 pt-3 pb-6 text-left whitespace-pre-wrap">
-        {task.content}
+        {job.jobTitle}
       </CardContent>
     </Card>
   );

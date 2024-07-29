@@ -10,8 +10,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
-import { Textarea } from "../ui/textarea";
-import { DialogClose } from "../ui/dialog";
+import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import {
+  type JobTrackerApplicationSchema,
+  jobTrackerApplicationSchema,
+} from "@/schemas/jobTrackerApplicationSchema";
+import { api } from "@/trpc/react";
 import {
   BanknoteIcon,
   BriefcaseBusinessIcon,
@@ -19,12 +23,8 @@ import {
   MapPinIcon,
   PencilIcon,
 } from "lucide-react";
-import {
-  type JobTrackerApplicationSchema,
-  jobTrackerApplicationSchema,
-} from "@/schemas/jobTrackerApplicationSchema";
-import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import { api } from "@/trpc/react";
+import { DialogClose } from "../ui/dialog";
+import { Textarea } from "../ui/textarea";
 
 type JobTrackerApplicationFormProps = {
   defaultValues?: Partial<JobTrackerApplicationSchema>;
@@ -35,66 +35,8 @@ const JobTrackerApplicationForm = ({
   defaultValues,
   onFormSubmit,
 }: JobTrackerApplicationFormProps) => {
-  const apiUtils = api.useUtils();
   const { mutate: addJobTrackerApplication, isPending } =
-    api.jobTracker.addJobTrackerApplication.useMutation({
-      onMutate: async (variables) => {
-        await apiUtils.jobTracker.getJobTrackerApplications.cancel();
-
-        const previousData =
-          apiUtils.jobTracker.getJobTrackerApplications.getData();
-
-        apiUtils.jobTracker.getJobTrackerApplications.setData(
-          undefined,
-          (oldData) => {
-            if (!oldData) return oldData;
-            return [
-              ...oldData,
-              {
-                ...variables,
-                id: crypto.randomUUID() as unknown as number,
-                userId,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-              },
-            ];
-          },
-        );
-
-        return { previousData };
-      },
-      onError: (_err, _newJob, context) => {
-        apiUtils.jobTracker.getJobTrackerApplications.setData(
-          undefined,
-          context?.previousData,
-        );
-      },
-      onSettled: (id) => {
-        apiUtils.jobTracker.getJobTrackerApplications.invalidate();
-
-        if (!id) return;
-
-        apiUtils.jobTracker.getJobTrackerApplications.setData(
-          undefined,
-          (oldData) => {
-            if (!oldData) return oldData;
-            // find the item with the string id
-            const optimisticItem = oldData.find(
-              (item) => typeof item.id === "string",
-            );
-
-            if (!optimisticItem) return oldData;
-
-            return oldData.map((oldItem) => {
-              if (oldItem.id === optimisticItem.id) {
-                oldItem.id = id;
-              }
-              return oldItem;
-            });
-          },
-        );
-      },
-    });
+    api.jobTracker.addJobTrackerApplication.useMutation();
   const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const form = useExtendedForm<JobTrackerApplicationSchema>(
     jobTrackerApplicationSchema,

@@ -1,4 +1,7 @@
-import type { JobTrackerApplicationStatus } from "@/server/db/schema";
+import type {
+  JobTrackerApplication,
+  JobTrackerApplicationStatus,
+} from "@/server/db/schema";
 import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -7,7 +10,7 @@ import { type ReactNode, useMemo } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import AddJobTrackerDrawer from "./AddJobTrackerDrawer";
-import { type Job, JobCard } from "./JobCard";
+import { JobCard } from "./JobCard";
 
 export interface Column {
   id: JobTrackerApplicationStatus;
@@ -23,14 +26,14 @@ export interface ColumnDragData {
 
 interface BoardColumnProps {
   column: Column;
-  tasks: Job[];
+  jobs: JobTrackerApplication[];
   isOverlay?: boolean;
 }
 
-export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
+export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
   const tasksIds = useMemo(() => {
-    return tasks.map((task) => task.id);
-  }, [tasks]);
+    return jobs.map((jobs) => jobs.id);
+  }, [jobs]);
 
   const { setNodeRef, transform, transition, isDragging } = useSortable({
     id: column.id as UniqueIdentifier,
@@ -74,8 +77,8 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
       <ScrollArea>
         <CardContent className="flex flex-grow flex-col gap-2 p-2">
           <SortableContext items={tasksIds}>
-            {tasks.map((task) => (
-              <JobCard key={task.id} task={task} />
+            {jobs.map((job) => (
+              <JobCard key={job.id} job={job} />
             ))}
           </SortableContext>
         </CardContent>
