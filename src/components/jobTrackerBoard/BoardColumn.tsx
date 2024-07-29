@@ -1,13 +1,13 @@
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import type { JobTrackerApplicationStatus } from "@/server/db/schema";
 import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { type ReactNode, useMemo } from "react";
 import { cva } from "class-variance-authority";
+import { type ReactNode, useMemo } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { type Job, JobCard } from "./JobCard";
 import AddJobTrackerDrawer from "./AddJobTrackerDrawer";
-import type { JobTrackerApplicationStatus } from "@/server/db/schema";
+import { type Job, JobCard } from "./JobCard";
 
 export interface Column {
   id: JobTrackerApplicationStatus;
@@ -49,7 +49,7 @@ export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
   };
 
   const variants = cva(
-    "h-[500px] max-h-[500px] w-[300px] max-w-full flex flex-col flex-shrink-0 snap-center",
+    "h-[calc(100vh-250px)] max-h-[calc(100vh-250px)] w-[300px] max-w-full flex flex-col flex-shrink-0 snap-center",
     {
       variants: {
         dragging: {
