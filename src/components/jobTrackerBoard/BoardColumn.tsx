@@ -1,3 +1,5 @@
+import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import type {
   JobTrackerApplication,
   JobTrackerApplicationStatus,
@@ -63,6 +65,8 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
     },
   );
 
+  const ColumnIcon = JOB_TRACKER_COLUMN_TO_ICON_MAP[column.id];
+
   return (
     <Card
       ref={setNodeRef}
@@ -71,8 +75,20 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
         dragging: isOverlay ? "overlay" : isDragging ? "over" : undefined,
       })}
     >
-      <CardHeader className="p-4 font-semibold border-b-2 text-left flex flex-row space-between items-center">
-        <span className="ml-auto"> {column.title}</span>
+      <CardHeader
+        className={cn(
+          "p-4 font-semibold rounded-md rounded-b-none",
+          column.id === "applied" && "bg-amber-50 dark:bg-amber-900",
+          column.id === "shortlist" && "bg-blue-50 dark:bg-blue-900",
+          column.id === "interview" && "bg-violet-50 dark:bg-violet-900",
+          column.id === "offer" && "bg-green-50 dark:bg-green-900",
+          column.id === "rejected" && "bg-red-50 dark:bg-red-900",
+        )}
+      >
+        <span className="flex items-center gap-1">
+          {<ColumnIcon size={20} />}
+          {column.title}
+        </span>
       </CardHeader>
       <ScrollArea>
         <CardContent className="flex flex-grow flex-col gap-2 p-2">
