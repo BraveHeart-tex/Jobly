@@ -9,7 +9,6 @@ import { api } from "@/trpc/react";
 import {
   type Announcements,
   DndContext,
-  type DragEndEvent,
   type DragOverEvent,
   DragOverlay,
   type DragStartEvent,
@@ -171,10 +170,7 @@ export function JobTrackerApplicationsBoard({
     },
   };
 
-  const onDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (active.id === over?.id) return;
-
+  const onDragEnd = () => {
     const tmpTrackedApplications = [...trackedApplications];
     const groupedApplications = groupBy(tmpTrackedApplications, "status");
 
@@ -239,10 +235,20 @@ export function JobTrackerApplicationsBoard({
             activeApplication.status !== overApplication.status
           ) {
             activeApplication.status = overApplication.status;
-            return arrayMove(applications, activeIndex, overIndex - 1);
+            return arrayMove(applications, activeIndex, overIndex - 1).map(
+              (item, index) => ({
+                ...item,
+                displayOrder: index + 1,
+              }),
+            );
           }
 
-          return arrayMove(applications, activeIndex, overIndex);
+          return arrayMove(applications, activeIndex, overIndex).map(
+            (item, index) => ({
+              ...item,
+              displayOrder: index + 1,
+            }),
+          );
         });
       });
     }
