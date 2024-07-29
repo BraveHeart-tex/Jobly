@@ -24,7 +24,6 @@ export const getAvatarPlaceholder = (text: string): string => {
     return initial;
   });
 
-  // Join the initials and slice to ensure only 2 characters
   return initials.join("").slice(0, 2);
 };
 
@@ -143,3 +142,38 @@ export const mapItemDisplayOrderByIndex = (
   ...item,
   displayOrder: index + 1,
 });
+
+export const compareMatchingKeys = (
+  obj1: Record<string, unknown> | null | undefined,
+  obj2: Record<string, unknown> | null | undefined,
+): boolean => {
+  if (
+    obj1 === null ||
+    obj2 === null ||
+    obj1 === undefined ||
+    obj2 === undefined
+  ) {
+    return obj1 === obj2;
+  }
+
+  const matchingKeys = Object.keys(obj1).filter((key) => key in obj2);
+  return matchingKeys.every((key: string) => {
+    const value1 = obj1[key];
+    const value2 = obj2[key];
+    if (
+      value1 === null ||
+      value2 === null ||
+      value1 === undefined ||
+      value2 === undefined
+    ) {
+      return value1 === value2;
+    }
+    if (typeof value1 === "object" && typeof value2 === "object") {
+      return compareMatchingKeys(
+        value1 as Record<string, unknown>,
+        value2 as Record<string, unknown>,
+      );
+    }
+    return value1 === value2;
+  });
+};

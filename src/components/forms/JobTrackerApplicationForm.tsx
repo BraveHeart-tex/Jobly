@@ -29,6 +29,7 @@ import { Textarea } from "../ui/textarea";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import type { JobTrackerApplication } from "@/server/db/schema";
 import { toast } from "sonner";
+import { compareMatchingKeys } from "@/lib/utils";
 
 type JobTrackerApplicationFormProps = {
   defaultValues?: Partial<JobTrackerApplicationSchema>;
@@ -45,7 +46,7 @@ const JobTrackerApplicationForm = ({
   const setApplications = useJobTrackerBoardStore(
     (state) => state.setTrackedApplications,
   );
-  const { mutate: addJobTrackerApplication, isPending } =
+  const { mutate: addJobTrackerApplication, isPending: isAdding } =
     api.jobTracker.addJobTrackerApplication.useMutation({
       onMutate: (variables) => {
         onFormSubmit?.();
@@ -74,6 +75,31 @@ const JobTrackerApplicationForm = ({
         });
       },
     });
+  const { mutate: updateJobTrackerApplication, isPending: isUpdating } =
+    api.jobTracker.updateJobTrackerApplication.useMutation({
+      onMutate: (variables) => {
+        onFormSubmit?.();
+        toast.success("Application updated successfully.");
+        const oldApplications = trackedApplications;
+        setApplications((prev) =>
+          prev.map((application) => {
+            if (application.id === variables.id) {
+              return {
+                ...application,
+                ...variables,
+                updatedAt: new Date().toISOString(),
+              };
+            }
+            return application;
+          }),
+        );
+        return { oldApplications };
+      },
+      onError: (_error, _variables, context) => {
+        toast.error("Something went wrong, please try again later.");
+        setApplications(context?.oldApplications ?? []);
+      },
+    });
   const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const form = useExtendedForm<JobTrackerApplicationSchema>(
     jobTrackerApplicationSchema,
@@ -87,15 +113,24 @@ const JobTrackerApplicationForm = ({
   const mode = form.watch("id") ? ("edit" as const) : ("create" as const);
 
   const onSubmit = (values: JobTrackerApplicationSchema) => {
-    if (isPending) return;
+    if (isAdding || isUpdating) return;
 
-    // TODO:
     if (mode === "create") {
       addJobTrackerApplication(values);
     }
 
-    // TODO:
     if (mode === "edit") {
+      const hasMadeNoChanges = compareMatchingKeys(defaultValues, values);
+      if (hasMadeNoChanges) {
+        toast.info("You didn't make any changes.");
+        return;
+      }
+
+      updateJobTrackerApplication({
+        ...values,
+        // biome-ignore lint/style/noNonNullAssertion: ID will be here because we are in edit mode
+        id: values.id!,
+      });
     }
   };
 
@@ -217,7 +252,7 @@ const JobTrackerApplicationForm = ({
         <div className="mt-4 flex items-center gap-1">
           <DialogClose asChild>
             <Button
-              disabled={isPending}
+              disabled={isAdding || isUpdating}
               type="button"
               variant="outline"
               className="w-full lg:w-max"
@@ -226,7 +261,7 @@ const JobTrackerApplicationForm = ({
             </Button>
           </DialogClose>
           <Button
-            disabled={isPending}
+            disabled={isAdding || isUpdating}
             type="submit"
             className="w-full lg:w-max"
           >

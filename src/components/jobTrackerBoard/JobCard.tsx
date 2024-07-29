@@ -176,7 +176,12 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
           </SheetDescription>
         </SheetHeader>
         <div className="mt-8">
-          <JobTrackerApplicationForm defaultValues={job} />
+          <JobTrackerApplicationForm
+            defaultValues={job}
+            onFormSubmit={() => {
+              setIsOpen(false);
+            }}
+          />
         </div>
       </SheetContent>
     </Sheet>
