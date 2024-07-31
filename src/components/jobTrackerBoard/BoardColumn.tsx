@@ -76,6 +76,9 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
         toast.error("Something went wrong, please try again later.");
         setTrackedApplications(context?.oldApplications ?? []);
       },
+      onSuccess: () => {
+        toast.success("Applications deleted successfully.");
+      },
     });
 
   const [open, setOpen] = useState(false);
