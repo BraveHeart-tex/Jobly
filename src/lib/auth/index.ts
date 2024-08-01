@@ -1,6 +1,6 @@
 import { env } from "@/env.js";
 import { db } from "@/server/db";
-import { type User, session, user } from "@/server/db/schema";
+import { type User, sessions, users } from "@/server/db/schema";
 import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
 
@@ -9,7 +9,7 @@ type DatabaseUserAttributes = Pick<
   "id" | "email" | "role" | "firstName" | "lastName"
 >;
 
-const adapter = new DrizzleMySQLAdapter(db, session, user);
+const adapter = new DrizzleMySQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {

@@ -3,8 +3,8 @@ import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
 import { db } from "@/server/db";
 import {
   type JobInsertModel,
-  company,
-  job,
+  companies,
+  jobs,
   userBookmarksJob,
   userViewsJob,
 } from "@/server/db/schema";
@@ -29,24 +29,24 @@ export const getJobListings = async ({
 
   const jobDetailsListQuery = db
     .selectDistinct({
-      ...getTableColumns(job),
+      ...getTableColumns(jobs),
       company: {
-        name: company.name,
-        logo: company.logo,
+        name: companies.name,
+        logo: companies.logo,
       },
       userViewedJob: userViewsJob.viewerUserId,
       userBookmarkedJob: userBookmarksJob.userId,
     })
-    .from(job)
-    .innerJoin(company, eq(job.companyId, company.id))
+    .from(jobs)
+    .innerJoin(companies, eq(jobs.companyId, companies.id))
     .where(
       and(
-        or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)),
-        workType ? eq(job.workType, workType) : undefined,
-        employmentType ? eq(job.employmentType, employmentType) : undefined,
+        or(like(jobs.title, `%${query}%`), like(companies.name, `%${query}%`)),
+        workType ? eq(jobs.workType, workType) : undefined,
+        employmentType ? eq(jobs.employmentType, employmentType) : undefined,
       ),
     )
-    .orderBy(desc(job.createdAt))
+    .orderBy(desc(jobs.createdAt))
     .limit(limit)
     .offset(skipAmount)
     .$dynamic();
@@ -55,13 +55,13 @@ export const getJobListings = async ({
     .select({
       count: sql<number>`count(*)`.as("count"),
     })
-    .from(job)
-    .innerJoin(company, eq(job.companyId, company.id))
+    .from(jobs)
+    .innerJoin(companies, eq(jobs.companyId, companies.id))
     .where(
       and(
-        or(like(job.title, `%${query}%`), like(company.name, `%${query}%`)),
-        workType ? eq(job.workType, workType) : undefined,
-        employmentType ? eq(job.employmentType, employmentType) : undefined,
+        or(like(jobs.title, `%${query}%`), like(companies.name, `%${query}%`)),
+        workType ? eq(jobs.workType, workType) : undefined,
+        employmentType ? eq(jobs.employmentType, employmentType) : undefined,
       ),
     )
     .$dynamic();
@@ -106,38 +106,38 @@ export const getJobById = async ({
 }: { jobId: number; userId: number }) => {
   const jobDetails = await db
     .selectDistinct({
-      ...getTableColumns(job),
+      ...getTableColumns(jobs),
       company: {
-        name: company.name,
-        logo: company.logo,
+        name: companies.name,
+        logo: companies.logo,
       },
       userViewedJob: userViewsJob.viewerUserId,
       userBookmarkedJob: userBookmarksJob.userId,
     })
-    .from(job)
-    .innerJoin(company, eq(job.companyId, company.id))
+    .from(jobs)
+    .innerJoin(companies, eq(jobs.companyId, companies.id))
     .leftJoin(
       userViewsJob,
       and(
-        eq(job.id, userViewsJob.viewedJobId),
+        eq(jobs.id, userViewsJob.viewedJobId),
         eq(userViewsJob.viewerUserId, userId),
       ),
     )
     .leftJoin(
       userBookmarksJob,
       and(
-        eq(job.id, userBookmarksJob.jobId),
+        eq(jobs.id, userBookmarksJob.jobId),
         eq(userBookmarksJob.userId, userId),
       ),
     )
-    .where(and(eq(job.id, jobId)));
+    .where(and(eq(jobs.id, jobId)));
   return jobDetails[0];
 };
 
 export const updateJob = async (
   data: MakeFieldsRequired<Partial<JobInsertModel>, "id">,
 ) => {
-  return db.update(job).set(data).where(eq(job.id, data.id));
+  return db.update(jobs).set(data).where(eq(jobs.id, data.id));
 };
 
 export const markJobAsViewed = async ({
@@ -178,11 +178,11 @@ export const getBookmarkedJobs = async (userId: number) => {
   return db
     .select({
       // TODO: Get only the needed columns later on instead of spreading
-      ...getTableColumns(job),
+      ...getTableColumns(jobs),
       bookmarkedAt: userBookmarksJob.bookmarkedAt,
     })
-    .from(job)
-    .innerJoin(userBookmarksJob, eq(job.id, userBookmarksJob.jobId))
+    .from(jobs)
+    .innerJoin(userBookmarksJob, eq(jobs.id, userBookmarksJob.jobId))
     .where(eq(userBookmarksJob.userId, userId));
 };
 
@@ -190,10 +190,10 @@ export const getViewedJobs = async (userId: number) => {
   return db
     .select({
       // TODO: Get only the needed columns later on instead of spreading
-      ...getTableColumns(job),
+      ...getTableColumns(jobs),
       viewedAt: userViewsJob.viewedAt,
     })
-    .from(job)
-    .innerJoin(userViewsJob, eq(job.id, userViewsJob.viewedJobId))
+    .from(jobs)
+    .innerJoin(userViewsJob, eq(jobs.id, userViewsJob.viewedJobId))
     .where(eq(userViewsJob.viewerUserId, userId));
 };

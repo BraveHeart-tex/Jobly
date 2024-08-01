@@ -26,14 +26,14 @@ import { capitalizeString } from "@/lib/utils";
 import {
   type JobEmploymentType,
   type JobWorkType,
-  job,
+  jobs,
 } from "@/server/db/schema";
 import { SlidersHorizontal } from "lucide-react";
 
 const employmentOptions: {
   label: Capitalize<JobEmploymentType>;
   value: JobEmploymentType;
-}[] = job.employmentType.enumValues.map((employmentType) => ({
+}[] = jobs.employmentType.enumValues.map((employmentType) => ({
   label: capitalizeString<JobEmploymentType>(employmentType),
   value: employmentType,
 }));
@@ -41,7 +41,7 @@ const employmentOptions: {
 const workTypeOptions: {
   label: Capitalize<JobWorkType>;
   value: JobWorkType;
-}[] = job.workType.enumValues.map((workType) => ({
+}[] = jobs.workType.enumValues.map((workType) => ({
   label: capitalizeString<JobWorkType>(workType),
   value: workType,
 }));

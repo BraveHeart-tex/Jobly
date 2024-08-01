@@ -14,7 +14,7 @@ import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
 import type { User } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
-import type { RouterOutputs } from "router-types";
+import type { RouterOutputs } from "trpc-router-types";
 import { toast } from "sonner";
 
 type SignUpFormProps = {

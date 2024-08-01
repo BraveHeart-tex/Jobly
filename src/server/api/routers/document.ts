@@ -1,5 +1,9 @@
 import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
-import { document, field, section } from "@/server/db/schema";
+import {
+  documentSectionFields,
+  documentSections,
+  documents,
+} from "@/server/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import * as documentService from "../services/document.service";
@@ -8,7 +12,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const documentRouter = createTRPCRouter({
   createDocument: protectedProcedure
     .input(
-      createInsertSchema(document).omit({
+      createInsertSchema(documents).omit({
         userId: true,
       }),
     )
@@ -22,7 +26,7 @@ export const documentRouter = createTRPCRouter({
       );
     }),
   getDocumentDetails: protectedProcedure
-    .input(createInsertSchema(document).required().pick({ id: true }))
+    .input(createInsertSchema(documents).required().pick({ id: true }))
     .query(async ({ input, ctx }) => {
       return documentService.getDocumentDetails({
         id: input.id,
@@ -35,7 +39,7 @@ export const documentRouter = createTRPCRouter({
   }),
   updateDocument: protectedProcedure
     .input(
-      createInsertSchema(document)
+      createInsertSchema(documents)
         .partial()
         .extend({ id: z.number().min(1) }),
     )
@@ -59,7 +63,7 @@ export const documentRouter = createTRPCRouter({
   addFieldsWithValues: protectedProcedure
     .input(
       z.object({
-        fields: z.array(createInsertSchema(field)),
+        fields: z.array(createInsertSchema(documentSectionFields)),
       }),
     )
     .mutation(async ({ input }) => {
@@ -75,7 +79,7 @@ export const documentRouter = createTRPCRouter({
       return documentService.removeFields(input.fieldIds);
     }),
   addSectionByInternalTag: protectedProcedure
-    .input(createInsertSchema(section))
+    .input(createInsertSchema(documentSections))
     .mutation(async ({ input }) => {
       return documentService.addSectionByInternalTag(input);
     }),

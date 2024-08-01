@@ -1,12 +1,17 @@
-import { document, field, fieldValue, section } from "@/server/db/schema";
+import {
+  documentSectionFieldValues,
+  documentSectionFields,
+  documentSections,
+  documents,
+} from "@/server/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const saveDocumentDetailsSchema = z.object({
-  document: createInsertSchema(document),
-  sections: z.array(createInsertSchema(section)),
-  fields: z.array(createInsertSchema(field)),
-  fieldValues: z.array(createInsertSchema(fieldValue)),
+  document: createInsertSchema(documents),
+  sections: z.array(createInsertSchema(documentSections)),
+  fields: z.array(createInsertSchema(documentSectionFields)),
+  fieldValues: z.array(createInsertSchema(documentSectionFieldValues)),
 });
 
 export type SaveDocumentDetailsSchema = z.infer<

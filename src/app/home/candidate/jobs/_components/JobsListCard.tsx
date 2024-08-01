@@ -3,7 +3,7 @@ import { useJobsListPageSearchParams } from "@/app/home/candidate/jobs/_hooks/us
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import { forwardRef } from "react";
-import type { RouterOutputs } from "router-types";
+import type { RouterOutputs } from "trpc-router-types";
 import CompanyLogo from "./CompanyLogo";
 
 type JobsListCardProps = {

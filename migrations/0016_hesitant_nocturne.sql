@@ -1,1 +1,0 @@
-ALTER TABLE `Section` MODIFY COLUMN `internalSectionTag` enum('personal-details','professional-summary','employment-history','education','websites-social-links','skills','custom','internships','extra-curricular-activities','hobbies','references','courses','languages') NOT NULL;

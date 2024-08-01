@@ -1,1 +1,0 @@
-ALTER TABLE `Section` ADD `itemCountPerContainer` int DEFAULT 0 NOT NULL;

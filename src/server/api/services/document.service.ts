@@ -16,10 +16,10 @@ import {
   type SectionFieldInsertModel,
   type SectionFieldValue,
   type SectionInsertModel,
-  document as documentSchema,
-  field as fieldSchema,
-  fieldValue as fieldValueSchema,
-  section as sectionSchema,
+  documents as documentSchema,
+  documentSectionFields as fieldSchema,
+  documentSectionFieldValues as fieldValueSchema,
+  documentSections as sectionSchema,
 } from "@/server/db/schema";
 import {
   getFieldInsertTemplate,
@@ -155,7 +155,7 @@ export const getDocumentDetails = async ({
   id: Document["id"];
   userId: User["id"];
 }): Promise<DocumentBuilderConfig | { error: string }> => {
-  const result = await db.query.document.findFirst({
+  const result = await db.query.documents.findFirst({
     where: and(eq(documentSchema.id, id), eq(documentSchema.userId, userId)),
     with: {
       sections: {

@@ -10,7 +10,7 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import type React from "react";
-import type { AppRouter } from "router-types";
+import type { AppRouter } from "trpc-router-types";
 import { toast } from "sonner";
 import SuperJSON from "superjson";
 

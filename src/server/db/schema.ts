@@ -17,8 +17,8 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 
-export const user = mysqlTable(
-  "User",
+export const users = mysqlTable(
+  "Users",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     email: varchar("email", {
@@ -39,15 +39,15 @@ export const user = mysqlTable(
   },
 );
 
-export const session = mysqlTable(
-  "Session",
+export const sessions = mysqlTable(
+  "Sessions",
   {
     id: varchar("id", {
       length: 255,
     }).primaryKey(),
     userId: int("user_id")
       .notNull()
-      .references(() => user.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
       }),
     expiresAt: datetime("expires_at").notNull(),
@@ -60,8 +60,8 @@ export const session = mysqlTable(
   },
 );
 
-export const company = mysqlTable(
-  "Company",
+export const companies = mysqlTable(
+  "Companies",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     name: varchar("name", { length: 512 }).notNull(),
@@ -88,13 +88,13 @@ export const company = mysqlTable(
   },
 );
 
-export const job = mysqlTable(
-  "Job",
+export const jobs = mysqlTable(
+  "Jobs",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     companyId: int("companyId")
       .notNull()
-      .references(() => company.id, {
+      .references(() => companies.id, {
         onDelete: "cascade",
       }),
     title: varchar("title", { length: 512 }).notNull(),
@@ -135,20 +135,20 @@ export const job = mysqlTable(
   },
 );
 
-export const application = mysqlTable(
-  "Application",
+export const jobApplications = mysqlTable(
+  "Applications", // TODO
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
       }),
     jobId: int("jobId")
       .notNull()
-      .references(() => job.id),
-    coverLetterId: int("coverLetterId").references(() => document.id),
-    resumeId: int("resumeId").references(() => document.id),
+      .references(() => jobs.id),
+    coverLetterId: int("coverLetterId").references(() => documents.id),
+    resumeId: int("resumeId").references(() => documents.id),
     status: mysqlEnum("status", [
       "pending",
       "applied",
@@ -172,31 +172,31 @@ export const application = mysqlTable(
   },
 );
 
-export const applicationRelations = relations(application, ({ one }) => ({
-  job: one(job, {
-    fields: [application.jobId],
-    references: [job.id],
+export const applicationRelations = relations(jobApplications, ({ one }) => ({
+  job: one(jobs, {
+    fields: [jobApplications.jobId],
+    references: [jobs.id],
   }),
-  user: one(user, {
-    fields: [application.userId],
-    references: [user.id],
-  }),
-}));
-
-export const jobRelations = relations(job, ({ one }) => ({
-  company: one(company, {
-    fields: [job.companyId],
-    references: [company.id],
+  user: one(users, {
+    fields: [jobApplications.userId],
+    references: [users.id],
   }),
 }));
 
-export const jobSkill = mysqlTable(
-  "JobSkill",
+export const jobRelations = relations(jobs, ({ one }) => ({
+  company: one(companies, {
+    fields: [jobs.companyId],
+    references: [companies.id],
+  }),
+}));
+
+export const jobSkills = mysqlTable(
+  "JobSkills",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     jobId: int("jobId")
       .notNull()
-      .references(() => job.id, {
+      .references(() => jobs.id, {
         onDelete: "cascade",
       }),
     skillName: varchar("skillName", { length: 100 }).notNull(),
@@ -209,20 +209,20 @@ export const jobSkill = mysqlTable(
   },
 );
 
-export const jobSkillRelations = relations(jobSkill, ({ one }) => ({
-  job: one(job, {
-    fields: [jobSkill.jobId],
-    references: [job.id],
+export const jobSkillRelations = relations(jobSkills, ({ one }) => ({
+  job: one(jobs, {
+    fields: [jobSkills.jobId],
+    references: [jobs.id],
   }),
 }));
 
-export const userProfile = mysqlTable(
-  "UserProfile",
+export const userProfiles = mysqlTable(
+  "UserProfiles",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
       }),
     bio: text("bio"),
@@ -253,12 +253,12 @@ export const userFollowsCompany = mysqlTable(
     id: int("id").primaryKey().autoincrement().notNull(),
     companyId: int("companyId")
       .notNull()
-      .references(() => company.id, {
+      .references(() => companies.id, {
         onDelete: "cascade",
       }),
     userId: int("userId")
       .notNull()
-      .references(() => user.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
       }),
   },
@@ -274,16 +274,16 @@ export const userFollowsCompany = mysqlTable(
   },
 );
 
-export const resumeView = mysqlTable(
-  "ResumeView",
+export const resumeViews = mysqlTable(
+  "ResumeViews",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
-    viewerCompanyId: int("viewerCompanyId").references(() => company.id, {
+    viewerCompanyId: int("viewerCompanyId").references(() => companies.id, {
       onDelete: "cascade",
     }),
     viewedResumeId: int("viewedResumeId")
       .notNull()
-      .references(() => document.id),
+      .references(() => documents.id),
     viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
@@ -301,12 +301,12 @@ export const userBookmarksJob = mysqlTable(
     id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
       .notNull()
-      .references(() => user.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
       }),
     jobId: int("jobId")
       .notNull()
-      .references(() => job.id, {
+      .references(() => jobs.id, {
         onDelete: "cascade",
       }),
     bookmarkedAt: datetime("bookmarkedAt", { mode: "string" }).default(
@@ -331,12 +331,12 @@ export const userViewsJob = mysqlTable(
     id: int("id").primaryKey().autoincrement().notNull(),
     viewerUserId: int("viewerUserId")
       .notNull()
-      .references(() => user.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
       }),
     viewedJobId: int("viewedJobId")
       .notNull()
-      .references(() => job.id, {
+      .references(() => jobs.id, {
         onDelete: "cascade",
       }),
     viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
@@ -353,13 +353,13 @@ export const userViewsJob = mysqlTable(
   },
 );
 
-export const document = mysqlTable(
-  "Document",
+export const documents = mysqlTable(
+  "Documents",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     title: varchar("title", { length: 512 }).notNull(),
     userId: int("userId")
-      .references(() => user.id, { onDelete: "cascade" })
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
     language: varchar("language", { length: 100 }).notNull(),
@@ -379,20 +379,20 @@ export const document = mysqlTable(
   },
 );
 
-export const documentRelations = relations(document, ({ one, many }) => ({
-  user: one(user, {
-    fields: [document.userId],
-    references: [user.id],
+export const documentRelations = relations(documents, ({ one, many }) => ({
+  user: one(users, {
+    fields: [documents.userId],
+    references: [users.id],
   }),
-  sections: many(section),
+  sections: many(documentSections),
 }));
 
-export const section = mysqlTable(
-  "Section",
+export const documentSections = mysqlTable(
+  "DocumentSections",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     documentId: int("documentId")
-      .references(() => document.id, { onDelete: "cascade" })
+      .references(() => documents.id, { onDelete: "cascade" })
       .notNull(),
     name: varchar("name", { length: 100 }).notNull(),
     fieldsContainerType: mysqlEnum("fieldsContainerType", [
@@ -429,20 +429,23 @@ export const section = mysqlTable(
   },
 );
 
-export const sectionRelations = relations(section, ({ one, many }) => ({
-  document: one(document, {
-    fields: [section.documentId],
-    references: [document.id],
+export const sectionRelations = relations(
+  documentSections,
+  ({ one, many }) => ({
+    document: one(documents, {
+      fields: [documentSections.documentId],
+      references: [documents.id],
+    }),
+    fields: many(documentSectionFields),
   }),
-  fields: many(field),
-}));
+);
 
-export const field = mysqlTable(
-  "Field",
+export const documentSectionFields = mysqlTable(
+  "DocumentSectionFields",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     sectionId: int("sectionId")
-      .references(() => section.id, { onDelete: "cascade" })
+      .references(() => documentSections.id, { onDelete: "cascade" })
       .notNull(),
     fieldName: varchar("fieldName", { length: 100 }).notNull(),
     fieldType: varchar("fieldType", { length: 100 }).notNull(),
@@ -456,20 +459,23 @@ export const field = mysqlTable(
   },
 );
 
-export const fieldRelations = relations(field, ({ one, many }) => ({
-  section: one(section, {
-    fields: [field.sectionId],
-    references: [section.id],
+export const fieldRelations = relations(
+  documentSectionFields,
+  ({ one, many }) => ({
+    section: one(documentSections, {
+      fields: [documentSectionFields.sectionId],
+      references: [documentSections.id],
+    }),
+    fieldValues: many(documentSectionFieldValues),
   }),
-  fieldValues: many(fieldValue),
-}));
+);
 
-export const fieldValue = mysqlTable(
-  "FieldValue",
+export const documentSectionFieldValues = mysqlTable(
+  "DocumentSectionFieldValues",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     fieldId: int("fieldId")
-      .references(() => field.id, { onDelete: "cascade" })
+      .references(() => documentSectionFields.id, { onDelete: "cascade" })
       .notNull(),
     value: text("value"),
   },
@@ -481,14 +487,17 @@ export const fieldValue = mysqlTable(
   },
 );
 
-export const fieldValueRelations = relations(fieldValue, ({ one }) => ({
-  field: one(field, {
-    fields: [fieldValue.fieldId],
-    references: [field.id],
+export const fieldValueRelations = relations(
+  documentSectionFieldValues,
+  ({ one }) => ({
+    field: one(documentSectionFields, {
+      fields: [documentSectionFieldValues.fieldId],
+      references: [documentSectionFields.id],
+    }),
   }),
-}));
+);
 
-export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
+export const jobTrackerApplications = mysqlTable("JobTrackerApplications", {
   id: int("id").primaryKey().autoincrement().notNull(),
   status: mysqlEnum("status", [
     "shortlist",
@@ -498,7 +507,7 @@ export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
     "rejected",
   ]).notNull(),
   userId: int("userId")
-    .references(() => user.id, { onDelete: "cascade" })
+    .references(() => users.id, { onDelete: "cascade" })
     .notNull(),
   company: varchar("company", { length: 512 }).notNull(),
   jobTitle: varchar("jobTitle", { length: 512 }).notNull(),
@@ -517,25 +526,31 @@ export const jobTrackerApplications = mysqlTable("JobTrackerApplication", {
     .$onUpdate(() => sql`(now())`),
 });
 
-export type User = InferSelectModel<typeof user>;
+export type User = InferSelectModel<typeof users>;
 
-export type JobInsertModel = InferInsertModel<typeof job>;
-export type Job = InferSelectModel<typeof job>;
-export type JobEmploymentType = (typeof job.employmentType.enumValues)[number];
-export type JobWorkType = (typeof job.workType.enumValues)[number];
+export type JobInsertModel = InferInsertModel<typeof jobs>;
+export type Job = InferSelectModel<typeof jobs>;
+export type JobEmploymentType = (typeof jobs.employmentType.enumValues)[number];
+export type JobWorkType = (typeof jobs.workType.enumValues)[number];
 
-export type Document = InferSelectModel<typeof document>;
-export type DocumentInsertModel = InferInsertModel<typeof document>;
-export type DocumentType = (typeof document.type.enumValues)[number];
+export type Document = InferSelectModel<typeof documents>;
+export type DocumentInsertModel = InferInsertModel<typeof documents>;
+export type DocumentType = (typeof documents.type.enumValues)[number];
 
-export type Section = InferSelectModel<typeof section>;
-export type SectionInsertModel = InferInsertModel<typeof section>;
+export type Section = InferSelectModel<typeof documentSections>;
+export type SectionInsertModel = InferInsertModel<typeof documentSections>;
 
-export type SectionField = InferSelectModel<typeof field>;
-export type SectionFieldInsertModel = InferInsertModel<typeof field>;
+export type SectionField = InferSelectModel<typeof documentSectionFields>;
+export type SectionFieldInsertModel = InferInsertModel<
+  typeof documentSectionFields
+>;
 
-export type SectionFieldValue = InferSelectModel<typeof fieldValue>;
-export type SectionFieldValueInsertModel = InferInsertModel<typeof fieldValue>;
+export type SectionFieldValue = InferSelectModel<
+  typeof documentSectionFieldValues
+>;
+export type SectionFieldValueInsertModel = InferInsertModel<
+  typeof documentSectionFieldValues
+>;
 
 export type JobTrackerApplication = InferSelectModel<
   typeof jobTrackerApplications

@@ -1,4 +1,4 @@
-import { job, userBookmarksJob, userViewsJob } from "@/server/db/schema";
+import { jobs, userBookmarksJob, userViewsJob } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import type { MySqlSelect } from "drizzle-orm/mysql-core";
 
@@ -11,14 +11,14 @@ export function withBookmarkJoin<T extends MySqlSelect>(
     ? qb.innerJoin(
         userBookmarksJob,
         and(
-          eq(job.id, userBookmarksJob.jobId),
+          eq(jobs.id, userBookmarksJob.jobId),
           eq(userBookmarksJob.userId, userId),
         ),
       )
     : qb.leftJoin(
         userBookmarksJob,
         and(
-          eq(job.id, userBookmarksJob.jobId),
+          eq(jobs.id, userBookmarksJob.jobId),
           eq(userBookmarksJob.userId, userId),
         ),
       );
@@ -33,14 +33,14 @@ export function withUserViewsJobJoin<T extends MySqlSelect>(
     ? qb.innerJoin(
         userViewsJob,
         and(
-          eq(job.id, userViewsJob.viewedJobId),
+          eq(jobs.id, userViewsJob.viewedJobId),
           eq(userViewsJob.viewerUserId, userId),
         ),
       )
     : qb.leftJoin(
         userViewsJob,
         and(
-          eq(job.id, userViewsJob.viewedJobId),
+          eq(jobs.id, userViewsJob.viewedJobId),
           eq(userViewsJob.viewerUserId, userId),
         ),
       );

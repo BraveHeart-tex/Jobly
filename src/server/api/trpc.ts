@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError, z } from "zod";
-import { user } from "../db/schema";
+import { users } from "../db/schema";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const { session, user } = await uncachedValidateRequest();
@@ -38,7 +38,7 @@ export const protectedProcedure = t.procedure
   .input(
     z
       .object({
-        allowedRoles: z.array(z.enum(user.role.enumValues)).optional(),
+        allowedRoles: z.array(z.enum(users.role.enumValues)).optional(),
       })
       .optional(),
   )

@@ -11,6 +11,7 @@ import { useDeleteBookmark } from "../_hooks/useDeleteBookmark";
 import { useJobsListPageSearchParams } from "../_hooks/useJobsListPageSearchParams";
 import { useMarkJobAsViewed } from "../_hooks/useMarkJobAsViewed";
 import CompanyLogo from "./CompanyLogo";
+import ApplyToJobDialog from "./ApplyToJobDialog";
 
 type JobDetailsProps = {
   currentJobId: number;
@@ -74,7 +75,7 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
 
   const renderActionButtons = () => (
     <div className="grid grid-cols-2 gap-2 ml-auto lg:ml-0">
-      <Button>Apply Now</Button>
+      <ApplyToJobDialog jobDetails={jobDetails} />
       <Button
         variant="secondary"
         className="flex items-center gap-1"
