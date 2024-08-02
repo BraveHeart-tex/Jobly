@@ -7,6 +7,7 @@ import type {
 } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import {
+  bulkDeleteFields,
   deleteDocumentById,
   getDocumentWithSectionsAndFields,
   getDocumentsByUserId,
@@ -34,7 +35,7 @@ import {
   getPredefinedDocumentSections,
   normalizeDocumentStructure,
 } from "@/server/utils/document.service.utils";
-import { eq, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const getUserDocuments = async (userId: User["id"]) => {
@@ -172,24 +173,19 @@ export const getDocumentDetails = async ({
   return normalizeDocumentStructure(document);
 };
 
-export const saveDocumentDetails = async (
+export const saveDocumentAndRelatedEntities = async (
   input: Partial<SaveDocumentDetailsSchema> & { userId: User["id"] },
 ) => {
   const { document, sections, fields, fieldValues } = input;
-
   await db.transaction(async (trx) => {
     if (document) {
       await upsertDocument(trx, document);
     }
-
     const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
-
     const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
-
     const fieldValueInserts = fieldValues
       ? upsertSectionFieldValues(trx, fieldValues)
       : undefined;
-
     await Promise.all([sectionInserts, fieldInserts, fieldValueInserts]);
   });
 };
@@ -220,7 +216,7 @@ export const addFieldsWithValues = async (
 };
 
 export const removeFields = async (fieldIds: SectionField["id"][]) => {
-  return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
+  return bulkDeleteFields(fieldIds);
 };
 
 export const addSectionByInternalTag = async (data: SectionInsertModel) => {

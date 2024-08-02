@@ -51,11 +51,11 @@ export const documentRouter = createTRPCRouter({
     .mutation(async ({ input: { documentId } }) => {
       return documentService.deleteDocument(documentId);
     }),
-  saveDocumentDetails: protectedProcedure
+  saveDocumentAndRelatedEntities: protectedProcedure
     .input(saveDocumentDetailsSchema.partial())
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      return documentService.saveDocumentDetails({
+      return documentService.saveDocumentAndRelatedEntities({
         ...input,
         userId,
       });

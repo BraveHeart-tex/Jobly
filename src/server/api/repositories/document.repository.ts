@@ -3,12 +3,13 @@ import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSch
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   type Document,
+  type SectionField,
   documents as documentSchema,
   documentSectionFields as fieldSchema,
   documentSectionFieldValues as fieldValueSchema,
   documentSections as sectionSchema,
 } from "@/server/db/schema";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const upsertDocument = async (
@@ -93,4 +94,8 @@ export const getDocumentsByUserId = (userId: User["id"]) => {
 
 export const deleteDocumentById = (documentId: Document["id"]) => {
   return db.delete(documentSchema).where(eq(documentSchema.id, documentId));
+};
+
+export const bulkDeleteFields = (fieldIds: SectionField["id"][]) => {
+  return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
 };
