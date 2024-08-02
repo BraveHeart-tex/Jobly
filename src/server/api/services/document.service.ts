@@ -7,7 +7,13 @@ import type {
 } from "@/lib/types";
 import { exclude } from "@/lib/utils";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
-import { buildConflictUpdateColumns, db } from "@/server/db";
+import {
+  upsertDocument,
+  upsertSectionFieldValues,
+  upsertSectionFields,
+  upsertSections,
+} from "@/server/api/repositories/document.repository";
+import { db } from "@/server/db";
 import {
   type Document,
   type DocumentInsertModel,
@@ -194,42 +200,15 @@ export const saveDocumentDetails = async (
 
   await db.transaction(async (trx) => {
     if (document) {
-      await trx.insert(documentSchema).values(document).onDuplicateKeyUpdate({
-        set: document,
-      });
+      await upsertDocument(trx, document);
     }
 
-    const sectionInserts = sections
-      ? trx
-          .insert(sectionSchema)
-          .values(sections.map((sectionData) => sectionData))
-          .onDuplicateKeyUpdate({
-            set: buildConflictUpdateColumns(sectionSchema, [
-              "id",
-              "documentId",
-            ]),
-          })
-      : undefined;
+    const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
 
-    const fieldInserts = fields
-      ? trx
-          .insert(fieldSchema)
-          .values(fields.map((fieldData) => fieldData))
-          .onDuplicateKeyUpdate({
-            set: buildConflictUpdateColumns(fieldSchema, ["id", "sectionId"]),
-          })
-      : undefined;
+    const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
 
     const fieldValueInserts = fieldValues
-      ? trx
-          .insert(fieldValueSchema)
-          .values(fieldValues.map((fieldValue) => fieldValue))
-          .onDuplicateKeyUpdate({
-            set: buildConflictUpdateColumns(fieldValueSchema, [
-              "fieldId",
-              "id",
-            ]),
-          })
+      ? upsertSectionFieldValues(trx, fieldValues)
       : undefined;
 
     await Promise.all([sectionInserts, fieldInserts, fieldValueInserts]);

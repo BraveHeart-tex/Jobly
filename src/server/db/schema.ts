@@ -136,7 +136,7 @@ export const jobs = mysqlTable(
 );
 
 export const jobApplications = mysqlTable(
-  "Applications", // TODO
+  "Applications",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
