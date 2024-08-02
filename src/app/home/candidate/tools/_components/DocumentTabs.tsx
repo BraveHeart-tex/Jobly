@@ -1,5 +1,5 @@
 "use client";
-import { useCreateDocument } from "@/app/home/candidate/tools/_hooks/useCreateDocument";
+import { useCreateDocumentAndRelatedEntities } from "@/app/home/candidate/tools/_hooks/useCreateDocumentAndRelatedEntities";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CANDIDATE_ROUTES } from "@/lib/routes";
@@ -48,7 +48,8 @@ const DocumentTabs = () => {
     coverLetters,
     isPending: isPendingDocuments,
   } = useDocuments();
-  const { createDocument, isCreatingDocument } = useCreateDocument();
+  const { createDocumentAndRelatedEntities, isCreatingDocument } =
+    useCreateDocumentAndRelatedEntities();
   const [activeTab, setActiveTab] = useState<DocumentTabValue>(
     DOCUMENT_TAB_VALUES.RESUME,
   );
@@ -59,7 +60,7 @@ const DocumentTabs = () => {
   };
 
   const handleCreateNewDocument = async () => {
-    const documentInsertId = await createDocument(activeTab);
+    const documentInsertId = await createDocumentAndRelatedEntities(activeTab);
 
     if (!documentInsertId) {
       return toast.error(

@@ -9,10 +9,11 @@ import type {
   Section,
   SectionField,
   SectionFieldInsertModel,
+  SectionFieldValueInsertModel,
   SectionInsertModel,
 } from "@/server/db/schema";
 
-export const getFieldInsertTemplate = (
+export const getFieldInsertTemplateBySectionTag = (
   sectionId: Section["id"],
   templateOption: INTERNAL_SECTION_TAG,
 ) => {
@@ -232,7 +233,7 @@ export const getProfessionalSummaryFields = (
     },
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
-export const getPredefinedDocumentSections = (
+export const getPredefinedDocumentSectionsWithDocumentId = (
   documentId: Document["id"],
 ): SectionInsertModel[] => {
   return [
@@ -465,4 +466,31 @@ export const normalizeDocumentStructure = (
       section.fields.flatMap((field) => field.fieldValues),
     ),
   };
+};
+
+export const makeFieldInsertDTOs = (
+  sections: (SectionInsertModel & { id: Section["id"] })[],
+): SectionFieldInsertModel[] => {
+  const fieldInsertDTOs: SectionFieldInsertModel[] = [];
+
+  for (const section of sections) {
+    const sectionFields = getFieldInsertTemplateBySectionTag(
+      section.id,
+      section.internalSectionTag,
+    );
+
+    fieldInsertDTOs.push(...sectionFields);
+  }
+
+  return fieldInsertDTOs;
+};
+
+export const makeFieldValueInsertDTOs = (
+  sectionFields: (SectionFieldInsertModel & { id: SectionField["id"] })[],
+  defaultValues?: Record<string, string>,
+): SectionFieldValueInsertModel[] => {
+  return sectionFields.map((sectionField) => ({
+    fieldId: sectionField.id,
+    value: defaultValues?.[sectionField.fieldName] ?? "",
+  }));
 };

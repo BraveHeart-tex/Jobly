@@ -10,14 +10,14 @@ import * as documentService from "../services/document.service";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const documentRouter = createTRPCRouter({
-  createDocument: protectedProcedure
+  createDocumentAndRelatedEntities: protectedProcedure
     .input(
       createInsertSchema(documents).omit({
         userId: true,
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      return documentService.createDocument(
+      return documentService.createDocumentAndRelatedEntities(
         {
           ...input,
           userId: ctx.user.id,

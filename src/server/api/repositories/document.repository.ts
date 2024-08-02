@@ -1,4 +1,4 @@
-import type { Trx } from "@/lib/types";
+import type { MakeFieldsRequired, Trx } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
@@ -16,9 +16,13 @@ export const upsertDocument = async (
   trx: Trx,
   document: SaveDocumentDetailsSchema["document"],
 ) => {
-  return trx.insert(documentSchema).values(document).onDuplicateKeyUpdate({
-    set: document,
-  });
+  return trx
+    .insert(documentSchema)
+    .values(document)
+    .onDuplicateKeyUpdate({
+      set: document,
+    })
+    .$returningId();
 };
 
 export const upsertSections = (
@@ -42,7 +46,8 @@ export const upsertSectionFields = (
     .values(fields)
     .onDuplicateKeyUpdate({
       set: buildConflictUpdateColumns(fieldSchema, ["id", "sectionId"]),
-    });
+    })
+    .$returningId();
 };
 
 export const upsertSectionFieldValues = (
@@ -98,4 +103,13 @@ export const deleteDocumentById = (documentId: Document["id"]) => {
 
 export const bulkDeleteFields = (fieldIds: SectionField["id"][]) => {
   return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
+};
+
+export const updateDocumentById = (
+  input: MakeFieldsRequired<Partial<Document>, "id">,
+) => {
+  return db
+    .update(documentSchema)
+    .set(input)
+    .where(eq(documentSchema.id, input.id));
 };

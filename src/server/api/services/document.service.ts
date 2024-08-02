@@ -11,6 +11,7 @@ import {
   deleteDocumentById,
   getDocumentWithSectionsAndFields,
   getDocumentsByUserId,
+  updateDocumentById,
   upsertDocument,
   upsertSectionFieldValues,
   upsertSectionFields,
@@ -25,14 +26,15 @@ import {
   type SectionFieldInsertModel,
   type SectionFieldValue,
   type SectionInsertModel,
-  documents as documentSchema,
   documentSectionFields as fieldSchema,
   documentSectionFieldValues as fieldValueSchema,
   documentSections as sectionSchema,
 } from "@/server/db/schema";
 import {
-  getFieldInsertTemplate,
-  getPredefinedDocumentSections,
+  getFieldInsertTemplateBySectionTag,
+  getPredefinedDocumentSectionsWithDocumentId,
+  makeFieldInsertDTOs,
+  makeFieldValueInsertDTOs,
   normalizeDocumentStructure,
 } from "@/server/utils/document.service.utils";
 import { eq } from "drizzle-orm";
@@ -49,22 +51,67 @@ export const deleteDocument = async (documentId: Document["id"]) => {
 export const updateDocument = async (
   input: MakeFieldsRequired<Partial<Document>, "id">,
 ) => {
-  return db
-    .update(documentSchema)
-    .set(input)
-    .where(eq(documentSchema.id, input.id));
+  return updateDocumentById(input);
 };
 
-export const createDocument = async (
-  input: DocumentInsertModel,
+export const createDocumentAndRelatedEntities = async (
+  documentCreateInput: DocumentInsertModel,
   user: User,
 ) => {
-  const [response] = await db.insert(documentSchema).values(input);
-  await insertPredefinedSectionsAndFields({
-    user,
-    documentId: response.insertId,
+  return await db.transaction(async (trx) => {
+    const [documentInsertResponse] = await upsertDocument(
+      trx,
+      documentCreateInput,
+    );
+    if (!documentInsertResponse) {
+      trx.rollback();
+      return;
+    }
+    const documentId = documentInsertResponse.id;
+    const sectionInsertTemplates =
+      getPredefinedDocumentSectionsWithDocumentId(documentId);
+    const sectionInsertIds = await insertSections(trx, sectionInsertTemplates);
+    const hasSectionInsertFailures =
+      sectionInsertTemplates.length !== sectionInsertIds.length;
+
+    if (hasSectionInsertFailures) {
+      trx.rollback();
+      return;
+    }
+
+    const fieldInsertDTOs = makeFieldInsertDTOs(
+      sectionInsertTemplates.map((item, index) => ({
+        ...item,
+        id: sectionInsertIds[index] as Section["id"],
+      })),
+    );
+    const fieldInsertIds = (
+      await upsertSectionFields(trx, fieldInsertDTOs)
+    ).map((result) => result.id);
+
+    const hasFieldInsertFailures =
+      fieldInsertDTOs.length !== fieldInsertIds.length;
+    if (hasFieldInsertFailures) {
+      trx.rollback();
+      return;
+    }
+
+    const DEFAULT_FIELDS: Record<string, string> = {
+      "First Name": user.firstName,
+      "Last Name": user.lastName,
+      Email: user.email,
+    };
+    const fieldValueInsertDTOs = makeFieldValueInsertDTOs(
+      fieldInsertDTOs.map((field, index) => ({
+        ...field,
+        id: fieldInsertIds[index] as SectionField["id"],
+      })),
+      DEFAULT_FIELDS,
+    );
+    await upsertSectionFieldValues(trx, fieldValueInsertDTOs);
+
+    return documentId;
   });
-  return response.insertId;
 };
 
 const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
@@ -106,52 +153,6 @@ const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
     .$returningId();
 
   return result.map((item) => item.id);
-};
-
-export const insertPredefinedSectionsAndFields = async ({
-  user,
-  documentId,
-}: { user: User; documentId: Document["id"] }) => {
-  const sections = getPredefinedDocumentSections(documentId);
-  const DEFAULT_FIELDS: Record<string, string> = {
-    "First Name": user.firstName,
-    "Last Name": user.lastName,
-    Email: user.email,
-  };
-
-  await db.transaction(async (trx) => {
-    const sectionIds = await insertSections(trx, sections);
-    const fieldInsertDTOs: SectionFieldInsertModel[] = [];
-
-    for (const [index, sectionId] of sectionIds.entries()) {
-      const section = sections[index];
-      if (section) {
-        const sectionFields = getFieldInsertTemplate(
-          sectionId,
-          section.internalSectionTag,
-        );
-
-        fieldInsertDTOs.push(...sectionFields);
-      }
-    }
-
-    const fieldIds = (
-      await trx.insert(fieldSchema).values(fieldInsertDTOs).$returningId()
-    ).map((item) => item.id);
-
-    const sectionFields = fieldInsertDTOs.map((field, index) => ({
-      ...field,
-      id: fieldIds[index] as SectionField["id"],
-      defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
-    }));
-
-    await trx.insert(fieldValueSchema).values(
-      sectionFields.map((field) => ({
-        fieldId: field.id,
-        value: field.defaultValue ?? "",
-      })),
-    );
-  });
 };
 
 export const getDocumentDetails = async ({
@@ -225,7 +226,7 @@ export const addSectionByInternalTag = async (data: SectionInsertModel) => {
       .insert(sectionSchema)
       .values(data);
 
-    const fieldsTemplate = getFieldInsertTemplate(
+    const fieldsTemplate = getFieldInsertTemplateBySectionTag(
       sectionId,
       data.internalSectionTag as INTERNAL_SECTION_TAG,
     );

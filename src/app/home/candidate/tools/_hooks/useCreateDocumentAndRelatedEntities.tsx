@@ -3,12 +3,12 @@
 import type { DocumentType } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 
-export const useCreateDocument = () => {
-  const { mutateAsync: createDocument, isPending } =
-    api.document.createDocument.useMutation();
+export const useCreateDocumentAndRelatedEntities = () => {
+  const { mutateAsync: createDocumentAndRelatedEntities, isPending } =
+    api.document.createDocumentAndRelatedEntities.useMutation();
 
   const handleCreateDocument = async (documentType: DocumentType) => {
-    return await createDocument({
+    return await createDocumentAndRelatedEntities({
       title: "Untitled",
       language: "EN",
       type: documentType,
@@ -17,7 +17,7 @@ export const useCreateDocument = () => {
   };
 
   return {
-    createDocument: handleCreateDocument,
+    createDocumentAndRelatedEntities: handleCreateDocument,
     isCreatingDocument: isPending,
   };
 };

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { Section, SectionFieldValue } from "@/server/db/schema";
-import { getFieldInsertTemplate } from "@/server/utils/document.service.utils";
+import { getFieldInsertTemplateBySectionTag } from "@/server/utils/document.service.utils";
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
@@ -55,7 +55,10 @@ const AddSectionItemButton = ({
   };
 
   const handleAddItem = () => {
-    const fieldsToInsert = getFieldInsertTemplate(sectionId, templateOption);
+    const fieldsToInsert = getFieldInsertTemplateBySectionTag(
+      sectionId,
+      templateOption,
+    );
     const finalOrder = getFinalDisplayOrder();
 
     const mappedFieldsToInsert = fieldsToInsert.map((field, index) => ({
