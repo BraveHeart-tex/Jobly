@@ -2,6 +2,8 @@ import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
+import { exclude } from "@/lib/utils";
+import type { getDocumentWithSectionsAndFields } from "@/server/api/repositories/document.repository";
 import type {
   Document,
   Section,
@@ -445,3 +447,22 @@ export const getLanguagesSectionFields = (
       sectionId,
     },
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+
+export const normalizeDocumentStructure = (
+  nestedDocument: NonNullable<
+    Awaited<ReturnType<typeof getDocumentWithSectionsAndFields>>
+  >,
+) => {
+  return {
+    document: exclude(nestedDocument, ["sections"]),
+    sections: nestedDocument.sections.map((section) =>
+      exclude(section, ["fields"]),
+    ),
+    fields: nestedDocument.sections.flatMap((section) =>
+      section.fields.map((field) => exclude(field, ["fieldValues"])),
+    ),
+    fieldValues: nestedDocument.sections.flatMap((section) =>
+      section.fields.flatMap((field) => field.fieldValues),
+    ),
+  };
+};

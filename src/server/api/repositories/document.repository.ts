@@ -1,12 +1,15 @@
 import type { Trx } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
-import { buildConflictUpdateColumns } from "@/server/db";
+import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
+  type Document,
   documents as documentSchema,
   documentSectionFields as fieldSchema,
   documentSectionFieldValues as fieldValueSchema,
   documentSections as sectionSchema,
 } from "@/server/db/schema";
+import { and, asc, desc, eq } from "drizzle-orm";
+import type { User } from "lucia";
 
 export const upsertDocument = async (
   trx: Trx,
@@ -23,7 +26,7 @@ export const upsertSections = (
 ) => {
   return trx
     .insert(sectionSchema)
-    .values(sections.map((sectionData) => sectionData))
+    .values(sections)
     .onDuplicateKeyUpdate({
       set: buildConflictUpdateColumns(sectionSchema, ["id", "documentId"]),
     });
@@ -35,7 +38,7 @@ export const upsertSectionFields = (
 ) => {
   return trx
     .insert(fieldSchema)
-    .values(fields.map((fieldData) => fieldData))
+    .values(fields)
     .onDuplicateKeyUpdate({
       set: buildConflictUpdateColumns(fieldSchema, ["id", "sectionId"]),
     });
@@ -47,8 +50,47 @@ export const upsertSectionFieldValues = (
 ) => {
   return trx
     .insert(fieldValueSchema)
-    .values(fieldValues.map((fieldValue) => fieldValue))
+    .values(fieldValues)
     .onDuplicateKeyUpdate({
       set: buildConflictUpdateColumns(fieldValueSchema, ["fieldId", "id"]),
     });
+};
+
+export const getDocumentWithSectionsAndFields = ({
+  documentId,
+  userId,
+}: {
+  documentId: Document["id"];
+  userId: User["id"];
+}) => {
+  return db.query.documents.findFirst({
+    where: and(
+      eq(documentSchema.id, documentId),
+      eq(documentSchema.userId, userId),
+    ),
+    with: {
+      sections: {
+        with: {
+          fields: {
+            orderBy: () => asc(fieldSchema.displayOrder),
+            with: {
+              fieldValues: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+export const getDocumentsByUserId = (userId: User["id"]) => {
+  return db
+    .select()
+    .from(documentSchema)
+    .where(eq(documentSchema.userId, userId))
+    .orderBy(desc(documentSchema.createdAt));
+};
+
+export const deleteDocumentById = (documentId: Document["id"]) => {
+  return db.delete(documentSchema).where(eq(documentSchema.id, documentId));
 };

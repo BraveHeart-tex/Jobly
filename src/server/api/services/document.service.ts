@@ -5,9 +5,11 @@ import type {
   MakeFieldsRequired,
   Trx,
 } from "@/lib/types";
-import { exclude } from "@/lib/utils";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import {
+  deleteDocumentById,
+  getDocumentWithSectionsAndFields,
+  getDocumentsByUserId,
   upsertDocument,
   upsertSectionFieldValues,
   upsertSectionFields,
@@ -30,20 +32,17 @@ import {
 import {
   getFieldInsertTemplate,
   getPredefinedDocumentSections,
+  normalizeDocumentStructure,
 } from "@/server/utils/document.service.utils";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const getUserDocuments = async (userId: User["id"]) => {
-  return db
-    .select()
-    .from(documentSchema)
-    .where(eq(documentSchema.userId, userId))
-    .orderBy(desc(documentSchema.createdAt));
+  return getDocumentsByUserId(userId);
 };
 
 export const deleteDocument = async (documentId: Document["id"]) => {
-  return db.delete(documentSchema).where(eq(documentSchema.id, documentId));
+  return deleteDocumentById(documentId);
 };
 
 export const updateDocument = async (
@@ -161,36 +160,16 @@ export const getDocumentDetails = async ({
   id: Document["id"];
   userId: User["id"];
 }): Promise<DocumentBuilderConfig | { error: string }> => {
-  const result = await db.query.documents.findFirst({
-    where: and(eq(documentSchema.id, id), eq(documentSchema.userId, userId)),
-    with: {
-      sections: {
-        with: {
-          fields: {
-            orderBy: () => asc(fieldSchema.displayOrder),
-            with: {
-              fieldValues: true,
-            },
-          },
-        },
-      },
-    },
+  const document = await getDocumentWithSectionsAndFields({
+    documentId: id,
+    userId,
   });
 
-  if (!result) {
+  if (!document) {
     return { error: "Document not found" };
   }
 
-  return {
-    document: exclude(result, ["sections"]),
-    sections: result.sections.map((section) => exclude(section, ["fields"])),
-    fields: result.sections.flatMap((section) =>
-      section.fields.map((field) => exclude(field, ["fieldValues"])),
-    ),
-    fieldValues: result.sections.flatMap((section) =>
-      section.fields.flatMap((field) => field.fieldValues),
-    ),
-  };
+  return normalizeDocumentStructure(document);
 };
 
 export const saveDocumentDetails = async (
