@@ -11,14 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { type SignInSchema, signInSchema } from "@/schemas/signInSchema";
-import type { User } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import type { RouterOutputs } from "trpc-router-types";
 import { toast } from "sonner";
+import type { DBUser } from "@/server/db/schema/users";
 
 type SignInFormProps = {
-  portalType?: User["role"];
+  portalType?: DBUser["role"];
 };
 
 const SignInForm = ({ portalType }: SignInFormProps) => {

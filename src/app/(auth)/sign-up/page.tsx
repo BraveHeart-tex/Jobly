@@ -3,13 +3,13 @@ import { validateRequest } from "@/lib/auth/validate-request";
 import { APP_NAME, contentByPortalType } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { capitalizeWord, generateRandomNumber } from "@/lib/utils";
-import type { User } from "@/server/db/schema";
+import type { DBUser } from "@/server/db/schema/users";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type SignUpPageSearchParams = {
-  portalType?: User["role"];
+  portalType?: DBUser["role"];
 };
 
 type SignUpPageProps = {
@@ -26,7 +26,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
   const portalType = searchParams.portalType ?? "candidate";
   const contentIndex = generateRandomNumber(1, 4);
   const supportiveHeading =
-    contentByPortalType[portalType][contentIndex - 1] || "";
+    contentByPortalType[portalType]?.[contentIndex - 1] || "";
 
   return (
     <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">

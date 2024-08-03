@@ -6,8 +6,8 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn, removeHTMLTags } from "@/lib/utils";
-import type { Section } from "@/server/db/schema";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 
 const CvBuilderProfessionalSummarySection = () => {
   const section = useDocumentBuilderStore((state) =>
@@ -16,7 +16,7 @@ const CvBuilderProfessionalSummarySection = () => {
         section.internalSectionTag ===
         INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
     ),
-  ) as Section;
+  ) as DocumentSection;
   const field = useDocumentBuilderStore((state) =>
     state.fields.find((field) => field.sectionId === section?.id),
   );

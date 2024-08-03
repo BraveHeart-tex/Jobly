@@ -4,12 +4,12 @@
 import { createHash } from "node:crypto";
 import { lucia } from "@/lib/auth/index";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
-import type { User } from "@/server/db/schema";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import zxcvbn from "zxcvbn";
 import { SHARED_ROUTES } from "../routes";
 import { validateRequest } from "./validate-request";
+import type { DBUser } from "@/server/db/schema/users";
 
 async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();
@@ -67,7 +67,7 @@ export const checkPasswordStrength = async (password: string) => {
   };
 };
 
-export const createSessionWithUserId = async (userId: User["id"]) => {
+export const createSessionWithUserId = async (userId: DBUser["id"]) => {
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
   cookies().set(
@@ -94,7 +94,7 @@ export const signOut = async () => {
   return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${portalType}`);
 };
 
-export const validateRequestByRole = async (allowedRoles: User["role"][]) => {
+export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {
   const { session, user } = await validateRequest();
   if (!session || !user) {
     return redirect(SHARED_ROUTES.LOGIN);

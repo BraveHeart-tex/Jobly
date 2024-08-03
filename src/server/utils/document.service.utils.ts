@@ -5,16 +5,18 @@ import {
 import { exclude } from "@/lib/utils";
 import type { getDocumentWithSectionsAndFields } from "@/server/api/repositories/document.repository";
 import type {
-  Document,
-  Section,
-  SectionField,
-  SectionFieldInsertModel,
-  SectionFieldValueInsertModel,
-  SectionInsertModel,
-} from "@/server/db/schema";
+  DocumentSection,
+  DocumentSectionInsertModel,
+} from "../db/schema/documentSections";
+import type {
+  DocumentSectionField,
+  DocumentSectionFieldInsertModel,
+} from "../db/schema/documentSectionFields";
+import type { DocumentSelectModel } from "../db/schema/documents";
+import type { DocumentSectionFieldValueInsertModel } from "../db/schema/documentSectionFieldValues";
 
 export const getFieldInsertTemplateBySectionTag = (
-  sectionId: Section["id"],
+  sectionId: DocumentSection["id"],
   templateOption: INTERNAL_SECTION_TAG,
 ) => {
   const personalDetailsFields = getPersonalDetailsFields(sectionId);
@@ -54,8 +56,8 @@ export const getFieldInsertTemplateBySectionTag = (
 };
 
 const getEmploymentHistoryFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Job Title",
@@ -90,8 +92,8 @@ const getEmploymentHistoryFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 const getCustomSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Activity name, job title, book title etc.",
@@ -121,8 +123,8 @@ const getCustomSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getEducationSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "School",
@@ -157,8 +159,8 @@ export const getEducationSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getPersonalDetailsFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Wanted Job Title",
@@ -223,8 +225,8 @@ export const getPersonalDetailsFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getProfessionalSummaryFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Professional Summary",
@@ -234,8 +236,8 @@ export const getProfessionalSummaryFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getPredefinedDocumentSectionsWithDocumentId = (
-  documentId: Document["id"],
-): SectionInsertModel[] => {
+  documentId: DocumentSelectModel["id"],
+): DocumentSectionInsertModel[] => {
   return [
     {
       documentId,
@@ -254,7 +256,7 @@ export const getPredefinedDocumentSectionsWithDocumentId = (
       name: "Employment History",
       displayOrder: 3,
       fieldsContainerType:
-        "collapsible" as SectionInsertModel["fieldsContainerType"],
+        "collapsible" as DocumentSectionInsertModel["fieldsContainerType"],
       internalSectionTag: INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
       itemCountPerContainer: 6,
     },
@@ -263,7 +265,7 @@ export const getPredefinedDocumentSectionsWithDocumentId = (
       name: "Education",
       displayOrder: 4,
       fieldsContainerType:
-        "collapsible" as SectionInsertModel["fieldsContainerType"],
+        "collapsible" as DocumentSectionInsertModel["fieldsContainerType"],
       internalSectionTag: INTERNAL_SECTION_TAGS.EDUCATION,
       itemCountPerContainer: 6,
     },
@@ -272,7 +274,7 @@ export const getPredefinedDocumentSectionsWithDocumentId = (
       name: "Websites & Social Links",
       displayOrder: 5,
       fieldsContainerType:
-        "collapsible" as SectionInsertModel["fieldsContainerType"],
+        "collapsible" as DocumentSectionInsertModel["fieldsContainerType"],
       internalSectionTag: INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
       itemCountPerContainer: 2,
     },
@@ -281,7 +283,7 @@ export const getPredefinedDocumentSectionsWithDocumentId = (
       name: "Skills",
       displayOrder: 6,
       fieldsContainerType:
-        "collapsible" as SectionInsertModel["fieldsContainerType"],
+        "collapsible" as DocumentSectionInsertModel["fieldsContainerType"],
       internalSectionTag: INTERNAL_SECTION_TAGS.SKILLS,
       metadata: JSON.stringify({
         showExperienceLevel: true,
@@ -295,7 +297,7 @@ export const getPredefinedDocumentSectionsWithDocumentId = (
 };
 
 export const generateFieldValue = (item: {
-  fieldId: SectionField["id"];
+  fieldId: DocumentSectionField["id"];
   defaultValue?: string;
 }) => ({
   fieldId: item.fieldId,
@@ -303,8 +305,8 @@ export const generateFieldValue = (item: {
 });
 
 export const getWebsitesAndSocialLinksSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Label",
@@ -319,8 +321,8 @@ export const getWebsitesAndSocialLinksSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getSkillSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Skill",
@@ -335,8 +337,8 @@ export const getSkillSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getCourseSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Course",
@@ -361,8 +363,8 @@ export const getCourseSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getExtraCurricularActivitiesFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Function Title",
@@ -397,8 +399,8 @@ export const getExtraCurricularActivitiesFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getHobbiesSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "What do you like?",
@@ -408,8 +410,8 @@ export const getHobbiesSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getReferencesSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Referent's Full Name",
@@ -434,8 +436,8 @@ export const getReferencesSectionFields = (
   ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
 
 export const getLanguagesSectionFields = (
-  sectionId: Section["id"],
-): SectionFieldInsertModel[] =>
+  sectionId: DocumentSection["id"],
+): DocumentSectionFieldInsertModel[] =>
   [
     {
       fieldName: "Language",
@@ -469,9 +471,9 @@ export const normalizeDocumentStructure = (
 };
 
 export const makeFieldInsertDTOs = (
-  sections: (SectionInsertModel & { id: Section["id"] })[],
-): SectionFieldInsertModel[] => {
-  const fieldInsertDTOs: SectionFieldInsertModel[] = [];
+  sections: (DocumentSectionInsertModel & { id: DocumentSection["id"] })[],
+): DocumentSectionFieldInsertModel[] => {
+  const fieldInsertDTOs: DocumentSectionFieldInsertModel[] = [];
 
   for (const section of sections) {
     const sectionFields = getFieldInsertTemplateBySectionTag(
@@ -486,9 +488,11 @@ export const makeFieldInsertDTOs = (
 };
 
 export const makeFieldValueInsertDTOs = (
-  sectionFields: (SectionFieldInsertModel & { id: SectionField["id"] })[],
+  sectionFields: (DocumentSectionFieldInsertModel & {
+    id: DocumentSectionField["id"];
+  })[],
   defaultValues?: Record<string, string>,
-): SectionFieldValueInsertModel[] => {
+): DocumentSectionFieldValueInsertModel[] => {
   return sectionFields.map((sectionField) => ({
     fieldId: sectionField.id,
     value: defaultValues?.[sectionField.fieldName] ?? "",

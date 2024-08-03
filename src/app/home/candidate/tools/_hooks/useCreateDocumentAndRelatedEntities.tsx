@@ -1,6 +1,6 @@
 "use client";
 
-import type { DocumentType } from "@/server/db/schema";
+import type { DocumentType } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
 
 export const useCreateDocumentAndRelatedEntities = () => {

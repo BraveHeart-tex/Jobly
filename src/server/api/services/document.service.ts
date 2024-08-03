@@ -19,17 +19,23 @@ import {
 } from "@/server/api/repositories/document.repository";
 import { db } from "@/server/db";
 import {
-  type Document,
-  type DocumentInsertModel,
-  type Section,
-  type SectionField,
-  type SectionFieldInsertModel,
-  type SectionFieldValue,
-  type SectionInsertModel,
   documentSectionFields as fieldSchema,
   documentSectionFieldValues as fieldValueSchema,
   documentSections as sectionSchema,
 } from "@/server/db/schema";
+import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
+import type {
+  DocumentSectionField,
+  DocumentSectionFieldInsertModel,
+} from "@/server/db/schema/documentSectionFields";
+import type {
+  DocumentSection,
+  DocumentSectionInsertModel,
+} from "@/server/db/schema/documentSections";
+import type {
+  DocumentSelectModel,
+  DocumentInsertModel,
+} from "@/server/db/schema/documents";
 import {
   getFieldInsertTemplateBySectionTag,
   getPredefinedDocumentSectionsWithDocumentId,
@@ -44,12 +50,12 @@ export const getUserDocuments = async (userId: User["id"]) => {
   return getDocumentsByUserId(userId);
 };
 
-export const deleteDocument = async (documentId: Document["id"]) => {
+export const deleteDocument = async (documentId: DocumentSelectModel["id"]) => {
   return deleteDocumentById(documentId);
 };
 
 export const updateDocument = async (
-  input: MakeFieldsRequired<Partial<Document>, "id">,
+  input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
 ) => {
   return updateDocumentById(input);
 };
@@ -82,7 +88,7 @@ export const createDocumentAndRelatedEntities = async (
     const fieldInsertDTOs = makeFieldInsertDTOs(
       sectionInsertTemplates.map((item, index) => ({
         ...item,
-        id: sectionInsertIds[index] as Section["id"],
+        id: sectionInsertIds[index] as DocumentSection["id"],
       })),
     );
     const fieldInsertIds = (
@@ -104,7 +110,7 @@ export const createDocumentAndRelatedEntities = async (
     const fieldValueInsertDTOs = makeFieldValueInsertDTOs(
       fieldInsertDTOs.map((field, index) => ({
         ...field,
-        id: fieldInsertIds[index] as SectionField["id"],
+        id: fieldInsertIds[index] as DocumentSectionField["id"],
       })),
       DEFAULT_FIELDS,
     );
@@ -114,7 +120,10 @@ export const createDocumentAndRelatedEntities = async (
   });
 };
 
-const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
+const insertSections = async (
+  trx: Trx,
+  sections: DocumentSectionInsertModel[],
+) => {
   const result = await trx
     .insert(sectionSchema)
     .values(sections.map((section) => section))
@@ -125,8 +134,8 @@ const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
 
 const insertFields = async (
   trx: Trx,
-  sectionId: Section["id"],
-  fields: Omit<SectionFieldInsertModel, "sectionId">[],
+  sectionId: DocumentSection["id"],
+  fields: Omit<DocumentSectionFieldInsertModel, "sectionId">[],
 ) => {
   const result = await trx
     .insert(fieldSchema)
@@ -141,7 +150,10 @@ const insertFields = async (
   return result.map((item) => item.id);
 };
 
-const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
+const insertFieldValues = async (
+  trx: Trx,
+  fieldIds: DocumentSectionField["id"][],
+) => {
   const result = await trx
     .insert(fieldValueSchema)
     .values(
@@ -159,7 +171,7 @@ export const getDocumentDetails = async ({
   id,
   userId,
 }: {
-  id: Document["id"];
+  id: DocumentSelectModel["id"];
   userId: User["id"];
 }): Promise<DocumentBuilderConfig | { error: string }> => {
   const document = await getDocumentWithSectionsAndFields({
@@ -192,7 +204,7 @@ export const saveDocumentAndRelatedEntities = async (
 };
 
 export const addFieldsWithValues = async (
-  fields: SectionFieldInsertModel[],
+  fields: DocumentSectionFieldInsertModel[],
 ) => {
   return await db.transaction(async (trx) => {
     const fieldInsertIds = await trx
@@ -216,11 +228,13 @@ export const addFieldsWithValues = async (
   });
 };
 
-export const removeFields = async (fieldIds: SectionField["id"][]) => {
+export const removeFields = async (fieldIds: DocumentSectionField["id"][]) => {
   return bulkDeleteFields(fieldIds);
 };
 
-export const addSectionByInternalTag = async (data: SectionInsertModel) => {
+export const addSectionByInternalTag = async (
+  data: DocumentSectionInsertModel,
+) => {
   return db.transaction(async (trx) => {
     const [{ insertId: sectionId }] = await trx
       .insert(sectionSchema)
@@ -241,12 +255,12 @@ export const addSectionByInternalTag = async (data: SectionInsertModel) => {
 
     const fields = fieldsTemplate.map((field, index) => ({
       ...field,
-      id: fieldIds[index] as SectionField["id"],
+      id: fieldIds[index] as DocumentSectionField["id"],
     }));
 
     const fieldValues = fieldValueIds.map((fieldValueId, index) => ({
-      id: fieldValueId as SectionFieldValue["id"],
-      fieldId: fieldIds[index] as SectionFieldValue["fieldId"],
+      id: fieldValueId as DocumentSectionFieldValue["id"],
+      fieldId: fieldIds[index] as DocumentSectionFieldValue["fieldId"],
       value: "",
     }));
 
@@ -258,6 +272,6 @@ export const addSectionByInternalTag = async (data: SectionInsertModel) => {
   });
 };
 
-export const deleteSection = async (sectionId: Section["id"]) => {
+export const deleteSection = async (sectionId: DocumentSection["id"]) => {
   return db.delete(sectionSchema).where(eq(sectionSchema.id, sectionId));
 };

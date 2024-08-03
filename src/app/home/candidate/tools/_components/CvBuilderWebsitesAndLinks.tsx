@@ -11,8 +11,9 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 export const WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT = 2;
 
@@ -23,7 +24,7 @@ const CvBuilderWebsitesAndLinks = () => {
         section.internalSectionTag ===
         INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
     ),
-  ) as Section;
+  ) as DocumentSection;
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field?.sectionId === section.id),
   );
@@ -38,8 +39,8 @@ const CvBuilderWebsitesAndLinks = () => {
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const labelField = group[0] as SectionField;
-      const linkField = group[1] as SectionField;
+      const labelField = group[0] as DocumentSectionField;
+      const linkField = group[1] as DocumentSectionField;
 
       const labelValue = getFieldValueByFieldId(labelField?.id as number)
         ?.value as string;

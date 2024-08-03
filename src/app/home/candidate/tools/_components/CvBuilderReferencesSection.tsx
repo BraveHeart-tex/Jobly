@@ -7,16 +7,17 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type CvBuilderReferencesSectionProps = {
-  section: Section;
+  section: DocumentSection;
 };
 
 export const REFERENCES_SECTION_ITEMS_COUNT = 4;
@@ -42,10 +43,10 @@ const CvBuilderReferencesSection = ({
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const referentFullNameField = group[0] as SectionField;
-      const companyField = group[1] as SectionField;
-      const phoneField = group[2] as SectionField;
-      const emailField = group[3] as SectionField;
+      const referentFullNameField = group[0] as DocumentSectionField;
+      const companyField = group[1] as DocumentSectionField;
+      const phoneField = group[2] as DocumentSectionField;
+      const emailField = group[3] as DocumentSectionField;
 
       const referentFullName = getFieldValueByFieldId(
         referentFullNameField?.id as number,

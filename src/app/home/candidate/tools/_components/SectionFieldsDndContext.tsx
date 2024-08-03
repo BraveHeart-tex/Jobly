@@ -1,6 +1,6 @@
 "use client";
 import type { FIELD_DND_INDEX_PREFIX } from "@/lib/constants";
-import type { SectionField } from "@/server/db/schema";
+
 import {
   DndContext,
   KeyboardSensor,
@@ -17,10 +17,11 @@ import {
 } from "@dnd-kit/sortable";
 import type React from "react";
 import { useSwapGroupDisplayOrder } from "../_hooks/useSwapGroupDisplayOrder";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type SectionFieldsDndContextProps = {
   children: React.ReactNode;
-  groupedFields: SectionField[][];
+  groupedFields: DocumentSectionField[][];
   indexPrefix: FIELD_DND_INDEX_PREFIX;
 };
 

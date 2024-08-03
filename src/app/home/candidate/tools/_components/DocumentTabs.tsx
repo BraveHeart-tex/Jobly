@@ -5,7 +5,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CANDIDATE_ROUTES } from "@/lib/routes";
 import type { InferValueTypeFromConst } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import type { Document } from "@/server/db/schema";
 import { motion } from "framer-motion";
 import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
@@ -14,6 +13,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../_hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",
@@ -210,7 +210,7 @@ const NoDocumentsFound = ({
 };
 
 type DocumentListProps = {
-  documents: Document[];
+  documents: DocumentSelectModel[];
 };
 
 const DocumentList = ({ documents }: DocumentListProps) => (

@@ -1,4 +1,4 @@
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { type ClassValue, clsx } from "clsx";
 import type { StringMap } from "quill";
 import { twMerge } from "tailwind-merge";
@@ -136,7 +136,7 @@ export const parseSectionMetadata = (metadata: string | null | undefined) => {
 };
 
 export const mapItemDisplayOrderByIndex = (
-  item: SectionField,
+  item: DocumentSectionField,
   index: number,
 ) => ({
   ...item,

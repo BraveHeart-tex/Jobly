@@ -1,7 +1,8 @@
 "use client";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { mapItemDisplayOrderByIndex } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 
 export const useUpdateFieldDisplayOrdersOnDelete = () => {
   const allFields = useDocumentBuilderStore((state) => state.fields);
@@ -11,8 +12,8 @@ export const useUpdateFieldDisplayOrdersOnDelete = () => {
   );
 
   const updateFieldOrdersOnDelete = (
-    sectionId: Section["id"],
-    deletedFieldIds: SectionField["id"][],
+    sectionId: DocumentSection["id"],
+    deletedFieldIds: DocumentSectionField["id"][],
   ) => {
     const mappedSectionFields = allFields
       .filter(

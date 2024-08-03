@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Section, SectionInsertModel } from "@/server/db/schema";
+import type {
+  DocumentSection,
+  DocumentSectionInsertModel,
+} from "@/server/db/schema/documentSections";
 import { api } from "@/trpc/react";
 import {
   BookOpenTextIcon,
@@ -15,7 +18,7 @@ import {
 } from "lucide-react";
 
 type OtherSectionOption = Omit<
-  SectionInsertModel,
+  DocumentSectionInsertModel,
   "documentId" | "displayOrder" | "defaultName"
 > & { icon: LucideIcon };
 
@@ -90,7 +93,7 @@ const CvBuilderCustomSectionOptions = () => {
   const { mutate: addSectionByInternalTag, isPending } =
     api.document.addSectionByInternalTag.useMutation({
       onSuccess: ({ section, fields, fieldValues }) => {
-        addSection(section as Section);
+        addSection(section as DocumentSection);
         for (const field of fields) {
           addField(field);
         }
@@ -109,7 +112,7 @@ const CvBuilderCustomSectionOptions = () => {
     } = option;
     const finalDisplayOrder =
       Math.max(...sections.map((section) => section.displayOrder)) + 1;
-    const insertDto: SectionInsertModel = {
+    const insertDto: DocumentSectionInsertModel = {
       documentId,
       name,
       internalSectionTag,

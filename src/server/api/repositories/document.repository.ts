@@ -2,13 +2,13 @@ import type { MakeFieldsRequired, Trx } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
-  type Document,
-  type SectionField,
   documents as documentSchema,
   documentSectionFields as fieldSchema,
   documentSectionFieldValues as fieldValueSchema,
   documentSections as sectionSchema,
 } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
@@ -66,7 +66,7 @@ export const getDocumentWithSectionsAndFields = ({
   documentId,
   userId,
 }: {
-  documentId: Document["id"];
+  documentId: DocumentSelectModel["id"];
   userId: User["id"];
 }) => {
   return db.query.documents.findFirst({
@@ -97,16 +97,16 @@ export const getDocumentsByUserId = (userId: User["id"]) => {
     .orderBy(desc(documentSchema.createdAt));
 };
 
-export const deleteDocumentById = (documentId: Document["id"]) => {
+export const deleteDocumentById = (documentId: DocumentSelectModel["id"]) => {
   return db.delete(documentSchema).where(eq(documentSchema.id, documentId));
 };
 
-export const bulkDeleteFields = (fieldIds: SectionField["id"][]) => {
+export const bulkDeleteFields = (fieldIds: DocumentSectionField["id"][]) => {
   return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
 };
 
 export const updateDocumentById = (
-  input: MakeFieldsRequired<Partial<Document>, "id">,
+  input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
 ) => {
   return db
     .update(documentSchema)

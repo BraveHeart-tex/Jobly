@@ -1,5 +1,4 @@
 import type { ColumnId } from "@/lib/stores/useJobTrackerBoardStore";
-import type { User } from "@/server/db/schema";
 import {
   BriefcaseBusinessIcon,
   CircleCheckIcon,
@@ -9,8 +8,9 @@ import {
   XIcon,
 } from "lucide-react";
 import type { InferValueTypeFromConst } from "./types";
+import type { DBUser } from "@/server/db/schema/users";
 
-export const contentByPortalType: Record<User["role"], string[]> = {
+export const contentByPortalType: Record<DBUser["role"], string[]> = {
   candidate: [
     "Find your dream job with just one click",
     "Discover endless opportunities aligned with your passions",
@@ -129,3 +129,5 @@ export const JOB_TRACKER_COLUMN_TO_ICON_MAP: Record<ColumnId, LucideIcon> = {
   rejected: XIcon,
   shortlist: HeartIcon,
 };
+
+export const AUTH_COOKIE_NAME = "auth-session" as const;

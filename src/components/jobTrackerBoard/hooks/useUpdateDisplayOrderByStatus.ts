@@ -1,7 +1,7 @@
 "use client";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import { groupBy } from "@/lib/utils";
-import type { JobTrackerApplication } from "@/server/db/schema";
+import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 
 export const useUpdateDisplayOrderByStatus = () => {

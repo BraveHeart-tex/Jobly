@@ -21,7 +21,6 @@ import {
 import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
-import type { Section } from "@/server/db/schema";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
@@ -36,13 +35,14 @@ import CvBuilderHobbiesSection from "./CvBuilderHobbiesSection";
 import CvBuilderInternshipsSection from "./CvBuilderInternshipsSection";
 import CvBuilderLanguagesSection from "./CvBuilderLanguagesSection";
 import CvBuilderReferencesSection from "./CvBuilderReferencesSection";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 
 const DocumentBuilderPanel = () => {
   const { view } = useDocumentBuilderSearchParams();
   const builderContainerRef = useRef<HTMLDivElement | null>(null);
   const sections = useDocumentBuilderStore((state) => state.sections);
 
-  const renderSection = (section: Section) => {
+  const renderSection = (section: DocumentSection) => {
     const sectionsByTag: Record<INTERNAL_SECTION_TAG, React.JSX.Element> = {
       [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: (
         <CvBuilderPersonalDetailsSection />

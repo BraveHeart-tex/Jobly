@@ -2,13 +2,14 @@
 import { Button } from "@/components/ui/button";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Section, SectionFieldValue } from "@/server/db/schema";
+import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { getFieldInsertTemplateBySectionTag } from "@/server/utils/document.service.utils";
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
 type AddSectionItemButtonProps = {
-  sectionId: Section["id"];
+  sectionId: DocumentSection["id"];
   templateOption: INTERNAL_SECTION_TAG;
   label: string;
 };
@@ -29,11 +30,11 @@ const AddSectionItemButton = ({
       onSuccess({ fieldInsertIds, fieldValueInsertIds }, { fields }) {
         const mappedFields = fields.map((item, index) => ({
           ...item,
-          id: fieldInsertIds[index] as SectionFieldValue["id"],
+          id: fieldInsertIds[index] as DocumentSectionFieldValue["id"],
         }));
 
         const fieldValues = mappedFields.map((field, index) => ({
-          id: fieldValueInsertIds[index] as SectionFieldValue["id"],
+          id: fieldValueInsertIds[index] as DocumentSectionFieldValue["id"],
           fieldId: field.id,
           value: "",
         }));

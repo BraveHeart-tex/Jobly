@@ -23,26 +23,25 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { capitalizeString } from "@/lib/utils";
-import {
-  type JobEmploymentType,
-  type JobWorkType,
-  jobs,
-} from "@/server/db/schema";
+import jobPostings, {
+  type JobPostingWorkType,
+  type JobPostingEmploymentType,
+} from "@/server/db/schema/jobPostings";
 import { SlidersHorizontal } from "lucide-react";
 
 const employmentOptions: {
-  label: Capitalize<JobEmploymentType>;
-  value: JobEmploymentType;
-}[] = jobs.employmentType.enumValues.map((employmentType) => ({
-  label: capitalizeString<JobEmploymentType>(employmentType),
+  label: Capitalize<JobPostingEmploymentType>;
+  value: JobPostingEmploymentType;
+}[] = jobPostings.employmentType.enumValues.map((employmentType) => ({
+  label: capitalizeString<JobPostingEmploymentType>(employmentType),
   value: employmentType,
 }));
 
 const workTypeOptions: {
-  label: Capitalize<JobWorkType>;
-  value: JobWorkType;
-}[] = jobs.workType.enumValues.map((workType) => ({
-  label: capitalizeString<JobWorkType>(workType),
+  label: Capitalize<JobPostingWorkType>;
+  value: JobPostingWorkType;
+}[] = jobPostings.workType.enumValues.map((workType) => ({
+  label: capitalizeString<JobPostingWorkType>(workType),
   value: workType,
 }));
 
@@ -88,7 +87,9 @@ const JobListFilters = () => {
             <Label>Work Type</Label>
             <Select
               value={workType ?? ""}
-              onValueChange={(value) => setWorkType(value as JobWorkType)}
+              onValueChange={(value) =>
+                setWorkType(value as JobPostingWorkType)
+              }
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Work Type" />
@@ -107,7 +108,7 @@ const JobListFilters = () => {
             <Select
               value={employmentType ?? ""}
               onValueChange={(value) =>
-                setEmploymentType(value as JobEmploymentType)
+                setEmploymentType(value as JobPostingEmploymentType)
               }
             >
               <SelectTrigger className="w-full">

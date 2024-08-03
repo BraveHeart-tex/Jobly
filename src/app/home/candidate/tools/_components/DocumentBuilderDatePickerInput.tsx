@@ -9,10 +9,10 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { MONTHS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import DocumentBuilderInput from "./DocumentBuilderInput";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 const CURRENT_MONTH = MONTHS[new Date().getMonth()] ?? "";
 const CURRENT_YEAR = new Date().getFullYear();
@@ -25,7 +25,7 @@ const getYearFromFieldValue = (fieldValue: string) => {
 };
 
 type DocumentBuilderDatePickerInputProps = {
-  field: SectionField;
+  field: DocumentSectionField;
   showPresentToggle?: boolean;
   presentToggleLabel?: string;
 };

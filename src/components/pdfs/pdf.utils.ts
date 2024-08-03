@@ -14,10 +14,10 @@ import {
 } from "@/lib/constants";
 import type { DocumentBuilderConfig } from "@/lib/types";
 import { exclude, groupEveryN } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
 import { PDF_BODY_FONT_SIZE } from "./London/LondonTemplate";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
-export type SectionFieldWithValue = SectionField & {
+export type SectionFieldWithValue = DocumentSectionField & {
   value: string;
 };
 

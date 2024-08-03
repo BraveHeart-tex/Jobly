@@ -4,7 +4,6 @@ import {
   type ColumnId,
   useJobTrackerBoardStore,
 } from "@/lib/stores/useJobTrackerBoardStore";
-import type { JobTrackerApplication } from "@/server/db/schema";
 import {
   type Announcements,
   DndContext,
@@ -25,6 +24,7 @@ import { BoardColumn, BoardContainer } from "./BoardColumn";
 import { JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import { hasDraggableData } from "./utils";
+import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 
 type JobTrackerApplicationsBoardProps = {
   data: JobTrackerApplication[];

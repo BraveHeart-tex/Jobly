@@ -5,7 +5,6 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
@@ -13,9 +12,11 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderSelect from "./DocumentBuilderSelect";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type CvBuilderLanguagesSectionProps = {
-  section: Section;
+  section: DocumentSection;
 };
 
 export const LANGUAGES_SECTION_ITEMS_COUNT = 2;
@@ -47,8 +48,8 @@ const CvBuilderLanguagesSection = ({
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const languageField = group[0] as SectionField;
-      const levelField = group[1] as SectionField;
+      const languageField = group[0] as DocumentSectionField;
+      const levelField = group[1] as DocumentSectionField;
 
       const language = getFieldValueByFieldId(languageField?.id as number)
         ?.value as string;

@@ -1,9 +1,5 @@
 import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
 import { capitalizeString, cn } from "@/lib/utils";
-import type {
-  JobTrackerApplication,
-  JobTrackerApplicationStatus,
-} from "@/server/db/schema";
 import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -33,6 +29,10 @@ import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import type {
+  JobTrackerApplication,
+  JobTrackerApplicationStatus,
+} from "@/server/db/schema/jobTrackerApplications";
 
 export interface Column {
   id: JobTrackerApplicationStatus;

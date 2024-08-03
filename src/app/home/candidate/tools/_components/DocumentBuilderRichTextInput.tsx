@@ -4,10 +4,10 @@ import QuillEditor from "@/components/QuillEditor";
 import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { generateEditorModules } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type DocumentBuilderRichTextInputProps = {
-  field: SectionField;
+  field: DocumentSectionField;
   renderLabel?: boolean;
   placeholder?: string;
 };

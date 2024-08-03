@@ -7,7 +7,6 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
@@ -16,6 +15,8 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 export const EMPLOYMENT_SECTION_ITEMS_COUNT = 6;
 
@@ -25,7 +26,7 @@ const CvBuilderEmploymentHistorySection = () => {
       (section) =>
         section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
     ),
-  ) as Section;
+  ) as DocumentSection;
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field.sectionId === section?.id),
   );
@@ -38,12 +39,12 @@ const CvBuilderEmploymentHistorySection = () => {
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const jobTitleField = group[0] as SectionField;
-      const startDateField = group[1] as SectionField;
-      const endDateField = group[2] as SectionField;
-      const employerField = group[3] as SectionField;
-      const cityField = group[4] as SectionField;
-      const employmentDescriptionField = group[5] as SectionField;
+      const jobTitleField = group[0] as DocumentSectionField;
+      const startDateField = group[1] as DocumentSectionField;
+      const endDateField = group[2] as DocumentSectionField;
+      const employerField = group[3] as DocumentSectionField;
+      const cityField = group[4] as DocumentSectionField;
+      const employmentDescriptionField = group[5] as DocumentSectionField;
 
       const jobTitle = getFieldValueByFieldId(jobTitleField?.id as number)
         ?.value as string;

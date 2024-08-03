@@ -14,8 +14,8 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 export const SKILL_SECTION_ITEMS_COUNT = 2;
 
@@ -43,8 +43,8 @@ const CvBuilderSkillsSection = () => {
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const skillField = group[0] as SectionField;
-      const levelField = group[1] as SectionField;
+      const skillField = group[0] as DocumentSectionField;
+      const levelField = group[1] as DocumentSectionField;
 
       const skillValue = getFieldValueByFieldId(skillField?.id as number)
         ?.value as string;

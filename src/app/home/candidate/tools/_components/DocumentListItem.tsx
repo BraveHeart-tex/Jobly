@@ -17,7 +17,6 @@ import {
 import { isErrorObject } from "@/lib/guards";
 import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import type { Document } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { pdf } from "@react-pdf/renderer";
 import { format } from "date-fns";
@@ -27,9 +26,10 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 
 type DocumentListItemProps = {
-  item: Document;
+  item: DocumentSelectModel;
 };
 
 const DocumentListItem = ({ item }: DocumentListItemProps) => {

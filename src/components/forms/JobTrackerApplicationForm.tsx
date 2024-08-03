@@ -17,7 +17,7 @@ import {
   type JobTrackerApplicationSchema,
   jobTrackerApplicationSchema,
 } from "@/schemas/jobTrackerApplicationSchema";
-import type { JobTrackerApplication } from "@/server/db/schema";
+import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 import {
   BanknoteIcon,

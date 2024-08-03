@@ -7,14 +7,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import type { Section } from "@/server/db/schema";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import type React from "react";
 
 type DraggableSectionContainerProps = {
-  sectionId: Section["id"];
+  sectionId: DocumentSection["id"];
   children?: React.ReactNode;
   className?: string;
 };

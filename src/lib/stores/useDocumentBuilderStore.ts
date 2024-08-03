@@ -1,57 +1,55 @@
-import type {
-  Document,
-  Section,
-  SectionField,
-  SectionFieldValue,
-} from "@/server/db/schema";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { DocumentBuilderConfig } from "../types";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 
-type SetSectionValueParams<K extends keyof Section> = {
-  sectionId: Section["id"];
+type SetSectionValueParams<K extends keyof DocumentSection> = {
+  sectionId: DocumentSection["id"];
   key: K;
-  value: Section[K];
+  value: DocumentSection[K];
 };
 
 type SaveDocumentDetailsParams = Partial<DocumentBuilderConfig>;
 
 type DocumentBuilderState = {
   initialized: boolean;
-  document: Document;
-  sections: Section[];
-  fields: SectionField[];
-  fieldValues: SectionFieldValue[];
+  document: DocumentSelectModel;
+  sections: DocumentSection[];
+  fields: DocumentSectionField[];
+  fieldValues: DocumentSectionFieldValue[];
   saveDocumentDetailsFn: (documentData: SaveDocumentDetailsParams) => unknown;
   pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
 };
 
 type DocumentBuilderActions = {
   initializeState: (initialState: DocumentBuilderConfig) => void;
-  setDocumentObject: (document: Document) => void;
-  setDocumentValue: <K extends keyof Document>(
+  setDocumentObject: (document: DocumentSelectModel) => void;
+  setDocumentValue: <K extends keyof DocumentSelectModel>(
     key: K,
-    value: Document[K],
+    value: DocumentSelectModel[K],
   ) => void;
-  setSectionValue: <K extends keyof Section>(
+  setSectionValue: <K extends keyof DocumentSection>(
     params: SetSectionValueParams<K>,
   ) => void;
   getFieldValueByFieldId: (
-    fieldId: SectionField["id"],
-  ) => SectionFieldValue | undefined;
+    fieldId: DocumentSectionField["id"],
+  ) => DocumentSectionFieldValue | undefined;
   setFieldValueByFieldId: (
-    fieldId: SectionField["id"],
+    fieldId: DocumentSectionField["id"],
     newValue: string,
   ) => void;
   callSaveDocumentDetailsFn: (data: SaveDocumentDetailsParams) => void;
-  addSection: (section: Section) => void;
-  addField: (field: SectionField) => void;
-  addFieldValue: (fieldValue: SectionFieldValue) => void;
-  removeFields: (fieldIds: SectionField["id"][]) => void;
-  removeSection: (sectionId: Section["id"]) => void;
+  addSection: (section: DocumentSection) => void;
+  addField: (field: DocumentSectionField) => void;
+  addFieldValue: (fieldValue: DocumentSectionFieldValue) => void;
+  removeFields: (fieldIds: DocumentSectionField["id"][]) => void;
+  removeSection: (sectionId: DocumentSection["id"]) => void;
   callPdfUpdaterCallback: () => void;
-  setFields: (fields: SectionField[]) => void;
-  setSections: (sections: Section[]) => void;
+  setFields: (fields: DocumentSectionField[]) => void;
+  setSections: (sections: DocumentSection[]) => void;
 };
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -63,7 +61,7 @@ export const useDocumentBuilderStore = create<
   devtools(
     (set, get) => ({
       initialized: false,
-      document: {} as Document,
+      document: {} as DocumentSelectModel,
       sections: [],
       fields: [],
       fieldValues: [],

@@ -1,6 +1,6 @@
 "use client";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
-import { jobs } from "@/server/db/schema";
+import { jobPostings } from "@/server/db/schema";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 
 export const useJobsListPageSearchParams = () => {
@@ -25,12 +25,12 @@ export const useJobsListPageSearchParams = () => {
 
   const [workType, setWorkType] = useQueryState(
     URL_SEARCH_QUERY_KEYS.JOB_WORK_TYPE,
-    parseAsStringLiteral(jobs.workType.enumValues),
+    parseAsStringLiteral(jobPostings.workType.enumValues),
   );
 
   const [employmentType, setEmploymentType] = useQueryState(
     URL_SEARCH_QUERY_KEYS.JOB_EMPLOYMENT_TYPE,
-    parseAsStringLiteral(jobs.employmentType.enumValues),
+    parseAsStringLiteral(jobPostings.employmentType.enumValues),
   );
   const [view, setView] = useQueryState(
     URL_SEARCH_QUERY_KEYS.JOB_LIST_VIEW,

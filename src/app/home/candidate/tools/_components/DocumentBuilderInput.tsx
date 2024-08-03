@@ -3,12 +3,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 type DocumentBuilderInputProps = {
   label?: string;
   doNotRenderLabel?: boolean;
 } & (
-  | { field: SectionField; value?: never; onChange?: never }
+  | { field: DocumentSectionField; value?: never; onChange?: never }
   | { field?: never; value: string; onChange: (value: string) => void }
 );
 

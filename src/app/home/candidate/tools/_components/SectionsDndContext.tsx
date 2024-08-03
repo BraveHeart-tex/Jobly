@@ -1,6 +1,6 @@
 "use client";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Section } from "@/server/db/schema";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import {
   DndContext,
   type DragEndEvent,
@@ -27,7 +27,7 @@ const SectionsDndContext = ({ children }: SectionsDndContextProps) => {
   const sections = useDocumentBuilderStore((state) => state.sections);
   const setSections = useDocumentBuilderStore((state) => state.setSections);
 
-  const getSectionIndexById = (id: Section["id"]) =>
+  const getSectionIndexById = (id: DocumentSection["id"]) =>
     sections.findIndex((section) => section.id === id);
 
   const sensors = useSensors(

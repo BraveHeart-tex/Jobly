@@ -50,7 +50,7 @@ export const jobRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await jobService.bookmarkJob({
         userId: ctx.user.id,
-        jobId: input.id,
+        jobPostingId: input.id,
       });
 
       return { success: true };
@@ -60,7 +60,7 @@ export const jobRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await jobService.deleteJobBookmark({
         userId: ctx.user.id,
-        jobId: input.id,
+        jobPostingId: input.id,
       });
       return { success: true };
     }),
