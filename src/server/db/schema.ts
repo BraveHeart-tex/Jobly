@@ -560,3 +560,12 @@ export type JobTrackerApplicationInsertModel = InferInsertModel<
 >;
 
 export type JobTrackerApplicationStatus = JobTrackerApplication["status"];
+
+export type CompanySelectModel = InferSelectModel<typeof companies>;
+export type CompanyInsertModel = InferInsertModel<typeof companies>;
+export type JobApplicationSelectModel = InferSelectModel<
+  typeof jobApplications
+>;
+export type JobApplicationInsertModel = InferInsertModel<
+  typeof jobApplications
+>;
