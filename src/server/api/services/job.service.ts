@@ -7,13 +7,13 @@ import {
   userBookmarksJobPosting,
   userViewsJobPosting,
 } from "@/server/db/schema";
+import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import type { User } from "lucia";
 import {
   withBookmarkJoin,
   withUserViewsJobJoin,
 } from "../../utils/job.service.utils";
-import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 
 export const getJobListings = async ({
   userId,
@@ -51,7 +51,7 @@ export const getJobListings = async ({
           : undefined,
       ),
     )
-    .orderBy(desc(jobPostings.createdAt))
+    .orderBy(desc(jobPostings.postedAt))
     .limit(limit)
     .offset(skipAmount)
     .$dynamic();
