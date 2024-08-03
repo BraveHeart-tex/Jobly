@@ -1,8 +1,8 @@
 import {
   type InferInsertModel,
   type InferSelectModel,
-  sql,
   relations,
+  sql,
 } from "drizzle-orm";
 import {
   datetime,
@@ -43,9 +43,10 @@ const jobPostings = mysqlTable(
       "temporary",
       "volunteer",
       "other",
-    ] as const).default("full-time"),
+    ]).default("full-time"),
     benefits: text("benefits"),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
+    postedAt: datetime("postedAt", { mode: "string" }).default(sql`(now())`),
+    expiresAt: datetime("expiresAt", { mode: "string" }).notNull(),
     updatedAt: datetime("updatedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull()

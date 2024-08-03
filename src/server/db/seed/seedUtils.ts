@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import type {
   CompanyInsertModel,
   CompanySelectModel,
@@ -6,6 +5,8 @@ import type {
 import jobPostings, {
   type JobPostingInsertModel,
 } from "@/server/db/schema/jobPostings";
+import { faker } from "@faker-js/faker";
+import { DateTime } from "luxon";
 
 export const makeCompanyDTOs = (amount = 100): CompanyInsertModel[] => {
   return Array.from({ length: amount }).map(() => ({
@@ -30,6 +31,11 @@ export const makeCompanyDTOs = (amount = 100): CompanyInsertModel[] => {
 export const makeJobPostingDTOs = (
   companyIds: CompanySelectModel["id"][],
 ): JobPostingInsertModel[] => {
+  const now = DateTime.now();
+  const twoMonthsFromNow = now.plus({ months: 2 });
+
+  const expiresAt = getRandomDateTime(now, twoMonthsFromNow).toString();
+
   return companyIds.map((companyId) => ({
     companyId,
     title: faker.person.jobTitle(),
@@ -39,5 +45,13 @@ export const makeJobPostingDTOs = (
     ),
     workType: faker.helpers.arrayElement(jobPostings.workType.enumValues),
     location: faker.location.city(),
+    expiresAt,
   }));
+};
+
+const getRandomDateTime = (start: DateTime, end: DateTime) => {
+  const startMs = start.toMillis();
+  const endMs = end.toMillis();
+  const randomMs = startMs + Math.random() * (endMs - startMs);
+  return DateTime.fromMillis(randomMs);
 };

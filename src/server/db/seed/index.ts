@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import { createPool } from "mysql2/promise";
-import { drizzle } from "drizzle-orm/mysql2";
 import companies, {
   type CompanyInsertModel,
 } from "@/server/db/schema/companies";
 import jobPostings, {
   type JobPostingInsertModel,
 } from "@/server/db/schema/jobPostings";
+import { drizzle } from "drizzle-orm/mysql2";
+import { createPool } from "mysql2/promise";
 import { makeCompanyDTOs, makeJobPostingDTOs } from "./seedUtils";
 
 const connection = createPool({ uri: process.env.DATABASE_URL });
@@ -41,10 +41,12 @@ const createCompanies = async (companyInsertModels: CompanyInsertModel[]) => {
   return result.map((item) => item.id);
 };
 
-const createJobPostings = async (jobInsertModels: JobPostingInsertModel[]) => {
+const createJobPostings = async (
+  jobPostingInsertModels: JobPostingInsertModel[],
+) => {
   const result = await db
     .insert(jobPostings)
-    .values(jobInsertModels)
+    .values(jobPostingInsertModels)
     .$returningId();
   return result.map((item) => item.id);
 };

@@ -1,0 +1,1 @@
+ALTER TABLE `JobPostings` MODIFY COLUMN `expiresAt` datetime NOT NULL;
