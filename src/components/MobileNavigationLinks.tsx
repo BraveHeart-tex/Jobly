@@ -38,6 +38,7 @@ const MobileNavigationLinks = () => {
               alt={`${APP_NAME} Logo`}
               width={50}
               height={50}
+              priority
               className="size-10"
             />
             <p className="text-lg font-medium">{APP_NAME}</p>

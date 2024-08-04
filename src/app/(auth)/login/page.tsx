@@ -51,6 +51,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
                 alt={`${APP_NAME} Logo`}
                 width={60}
                 height={60}
+                priority
               />
             </div>
             <h1 className="text-3xl font-bold">

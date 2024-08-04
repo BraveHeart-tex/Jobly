@@ -52,6 +52,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
                 alt={`${APP_NAME} Logo`}
                 width={60}
                 height={60}
+                priority
               />
             </div>
             <h1 className="text-3xl font-bold">

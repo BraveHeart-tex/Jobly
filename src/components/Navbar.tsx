@@ -33,6 +33,7 @@ const Navbar = async () => {
             className="cursor-pointer"
             width={45}
             height={45}
+            priority
           />
           <p className="text-base font-medium">{APP_NAME}</p>
         </Link>
