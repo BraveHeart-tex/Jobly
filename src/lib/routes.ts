@@ -12,11 +12,11 @@ const BASE_EMPLOYER_ROUTE = "/home/employer";
 
 export const CANDIDATE_ROUTES = {
   JOBS: `${BASE_CANDIDATE_ROUTE}/jobs`,
-  RECOMMENDED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobs/?recommended=true`,
-  JOB_ALERTS: `${BASE_CANDIDATE_ROUTE}/jobs/alerts`,
-  JOB_HISTORY: `${BASE_CANDIDATE_ROUTE}/jobs/?viewed=true`,
-  JOB_TRACKER: `${BASE_CANDIDATE_ROUTE}/jobs/job-tracker`,
-  BOOKMARKED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobs/?bookmarked=true`,
+  RECOMMENDED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobPostings/?recommended=true`,
+  JOB_ALERTS: `${BASE_CANDIDATE_ROUTE}/jobPostings/alerts`,
+  JOB_HISTORY: `${BASE_CANDIDATE_ROUTE}/jobPostings/?viewed=true`,
+  JOB_TRACKER: `${BASE_CANDIDATE_ROUTE}/jobPostings/job-tracker`,
+  BOOKMARKED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobPostings/?bookmarked=true`,
 
   APPLICATIONS: `${BASE_CANDIDATE_ROUTE}/applications`,
   UNFINISHED_APPLICATIONS: `${BASE_CANDIDATE_ROUTE}/applications?unfinished=true`,
@@ -32,10 +32,10 @@ export const CANDIDATE_ROUTES = {
 
 export const EMPLOYER_ROUTES = {
   // Job Postings
-  POST_JOB: `${BASE_EMPLOYER_ROUTE}/jobs/post`,
-  ACTIVE_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/active`,
-  DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/drafts`,
-  EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/expired`,
+  NEW_LISTING: `${BASE_EMPLOYER_ROUTE}/jobPostings/new`,
+  ACTIVE_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings/active`,
+  DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings/drafts`,
+  EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings/expired`,
 
   // Candidates
   ALL_APPLICATIONS: `${BASE_EMPLOYER_ROUTE}/candidates/applications`,

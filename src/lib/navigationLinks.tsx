@@ -8,6 +8,7 @@ import {
   BriefcaseIcon,
   CalendarIcon,
   ClipboardList,
+  ClipboardPlus,
   Clock,
   File,
   FilePen,
@@ -41,7 +42,8 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       },
       {
         title: "Recommended Jobs",
-        description: "View jobs tailored to your profile and preferences.",
+        description:
+          "View jobPostings tailored to your profile and preferences.",
         href: CANDIDATE_ROUTES.RECOMMENDED_JOBS,
         icon: ThumbsUpIcon,
       },
@@ -130,6 +132,12 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
   {
     triggerLabel: "Job Postings",
     linkItems: [
+      {
+        title: "New Job Posting",
+        description: "Find top talent! Add a new job posting.",
+        href: EMPLOYER_ROUTES.NEW_LISTING,
+        icon: ClipboardPlus,
+      },
       {
         title: "Active Listings",
         description: "Manage your current job postings.",

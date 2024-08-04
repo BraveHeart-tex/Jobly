@@ -1,5 +1,5 @@
 "use client";
-import { useJobsListPageSearchParams } from "@/app/home/candidate/jobs/_hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/app/home/candidate/jobPostings/_hooks/useJobsListPageSearchParams";
 import type { ArrayElement } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import { forwardRef } from "react";

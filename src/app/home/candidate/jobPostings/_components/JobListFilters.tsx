@@ -1,6 +1,6 @@
 "use client";
 
-import { useJobsListPageSearchParams } from "@/app/home/candidate/jobs/_hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/app/home/candidate/jobPostings/_hooks/useJobsListPageSearchParams";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";

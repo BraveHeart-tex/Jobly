@@ -1,5 +1,5 @@
 "use client";
-import { useJobsListPageSearchParams } from "@/app/home/candidate/jobs/_hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/app/home/candidate/jobPostings/_hooks/useJobsListPageSearchParams";
 import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
