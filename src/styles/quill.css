@@ -1,0 +1,42 @@
+.text-editor .ql-container  {
+    min-height: 10em;
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    border-color: hsl(var(--input));
+    max-width: 100%;
+}
+
+.dark .text-editor .ql-container {
+    border-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.text-editor .ql-editor {
+    min-height: 10em;
+    background: hsl(var(--muted) / 0.3);
+    color: hsl(var(--foreground) / 0.8);
+    overflow: auto;
+    max-width: 100%;
+    font-size: 1rem;
+}
+
+.ql-editor:focus {
+    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+}
+
+.text-editor .ql-toolbar  {
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    border-bottom: none;
+    border-color: hsl(var(--input));
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+}
+
+.dark .text-editor .ql-toolbar {
+    background-color: hsl(var(--muted));
+    border-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.text-editor .quill > .ql-container > .ql-editor.ql-blank::before {
+    @apply not-italic text-muted-foreground dark:text-muted-foreground/70 text-sm
+}

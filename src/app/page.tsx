@@ -1,3 +1,9 @@
+import RichTextEditor from "@/components/richTextEditor";
+
 export default function LandingHome() {
-  return <main>Landing home test</main>;
+  return (
+    <main>
+      <RichTextEditor />
+    </main>
+  );
 }

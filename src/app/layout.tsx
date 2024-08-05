@@ -1,4 +1,7 @@
 import "@/styles/globals.css";
+import "@/styles/quill.css";
+import "@/styles/reactPdf.css";
+import "@/styles/tiptap.css";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import Navbar from "@/components/Navbar";
 import ThemeProvider from "@/components/theme-provider";
