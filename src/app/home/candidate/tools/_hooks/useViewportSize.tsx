@@ -1,56 +1,59 @@
 import { useEffect, useState } from "react";
 
 type ViewportSize = {
-  width: number;
-  height: number;
+	width: number;
+	height: number;
 };
 
 const visualViewport =
-  typeof document !== "undefined" ? window.visualViewport : null;
+	typeof document !== "undefined" ? window.visualViewport : null;
 
 export const useViewportSize = () => {
-  const [mounted, setMounted] = useState(false);
-  const [size, setSize] = useState<ViewportSize>(() =>
-    !mounted ? { width: 0, height: 0 } : getViewportSize(),
-  );
+	const [mounted, setMounted] = useState(false);
+	const [size, setSize] = useState<ViewportSize>(() =>
+		!mounted ? { width: 0, height: 0 } : getViewportSize(),
+	);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
-  useEffect(() => {
-    // Use visualViewport api to track available height even on iOS virtual keyboard opening
-    const onResize = () => {
-      setSize((size) => {
-        const newSize = getViewportSize();
-        if (newSize.width === size.width && newSize.height === size.height) {
-          return size;
-        }
-        return newSize;
-      });
-    };
+	useEffect(() => {
+		// Use visualViewport api to track available height even on iOS virtual keyboard opening
+		const onResize = () => {
+			setSize((size) => {
+				const newSize = getViewportSize();
+				if (
+					newSize.width === size.width &&
+					newSize.height === size.height
+				) {
+					return size;
+				}
+				return newSize;
+			});
+		};
 
-    if (!visualViewport) {
-      window.addEventListener("resize", onResize);
-    } else {
-      visualViewport.addEventListener("resize", onResize);
-    }
+		if (!visualViewport) {
+			window.addEventListener("resize", onResize);
+		} else {
+			visualViewport.addEventListener("resize", onResize);
+		}
 
-    return () => {
-      if (!visualViewport) {
-        window.removeEventListener("resize", onResize);
-      } else {
-        visualViewport.removeEventListener("resize", onResize);
-      }
-    };
-  }, []);
+		return () => {
+			if (!visualViewport) {
+				window.removeEventListener("resize", onResize);
+			} else {
+				visualViewport.removeEventListener("resize", onResize);
+			}
+		};
+	}, []);
 
-  return size;
+	return size;
 };
 
 function getViewportSize(): ViewportSize {
-  return {
-    width: visualViewport?.width || window.innerWidth,
-    height: visualViewport?.height || window.innerHeight,
-  };
+	return {
+		width: visualViewport?.width || window.innerWidth,
+		height: visualViewport?.height || window.innerHeight,
+	};
 }

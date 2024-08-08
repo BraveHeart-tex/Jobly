@@ -5,10 +5,10 @@ import { documentRouter } from "./routers/documentRouter";
 import { jobTrackerRouter } from "./routers/jobTracker";
 
 export const appRouter = createTRPCRouter({
-  auth: authRouter,
-  job: jobRouter,
-  document: documentRouter,
-  jobTracker: jobTrackerRouter,
+	auth: authRouter,
+	job: jobRouter,
+	document: documentRouter,
+	jobTracker: jobTrackerRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);

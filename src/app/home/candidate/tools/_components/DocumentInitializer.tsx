@@ -5,25 +5,25 @@ import type { DocumentBuilderConfig } from "@/lib/types";
 import { useEffect } from "react";
 
 type DocumentInitializerProps = {
-  documentData?: DocumentBuilderConfig;
+	documentData?: DocumentBuilderConfig;
 };
 
 const DocumentInitializer = ({ documentData }: DocumentInitializerProps) => {
-  const initializeState = useDocumentBuilderStore(
-    (state) => state.initializeState,
-  );
-  const callPdfUpdaterCallback = useDocumentBuilderStore(
-    (state) => state.callPdfUpdaterCallback,
-  );
+	const initializeState = useDocumentBuilderStore(
+		(state) => state.initializeState,
+	);
+	const callPdfUpdaterCallback = useDocumentBuilderStore(
+		(state) => state.callPdfUpdaterCallback,
+	);
 
-  useEffect(() => {
-    if (!documentData || Object.keys(documentData).length === 0) return;
+	useEffect(() => {
+		if (!documentData || Object.keys(documentData).length === 0) return;
 
-    initializeState(documentData);
-    callPdfUpdaterCallback();
-  }, [documentData, initializeState, callPdfUpdaterCallback]);
+		initializeState(documentData);
+		callPdfUpdaterCallback();
+	}, [documentData, initializeState, callPdfUpdaterCallback]);
 
-  return null;
+	return null;
 };
 
 export default DocumentInitializer;
