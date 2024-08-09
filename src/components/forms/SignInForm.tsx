@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
+import { SHARED_ROUTES } from "@/lib/routes";
 import { type SignInSchema, signInSchema } from "@/schemas/signInSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
@@ -28,7 +29,6 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
 
   const onSettled = (data: RouterOutputs["auth"]["signIn"]) => {
     const { error, success } = data;
-
     if (error) {
       toast.error(error);
       return;
@@ -36,7 +36,7 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
 
     if (success) {
       toast.success("You have successfully signed in");
-      router.refresh();
+      router.push(SHARED_ROUTES.HOME);
     }
   };
 
