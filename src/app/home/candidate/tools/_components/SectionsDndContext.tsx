@@ -2,74 +2,71 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import {
-	DndContext,
-	type DragEndEvent,
-	KeyboardSensor,
-	PointerSensor,
-	TouchSensor,
-	closestCenter,
-	useSensor,
-	useSensors,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import {
-	SortableContext,
-	arrayMove,
-	sortableKeyboardCoordinates,
-	verticalListSortingStrategy,
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import type { ReactNode } from "react";
 
 type SectionsDndContextProps = {
-	children: ReactNode;
+  children: ReactNode;
 };
 
 const SectionsDndContext = ({ children }: SectionsDndContextProps) => {
-	const sections = useDocumentBuilderStore((state) => state.sections);
-	const setSections = useDocumentBuilderStore((state) => state.setSections);
+  const sections = useDocumentBuilderStore((state) => state.sections);
+  const setSections = useDocumentBuilderStore((state) => state.setSections);
 
-	const getSectionIndexById = (id: DocumentSection["id"]) =>
-		sections.findIndex((section) => section.id === id);
+  const getSectionIndexById = (id: DocumentSection["id"]) =>
+    sections.findIndex((section) => section.id === id);
 
-	const sensors = useSensors(
-		useSensor(PointerSensor),
-		useSensor(TouchSensor),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		}),
-	);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
-	const handleDragEnd = (event: DragEndEvent) => {
-		const { active, over } = event;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-		if (!over?.id || !active.id || over.id === active.id) return;
-		const activeSectionIndex = getSectionIndexById(active.id as number);
-		const overSectionIndex = getSectionIndexById(over.id as number);
+    if (!over?.id || !active.id || over.id === active.id) return;
+    const activeSectionIndex = getSectionIndexById(active.id as number);
+    const overSectionIndex = getSectionIndexById(over.id as number);
 
-		const mappedSections = arrayMove(
-			sections,
-			activeSectionIndex,
-			overSectionIndex,
-		).map((section, index) => ({
-			...section,
-			displayOrder: index + 1,
-		}));
+    const mappedSections = arrayMove(
+      sections,
+      activeSectionIndex,
+      overSectionIndex,
+    ).map((section, index) => ({
+      ...section,
+      displayOrder: index + 1,
+    }));
 
-		setSections(mappedSections);
-	};
+    setSections(mappedSections);
+  };
 
-	return (
-		<DndContext
-			sensors={sensors}
-			collisionDetection={closestCenter}
-			onDragEnd={handleDragEnd}
-		>
-			<SortableContext
-				items={sections}
-				strategy={verticalListSortingStrategy}
-			>
-				{children}
-			</SortableContext>
-		</DndContext>
-	);
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={sections} strategy={verticalListSortingStrategy}>
+        {children}
+      </SortableContext>
+    </DndContext>
+  );
 };
 export default SectionsDndContext;

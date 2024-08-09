@@ -8,11 +8,11 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 type QuillEditorProps = ReactQuillProps;
 
 const QuillEditor = ({ ...props }: QuillEditorProps) => {
-	return (
-		<div className="text-editor w-full overflow-auto">
-			<ReactQuill theme="snow" {...props} />
-		</div>
-	);
+  return (
+    <div className="text-editor w-full overflow-auto">
+      <ReactQuill theme="snow" {...props} />
+    </div>
+  );
 };
 
 export default QuillEditor;

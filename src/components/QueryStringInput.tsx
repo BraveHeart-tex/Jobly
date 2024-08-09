@@ -5,46 +5,46 @@ import { useDebounce } from "react-use";
 import { Input } from "./ui/input";
 
 type QueryStringInputProps = {
-	queryKey: string;
-	defaultValue?: string;
-	placeholder?: string;
-	className?: string;
-	debounceMs?: number;
+  queryKey: string;
+  defaultValue?: string;
+  placeholder?: string;
+  className?: string;
+  debounceMs?: number;
 };
 
 const QueryStringInput = ({
-	queryKey,
-	defaultValue = "",
-	placeholder,
-	className,
-	debounceMs = 0,
+  queryKey,
+  defaultValue = "",
+  placeholder,
+  className,
+  debounceMs = 0,
 }: QueryStringInputProps) => {
-	const [debouncedQuery, setDebouncedQuery] = useQueryState(queryKey, {
-		defaultValue,
-	});
+  const [debouncedQuery, setDebouncedQuery] = useQueryState(queryKey, {
+    defaultValue,
+  });
 
-	const [query, setQuery] = useState(debouncedQuery);
+  const [query, setQuery] = useState(debouncedQuery);
 
-	useEffect(() => {
-		setQuery(debouncedQuery);
-	}, [debouncedQuery]);
+  useEffect(() => {
+    setQuery(debouncedQuery);
+  }, [debouncedQuery]);
 
-	useDebounce(
-		() => {
-			setDebouncedQuery(query);
-		},
-		debounceMs,
-		[query],
-	);
+  useDebounce(
+    () => {
+      setDebouncedQuery(query);
+    },
+    debounceMs,
+    [query],
+  );
 
-	return (
-		<Input
-			value={query}
-			onChange={(e) => setQuery(e.target.value)}
-			placeholder={placeholder}
-			className={className}
-		/>
-	);
+  return (
+    <Input
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder={placeholder}
+      className={className}
+    />
+  );
 };
 
 export default QueryStringInput;

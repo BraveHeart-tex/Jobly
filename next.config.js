@@ -8,13 +8,13 @@ jiti("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-	experimental: {
-		serverComponentsExternalPackages: ["@node-rs/argon2"],
-	},
-	webpack: (config) => {
-		config.resolve.alias.canvas = false;
-		return config;
-	},
+  experimental: {
+    serverComponentsExternalPackages: ["@node-rs/argon2"],
+  },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+    return config;
+  },
 };
 
 export default config;

@@ -1,53 +1,53 @@
 import {
-	type InferInsertModel,
-	type InferSelectModel,
-	relations,
+  type InferInsertModel,
+  type InferSelectModel,
+  relations,
 } from "drizzle-orm";
 import {
-	index,
-	int,
-	mysqlTable,
-	primaryKey,
-	varchar,
+  index,
+  int,
+  mysqlTable,
+  primaryKey,
+  varchar,
 } from "drizzle-orm/mysql-core";
 import documentSectionFieldValues from "./documentSectionFieldValues";
 import documentSections from "./documentSections";
 
 const documentSectionFields = mysqlTable(
-	"DocumentSectionFields",
-	{
-		id: int("id").primaryKey().autoincrement().notNull(),
-		sectionId: int("sectionId")
-			.references(() => documentSections.id, { onDelete: "cascade" })
-			.notNull(),
-		fieldName: varchar("fieldName", { length: 100 }).notNull(),
-		fieldType: varchar("fieldType", { length: 100 }).notNull(),
-		displayOrder: int("displayOrder").notNull(),
-	},
-	(table) => {
-		return {
-			Field_id: primaryKey({ columns: [table.id], name: "Field_id" }),
-			sectionId: index("sectionId").on(table.sectionId),
-		};
-	},
+  "DocumentSectionFields",
+  {
+    id: int("id").primaryKey().autoincrement().notNull(),
+    sectionId: int("sectionId")
+      .references(() => documentSections.id, { onDelete: "cascade" })
+      .notNull(),
+    fieldName: varchar("fieldName", { length: 100 }).notNull(),
+    fieldType: varchar("fieldType", { length: 100 }).notNull(),
+    displayOrder: int("displayOrder").notNull(),
+  },
+  (table) => {
+    return {
+      Field_id: primaryKey({ columns: [table.id], name: "Field_id" }),
+      sectionId: index("sectionId").on(table.sectionId),
+    };
+  },
 );
 
 export const documentSectionFieldsRelations = relations(
-	documentSectionFields,
-	({ one, many }) => ({
-		section: one(documentSections, {
-			fields: [documentSectionFields.sectionId],
-			references: [documentSections.id],
-		}),
-		fieldValues: many(documentSectionFieldValues),
-	}),
+  documentSectionFields,
+  ({ one, many }) => ({
+    section: one(documentSections, {
+      fields: [documentSectionFields.sectionId],
+      references: [documentSections.id],
+    }),
+    fieldValues: many(documentSectionFieldValues),
+  }),
 );
 
 export type DocumentSectionField = InferSelectModel<
-	typeof documentSectionFields
+  typeof documentSectionFields
 >;
 export type DocumentSectionFieldInsertModel = InferInsertModel<
-	typeof documentSectionFields
+  typeof documentSectionFields
 >;
 
 export default documentSectionFields;
