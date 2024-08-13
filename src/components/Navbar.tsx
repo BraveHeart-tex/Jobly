@@ -7,18 +7,22 @@ import { api } from "@/trpc/server";
 import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import ColorModeToggle from "./ColorModeToggle";
-import NavbarContainer from "./NavbarContainer";
-import UserMenu from "./UserMenu";
-import { Button, buttonVariants } from "./ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import ColorModeToggle from "@/components/ColorModeToggle";
+import NavbarContainer from "@/components/NavbarContainer";
+import UserMenu from "@/components/UserMenu";
+import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();
 
   return (
     <NavbarContainer>
-      <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between pr-1">
+      <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between px-3">
         <div className="ml-2 lg:hidden">
           <MobileNavigationLinks />
         </div>
