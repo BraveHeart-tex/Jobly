@@ -46,6 +46,7 @@ export const makeJobPostingDTOs = (
     workType: faker.helpers.arrayElement(jobPostings.workType.enumValues),
     location: faker.location.city(),
     expiresAt,
+    status: "draft",
   }));
 };
 

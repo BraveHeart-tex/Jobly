@@ -45,6 +45,7 @@ const jobPostings = mysqlTable(
       "other",
     ]).default("full-time"),
     benefits: text("benefits"),
+    status: mysqlEnum("status", ["draft", "published"]).notNull(),
     postedAt: datetime("postedAt", { mode: "string" }).default(sql`(now())`),
     expiresAt: datetime("expiresAt", { mode: "string" }).notNull(),
     updatedAt: datetime("updatedAt", { mode: "string" })
