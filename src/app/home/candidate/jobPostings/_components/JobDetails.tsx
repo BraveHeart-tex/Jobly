@@ -22,7 +22,7 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { data: jobDetails, isPending: isPendingJobDetails } =
-    api.job.getJobById.useQuery({
+    api.userJobListing.getJobById.useQuery({
       id: currentJobId,
     });
 

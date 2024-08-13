@@ -34,7 +34,7 @@ const JobsList = () => {
   const isMobile = useMedia("(max-width: 768px)", false);
 
   const { data: jobListingsResponse, isPending: isPendingJobs } =
-    api.job.getJobListings.useQuery({
+    api.userJobListing.getJobListings.useQuery({
       query,
       page: Number.parseInt(page),
       bookmarked: bookmarked === "true",

@@ -7,7 +7,9 @@ import type { RouterOutputs } from "trpc-router-types";
 import CompanyLogo from "./CompanyLogo";
 
 type JobsListCardProps = {
-  job: ArrayElement<RouterOutputs["job"]["getJobListings"]["jobListings"]>;
+  job: ArrayElement<
+    RouterOutputs["userJobListing"]["getJobListings"]["jobListings"]
+  >;
 };
 
 const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(

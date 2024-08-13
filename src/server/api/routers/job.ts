@@ -4,7 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import * as jobService from "../services/job.service";
 
-export const jobRouter = createTRPCRouter({
+export const userJobListingRouter = createTRPCRouter({
   getJobListings: protectedProcedure
     .input(getJobListingsSchema)
     .query(async ({ ctx, input }) => {
