@@ -37,6 +37,7 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
     if (success) {
       toast.success("You have successfully signed in");
       router.push(SHARED_ROUTES.HOME);
+      router.refresh();
     }
   };
 

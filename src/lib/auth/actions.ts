@@ -77,21 +77,19 @@ export const createSessionWithUserId = async (userId: DBUser["id"]) => {
   );
 };
 
-export const signOut = async () => {
-  const { session, user } = await validateRequest();
-  if (!session) {
-    return redirect(SHARED_ROUTES.LOGIN);
-  }
+export const signOut = async (role: DBUser["role"]) => {
+  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  if (!sessionId) return;
 
-  await lucia.invalidateSession(session.id);
   const sessionCookie = lucia.createBlankSessionCookie();
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  const portalType = user.role;
-  return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${portalType}`);
+
+  await lucia.invalidateSession(sessionId);
+  return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
 };
 
 export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {

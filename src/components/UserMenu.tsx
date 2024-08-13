@@ -27,8 +27,8 @@ const UserMenu = ({ user }: UserMenuProps) => {
   }, [setUser, user]);
 
   const handleSignOut = () => {
+    signOut(user.role);
     setUser(null);
-    signOut();
   };
 
   return (
