@@ -2,8 +2,8 @@ import { jobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSche
 import { jobTrackerApplications } from "@/server/db/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import * as jobTrackerService from "../services/jobTracker.service";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import * as jobTrackerService from "../../services/jobTracker.service";
+import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
 export const jobTrackerRouter = createTRPCRouter({
   getJobTrackerApplications: protectedProcedure.query(async ({ ctx }) => {
