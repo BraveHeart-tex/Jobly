@@ -1,9 +1,8 @@
 "use client";
 
-import QuillEditor from "@/components/QuillEditor";
+import RichTextEditor from "@/components/richTextEditor/RichTextEditor";
 import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { generateEditorModules } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type DocumentBuilderRichTextInputProps = {
@@ -33,16 +32,11 @@ const DocumentBuilderRichTextInput = ({
             {field?.fieldName}
           </Label>
         ) : null}
-        <QuillEditor
-          modules={generateEditorModules({
-            formatting: ["bold", "italic", "underline", "strike"],
-            lists: true,
-            links: true,
-          })}
+        <RichTextEditor
           placeholder={placeholder}
-          value={value}
-          onChange={(value) => {
-            setFieldValueByFieldId(field?.id, value);
+          initialValue={value}
+          onChange={(html) => {
+            setFieldValueByFieldId(field?.id, html);
           }}
         />
       </div>
