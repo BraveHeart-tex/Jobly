@@ -13,8 +13,8 @@ const CreateNewJobPostingPage = () => {
           <Link
             href={EMPLOYER_ROUTES.ACTIVE_LISTINGS}
             className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "flex items-center gap-1 lg:w-max px-0 justify-start",
+              buttonVariants({ variant: "secondary" }),
+              "flex items-center gap-1 w-max justify-start",
             )}
           >
             <ArrowLeftIcon />
