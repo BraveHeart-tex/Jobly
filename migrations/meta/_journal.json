@@ -22,6 +22,27 @@
       "when": 1722708116418,
       "tag": "0002_medical_master_chief",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1723577606239,
+      "tag": "0003_yellow_master_mold",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1723577757303,
+      "tag": "0004_famous_sister_grimm",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1723577959266,
+      "tag": "0005_lethal_blob",
+      "breakpoints": true
     }
   ]
 }

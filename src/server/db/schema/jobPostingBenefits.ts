@@ -8,8 +8,8 @@ import {
 } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 
-const jobPostingSkills = mysqlTable(
-  "JobPostingSkills",
+const jobPostingBenefits = mysqlTable(
+  "JobPostingBenefits",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     jobPostingId: int("jobPostingId")
@@ -17,27 +17,27 @@ const jobPostingSkills = mysqlTable(
       .references(() => jobPostings.id, {
         onDelete: "cascade",
       }),
-    skillName: varchar("skillName", { length: 256 }).notNull(),
+    benefitName: varchar("benefitName", { length: 256 }).notNull(),
   },
   (table) => {
     return {
       jobId: index("jobId").on(table.jobPostingId),
-      JobSkill_id: primaryKey({
+      JobBenefit_id: primaryKey({
         columns: [table.id],
-        name: "JobPostingSkill_id",
+        name: "JobPostingBenefit_id",
       }),
     };
   },
 );
 
-export const jobPostingSkillRelations = relations(
-  jobPostingSkills,
+export const jobPostingBenefitsRelations = relations(
+  jobPostingBenefits,
   ({ one }) => ({
-    job: one(jobPostings, {
-      fields: [jobPostingSkills.jobPostingId],
+    jobPosting: one(jobPostings, {
+      fields: [jobPostingBenefits.jobPostingId],
       references: [jobPostings.id],
     }),
   }),
 );
 
-export default jobPostingSkills;
+export default jobPostingBenefits;

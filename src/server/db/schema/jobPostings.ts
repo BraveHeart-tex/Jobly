@@ -11,7 +11,6 @@ import {
   mysqlEnum,
   mysqlTable,
   primaryKey,
-  text,
   varchar,
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
@@ -26,7 +25,6 @@ const jobPostings = mysqlTable(
         onDelete: "cascade",
       }),
     title: varchar("title", { length: 512 }).notNull(),
-    content: text("content"),
     location: varchar("location", { length: 255 }),
     workType: mysqlEnum("workType", [
       "office",
@@ -44,7 +42,6 @@ const jobPostings = mysqlTable(
       "volunteer",
       "other",
     ]).default("full-time"),
-    benefits: text("benefits"),
     status: mysqlEnum("status", ["draft", "published"]).notNull(),
     postedAt: datetime("postedAt", { mode: "string" }).default(sql`(now())`),
     expiresAt: datetime("expiresAt", { mode: "string" }).notNull(),

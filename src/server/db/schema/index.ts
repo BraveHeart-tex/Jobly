@@ -29,3 +29,11 @@ export { default as userFollowsCompany } from "./userFollowsCompany";
 export { default as userProfiles } from "./userProfiles";
 export { default as users } from "./users";
 export { default as userViewsJobPosting } from "./userViewsJobPosting";
+export {
+  default as jobPostingBenefits,
+  jobPostingBenefitsRelations,
+} from "./jobPostingBenefits";
+export {
+  default as jobPostingContents,
+  jobPostingContentsRelations,
+} from "./jobPostingContents";
