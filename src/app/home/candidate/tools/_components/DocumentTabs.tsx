@@ -201,7 +201,9 @@ const NoDocumentsFound = ({
         ) : (
           <>
             <Plus size={18} />
-            {createNewButtonLabelMap[activeTab]}
+            <span className="hidden md:inline-block">
+              {createNewButtonLabelMap[activeTab]}
+            </span>
           </>
         )}
       </Button>

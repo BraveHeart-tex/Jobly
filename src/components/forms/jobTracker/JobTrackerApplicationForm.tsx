@@ -28,8 +28,8 @@ import {
   PencilIcon,
 } from "lucide-react";
 import { toast } from "sonner";
-import { DialogClose } from "../ui/dialog";
-import { Textarea } from "../ui/textarea";
+import { DialogClose } from "../../ui/dialog";
+import { Textarea } from "../../ui/textarea";
 
 type JobTrackerApplicationFormProps = {
   defaultValues?: Partial<JobTrackerApplicationSchema>;

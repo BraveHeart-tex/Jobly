@@ -1,4 +1,4 @@
-import SignUpForm from "@/components/forms/SignUpForm";
+import SignUpForm from "@/components/forms/auth/SignUpForm";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { APP_NAME, contentByPortalType } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";

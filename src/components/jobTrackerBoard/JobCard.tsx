@@ -1,5 +1,5 @@
 "use client";
-import JobTrackerApplicationForm from "@/components/forms/JobTrackerApplicationForm";
+import JobTrackerApplicationForm from "@/components/forms/jobTracker/JobTrackerApplicationForm";
 import { useUpdateDisplayOrderByStatus } from "@/components/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";

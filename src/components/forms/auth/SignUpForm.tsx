@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
-import { type SignUpSchema, signUpSchema } from "@/schemas/signUpSchema";
+import { type SignUpSchema, signUpSchema } from "@/schemas/auth/signUpSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";

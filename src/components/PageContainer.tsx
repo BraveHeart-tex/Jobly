@@ -7,7 +7,7 @@ type PageContainerProps = {
 };
 const PageContainer = ({ children, className }: PageContainerProps) => {
   return (
-    <div className={cn("mx-auto w-full max-w-screen-2xl mt-10 p-1", className)}>
+    <div className={cn("mx-auto w-full max-w-screen-2xl mt-8 px-3", className)}>
       {children}
     </div>
   );

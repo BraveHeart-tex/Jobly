@@ -32,9 +32,9 @@ export const CANDIDATE_ROUTES = {
 export const EMPLOYER_ROUTES = {
   // Job Postings
   NEW_LISTING: `${BASE_EMPLOYER_ROUTE}/jobPostings/new`,
-  ACTIVE_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings/active`,
-  DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings/drafts`,
-  EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings/expired`,
+  ACTIVE_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=active`,
+  DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=drafts`,
+  EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=expired`,
 
   // Candidates
   ALL_APPLICATIONS: `${BASE_EMPLOYER_ROUTE}/candidates/applications`,

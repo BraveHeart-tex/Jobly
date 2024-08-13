@@ -23,7 +23,7 @@ import { cva } from "class-variance-authority";
 import { ListXIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 import { toast } from "sonner";
-import JobTrackerApplicationForm from "../forms/JobTrackerApplicationForm";
+import JobTrackerApplicationForm from "../forms/jobTracker/JobTrackerApplicationForm";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import {

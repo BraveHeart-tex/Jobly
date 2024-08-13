@@ -4,8 +4,8 @@ import {
   createSessionWithUserId,
 } from "@/lib/auth/actions";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
-import { signInSchema } from "@/schemas/signInSchema";
-import { signUpSchema } from "@/schemas/signUpSchema";
+import { signInSchema } from "@/schemas/auth/signInSchema";
+import { signUpSchema } from "@/schemas/auth/signUpSchema";
 import * as authService from "@/server/api/services/auth.service";
 import { getUserByEmail } from "@/server/api/services/user.service";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";

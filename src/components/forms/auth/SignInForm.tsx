@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form";
 import { SHARED_ROUTES } from "@/lib/routes";
-import { type SignInSchema, signInSchema } from "@/schemas/signInSchema";
+import { type SignInSchema, signInSchema } from "@/schemas/auth/signInSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
