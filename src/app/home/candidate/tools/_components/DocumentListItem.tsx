@@ -20,8 +20,8 @@ import { cn } from "@/lib/utils";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
 import { pdf } from "@react-pdf/renderer";
-import { format } from "date-fns";
 import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
+import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -40,14 +40,16 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const router = useRouter();
   const utils = api.useUtils();
 
-  const updatedAtDate = new Date(item.updatedAt as string);
-
   const goToEditPage = () => {
     const basePath = `${CANDIDATE_ROUTES.DOCUMENT_BUILDER}/${item.type === "resume" ? "cv-builder" : "cover-letters"}/edit`;
     router.push(`${basePath}/${item.id}`);
   };
 
   const handleDownloadPDF = async () => {
+    if (item.type === "cover_letter") {
+      return toast.info("You can download only resumes as PDF at the moment.");
+    }
+
     const documentDataResponse = await utils.document.getDocumentDetails.fetch({
       id: item.id,
     });
@@ -56,22 +58,16 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
       return toast.error(documentDataResponse.error);
     }
 
-    if (item.type === "resume") {
-      const blob = await pdf(
-        <LondonTemplate data={preparePdfData(documentDataResponse)} />,
-      ).toBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${item.title}.pdf`;
-      link.click();
+    const blob = await pdf(
+      <LondonTemplate data={preparePdfData(documentDataResponse)} />,
+    ).toBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${item.title}.pdf`;
+    link.click();
 
-      URL.revokeObjectURL(url);
-    } else {
-      toast.info(
-        "You can download only resumes as PDF at the moment. Coming soon...",
-      );
-    }
+    URL.revokeObjectURL(url);
   };
 
   const documentActions = [
@@ -179,24 +175,36 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
           </PopoverTrigger>
           <PopoverContent>
             <div className="grid gap-2">
-              {documentActions.map((action) => (
-                <Button
-                  key={action.label}
-                  disabled={action.disabled}
-                  variant={action.variant || "ghost"}
-                  className="flex items-center justify-start w-full gap-2"
-                  onClick={action.onClick}
-                >
-                  {action.icon}
-                  {action.label}
-                </Button>
-              ))}
+              {documentActions.map(
+                ({ label, disabled, variant, onClick, icon }) => (
+                  <Button
+                    key={label}
+                    disabled={disabled}
+                    variant={variant || "ghost"}
+                    className="flex items-center justify-start w-full gap-2"
+                    onClick={onClick}
+                  >
+                    {icon}
+                    {label}
+                  </Button>
+                ),
+              )}
             </div>
           </PopoverContent>
         </Popover>
       </div>
       <p className="text-sm text-muted-foreground">
-        {format(updatedAtDate, "'Updated' dd MMMM, HH:mm")}
+        Last updated:{" "}
+        {DateTime.fromFormat(
+          item.updatedAt,
+          "yyyy-MM-dd HH:mm:ss",
+        ).toLocaleString({
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
       </p>
     </article>
   );

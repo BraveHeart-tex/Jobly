@@ -131,3 +131,5 @@ export const JOB_TRACKER_COLUMN_TO_ICON_MAP: Record<ColumnId, LucideIcon> = {
 };
 
 export const AUTH_COOKIE_NAME = "auth-session" as const;
+
+export const PORTAL_TYPE_QUERY_KEY = "portalType" as const;

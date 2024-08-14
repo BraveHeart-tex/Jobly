@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
-
+import { env } from "@/env";
 import companies, {
   type CompanyInsertModel,
 } from "@/server/db/schema/companies";
@@ -11,7 +9,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { createPool } from "mysql2/promise";
 import { makeCompanyDTOs, makeJobPostingDTOs } from "./seedUtils";
 
-const connection = createPool({ uri: process.env.DATABASE_URL });
+const connection = createPool({ uri: env.DATABASE_URL });
 const db = drizzle(connection);
 
 const seed = async () => {

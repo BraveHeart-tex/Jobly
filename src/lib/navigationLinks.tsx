@@ -1,3 +1,4 @@
+import { PORTAL_TYPE_QUERY_KEY } from "@/lib/constants";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { NavigationMenuItem } from "@/lib/types";
 import {
@@ -28,6 +29,7 @@ import {
   UserIcon,
   UsersIcon,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "./routes";
 
 export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
@@ -43,7 +45,7 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       {
         title: "Recommended Jobs",
         description:
-          "View jobPostings tailored to your profile and preferences.",
+          "View job postings tailored to your profile and preferences.",
         href: CANDIDATE_ROUTES.RECOMMENDED_JOBS,
         icon: ThumbsUpIcon,
       },
@@ -244,12 +246,14 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
 
 export const useNavigationLinks = () => {
   const userRole = useCurrentUserStore((state) => state?.user?.role);
+  const portalTypeParam = useSearchParams().get(PORTAL_TYPE_QUERY_KEY);
+  const role = userRole || portalTypeParam;
 
-  if (userRole === "candidate") {
+  if (role === "candidate") {
     return CANDIDATE_NAVIGATION_LINKS;
   }
 
-  if (userRole === "employer") {
+  if (role === "employer") {
     return EMPLOYER_NAVIGATION_LINKS;
   }
 
