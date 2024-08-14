@@ -50,6 +50,20 @@
       "when": 1723615377134,
       "tag": "0006_public_shriek",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1723621447119,
+      "tag": "0007_polite_sinister_six",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1723621514835,
+      "tag": "0008_wonderful_speed",
+      "breakpoints": true
     }
   ]
 }

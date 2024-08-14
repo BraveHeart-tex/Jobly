@@ -37,3 +37,9 @@ export {
   default as jobPostingContents,
   jobPostingContentsRelations,
 } from "./jobPostingContents";
+export { default as userCompanies } from "./userCompanies";
+export { default as roles } from "./roles";
+export { default as userRoles } from "./userRoles";
+export { default as permissions } from "./permissions";
+export { default as rolePermissions } from "./rolePermissions";
+export { default as entityPermissions } from "./entityPermissions";
