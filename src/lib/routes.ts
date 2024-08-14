@@ -22,7 +22,6 @@ export const CANDIDATE_ROUTES = {
 
   INTERVIEWS: `${BASE_CANDIDATE_ROUTE}/interviews`,
 
-  EDIT_PROFILE: `${BASE_CANDIDATE_ROUTE}/profile/edit`,
   PRIVACY_SETTINGS: `${BASE_CANDIDATE_ROUTE}/profile/privacy-settings`,
   MY_DOCUMENTS: `${BASE_CANDIDATE_ROUTE}/profile/my-documents`,
 

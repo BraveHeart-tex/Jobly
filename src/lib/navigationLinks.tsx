@@ -19,14 +19,12 @@ import {
   GitBranchIcon,
   HistoryIcon,
   Inbox,
-  LockIcon,
   NotebookPenIcon,
   PencilRuler,
   PieChartIcon,
   SearchIcon,
   SettingsIcon,
   ThumbsUpIcon,
-  UserIcon,
   UsersIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -99,21 +97,8 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
     ],
   },
   {
-    triggerLabel: "Profile",
+    triggerLabel: "Documents",
     linkItems: [
-      {
-        title: "Edit Profile",
-        description: "Update your professional profile.",
-        href: CANDIDATE_ROUTES.EDIT_PROFILE,
-        icon: UserIcon,
-      },
-
-      {
-        title: "Privacy Settings",
-        description: "Manage your account privacy and visibility.",
-        href: CANDIDATE_ROUTES.PRIVACY_SETTINGS,
-        icon: LockIcon,
-      },
       {
         title: "Document Builder",
         href: CANDIDATE_ROUTES.DOCUMENT_BUILDER,
