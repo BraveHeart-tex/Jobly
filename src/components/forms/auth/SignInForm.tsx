@@ -1,4 +1,5 @@
 "use client";
+import CapsLockIndicator from "@/components/CapsLockIndicator";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,6 +16,7 @@ import { type SignInSchema, signInSchema } from "@/schemas/auth/signInSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 import type { RouterOutputs } from "trpc-router-types";
 
@@ -26,6 +28,7 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
   const form = useExtendedForm<SignInSchema>(signInSchema);
   const router = useRouter();
   const { isPending, mutate: signIn } = api.auth.signIn.useMutation();
+  const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
 
   const onSettled = (data: RouterOutputs["auth"]["signIn"]) => {
     const { error, success } = data;
@@ -81,7 +84,21 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="******" {...field} />
+                <div className="relative">
+                  <Input
+                    type="password"
+                    placeholder="******"
+                    onFocus={() => {
+                      setIsPasswordFieldFocused(true);
+                    }}
+                    {...field}
+                    onBlur={() => {
+                      field.onBlur();
+                      setIsPasswordFieldFocused(false);
+                    }}
+                  />
+                  {isPasswordFieldFocused ? <CapsLockIndicator /> : null}
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,4 +1,5 @@
 "use client";
+import CapsLockIndicator from "@/components/CapsLockIndicator";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,6 +15,7 @@ import { type SignUpSchema, signUpSchema } from "@/schemas/auth/signUpSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 import type { RouterOutputs } from "trpc-router-types";
 
@@ -25,6 +27,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
   const router = useRouter();
   const { isPending, mutate: signUpUser } = api.auth.signUp.useMutation();
   const form = useExtendedForm<SignUpSchema>(signUpSchema);
+  const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
 
   const handlePasswordError = (error: string, message: string) => {
     toast.error(error);
@@ -132,7 +135,21 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="******" {...field} />
+                <div className="relative">
+                  <Input
+                    type="password"
+                    placeholder="******"
+                    onFocus={() => {
+                      setIsPasswordFieldFocused(true);
+                    }}
+                    {...field}
+                    onBlur={() => {
+                      field.onBlur();
+                      setIsPasswordFieldFocused(false);
+                    }}
+                  />
+                  {isPasswordFieldFocused ? <CapsLockIndicator /> : null}
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
