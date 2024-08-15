@@ -2,6 +2,8 @@ import {
   checkPasswordPwned,
   checkPasswordStrength,
   createSessionWithUserId,
+  hashPassword,
+  verifyPassword,
 } from "@/lib/auth/actions";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 import { signInSchema } from "@/schemas/auth/signInSchema";
@@ -9,7 +11,6 @@ import { signUpSchema } from "@/schemas/auth/signUpSchema";
 import * as authService from "@/server/api/services/auth.service";
 import { getUserByEmail } from "@/server/api/services/user.service";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { hash, verify } from "@node-rs/argon2";
 import { TRPCError } from "@trpc/server";
 
 export const authRouter = createTRPCRouter({
@@ -58,22 +59,17 @@ export const authRouter = createTRPCRouter({
         };
       }
 
-      const passwordHash = await hash(password, {
-        memoryCost: 19456,
-        timeCost: 2,
-        outputLen: 32,
-        parallelism: 1,
-      });
+      const hashedPassword = await hashPassword(password);
 
-      const [result] = await authService.signUp({
+      const userId = await authService.signUp({
         email,
         firstName,
         lastName,
-        hashedPassword: passwordHash,
+        hashedPassword,
         role,
       });
 
-      if (!result.insertId) {
+      if (!userId) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message:
@@ -81,7 +77,7 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      await createSessionWithUserId(result.insertId);
+      await createSessionWithUserId(userId);
 
       return {
         success: true,
@@ -107,15 +103,9 @@ export const authRouter = createTRPCRouter({
         };
       }
 
-      const isValidPassword = await verify(
+      const isValidPassword = await verifyPassword(
         existingUser.hashedPassword,
         password,
-        {
-          memoryCost: 19456,
-          timeCost: 2,
-          outputLen: 32,
-          parallelism: 1,
-        },
       );
 
       if (!isValidPassword) {

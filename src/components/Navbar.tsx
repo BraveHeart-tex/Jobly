@@ -19,11 +19,10 @@ import {
 
 const Navbar = async () => {
   const currentUser = await api.auth.getCurrentUser();
-
   return (
     <NavbarContainer>
       <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between px-3">
-        <div className="ml-2 lg:hidden">
+        <div className="lg:hidden">
           <MobileNavigationLinks />
         </div>
 
