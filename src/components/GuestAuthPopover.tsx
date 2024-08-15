@@ -1,13 +1,13 @@
-import { SHARED_ROUTES } from "@/lib/routes";
-import { cn } from "@/lib/utils";
-import { ChevronDownIcon } from "lucide-react";
-import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { SHARED_ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon } from "lucide-react";
+import Link from "next/link";
 
 const GuestAuthPopover = () => {
   return (

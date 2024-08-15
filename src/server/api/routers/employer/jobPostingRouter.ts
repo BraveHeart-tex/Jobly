@@ -1,6 +1,6 @@
-import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { z } from "zod";
 import * as jobPostingService from "../../services/jobPosting.service";
+import { createTRPCRouter, protectedProcedure } from "../../trpc";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure

@@ -1,6 +1,6 @@
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import roles from "./roles";
 import permissions from "./permissions";
+import roles from "./roles";
 
 const rolePermissions = mysqlTable(
   "RolePermissions",

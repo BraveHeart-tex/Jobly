@@ -1,11 +1,11 @@
 "use client";
+import { cn } from "@/lib/utils";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import RichTextEditorMenubar from "./RichTextEditorMenubar";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import RichTextEditorMenubar from "./RichTextEditorMenubar";
 
 type RichTextEditorProps = {
   initialValue?: string;

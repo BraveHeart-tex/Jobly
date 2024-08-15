@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   datetime,
   int,
@@ -6,7 +7,6 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
-import { sql } from "drizzle-orm";
 
 const roles = mysqlTable(
   "Roles",

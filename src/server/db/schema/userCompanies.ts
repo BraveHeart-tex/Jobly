@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   datetime,
   index,
@@ -5,9 +6,8 @@ import {
   mysqlTable,
   primaryKey,
 } from "drizzle-orm/mysql-core";
-import users from "./users";
 import companies from "./companies";
-import { sql } from "drizzle-orm";
+import users from "./users";
 
 const userCompanies = mysqlTable(
   "UserCompanies",

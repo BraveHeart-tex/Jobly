@@ -9,13 +9,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/lib/auth/actions";
+import { CANDIDATE_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { User } from "lucia";
 import { LockIcon, UserIcon } from "lucide-react";
+import Link from "next/link";
 import { useEffect } from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
-import { CANDIDATE_ROUTES, SHARED_ROUTES } from "@/lib/routes";
-import Link from "next/link";
 
 type UserMenuProps = {
   user: User;

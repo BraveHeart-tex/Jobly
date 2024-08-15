@@ -1,13 +1,13 @@
+import ColorModeToggle from "@/components/ColorModeToggle";
 import DesktopNavigationLinks from "@/components/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/MobileNavigationLinks";
+import NavbarContainer from "@/components/NavbarContainer";
+import UserMenu from "@/components/UserMenu";
 import { APP_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
-import ColorModeToggle from "@/components/ColorModeToggle";
-import NavbarContainer from "@/components/NavbarContainer";
-import UserMenu from "@/components/UserMenu";
 import GuestAuthPopover from "./GuestAuthPopover";
 
 const Navbar = async () => {

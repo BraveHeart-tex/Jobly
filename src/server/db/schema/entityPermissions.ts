@@ -1,7 +1,7 @@
-import { datetime, int, mysqlTable, varchar } from "drizzle-orm/mysql-core";
-import users from "./users";
-import permissions from "./permissions";
 import { sql } from "drizzle-orm";
+import { datetime, int, mysqlTable, varchar } from "drizzle-orm/mysql-core";
+import permissions from "./permissions";
+import users from "./users";
 
 const entityPermissions = mysqlTable("EntityPermissions", {
   id: int("id").primaryKey().autoincrement().notNull(),
