@@ -5,7 +5,8 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
@@ -16,7 +17,7 @@ import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 type CvBuilderExtraCurricularSectionProps = {
-  section: Section;
+  section: DocumentSection;
 };
 
 export const EXTRA_CURRICULAR_SECTION_ITEMS_COUNT = 6;
@@ -38,12 +39,12 @@ const CvBuilderExtraCurricularSection = ({
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const functionTitleField = group[0] as SectionField;
-      const startDateField = group[1] as SectionField;
-      const endDateField = group[2] as SectionField;
-      const employerField = group[3] as SectionField;
-      const cityField = group[4] as SectionField;
-      const descriptionField = group[5] as SectionField;
+      const functionTitleField = group[0] as DocumentSectionField;
+      const startDateField = group[1] as DocumentSectionField;
+      const endDateField = group[2] as DocumentSectionField;
+      const employerField = group[3] as DocumentSectionField;
+      const cityField = group[4] as DocumentSectionField;
+      const descriptionField = group[5] as DocumentSectionField;
 
       const functionTitle = getFieldValueByFieldId(
         functionTitleField?.id as number,

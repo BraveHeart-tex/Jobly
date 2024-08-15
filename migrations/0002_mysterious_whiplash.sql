@@ -1,1 +1,0 @@
-ALTER TABLE `UserBookmarksJob` MODIFY COLUMN `bookmarkedAt` datetime DEFAULT (now());

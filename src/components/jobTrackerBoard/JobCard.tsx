@@ -1,5 +1,5 @@
 "use client";
-import JobTrackerApplicationForm from "@/components/forms/JobTrackerApplicationForm";
+import JobTrackerApplicationForm from "@/components/forms/jobTracker/JobTrackerApplicationForm";
 import { useUpdateDisplayOrderByStatus } from "@/components/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
-import type { JobTrackerApplication } from "@/server/db/schema";
+import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";

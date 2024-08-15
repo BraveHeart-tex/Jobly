@@ -1,3 +1,4 @@
+import { PORTAL_TYPE_QUERY_KEY } from "@/lib/constants";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { NavigationMenuItem } from "@/lib/types";
 import {
@@ -8,6 +9,7 @@ import {
   BriefcaseIcon,
   CalendarIcon,
   ClipboardList,
+  ClipboardPlus,
   Clock,
   File,
   FilePen,
@@ -17,16 +19,15 @@ import {
   GitBranchIcon,
   HistoryIcon,
   Inbox,
-  LockIcon,
   NotebookPenIcon,
   PencilRuler,
   PieChartIcon,
   SearchIcon,
   SettingsIcon,
   ThumbsUpIcon,
-  UserIcon,
   UsersIcon,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "./routes";
 
 export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
@@ -41,7 +42,8 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
       },
       {
         title: "Recommended Jobs",
-        description: "View jobs tailored to your profile and preferences.",
+        description:
+          "View job postings tailored to your profile and preferences.",
         href: CANDIDATE_ROUTES.RECOMMENDED_JOBS,
         icon: ThumbsUpIcon,
       },
@@ -95,21 +97,8 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
     ],
   },
   {
-    triggerLabel: "Profile",
+    triggerLabel: "Documents",
     linkItems: [
-      {
-        title: "Edit Profile",
-        description: "Update your professional profile.",
-        href: CANDIDATE_ROUTES.EDIT_PROFILE,
-        icon: UserIcon,
-      },
-
-      {
-        title: "Privacy Settings",
-        description: "Manage your account privacy and visibility.",
-        href: CANDIDATE_ROUTES.PRIVACY_SETTINGS,
-        icon: LockIcon,
-      },
       {
         title: "Document Builder",
         href: CANDIDATE_ROUTES.DOCUMENT_BUILDER,
@@ -130,6 +119,12 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
   {
     triggerLabel: "Job Postings",
     linkItems: [
+      {
+        title: "New Job Posting",
+        description: "Find top talent! Add a new job posting.",
+        href: EMPLOYER_ROUTES.NEW_LISTING,
+        icon: ClipboardPlus,
+      },
       {
         title: "Active Listings",
         description: "Manage your current job postings.",
@@ -217,12 +212,6 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
         href: EMPLOYER_ROUTES.COMPANY_PROFILE,
         icon: BriefcaseIcon,
       },
-      {
-        title: "Team Management",
-        description: "Manage your recruiting team and permissions.",
-        href: EMPLOYER_ROUTES.TEAM_MANAGEMENT,
-        icon: UsersIcon,
-      },
       // Thumbnails etc, provided by your company...
       {
         title: "Employer Branding",
@@ -242,12 +231,14 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
 
 export const useNavigationLinks = () => {
   const userRole = useCurrentUserStore((state) => state?.user?.role);
+  const portalTypeParam = useSearchParams().get(PORTAL_TYPE_QUERY_KEY);
+  const role = userRole || portalTypeParam;
 
-  if (userRole === "candidate") {
+  if (role === "candidate") {
     return CANDIDATE_NAVIGATION_LINKS;
   }
 
-  if (userRole === "employer") {
+  if (role === "employer") {
     return EMPLOYER_NAVIGATION_LINKS;
   }
 

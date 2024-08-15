@@ -14,7 +14,7 @@ import {
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
-import type { Section } from "@/server/db/schema";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { AnimatePresence, motion } from "framer-motion";
 import { Pencil, RotateCcw, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +23,7 @@ import { useDeleteSection } from "../_hooks/useDeleteSection";
 type EditableSectionTitleProps = {
   containerClassName?: string;
   labelClassName?: string;
-  section: Section | undefined;
+  section: DocumentSection | undefined;
 };
 
 const PLACEHOLDER_OFFSET_PX = 26;
@@ -157,7 +157,9 @@ const EditableSectionTitle = ({
             {focused && (
               <motion.div
                 initial={{ width: 0 }}
-                animate={{ width: getSpanWidthWithOffset() || "100%" }}
+                animate={{
+                  width: getSpanWidthWithOffset() || "100%",
+                }}
                 exit={{ width: 0 }}
                 transition={{ duration: 0.2 }}
                 className="bg-primary w-full h-[2px]"

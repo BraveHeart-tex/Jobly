@@ -4,7 +4,7 @@ import {
   type ColumnId,
   useJobTrackerBoardStore,
 } from "@/lib/stores/useJobTrackerBoardStore";
-import type { JobTrackerApplication } from "@/server/db/schema";
+import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import {
   type Announcements,
   DndContext,

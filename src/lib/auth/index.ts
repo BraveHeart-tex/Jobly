@@ -1,15 +1,17 @@
 import { env } from "@/env.js";
 import { db } from "@/server/db";
-import { type User, session, user } from "@/server/db/schema";
+import { sessions, users } from "@/server/db/schema";
+import type { DBUser } from "@/server/db/schema/users";
 import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
+import { AUTH_COOKIE_NAME } from "../constants";
 
 type DatabaseUserAttributes = Pick<
-  User,
+  DBUser,
   "id" | "email" | "role" | "firstName" | "lastName"
 >;
 
-const adapter = new DrizzleMySQLAdapter(db, session, user);
+const adapter = new DrizzleMySQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
@@ -22,7 +24,7 @@ export const lucia = new Lucia(adapter, {
     };
   },
   sessionCookie: {
-    name: "jbly_session",
+    name: AUTH_COOKIE_NAME,
     expires: false,
     attributes: {
       secure: env.NODE_ENV === "production",

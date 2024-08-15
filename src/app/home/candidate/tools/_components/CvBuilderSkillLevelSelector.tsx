@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { InferValueTypeFromConst } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 const SKILL_LEVELS = {
   NOVICE: "Novice",
@@ -39,7 +39,7 @@ const SKILL_LEVEL_COLORS = {
 };
 
 type CvBuilderSkillLevelSelectorProps = {
-  field: SectionField;
+  field: DocumentSectionField;
   disabled?: boolean;
 };
 

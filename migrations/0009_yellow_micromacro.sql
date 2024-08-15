@@ -1,1 +1,0 @@
-ALTER TABLE `FieldValue` ADD `value` text;

@@ -1,11 +1,11 @@
 import type { MakeFieldsRequired } from "@/lib/types";
 import type { JobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
 import { buildConflictUpdateColumns, db } from "@/server/db";
-import {
-  type JobTrackerApplication,
-  type JobTrackerApplicationInsertModel,
-  jobTrackerApplications,
-} from "@/server/db/schema";
+import { jobTrackerApplications } from "@/server/db/schema";
+import type {
+  JobTrackerApplication,
+  JobTrackerApplicationInsertModel,
+} from "@/server/db/schema/jobTrackerApplications";
 import { and, eq } from "drizzle-orm";
 import type { User } from "lucia";
 

@@ -8,13 +8,17 @@ export const zodErrorMap: ZodErrorMap = (issue, _ctx) => {
         message: `Expected ${issue.expected}, but received ${issue.received}`,
       };
     case ZodIssueCode.invalid_literal:
-      return { message: `Invalid literal value, expected ${issue.expected}` };
+      return {
+        message: `Invalid literal value, expected ${issue.expected}`,
+      };
     case ZodIssueCode.unrecognized_keys:
       return {
         message: `Unrecognized keys in object: ${issue.keys.join(", ")}`,
       };
     case ZodIssueCode.invalid_union:
-      return { message: "Invalid input, expected one of the union types" };
+      return {
+        message: "Invalid input, expected one of the union types",
+      };
     case ZodIssueCode.invalid_enum_value:
       return {
         message: `Invalid enum value. Expected one of: ${issue.options.join(", ")}`,

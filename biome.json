@@ -4,21 +4,24 @@
     "enabled": true
   },
   "files": {
-    "ignore": ["drizzle/**", "node_modules/**", ".next/**", ".idea"]
+    "ignore": [
+      "drizzle/**",
+      "node_modules/**",
+      ".next/**",
+      ".idea",
+      "./src/styles/quill.css"
+    ]
   },
   "formatter": {
     "lineWidth": 80,
     "enabled": true,
     "formatWithErrors": false,
     "indentStyle": "space",
-    "indentWidth": 2,
     "ignore": ["node_modules/**", ".next/**", ".idea", "globals.css"]
   },
   "css": {
     "formatter": {
-      "enabled": true,
-      "indentStyle": "space",
-      "indentWidth": 2
+      "enabled": true
     }
   },
   "javascript": {

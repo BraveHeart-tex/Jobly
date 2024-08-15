@@ -1,11 +1,11 @@
-import type {
-  Document,
-  Section,
-  SectionField,
-  SectionFieldValue,
-  SectionInsertModel,
-} from "@/server/db/schema";
 import type * as schema from "@/server/db/schema";
+import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type {
+  DocumentSection,
+  DocumentSectionInsertModel,
+} from "@/server/db/schema/documentSections";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import type { ExtractTablesWithRelations } from "drizzle-orm";
 import type { MySqlTransaction } from "drizzle-orm/mysql-core";
 import type {
@@ -33,10 +33,10 @@ export type MakeFieldsRequired<T, K extends keyof T> = Omit<T, K> &
   Required<Pick<T, K>>;
 
 export type DocumentBuilderConfig = {
-  document: Document;
-  sections: Section[];
-  fields: SectionField[];
-  fieldValues: SectionFieldValue[];
+  document: DocumentSelectModel;
+  sections: DocumentSection[];
+  fields: DocumentSectionField[];
+  fieldValues: DocumentSectionFieldValue[];
 };
 
 export type Trx = MySqlTransaction<
@@ -49,7 +49,7 @@ export type Trx = MySqlTransaction<
 export type InferValueTypeFromConst<T> = T[keyof T];
 
 type SectionBase = Omit<
-  SectionInsertModel,
+  DocumentSectionInsertModel,
   "fieldsContainerType" | "itemCountPerContainer"
 >;
 

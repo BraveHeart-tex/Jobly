@@ -1,0 +1,1 @@
+ALTER TABLE `JobTrackerApplications` DROP PRIMARY KEY;

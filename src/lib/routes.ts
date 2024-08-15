@@ -1,7 +1,6 @@
 import type { InferValueTypeFromConst } from "./types";
 
 export const SHARED_ROUTES = {
-  // Shared
   LOGIN: "/login",
   "SIGN-UP": "/sign-up",
   HOME: "/home",
@@ -11,19 +10,18 @@ const BASE_CANDIDATE_ROUTE = "/home/candidate";
 const BASE_EMPLOYER_ROUTE = "/home/employer";
 
 export const CANDIDATE_ROUTES = {
-  JOBS: `${BASE_CANDIDATE_ROUTE}/jobs`,
-  RECOMMENDED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobs/?recommended=true`,
-  JOB_ALERTS: `${BASE_CANDIDATE_ROUTE}/jobs/alerts`,
-  JOB_HISTORY: `${BASE_CANDIDATE_ROUTE}/jobs/?viewed=true`,
-  JOB_TRACKER: `${BASE_CANDIDATE_ROUTE}/jobs/job-tracker`,
-  BOOKMARKED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobs/?bookmarked=true`,
+  JOBS: `${BASE_CANDIDATE_ROUTE}/jobPostings`,
+  RECOMMENDED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobPostings/?recommended=true`,
+  JOB_ALERTS: `${BASE_CANDIDATE_ROUTE}/jobPostings/alerts`,
+  JOB_HISTORY: `${BASE_CANDIDATE_ROUTE}/jobPostings/?viewed=true`,
+  JOB_TRACKER: `${BASE_CANDIDATE_ROUTE}/jobPostings/job-tracker`,
+  BOOKMARKED_JOBS: `${BASE_CANDIDATE_ROUTE}/jobPostings/?bookmarked=true`,
 
   APPLICATIONS: `${BASE_CANDIDATE_ROUTE}/applications`,
   UNFINISHED_APPLICATIONS: `${BASE_CANDIDATE_ROUTE}/applications?unfinished=true`,
 
   INTERVIEWS: `${BASE_CANDIDATE_ROUTE}/interviews`,
 
-  EDIT_PROFILE: `${BASE_CANDIDATE_ROUTE}/profile/edit`,
   PRIVACY_SETTINGS: `${BASE_CANDIDATE_ROUTE}/profile/privacy-settings`,
   MY_DOCUMENTS: `${BASE_CANDIDATE_ROUTE}/profile/my-documents`,
 
@@ -32,10 +30,10 @@ export const CANDIDATE_ROUTES = {
 
 export const EMPLOYER_ROUTES = {
   // Job Postings
-  POST_JOB: `${BASE_EMPLOYER_ROUTE}/jobs/post`,
-  ACTIVE_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/active`,
-  DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/drafts`,
-  EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobs/expired`,
+  NEW_LISTING: `${BASE_EMPLOYER_ROUTE}/jobPostings/new`,
+  ACTIVE_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=active`,
+  DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=draft`,
+  EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=expired`,
 
   // Candidates
   ALL_APPLICATIONS: `${BASE_EMPLOYER_ROUTE}/candidates/applications`,
@@ -51,7 +49,6 @@ export const EMPLOYER_ROUTES = {
 
   // Company
   COMPANY_PROFILE: `${BASE_EMPLOYER_ROUTE}/company/profile`,
-  TEAM_MANAGEMENT: `${BASE_EMPLOYER_ROUTE}/company/team`,
   EMPLOYER_BRANDING: `${BASE_EMPLOYER_ROUTE}/company/branding`,
   ACCOUNT_SETTINGS: `${BASE_EMPLOYER_ROUTE}/company/settings`,
   DASHBOARD: `${BASE_EMPLOYER_ROUTE}/dashboard`,

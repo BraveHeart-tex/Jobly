@@ -1,111 +1,11 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "2ef13750-fe05-4731-9207-58d920b29eac",
-  "prevId": "33a4b3c6-03f7-4719-99fd-e769db37b36e",
+  "id": "0003ceca-97c5-4b2c-85b0-2b621a108407",
+  "prevId": "1acfa3b1-08c5-467f-91de-9ebbbd2d8b35",
   "tables": {
-    "Application": {
-      "name": "Application",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "userId": {
-          "name": "userId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "jobId": {
-          "name": "jobId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "coverLetter": {
-          "name": "coverLetter",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "resume": {
-          "name": "resume",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "status": {
-          "name": "status",
-          "type": "enum('pending','applied','rejected','interview','offer')",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'applied'"
-        },
-        "appliedAt": {
-          "name": "appliedAt",
-          "type": "datetime",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "(now())"
-        }
-      },
-      "indexes": {
-        "jobId": {
-          "name": "jobId",
-          "columns": ["jobId"],
-          "isUnique": false
-        },
-        "userId": {
-          "name": "userId",
-          "columns": ["userId"],
-          "isUnique": false
-        },
-        "status": {
-          "name": "status",
-          "columns": ["status"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "Application_userId_User_id_fk": {
-          "name": "Application_userId_User_id_fk",
-          "tableFrom": "Application",
-          "tableTo": "User",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "Application_jobId_Job_id_fk": {
-          "name": "Application_jobId_Job_id_fk",
-          "tableFrom": "Application",
-          "tableTo": "Job",
-          "columnsFrom": ["jobId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "Application_id": {
-          "name": "Application_id",
-          "columns": ["id"]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "Company": {
-      "name": "Company",
+    "Companies": {
+      "name": "Companies",
       "columns": {
         "id": {
           "name": "id",
@@ -134,14 +34,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "followerCount": {
-          "name": "followerCount",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": 0
         },
         "industry": {
           "name": "industry",
@@ -204,7 +96,7 @@
           "name": "updatedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         }
@@ -218,6 +110,10 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {
+        "Companies_id": {
+          "name": "Companies_id",
+          "columns": ["id"]
+        },
         "Company_id": {
           "name": "Company_id",
           "columns": ["id"]
@@ -225,8 +121,8 @@
       },
       "uniqueConstraints": {}
     },
-    "CoverLetter": {
-      "name": "CoverLetter",
+    "DocumentSectionFieldValues": {
+      "name": "DocumentSectionFieldValues",
       "columns": {
         "id": {
           "name": "id",
@@ -235,49 +131,53 @@
           "notNull": true,
           "autoincrement": true
         },
-        "userId": {
-          "name": "userId",
+        "fieldId": {
+          "name": "fieldId",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "content": {
-          "name": "content",
+        "value": {
+          "name": "value",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         }
       },
       "indexes": {
-        "userId": {
-          "name": "userId",
-          "columns": ["userId"],
+        "fieldId": {
+          "name": "fieldId",
+          "columns": ["fieldId"],
           "isUnique": false
         }
       },
       "foreignKeys": {
-        "CoverLetter_userId_User_id_fk": {
-          "name": "CoverLetter_userId_User_id_fk",
-          "tableFrom": "CoverLetter",
-          "tableTo": "User",
-          "columnsFrom": ["userId"],
+        "DocumentSectionFieldValues_fieldId_DocumentSectionFields_id_fk": {
+          "name": "DocumentSectionFieldValues_fieldId_DocumentSectionFields_id_fk",
+          "tableFrom": "DocumentSectionFieldValues",
+          "tableTo": "DocumentSectionFields",
+          "columnsFrom": ["fieldId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "CoverLetter_id": {
-          "name": "CoverLetter_id",
+        "DocumentSectionFieldValues_id": {
+          "name": "DocumentSectionFieldValues_id",
+          "columns": ["id"]
+        },
+        "FieldValue_id": {
+          "name": "FieldValue_id",
           "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
     },
-    "Field": {
-      "name": "Field",
+    "DocumentSectionFields": {
+      "name": "DocumentSectionFields",
       "columns": {
         "id": {
           "name": "id",
@@ -293,16 +193,23 @@
           "notNull": true,
           "autoincrement": false
         },
-        "name": {
-          "name": "name",
+        "fieldName": {
+          "name": "fieldName",
           "type": "varchar(100)",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "dataType": {
-          "name": "dataType",
+        "fieldType": {
+          "name": "fieldType",
           "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -316,17 +223,21 @@
         }
       },
       "foreignKeys": {
-        "Field_sectionId_Section_id_fk": {
-          "name": "Field_sectionId_Section_id_fk",
-          "tableFrom": "Field",
-          "tableTo": "Section",
+        "DocumentSectionFields_sectionId_DocumentSections_id_fk": {
+          "name": "DocumentSectionFields_sectionId_DocumentSections_id_fk",
+          "tableFrom": "DocumentSectionFields",
+          "tableTo": "DocumentSections",
           "columnsFrom": ["sectionId"],
           "columnsTo": ["id"],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
+        "DocumentSectionFields_id": {
+          "name": "DocumentSectionFields_id",
+          "columns": ["id"]
+        },
         "Field_id": {
           "name": "Field_id",
           "columns": ["id"]
@@ -334,8 +245,374 @@
       },
       "uniqueConstraints": {}
     },
-    "Job": {
-      "name": "Job",
+    "DocumentSections": {
+      "name": "DocumentSections",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "documentId": {
+          "name": "documentId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fieldsContainerType": {
+          "name": "fieldsContainerType",
+          "type": "enum('collapsible','static')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'static'"
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "internalSectionTag": {
+          "name": "internalSectionTag",
+          "type": "enum('personal-details','professional-summary','employment-history','education','websites-social-links','skills','custom','internships','extra-curricular-activities','hobbies','references','courses','languages')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "defaultName": {
+          "name": "defaultName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "itemCountPerContainer": {
+          "name": "itemCountPerContainer",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "documentId": {
+          "name": "documentId",
+          "columns": ["documentId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "DocumentSections_documentId_Documents_id_fk": {
+          "name": "DocumentSections_documentId_Documents_id_fk",
+          "tableFrom": "DocumentSections",
+          "tableTo": "Documents",
+          "columnsFrom": ["documentId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "DocumentSections_id": {
+          "name": "DocumentSections_id",
+          "columns": ["id"]
+        },
+        "Section_id": {
+          "name": "Section_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Documents": {
+      "name": "Documents",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "enum('resume','cover_letter')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "language": {
+          "name": "language",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "Documents_userId_Users_id_fk": {
+          "name": "Documents_userId_Users_id_fk",
+          "tableFrom": "Documents",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "Documents_id": {
+          "name": "Documents_id",
+          "columns": ["id"]
+        },
+        "Document_id": {
+          "name": "Document_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobApplications": {
+      "name": "JobApplications",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobPostingId": {
+          "name": "jobPostingId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "coverLetterId": {
+          "name": "coverLetterId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "resumeId": {
+          "name": "resumeId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('pending','applied','rejected','interview','offer')",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'applied'"
+        },
+        "appliedAt": {
+          "name": "appliedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {
+        "jobId": {
+          "name": "jobId",
+          "columns": ["jobPostingId"],
+          "isUnique": false
+        },
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "status": {
+          "name": "status",
+          "columns": ["status"],
+          "isUnique": false
+        },
+        "coverLetterId": {
+          "name": "coverLetterId",
+          "columns": ["coverLetterId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "JobApplications_userId_Users_id_fk": {
+          "name": "JobApplications_userId_Users_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "JobApplications_jobPostingId_JobPostings_id_fk": {
+          "name": "JobApplications_jobPostingId_JobPostings_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["jobPostingId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "JobApplications_coverLetterId_Documents_id_fk": {
+          "name": "JobApplications_coverLetterId_Documents_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "Documents",
+          "columnsFrom": ["coverLetterId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "JobApplications_resumeId_Documents_id_fk": {
+          "name": "JobApplications_resumeId_Documents_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "Documents",
+          "columnsFrom": ["resumeId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobApplications_id": {
+          "name": "JobApplications_id",
+          "columns": ["id"]
+        },
+        "JobApplication_id": {
+          "name": "JobApplication_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobPostingSkills": {
+      "name": "JobPostingSkills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "jobPostingId": {
+          "name": "jobPostingId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "skillName": {
+          "name": "skillName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "jobId": {
+          "name": "jobId",
+          "columns": ["jobPostingId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "JobPostingSkills_jobPostingId_JobPostings_id_fk": {
+          "name": "JobPostingSkills_jobPostingId_JobPostings_id_fk",
+          "tableFrom": "JobPostingSkills",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["jobPostingId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobPostingSkills_id": {
+          "name": "JobPostingSkills_id",
+          "columns": ["id"]
+        },
+        "JobPostingSkill_id": {
+          "name": "JobPostingSkill_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobPostings": {
+      "name": "JobPostings",
       "columns": {
         "id": {
           "name": "id",
@@ -358,8 +635,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "description": {
-          "name": "description",
+        "content": {
+          "name": "content",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -395,14 +672,6 @@
           "autoincrement": false,
           "default": "'full-time'"
         },
-        "applicationCount": {
-          "name": "applicationCount",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": 0
-        },
         "benefits": {
           "name": "benefits",
           "type": "text",
@@ -410,8 +679,16 @@
           "notNull": false,
           "autoincrement": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "postedAt": {
+          "name": "postedAt",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "expiresAt": {
+          "name": "expiresAt",
           "type": "datetime",
           "primaryKey": false,
           "notNull": false,
@@ -422,7 +699,7 @@
           "name": "updatedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         }
@@ -455,10 +732,10 @@
         }
       },
       "foreignKeys": {
-        "Job_companyId_Company_id_fk": {
-          "name": "Job_companyId_Company_id_fk",
-          "tableFrom": "Job",
-          "tableTo": "Company",
+        "JobPostings_companyId_Companies_id_fk": {
+          "name": "JobPostings_companyId_Companies_id_fk",
+          "tableFrom": "JobPostings",
+          "tableTo": "Companies",
           "columnsFrom": ["companyId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -466,15 +743,19 @@
         }
       },
       "compositePrimaryKeys": {
-        "Job_id": {
-          "name": "Job_id",
+        "JobPostings_id": {
+          "name": "JobPostings_id",
+          "columns": ["id"]
+        },
+        "JobPosting_id": {
+          "name": "JobPosting_id",
           "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
     },
-    "JobSkill": {
-      "name": "JobSkill",
+    "JobTrackerApplications": {
+      "name": "JobTrackerApplications",
       "columns": {
         "id": {
           "name": "id",
@@ -483,60 +764,9 @@
           "notNull": true,
           "autoincrement": true
         },
-        "jobId": {
-          "name": "jobId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "skillName": {
-          "name": "skillName",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "jobId": {
-          "name": "jobId",
-          "columns": ["jobId"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "JobSkill_jobId_Job_id_fk": {
-          "name": "JobSkill_jobId_Job_id_fk",
-          "tableFrom": "JobSkill",
-          "tableTo": "Job",
-          "columnsFrom": ["jobId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "JobSkill_id": {
-          "name": "JobSkill_id",
-          "columns": ["id"]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "Resume": {
-      "name": "Resume",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar(512)",
+        "status": {
+          "name": "status",
+          "type": "enum('shortlist','applied','interview','offer','rejected')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -548,9 +778,58 @@
           "notNull": true,
           "autoincrement": false
         },
-        "language": {
-          "name": "language",
-          "type": "varchar(100)",
+        "company": {
+          "name": "company",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobTitle": {
+          "name": "jobTitle",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "salary": {
+          "name": "salary",
+          "type": "decimal(10,2)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "jobDescription": {
+          "name": "jobDescription",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -559,7 +838,7 @@
           "name": "createdAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         },
@@ -567,23 +846,17 @@
           "name": "updatedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         }
       },
-      "indexes": {
-        "userId": {
-          "name": "userId",
-          "columns": ["userId"],
-          "isUnique": false
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "Resume_userId_User_id_fk": {
-          "name": "Resume_userId_User_id_fk",
-          "tableFrom": "Resume",
-          "tableTo": "User",
+        "JobTrackerApplications_userId_Users_id_fk": {
+          "name": "JobTrackerApplications_userId_Users_id_fk",
+          "tableFrom": "JobTrackerApplications",
+          "tableTo": "Users",
           "columnsFrom": ["userId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -591,15 +864,15 @@
         }
       },
       "compositePrimaryKeys": {
-        "Resume_id": {
-          "name": "Resume_id",
+        "JobTrackerApplications_id": {
+          "name": "JobTrackerApplications_id",
           "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
     },
-    "ResumeView": {
-      "name": "ResumeView",
+    "ResumeViews": {
+      "name": "ResumeViews",
       "columns": {
         "id": {
           "name": "id",
@@ -615,8 +888,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "viewedUserId": {
-          "name": "viewedUserId",
+        "viewedResumeId": {
+          "name": "viewedResumeId",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -626,8 +899,9 @@
           "name": "viewedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
         }
       },
       "indexes": {
@@ -636,33 +910,37 @@
           "columns": ["viewerCompanyId"],
           "isUnique": false
         },
-        "viewedUserId": {
-          "name": "viewedUserId",
-          "columns": ["viewedUserId"],
+        "viewedResumeId": {
+          "name": "viewedResumeId",
+          "columns": ["viewedResumeId"],
           "isUnique": false
         }
       },
       "foreignKeys": {
-        "ResumeView_viewerCompanyId_Company_id_fk": {
-          "name": "ResumeView_viewerCompanyId_Company_id_fk",
-          "tableFrom": "ResumeView",
-          "tableTo": "Company",
+        "ResumeViews_viewerCompanyId_Companies_id_fk": {
+          "name": "ResumeViews_viewerCompanyId_Companies_id_fk",
+          "tableFrom": "ResumeViews",
+          "tableTo": "Companies",
           "columnsFrom": ["viewerCompanyId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "ResumeView_viewedUserId_User_id_fk": {
-          "name": "ResumeView_viewedUserId_User_id_fk",
-          "tableFrom": "ResumeView",
-          "tableTo": "User",
-          "columnsFrom": ["viewedUserId"],
+        "ResumeViews_viewedResumeId_Documents_id_fk": {
+          "name": "ResumeViews_viewedResumeId_Documents_id_fk",
+          "tableFrom": "ResumeViews",
+          "tableTo": "Documents",
+          "columnsFrom": ["viewedResumeId"],
           "columnsTo": ["id"],
-          "onDelete": "cascade",
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
+        "ResumeViews_id": {
+          "name": "ResumeViews_id",
+          "columns": ["id"]
+        },
         "ResumeView_id": {
           "name": "ResumeView_id",
           "columns": ["id"]
@@ -670,43 +948,8 @@
       },
       "uniqueConstraints": {}
     },
-    "Section": {
-      "name": "Section",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "displayOrder": {
-          "name": "displayOrder",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "Section_id": {
-          "name": "Section_id",
-          "columns": ["id"]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "Session": {
-      "name": "Session",
+    "Sessions": {
+      "name": "Sessions",
       "columns": {
         "id": {
           "name": "id",
@@ -738,10 +981,10 @@
         }
       },
       "foreignKeys": {
-        "Session_user_id_User_id_fk": {
-          "name": "Session_user_id_User_id_fk",
-          "tableFrom": "Session",
-          "tableTo": "User",
+        "Sessions_user_id_Users_id_fk": {
+          "name": "Sessions_user_id_Users_id_fk",
+          "tableFrom": "Sessions",
+          "tableTo": "Users",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -749,6 +992,10 @@
         }
       },
       "compositePrimaryKeys": {
+        "Sessions_id": {
+          "name": "Sessions_id",
+          "columns": ["id"]
+        },
         "Session_id": {
           "name": "Session_id",
           "columns": ["id"]
@@ -756,68 +1003,8 @@
       },
       "uniqueConstraints": {}
     },
-    "User": {
-      "name": "User",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "firstName": {
-          "name": "firstName",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "lastName": {
-          "name": "lastName",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "hashedPassword": {
-          "name": "hashedPassword",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "email": {
-          "name": "email",
-          "columns": ["email"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "User_id": {
-          "name": "User_id",
-          "columns": ["id"]
-        }
-      },
-      "uniqueConstraints": {
-        "User_email_unique": {
-          "name": "User_email_unique",
-          "columns": ["email"]
-        }
-      }
-    },
-    "UserBookmarksJob": {
-      "name": "UserBookmarksJob",
+    "UserBookmarksJobPosting": {
+      "name": "UserBookmarksJobPosting",
       "columns": {
         "id": {
           "name": "id",
@@ -833,8 +1020,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "jobId": {
-          "name": "jobId",
+        "jobPostingId": {
+          "name": "jobPostingId",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -844,8 +1031,9 @@
           "name": "bookmarkedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
         }
       },
       "indexes": {
@@ -856,105 +1044,33 @@
         },
         "jobId": {
           "name": "jobId",
-          "columns": ["jobId"],
+          "columns": ["jobPostingId"],
           "isUnique": false
         }
       },
       "foreignKeys": {
-        "UserBookmarksJob_userId_User_id_fk": {
-          "name": "UserBookmarksJob_userId_User_id_fk",
-          "tableFrom": "UserBookmarksJob",
-          "tableTo": "User",
+        "UserBookmarksJobPosting_userId_Users_id_fk": {
+          "name": "UserBookmarksJobPosting_userId_Users_id_fk",
+          "tableFrom": "UserBookmarksJobPosting",
+          "tableTo": "Users",
           "columnsFrom": ["userId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "UserBookmarksJob_jobId_Job_id_fk": {
-          "name": "UserBookmarksJob_jobId_Job_id_fk",
-          "tableFrom": "UserBookmarksJob",
-          "tableTo": "Job",
-          "columnsFrom": ["jobId"],
+        "UserBookmarksJobPosting_jobPostingId_JobPostings_id_fk": {
+          "name": "UserBookmarksJobPosting_jobPostingId_JobPostings_id_fk",
+          "tableFrom": "UserBookmarksJobPosting",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["jobPostingId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "UserBookmarksJob_id": {
-          "name": "UserBookmarksJob_id",
-          "columns": ["id"]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "UserField": {
-      "name": "UserField",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "userSectionId": {
-          "name": "userSectionId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "fieldId": {
-          "name": "fieldId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "label": {
-          "name": "label",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "userSectionId": {
-          "name": "userSectionId",
-          "columns": ["userSectionId"],
-          "isUnique": false
-        },
-        "fieldId": {
-          "name": "fieldId",
-          "columns": ["fieldId"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "UserField_userSectionId_UserSection_id_fk": {
-          "name": "UserField_userSectionId_UserSection_id_fk",
-          "tableFrom": "UserField",
-          "tableTo": "UserSection",
-          "columnsFrom": ["userSectionId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "UserField_fieldId_Field_id_fk": {
-          "name": "UserField_fieldId_Field_id_fk",
-          "tableFrom": "UserField",
-          "tableTo": "Field",
-          "columnsFrom": ["fieldId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "UserField_id": {
-          "name": "UserField_id",
+        "UserBookmarksJobPosting_id": {
+          "name": "UserBookmarksJobPosting_id",
           "columns": ["id"]
         }
       },
@@ -998,19 +1114,19 @@
         }
       },
       "foreignKeys": {
-        "UserFollowsCompany_companyId_Company_id_fk": {
-          "name": "UserFollowsCompany_companyId_Company_id_fk",
+        "UserFollowsCompany_companyId_Companies_id_fk": {
+          "name": "UserFollowsCompany_companyId_Companies_id_fk",
           "tableFrom": "UserFollowsCompany",
-          "tableTo": "Company",
+          "tableTo": "Companies",
           "columnsFrom": ["companyId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "UserFollowsCompany_userId_User_id_fk": {
-          "name": "UserFollowsCompany_userId_User_id_fk",
+        "UserFollowsCompany_userId_Users_id_fk": {
+          "name": "UserFollowsCompany_userId_Users_id_fk",
           "tableFrom": "UserFollowsCompany",
-          "tableTo": "User",
+          "tableTo": "Users",
           "columnsFrom": ["userId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -1025,8 +1141,8 @@
       },
       "uniqueConstraints": {}
     },
-    "UserProfile": {
-      "name": "UserProfile",
+    "UserProfiles": {
+      "name": "UserProfiles",
       "columns": {
         "id": {
           "name": "id",
@@ -1089,7 +1205,7 @@
           "name": "updatedAt",
           "type": "datetime",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": "(now())"
         }
@@ -1102,10 +1218,10 @@
         }
       },
       "foreignKeys": {
-        "UserProfile_userId_User_id_fk": {
-          "name": "UserProfile_userId_User_id_fk",
-          "tableFrom": "UserProfile",
-          "tableTo": "User",
+        "UserProfiles_userId_Users_id_fk": {
+          "name": "UserProfiles_userId_Users_id_fk",
+          "tableFrom": "UserProfiles",
+          "tableTo": "Users",
           "columnsFrom": ["userId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
@@ -1113,6 +1229,10 @@
         }
       },
       "compositePrimaryKeys": {
+        "UserProfiles_id": {
+          "name": "UserProfiles_id",
+          "columns": ["id"]
+        },
         "UserProfile_id": {
           "name": "UserProfile_id",
           "columns": ["id"]
@@ -1120,87 +1240,8 @@
       },
       "uniqueConstraints": {}
     },
-    "UserSection": {
-      "name": "UserSection",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "resumeId": {
-          "name": "resumeId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "sectionId": {
-          "name": "sectionId",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "displayOrder": {
-          "name": "displayOrder",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "resumeId": {
-          "name": "resumeId",
-          "columns": ["resumeId"],
-          "isUnique": false
-        },
-        "sectionId": {
-          "name": "sectionId",
-          "columns": ["sectionId"],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "UserSection_resumeId_Resume_id_fk": {
-          "name": "UserSection_resumeId_Resume_id_fk",
-          "tableFrom": "UserSection",
-          "tableTo": "Resume",
-          "columnsFrom": ["resumeId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "UserSection_sectionId_Section_id_fk": {
-          "name": "UserSection_sectionId_Section_id_fk",
-          "tableFrom": "UserSection",
-          "tableTo": "Section",
-          "columnsFrom": ["sectionId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "UserSection_id": {
-          "name": "UserSection_id",
-          "columns": ["id"]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "UserViewsJob": {
-      "name": "UserViewsJob",
+    "UserViewsJobPosting": {
+      "name": "UserViewsJobPosting",
       "columns": {
         "id": {
           "name": "id",
@@ -1216,8 +1257,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "viewedJobId": {
-          "name": "viewedJobId",
+        "viewedJobPostingId": {
+          "name": "viewedJobPostingId",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -1240,42 +1281,123 @@
         },
         "viewedJobId": {
           "name": "viewedJobId",
-          "columns": ["viewedJobId"],
+          "columns": ["viewedJobPostingId"],
           "isUnique": false
         }
       },
       "foreignKeys": {
-        "UserViewsJob_viewerUserId_User_id_fk": {
-          "name": "UserViewsJob_viewerUserId_User_id_fk",
-          "tableFrom": "UserViewsJob",
-          "tableTo": "User",
+        "UserViewsJobPosting_viewerUserId_Users_id_fk": {
+          "name": "UserViewsJobPosting_viewerUserId_Users_id_fk",
+          "tableFrom": "UserViewsJobPosting",
+          "tableTo": "Users",
           "columnsFrom": ["viewerUserId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "UserViewsJob_viewedJobId_Job_id_fk": {
-          "name": "UserViewsJob_viewedJobId_Job_id_fk",
-          "tableFrom": "UserViewsJob",
-          "tableTo": "Job",
-          "columnsFrom": ["viewedJobId"],
+        "UserViewsJobPosting_viewedJobPostingId_JobPostings_id_fk": {
+          "name": "UserViewsJobPosting_viewedJobPostingId_JobPostings_id_fk",
+          "tableFrom": "UserViewsJobPosting",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["viewedJobPostingId"],
           "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
+        "UserViewsJobPosting_id": {
+          "name": "UserViewsJobPosting_id",
+          "columns": ["id"]
+        },
         "UserViewsJob_id": {
           "name": "UserViewsJob_id",
           "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
+    },
+    "Users": {
+      "name": "Users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hashedPassword": {
+          "name": "hashedPassword",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "enum('employer','candidate')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "email": {
+          "name": "email",
+          "columns": ["email"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Users_id": {
+          "name": "Users_id",
+          "columns": ["id"]
+        },
+        "User_id": {
+          "name": "User_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "Users_email_unique": {
+          "name": "Users_email_unique",
+          "columns": ["email"]
+        }
+      }
     }
   },
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {}
+    "columns": {
+      "\"JobPostings\".\"createdAt\"": "\"JobPostings\".\"postedAt\""
+    }
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
   }
 }

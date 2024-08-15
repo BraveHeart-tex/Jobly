@@ -1,15 +1,15 @@
-import SignInForm from "@/components/forms/SignInForm";
+import SignInForm from "@/components/forms/auth/SignInForm";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { APP_NAME, contentByPortalType } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { capitalizeWord, generateRandomNumber } from "@/lib/utils";
-import type { User } from "@/server/db/schema";
+import type { DBUser } from "@/server/db/schema/users";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type LoginPageSearchParams = {
-  portalType?: User["role"];
+  portalType?: DBUser["role"];
 };
 
 type LoginPageProps = {
@@ -51,6 +51,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
                 alt={`${APP_NAME} Logo`}
                 width={60}
                 height={60}
+                priority
               />
             </div>
             <h1 className="text-3xl font-bold">

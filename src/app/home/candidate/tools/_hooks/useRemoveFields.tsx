@@ -1,6 +1,6 @@
 "use client";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { api } from "@/trpc/react";
 import { useUpdateFieldDisplayOrdersOnDelete } from "./useUpdateFieldDisplayOrdersOnDelete";
 
@@ -16,7 +16,7 @@ export const useRemoveFields = () => {
     (state) => state.removeFields,
   );
 
-  const removeFields = (fieldIds: SectionField["id"][]) => {
+  const removeFields = (fieldIds: DocumentSectionField["id"][]) => {
     const sectionId = useDocumentBuilderStore
       .getState()
       .fields.filter((field) => field.id === fieldIds[0])[0]?.sectionId;

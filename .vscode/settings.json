@@ -51,5 +51,23 @@
     "**/venv/**": true,
     "env-*": true
   },
-  "cSpell.words": ["lucide", "sonner", "TRPC"]
+  "cSpell.words": [
+    "autoincrement",
+    "clsx",
+    "datetime",
+    "DTOs",
+    "Inno",
+    "lucide",
+    "nums",
+    "nuqs",
+    "pdfs",
+    "Pilcrow",
+    "sonner",
+    "superjson",
+    "tiptap",
+    "TRPC",
+    "Unsave",
+    "zustand",
+    "zxcvbn"
+  ]
 }

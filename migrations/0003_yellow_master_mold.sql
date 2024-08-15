@@ -1,0 +1,1 @@
+ALTER TABLE `JobPostings` ADD `status` enum('draft','published') NOT NULL;

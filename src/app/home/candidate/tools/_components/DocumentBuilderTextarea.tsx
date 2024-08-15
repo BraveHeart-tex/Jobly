@@ -1,10 +1,10 @@
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type DocumentBuilderTextareaProps = {
-  field: SectionField;
+  field: DocumentSectionField;
   placeholder?: string;
 };
 

@@ -1,11 +1,12 @@
 import DraggableSectionContainer from "@/app/home/candidate/tools/_components/DraggableSectionContainer";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { Section, SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import DocumentBuilderTextarea from "./DocumentBuilderTextarea";
 import EditableSectionTitle from "./EditableSectionTitle";
 
 type CvBuilderHobbiesSectionProps = {
-  section: Section;
+  section: DocumentSection;
 };
 
 const CvBuilderHobbiesSection = ({ section }: CvBuilderHobbiesSectionProps) => {
@@ -18,7 +19,7 @@ const CvBuilderHobbiesSection = ({ section }: CvBuilderHobbiesSectionProps) => {
       <EditableSectionTitle section={section} />
       <div>
         <DocumentBuilderTextarea
-          field={field as SectionField}
+          field={field as DocumentSectionField}
           placeholder="e.g. Hiking, Cooking, Painting"
         />
       </div>

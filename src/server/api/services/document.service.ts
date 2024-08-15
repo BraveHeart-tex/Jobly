@@ -5,63 +5,125 @@ import type {
   MakeFieldsRequired,
   Trx,
 } from "@/lib/types";
-import { exclude } from "@/lib/utils";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
-import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
-  type Document,
-  type DocumentInsertModel,
-  type Section,
-  type SectionField,
-  type SectionFieldInsertModel,
-  type SectionFieldValue,
-  type SectionInsertModel,
-  document as documentSchema,
-  field as fieldSchema,
-  fieldValue as fieldValueSchema,
-  section as sectionSchema,
+  bulkDeleteFields,
+  deleteDocumentById,
+  getDocumentWithSectionsAndFields,
+  getDocumentsByUserId,
+  updateDocumentById,
+  upsertDocument,
+  upsertSectionFieldValues,
+  upsertSectionFields,
+  upsertSections,
+} from "@/server/api/repositories/document.repository";
+import { db } from "@/server/db";
+import {
+  documentSectionFields as fieldSchema,
+  documentSectionFieldValues as fieldValueSchema,
+  documentSections as sectionSchema,
 } from "@/server/db/schema";
+import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
+import type {
+  DocumentSectionField,
+  DocumentSectionFieldInsertModel,
+} from "@/server/db/schema/documentSectionFields";
+import type {
+  DocumentSection,
+  DocumentSectionInsertModel,
+} from "@/server/db/schema/documentSections";
+import type {
+  DocumentInsertModel,
+  DocumentSelectModel,
+} from "@/server/db/schema/documents";
 import {
-  getFieldInsertTemplate,
-  getPredefinedDocumentSections,
+  getFieldInsertTemplateBySectionTag,
+  getPredefinedDocumentSectionsWithDocumentId,
+  makeFieldInsertDTOs,
+  makeFieldValueInsertDTOs,
+  normalizeDocumentStructure,
 } from "@/server/utils/document.service.utils";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const getUserDocuments = async (userId: User["id"]) => {
-  return db
-    .select()
-    .from(documentSchema)
-    .where(eq(documentSchema.userId, userId))
-    .orderBy(desc(documentSchema.createdAt));
+  return getDocumentsByUserId(userId);
 };
 
-export const deleteDocument = async (documentId: Document["id"]) => {
-  return db.delete(documentSchema).where(eq(documentSchema.id, documentId));
+export const deleteDocument = async (documentId: DocumentSelectModel["id"]) => {
+  return deleteDocumentById(documentId);
 };
 
 export const updateDocument = async (
-  input: MakeFieldsRequired<Partial<Document>, "id">,
+  input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
 ) => {
-  return db
-    .update(documentSchema)
-    .set(input)
-    .where(eq(documentSchema.id, input.id));
+  return updateDocumentById(input);
 };
 
-export const createDocument = async (
-  input: DocumentInsertModel,
+export const createDocumentAndRelatedEntities = async (
+  documentCreateInput: DocumentInsertModel,
   user: User,
 ) => {
-  const [response] = await db.insert(documentSchema).values(input);
-  await insertPredefinedSectionsAndFields({
-    user,
-    documentId: response.insertId,
+  return await db.transaction(async (trx) => {
+    const [documentInsertResponse] = await upsertDocument(
+      trx,
+      documentCreateInput,
+    );
+    if (!documentInsertResponse) {
+      trx.rollback();
+      return;
+    }
+    const documentId = documentInsertResponse.id;
+    const sectionInsertTemplates =
+      getPredefinedDocumentSectionsWithDocumentId(documentId);
+    const sectionInsertIds = await insertSections(trx, sectionInsertTemplates);
+    const hasSectionInsertFailures =
+      sectionInsertTemplates.length !== sectionInsertIds.length;
+
+    if (hasSectionInsertFailures) {
+      trx.rollback();
+      return;
+    }
+
+    const fieldInsertDTOs = makeFieldInsertDTOs(
+      sectionInsertTemplates.map((item, index) => ({
+        ...item,
+        id: sectionInsertIds[index] as DocumentSection["id"],
+      })),
+    );
+    const fieldInsertIds = (
+      await upsertSectionFields(trx, fieldInsertDTOs)
+    ).map((result) => result.id);
+
+    const hasFieldInsertFailures =
+      fieldInsertDTOs.length !== fieldInsertIds.length;
+    if (hasFieldInsertFailures) {
+      trx.rollback();
+      return;
+    }
+
+    const DEFAULT_FIELDS: Record<string, string> = {
+      "First Name": user.firstName,
+      "Last Name": user.lastName,
+      Email: user.email,
+    };
+    const fieldValueInsertDTOs = makeFieldValueInsertDTOs(
+      fieldInsertDTOs.map((field, index) => ({
+        ...field,
+        id: fieldInsertIds[index] as DocumentSectionField["id"],
+      })),
+      DEFAULT_FIELDS,
+    );
+    await upsertSectionFieldValues(trx, fieldValueInsertDTOs);
+
+    return documentId;
   });
-  return response.insertId;
 };
 
-const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
+const insertSections = async (
+  trx: Trx,
+  sections: DocumentSectionInsertModel[],
+) => {
   const result = await trx
     .insert(sectionSchema)
     .values(sections.map((section) => section))
@@ -72,8 +134,8 @@ const insertSections = async (trx: Trx, sections: SectionInsertModel[]) => {
 
 const insertFields = async (
   trx: Trx,
-  sectionId: Section["id"],
-  fields: Omit<SectionFieldInsertModel, "sectionId">[],
+  sectionId: DocumentSection["id"],
+  fields: Omit<DocumentSectionFieldInsertModel, "sectionId">[],
 ) => {
   const result = await trx
     .insert(fieldSchema)
@@ -88,7 +150,10 @@ const insertFields = async (
   return result.map((item) => item.id);
 };
 
-const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
+const insertFieldValues = async (
+  trx: Trx,
+  fieldIds: DocumentSectionField["id"][],
+) => {
   const result = await trx
     .insert(fieldValueSchema)
     .values(
@@ -102,142 +167,44 @@ const insertFieldValues = async (trx: Trx, fieldIds: SectionField["id"][]) => {
   return result.map((item) => item.id);
 };
 
-export const insertPredefinedSectionsAndFields = async ({
-  user,
-  documentId,
-}: { user: User; documentId: Document["id"] }) => {
-  const sections = getPredefinedDocumentSections(documentId);
-  const DEFAULT_FIELDS: Record<string, string> = {
-    "First Name": user.firstName,
-    "Last Name": user.lastName,
-    Email: user.email,
-  };
-
-  await db.transaction(async (trx) => {
-    const sectionIds = await insertSections(trx, sections);
-    const fieldInsertDTOs: SectionFieldInsertModel[] = [];
-
-    for (const [index, sectionId] of sectionIds.entries()) {
-      const section = sections[index];
-      if (section) {
-        const sectionFields = getFieldInsertTemplate(
-          sectionId,
-          section.internalSectionTag,
-        );
-
-        fieldInsertDTOs.push(...sectionFields);
-      }
-    }
-
-    const fieldIds = (
-      await trx.insert(fieldSchema).values(fieldInsertDTOs).$returningId()
-    ).map((item) => item.id);
-
-    const sectionFields = fieldInsertDTOs.map((field, index) => ({
-      ...field,
-      id: fieldIds[index] as SectionField["id"],
-      defaultValue: DEFAULT_FIELDS[field.fieldName] ?? "",
-    }));
-
-    await trx.insert(fieldValueSchema).values(
-      sectionFields.map((field) => ({
-        fieldId: field.id,
-        value: field.defaultValue ?? "",
-      })),
-    );
-  });
-};
-
 export const getDocumentDetails = async ({
   id,
   userId,
 }: {
-  id: Document["id"];
+  id: DocumentSelectModel["id"];
   userId: User["id"];
 }): Promise<DocumentBuilderConfig | { error: string }> => {
-  const result = await db.query.document.findFirst({
-    where: and(eq(documentSchema.id, id), eq(documentSchema.userId, userId)),
-    with: {
-      sections: {
-        with: {
-          fields: {
-            orderBy: () => asc(fieldSchema.displayOrder),
-            with: {
-              fieldValues: true,
-            },
-          },
-        },
-      },
-    },
+  const document = await getDocumentWithSectionsAndFields({
+    documentId: id,
+    userId,
   });
 
-  if (!result) {
+  if (!document) {
     return { error: "Document not found" };
   }
 
-  return {
-    document: exclude(result, ["sections"]),
-    sections: result.sections.map((section) => exclude(section, ["fields"])),
-    fields: result.sections.flatMap((section) =>
-      section.fields.map((field) => exclude(field, ["fieldValues"])),
-    ),
-    fieldValues: result.sections.flatMap((section) =>
-      section.fields.flatMap((field) => field.fieldValues),
-    ),
-  };
+  return normalizeDocumentStructure(document);
 };
 
-export const saveDocumentDetails = async (
+export const saveDocumentAndRelatedEntities = async (
   input: Partial<SaveDocumentDetailsSchema> & { userId: User["id"] },
 ) => {
   const { document, sections, fields, fieldValues } = input;
-
   await db.transaction(async (trx) => {
     if (document) {
-      await trx.insert(documentSchema).values(document).onDuplicateKeyUpdate({
-        set: document,
-      });
+      await upsertDocument(trx, document);
     }
-
-    const sectionInserts = sections
-      ? trx
-          .insert(sectionSchema)
-          .values(sections.map((sectionData) => sectionData))
-          .onDuplicateKeyUpdate({
-            set: buildConflictUpdateColumns(sectionSchema, [
-              "id",
-              "documentId",
-            ]),
-          })
-      : undefined;
-
-    const fieldInserts = fields
-      ? trx
-          .insert(fieldSchema)
-          .values(fields.map((fieldData) => fieldData))
-          .onDuplicateKeyUpdate({
-            set: buildConflictUpdateColumns(fieldSchema, ["id", "sectionId"]),
-          })
-      : undefined;
-
+    const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
+    const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
     const fieldValueInserts = fieldValues
-      ? trx
-          .insert(fieldValueSchema)
-          .values(fieldValues.map((fieldValue) => fieldValue))
-          .onDuplicateKeyUpdate({
-            set: buildConflictUpdateColumns(fieldValueSchema, [
-              "fieldId",
-              "id",
-            ]),
-          })
+      ? upsertSectionFieldValues(trx, fieldValues)
       : undefined;
-
     await Promise.all([sectionInserts, fieldInserts, fieldValueInserts]);
   });
 };
 
 export const addFieldsWithValues = async (
-  fields: SectionFieldInsertModel[],
+  fields: DocumentSectionFieldInsertModel[],
 ) => {
   return await db.transaction(async (trx) => {
     const fieldInsertIds = await trx
@@ -261,17 +228,19 @@ export const addFieldsWithValues = async (
   });
 };
 
-export const removeFields = async (fieldIds: SectionField["id"][]) => {
-  return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
+export const removeFields = async (fieldIds: DocumentSectionField["id"][]) => {
+  return bulkDeleteFields(fieldIds);
 };
 
-export const addSectionByInternalTag = async (data: SectionInsertModel) => {
+export const addSectionByInternalTag = async (
+  data: DocumentSectionInsertModel,
+) => {
   return db.transaction(async (trx) => {
     const [{ insertId: sectionId }] = await trx
       .insert(sectionSchema)
       .values(data);
 
-    const fieldsTemplate = getFieldInsertTemplate(
+    const fieldsTemplate = getFieldInsertTemplateBySectionTag(
       sectionId,
       data.internalSectionTag as INTERNAL_SECTION_TAG,
     );
@@ -286,12 +255,12 @@ export const addSectionByInternalTag = async (data: SectionInsertModel) => {
 
     const fields = fieldsTemplate.map((field, index) => ({
       ...field,
-      id: fieldIds[index] as SectionField["id"],
+      id: fieldIds[index] as DocumentSectionField["id"],
     }));
 
     const fieldValues = fieldValueIds.map((fieldValueId, index) => ({
-      id: fieldValueId as SectionFieldValue["id"],
-      fieldId: fieldIds[index] as SectionFieldValue["fieldId"],
+      id: fieldValueId as DocumentSectionFieldValue["id"],
+      fieldId: fieldIds[index] as DocumentSectionFieldValue["fieldId"],
       value: "",
     }));
 
@@ -303,6 +272,6 @@ export const addSectionByInternalTag = async (data: SectionInsertModel) => {
   });
 };
 
-export const deleteSection = async (sectionId: Section["id"]) => {
+export const deleteSection = async (sectionId: DocumentSection["id"]) => {
   return db.delete(sectionSchema).where(eq(sectionSchema.id, sectionId));
 };

@@ -1,7 +1,7 @@
 import type {
   JobTrackerApplication,
   JobTrackerApplicationStatus,
-} from "@/server/db/schema";
+} from "@/server/db/schema/jobTrackerApplications";
 import { create } from "zustand";
 
 const defaultCols = [

@@ -9,7 +9,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { MONTHS } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import DocumentBuilderInput from "./DocumentBuilderInput";
@@ -25,7 +25,7 @@ const getYearFromFieldValue = (fieldValue: string) => {
 };
 
 type DocumentBuilderDatePickerInputProps = {
-  field: SectionField;
+  field: DocumentSectionField;
   showPresentToggle?: boolean;
   presentToggleLabel?: string;
 };

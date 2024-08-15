@@ -12,7 +12,7 @@ import {
 } from "@react-pdf/renderer";
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
-import CommaSeparatedText from "../CommaSeperatedText";
+import CommaSeparatedText from "../CommaSeparatedText";
 import {
   type CustomSection,
   type MakeResumeDataReturn,
@@ -20,9 +20,9 @@ import {
   styleLinksAndCleanElements,
 } from "../pdf.utils";
 
-export const PDF_BODY_FONT_SIZE = 9 as const;
-const DOCUMENT_TITLE_FONT_SIZE = 13.4 as const;
-const SECTION_LABEL_FONT_SIZE = 8.5 as const;
+export const PDF_BODY_FONT_SIZE = 11 as const;
+const DOCUMENT_TITLE_FONT_SIZE = 14 as const;
+const SECTION_LABEL_FONT_SIZE = 9 as const;
 
 Font.register({
   family: "EB Garamond",
@@ -207,7 +207,6 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
           );
         }
 
-        // TODO: Handle custom sections
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM) {
           return (
             <CustomResumeSection
@@ -909,7 +908,9 @@ const ExtraCurricularActivitiesSection = ({
                       </Text>
                     </View>
                     <Html
-                      style={{ fontSize: PDF_BODY_FONT_SIZE }}
+                      style={{
+                        fontSize: PDF_BODY_FONT_SIZE,
+                      }}
                       renderers={htmlRenderers}
                     >
                       {styleLinksAndCleanElements(item.description || "")}

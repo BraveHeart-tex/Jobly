@@ -1,7 +1,7 @@
 "use client";
 
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
-import type { Document } from "@/server/db/schema";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 
@@ -41,7 +41,7 @@ export const useDeleteDocument = () => {
     });
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
 
-  const handleDeleteDocument = (documentId: Document["id"]) => {
+  const handleDeleteDocument = (documentId: DocumentSelectModel["id"]) => {
     showConfirmDialog({
       title: "Are you sure you want to delete this document?",
       message: "This action cannot be undone.",

@@ -6,7 +6,8 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
-import type { Section, SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { useRemoveFields } from "../_hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
@@ -24,7 +25,7 @@ const CvBuilderEducationSection = () => {
       (section) =>
         section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
     ),
-  ) as Section;
+  ) as DocumentSection;
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field?.sectionId === section.id),
   );
@@ -37,12 +38,12 @@ const CvBuilderEducationSection = () => {
 
   const renderGroupItems = () => {
     return groupedFields.map((group, index) => {
-      const schoolField = group[0] as SectionField;
-      const degreeField = group[1] as SectionField;
-      const startDateField = group[2] as SectionField;
-      const endDateField = group[3] as SectionField;
-      const cityField = group[4] as SectionField;
-      const descriptionField = group[5] as SectionField;
+      const schoolField = group[0] as DocumentSectionField;
+      const degreeField = group[1] as DocumentSectionField;
+      const startDateField = group[2] as DocumentSectionField;
+      const endDateField = group[3] as DocumentSectionField;
+      const cityField = group[4] as DocumentSectionField;
+      const descriptionField = group[5] as DocumentSectionField;
 
       const schoolTitle = getFieldValueByFieldId(schoolField?.id as number)
         ?.value as string;

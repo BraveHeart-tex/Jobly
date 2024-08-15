@@ -1,11 +1,11 @@
 "use client";
-import { useCreateDocument } from "@/app/home/candidate/tools/_hooks/useCreateDocument";
+import { useCreateDocumentAndRelatedEntities } from "@/app/home/candidate/tools/_hooks/useCreateDocumentAndRelatedEntities";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CANDIDATE_ROUTES } from "@/lib/routes";
 import type { InferValueTypeFromConst } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import type { Document } from "@/server/db/schema";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { motion } from "framer-motion";
 import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
@@ -48,7 +48,8 @@ const DocumentTabs = () => {
     coverLetters,
     isPending: isPendingDocuments,
   } = useDocuments();
-  const { createDocument, isCreatingDocument } = useCreateDocument();
+  const { createDocumentAndRelatedEntities, isCreatingDocument } =
+    useCreateDocumentAndRelatedEntities();
   const [activeTab, setActiveTab] = useState<DocumentTabValue>(
     DOCUMENT_TAB_VALUES.RESUME,
   );
@@ -59,7 +60,7 @@ const DocumentTabs = () => {
   };
 
   const handleCreateNewDocument = async () => {
-    const documentInsertId = await createDocument(activeTab);
+    const documentInsertId = await createDocumentAndRelatedEntities(activeTab);
 
     if (!documentInsertId) {
       return toast.error(
@@ -200,7 +201,9 @@ const NoDocumentsFound = ({
         ) : (
           <>
             <Plus size={18} />
-            {createNewButtonLabelMap[activeTab]}
+            <span className="hidden md:inline-block">
+              {createNewButtonLabelMap[activeTab]}
+            </span>
           </>
         )}
       </Button>
@@ -209,7 +212,7 @@ const NoDocumentsFound = ({
 };
 
 type DocumentListProps = {
-  documents: Document[];
+  documents: DocumentSelectModel[];
 };
 
 const DocumentList = ({ documents }: DocumentListProps) => (

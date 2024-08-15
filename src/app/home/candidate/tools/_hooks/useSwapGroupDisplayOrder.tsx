@@ -1,9 +1,11 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 
-export const useSwapGroupDisplayOrder = (groupedFields: SectionField[][]) => {
+export const useSwapGroupDisplayOrder = (
+  groupedFields: DocumentSectionField[][],
+) => {
   const allFields = useDocumentBuilderStore((state) => state.fields);
   const setFields = useDocumentBuilderStore((state) => state.setFields);
   const callSaveDocumentDetailsFn = useDocumentBuilderStore(
@@ -22,7 +24,7 @@ export const useSwapGroupDisplayOrder = (groupedFields: SectionField[][]) => {
       (over.id as string).split("-")[1] as string,
     );
 
-    const overGroup = groupedFields[overGroupIndex] as SectionField[];
+    const overGroup = groupedFields[overGroupIndex] as DocumentSectionField[];
 
     const newGroupFields = arrayMove(
       groupedFields,

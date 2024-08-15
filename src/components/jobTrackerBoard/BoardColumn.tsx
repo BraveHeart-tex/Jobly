@@ -1,17 +1,3 @@
-import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
-import { capitalizeString, cn } from "@/lib/utils";
-import type {
-  JobTrackerApplication,
-  JobTrackerApplicationStatus,
-} from "@/server/db/schema";
-import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
-import { SortableContext, useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { cva } from "class-variance-authority";
-import { type ReactNode, useMemo, useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { JobCard } from "./JobCard";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -21,18 +7,32 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ListXIcon, PlusIcon } from "lucide-react";
-import JobTrackerApplicationForm from "../forms/JobTrackerApplicationForm";
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipTrigger,
-  TooltipContent,
-} from "../ui/tooltip";
+import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
+import { capitalizeString, cn } from "@/lib/utils";
+import type {
+  JobTrackerApplication,
+  JobTrackerApplicationStatus,
+} from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
+import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { cva } from "class-variance-authority";
+import { ListXIcon, PlusIcon } from "lucide-react";
+import { type ReactNode, useMemo, useState } from "react";
 import { toast } from "sonner";
+import JobTrackerApplicationForm from "../forms/jobTracker/JobTrackerApplicationForm";
+import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
+import { JobCard } from "./JobCard";
 
 export interface Column {
   id: JobTrackerApplicationStatus;

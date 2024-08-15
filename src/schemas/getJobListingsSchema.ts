@@ -1,4 +1,4 @@
-import { job } from "@/server/db/schema";
+import { jobPostings } from "@/server/db/schema";
 import { z } from "zod";
 
 export const getJobListingsSchema = z.object({
@@ -6,8 +6,11 @@ export const getJobListingsSchema = z.object({
   page: z.number().optional().default(1),
   bookmarked: z.boolean().optional().default(false),
   viewed: z.boolean().optional().default(false),
-  workType: z.enum(job.workType.enumValues).optional().nullable(),
-  employmentType: z.enum(job.employmentType.enumValues).optional().nullable(),
+  workType: z.enum(jobPostings.workType.enumValues).optional().nullable(),
+  employmentType: z
+    .enum(jobPostings.employmentType.enumValues)
+    .optional()
+    .nullable(),
 });
 
 export type GetJobListingsSchema = z.infer<typeof getJobListingsSchema>;

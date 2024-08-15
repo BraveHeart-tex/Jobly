@@ -9,10 +9,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { SectionField } from "@/server/db/schema";
+import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
 type DocumentBuilderSelectProps = {
-  field: SectionField;
+  field: DocumentSectionField;
   placeholder?: string;
   options: { value: string; label: string }[];
 };

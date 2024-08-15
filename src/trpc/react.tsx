@@ -10,9 +10,9 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import type React from "react";
-import type { AppRouter } from "router-types";
 import { toast } from "sonner";
 import SuperJSON from "superjson";
+import type { AppRouter } from "trpc-router-types";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;
