@@ -2,8 +2,9 @@
 
 // biome-ignore lint/correctness/noNodejsModules: This is server code
 import { createHash } from "node:crypto";
-import { lucia } from "@/lib/auth/index";
+import { type CtxUserAttributes, lucia } from "@/lib/auth/index";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import { checkIfUserHasToSetupCompanyInformation } from "@/server/api/services/user.service";
 import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
@@ -121,4 +122,19 @@ export const verifyPassword = async (
   password: string,
 ) => {
   return verify(hashedPassword, password, DEFAULT_HASH_OPTIONS);
+};
+
+export const getCurrentUser = async () => {
+  const result = await validateRequest();
+  if (!result.user) return;
+
+  const ctxUser: CtxUserAttributes = result.user;
+
+  if (ctxUser?.role === "employer") {
+    const hasToSetupCompanyInformation =
+      await checkIfUserHasToSetupCompanyInformation(ctxUser.id);
+    ctxUser.hasToSetupCompanyInformation = hasToSetupCompanyInformation;
+  }
+
+  return ctxUser;
 };

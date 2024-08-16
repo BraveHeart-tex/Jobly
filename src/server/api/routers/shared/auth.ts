@@ -121,7 +121,4 @@ export const authRouter = createTRPCRouter({
         message: "Successfully signed in.",
       };
     }),
-  getCurrentUser: publicProcedure.query(async ({ ctx }) => {
-    return ctx.user;
-  }),
 });
