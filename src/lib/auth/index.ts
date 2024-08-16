@@ -16,7 +16,6 @@ const adapter = new DrizzleMySQLAdapter(db, sessions, users);
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
-      id: attributes.id,
       email: attributes.email,
       firstName: attributes.firstName,
       lastName: attributes.lastName,
@@ -33,7 +32,6 @@ export const lucia = new Lucia(adapter, {
 });
 
 declare module "lucia" {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Register {
     Lucia: typeof lucia;
     UserId: number;
