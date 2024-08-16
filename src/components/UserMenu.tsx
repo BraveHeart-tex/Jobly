@@ -8,20 +8,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { CtxUserAttributes } from "@/lib/auth";
 import { signOut } from "@/lib/auth/actions";
-import { CANDIDATE_ROUTES, SHARED_ROUTES } from "@/lib/routes";
+import { CANDIDATE_ROUTES, EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import type { User } from "lucia";
 import { LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
 type UserMenuProps = {
-  user: User;
+  user: CtxUserAttributes;
 };
 
 const UserMenu = ({ user }: UserMenuProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const setUser = useCurrentUserStore((state) => state.setUser);
 
   const userMenuProfileLinks = [
@@ -41,6 +44,17 @@ const UserMenu = ({ user }: UserMenuProps) => {
   useEffect(() => {
     setUser(user);
   }, [setUser, user]);
+
+  useEffect(() => {
+    if (!user.hasToSetupCompanyInformation) return;
+
+    const queryString = "?hasToSetupCompanyInformation=true";
+    const redirectPath = `${EMPLOYER_ROUTES.COMPANY_PROFILE}${queryString}`;
+
+    if (`${pathname}${queryString}` === redirectPath) return;
+
+    router.push(redirectPath);
+  }, [pathname, user, router]);
 
   const handleSignOut = () => {
     signOut(user.role);

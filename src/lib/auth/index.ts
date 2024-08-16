@@ -11,6 +11,10 @@ type DatabaseUserAttributes = Pick<
   "id" | "email" | "role" | "firstName" | "lastName"
 >;
 
+export type CtxUserAttributes = DatabaseUserAttributes & {
+  hasToSetupCompanyInformation?: boolean;
+};
+
 const adapter = new DrizzleMySQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
