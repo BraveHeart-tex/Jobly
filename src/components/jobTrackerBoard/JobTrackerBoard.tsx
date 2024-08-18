@@ -26,9 +26,9 @@ import { JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import { hasDraggableData } from "./utils";
 
-type JobTrackerApplicationsBoardProps = {
+interface JobTrackerApplicationsBoardProps {
   data: JobTrackerApplication[];
-};
+}
 
 export function JobTrackerApplicationsBoard({
   data,

@@ -16,9 +16,9 @@ import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
-type CvBuilderInternshipsSectionProps = {
+interface CvBuilderInternshipsSectionProps {
   section: DocumentSection;
-};
+}
 
 export const INTERNSHIP_SECTION_ITEMS_COUNT = 6;
 const CvBuilderInternshipsSection = ({

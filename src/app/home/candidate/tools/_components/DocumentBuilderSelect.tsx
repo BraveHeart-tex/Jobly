@@ -11,11 +11,11 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
-type DocumentBuilderSelectProps = {
+interface DocumentBuilderSelectProps {
   field: DocumentSectionField;
   placeholder?: string;
   options: { value: string; label: string }[];
-};
+}
 
 const DocumentBuilderSelect = ({
   field,

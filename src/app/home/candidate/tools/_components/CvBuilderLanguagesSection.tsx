@@ -15,9 +15,9 @@ import DocumentBuilderSelect from "./DocumentBuilderSelect";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
-type CvBuilderLanguagesSectionProps = {
+interface CvBuilderLanguagesSectionProps {
   section: DocumentSection;
-};
+}
 
 export const LANGUAGES_SECTION_ITEMS_COUNT = 2;
 const LANGUAGE_LEVELS = [

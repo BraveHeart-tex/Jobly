@@ -28,9 +28,9 @@ import { toast } from "sonner";
 import { useDeleteDocument } from "../_hooks/useDeleteDocument";
 import { useUpdateDocument } from "../_hooks/useUpdateDocument";
 
-type DocumentListItemProps = {
+interface DocumentListItemProps {
   item: DocumentSelectModel;
-};
+}
 
 const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const [isRenaming, setIsRenaming] = useState(false);

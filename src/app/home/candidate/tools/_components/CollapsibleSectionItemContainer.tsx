@@ -37,13 +37,13 @@ import type React from "react";
 import { useState } from "react";
 import { useMedia } from "react-use";
 
-type CollapsibleSectionItemContainerProps = {
+interface CollapsibleSectionItemContainerProps {
   id: `${FIELD_DND_INDEX_PREFIX}-${number}`;
   triggerTitle?: string;
   triggerDescription?: string;
   children: React.ReactNode;
   onDeleteItemClick?: () => void;
-};
+}
 
 const CollapsibleSectionItemContainer = ({
   triggerTitle,

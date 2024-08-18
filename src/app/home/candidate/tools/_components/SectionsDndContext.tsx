@@ -19,9 +19,9 @@ import {
 } from "@dnd-kit/sortable";
 import type { ReactNode } from "react";
 
-type SectionsDndContextProps = {
+interface SectionsDndContextProps {
   children: ReactNode;
-};
+}
 
 const SectionsDndContext = ({ children }: SectionsDndContextProps) => {
   const sections = useDocumentBuilderStore((state) => state.sections);

@@ -42,9 +42,9 @@ Font.register({
   ],
 });
 
-type LondonTemplateProps = {
+interface LondonTemplateProps {
   data: ReturnType<typeof makeResumeTemplateData>;
-};
+}
 
 const styles = StyleSheet.create({
   page: {
@@ -306,9 +306,9 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
   );
 };
 
-type TwoColumnLayoutProps = {
+interface TwoColumnLayoutProps {
   items: { label: string; value: string }[];
-};
+}
 
 const TwoColumnLayout = ({ items }: TwoColumnLayoutProps) => {
   const itemsWithValue = items.filter((item) => item.value);

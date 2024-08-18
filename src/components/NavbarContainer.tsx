@@ -3,9 +3,9 @@ import { cn, matchPathnameToEditPath } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import type React from "react";
 
-type NavbarContainerProps = {
+interface NavbarContainerProps {
   children: React.ReactNode;
-};
+}
 
 const NavbarContainer = ({ children }: NavbarContainerProps) => {
   const pathname = usePathname();

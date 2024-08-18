@@ -2,11 +2,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getAvatarPlaceholder } from "@/lib/utils";
 import Image from "next/image";
 
-type CompanyLogoProps = {
+interface CompanyLogoProps {
   companyName: string;
   logo?: string | null;
   className?: string;
-};
+}
 
 const CompanyLogo = ({ companyName, logo, className }: CompanyLogoProps) => {
   if (!logo) {

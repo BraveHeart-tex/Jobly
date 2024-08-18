@@ -38,10 +38,10 @@ const SKILL_LEVEL_COLORS = {
   },
 };
 
-type CvBuilderSkillLevelSelectorProps = {
+interface CvBuilderSkillLevelSelectorProps {
   field: DocumentSectionField;
   disabled?: boolean;
-};
+}
 
 const CvBuilderSkillLevelSelector = ({
   field,

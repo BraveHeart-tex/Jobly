@@ -19,11 +19,11 @@ import {
 import type React from "react";
 import { useSwapGroupDisplayOrder } from "../_hooks/useSwapGroupDisplayOrder";
 
-type SectionFieldsDndContextProps = {
+interface SectionFieldsDndContextProps {
   children: React.ReactNode;
   groupedFields: DocumentSectionField[][];
   indexPrefix: FIELD_DND_INDEX_PREFIX;
-};
+}
 
 const SectionFieldsDndContext = ({
   children,

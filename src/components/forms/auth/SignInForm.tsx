@@ -20,9 +20,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import type { RouterOutputs } from "trpc-router-types";
 
-type SignInFormProps = {
+interface SignInFormProps {
   portalType?: DBUser["role"];
-};
+}
 
 const SignInForm = ({ portalType }: SignInFormProps) => {
   const form = useExtendedForm<SignInSchema>(signInSchema);

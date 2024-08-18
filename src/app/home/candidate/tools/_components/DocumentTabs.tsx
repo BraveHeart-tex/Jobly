@@ -145,11 +145,11 @@ const DocumentTabs = () => {
 
 export default DocumentTabs;
 
-type NoDocumentsFoundProps = {
+interface NoDocumentsFoundProps {
   activeTab: DocumentTabValue;
   onCreateNewDocumentClick?: () => void;
   loading?: boolean;
-};
+}
 
 const NoDocumentsFound = ({
   activeTab,
@@ -211,9 +211,9 @@ const NoDocumentsFound = ({
   );
 };
 
-type DocumentListProps = {
+interface DocumentListProps {
   documents: DocumentSelectModel[];
-};
+}
 
 const DocumentList = ({ documents }: DocumentListProps) => (
   <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">

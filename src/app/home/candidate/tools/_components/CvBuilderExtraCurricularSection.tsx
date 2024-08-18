@@ -16,9 +16,9 @@ import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
-type CvBuilderExtraCurricularSectionProps = {
+interface CvBuilderExtraCurricularSectionProps {
   section: DocumentSection;
-};
+}
 
 export const EXTRA_CURRICULAR_SECTION_ITEMS_COUNT = 6;
 

@@ -8,13 +8,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type SignUpPageSearchParams = {
+interface SignUpPageSearchParams {
   portalType?: DBUser["role"];
-};
+}
 
-type SignUpPageProps = {
+interface SignUpPageProps {
   searchParams: SignUpPageSearchParams;
-};
+}
 
 const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
   const { user } = await validateRequest();

@@ -4,13 +4,14 @@ import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-type DocumentBuilderInputProps = {
+
+interface DocumentBuilderInputProps {
   label?: string;
   doNotRenderLabel?: boolean;
-} & (
-  | { field: DocumentSectionField; value?: never; onChange?: never }
-  | { field?: never; value: string; onChange: (value: string) => void }
-);
+  field?: DocumentSectionField;
+  value?: string;
+  onChange?: (value: string) => void;
+}
 
 const DocumentBuilderInput = ({
   field,

@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { useDebounce } from "react-use";
 import { Input } from "./ui/input";
 
-type QueryStringInputProps = {
+interface QueryStringInputProps {
   queryKey: string;
   defaultValue?: string;
   placeholder?: string;
   className?: string;
   debounceMs?: number;
-};
+}
 
 const QueryStringInput = ({
   queryKey,

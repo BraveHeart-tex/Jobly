@@ -3,10 +3,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
-type DocumentBuilderTextareaProps = {
+interface DocumentBuilderTextareaProps {
   field: DocumentSectionField;
   placeholder?: string;
-};
+}
 
 const DocumentBuilderTextarea = ({
   field,

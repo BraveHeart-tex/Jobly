@@ -8,11 +8,11 @@ import { getFieldInsertTemplateBySectionTag } from "@/server/utils/document.serv
 import { api } from "@/trpc/react";
 import { PlusIcon } from "lucide-react";
 
-type AddSectionItemButtonProps = {
+interface AddSectionItemButtonProps {
   sectionId: DocumentSection["id"];
   templateOption: INTERNAL_SECTION_TAG;
   label: string;
-};
+}
 
 const AddSectionItemButton = ({
   sectionId,

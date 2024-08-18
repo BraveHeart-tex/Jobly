@@ -1,8 +1,8 @@
 import type React from "react";
 
-type AppLayoutProps = {
+interface AppLayoutProps {
   children?: React.ReactNode;
-};
+}
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   return <main>{children}</main>;

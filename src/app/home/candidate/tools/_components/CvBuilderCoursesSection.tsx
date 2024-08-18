@@ -15,9 +15,9 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
-type CvBuilderCoursesSectionProps = {
+interface CvBuilderCoursesSectionProps {
   section: DocumentSection;
-};
+}
 
 export const COURSES_SECTION_ITEMS_COUNT = 4;
 

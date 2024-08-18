@@ -8,13 +8,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-type LoginPageSearchParams = {
+interface LoginPageSearchParams {
   portalType?: DBUser["role"];
-};
+}
 
-type LoginPageProps = {
+interface LoginPageProps {
   searchParams: LoginPageSearchParams;
-};
+}
 
 const LoginPage = async ({ searchParams }: LoginPageProps) => {
   const { user } = await validateRequest();

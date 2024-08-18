@@ -16,9 +16,9 @@ import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
-type CvBuilderCustomSectionProps = {
+interface CvBuilderCustomSectionProps {
   section: DocumentSection;
-};
+}
 
 export const CUSTOM_SECTION_ITEMS_COUNT = 5;
 

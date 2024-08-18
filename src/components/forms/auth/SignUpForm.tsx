@@ -19,9 +19,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import type { RouterOutputs } from "trpc-router-types";
 
-type SignUpFormProps = {
+interface SignUpFormProps {
   portalType?: DBUser["role"];
-};
+}
 
 const SignUpForm = ({ portalType }: SignUpFormProps) => {
   const router = useRouter();

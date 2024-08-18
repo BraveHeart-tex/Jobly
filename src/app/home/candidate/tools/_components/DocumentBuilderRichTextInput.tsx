@@ -5,11 +5,11 @@ import { Label } from "@/components/ui/label";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 
-type DocumentBuilderRichTextInputProps = {
+interface DocumentBuilderRichTextInputProps {
   field: DocumentSectionField;
   renderLabel?: boolean;
   placeholder?: string;
-};
+}
 
 const DocumentBuilderRichTextInput = ({
   field,

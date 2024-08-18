@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -9,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { useExtendedForm } from "@/lib/hook-form";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
@@ -28,13 +30,11 @@ import {
   PencilIcon,
 } from "lucide-react";
 import { toast } from "sonner";
-import { DialogClose } from "../../ui/dialog";
-import { Textarea } from "../../ui/textarea";
 
-type JobTrackerApplicationFormProps = {
+interface JobTrackerApplicationFormProps {
   defaultValues?: Partial<JobTrackerApplicationSchema>;
   onFormSubmit?: () => void;
-};
+}
 
 const JobTrackerApplicationForm = ({
   defaultValues,

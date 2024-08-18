@@ -6,12 +6,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Button } from "./ui/button";
 
-type PaginationProps = {
+interface PaginationProps {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
   totalPages: number;
   currentPage: number;
-};
+}
 
 const Pagination = ({
   hasNextPage,

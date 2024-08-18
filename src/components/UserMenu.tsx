@@ -18,9 +18,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
-type UserMenuProps = {
+interface UserMenuProps {
   user: CtxUserAttributes;
-};
+}
 
 const UserMenu = ({ user }: UserMenuProps) => {
   const pathname = usePathname();

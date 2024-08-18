@@ -13,11 +13,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import type React from "react";
 
-type DraggableSectionContainerProps = {
+interface DraggableSectionContainerProps {
   sectionId: DocumentSection["id"];
   children?: React.ReactNode;
   className?: string;
-};
+}
 
 const DraggableSectionContainer = ({
   sectionId,

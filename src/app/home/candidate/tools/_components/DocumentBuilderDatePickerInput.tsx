@@ -24,11 +24,11 @@ const getYearFromFieldValue = (fieldValue: string) => {
   return Number.parseInt(fieldValue.split(" ")[1] as string);
 };
 
-type DocumentBuilderDatePickerInputProps = {
+interface DocumentBuilderDatePickerInputProps {
   field: DocumentSectionField;
   showPresentToggle?: boolean;
   presentToggleLabel?: string;
-};
+}
 
 const DocumentBuilderDatePickerInput = ({
   field,

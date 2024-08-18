@@ -15,17 +15,17 @@ import type {
 import type { LucideIcon } from "lucide-react";
 import type { CandidateRoute, EmployerRoute } from "./routes";
 
-export type NavigationMenuItem = {
+export interface NavigationMenuItem {
   triggerLabel: string;
   linkItems: NavigationMenuItemLink[];
-};
+}
 
-export type NavigationMenuItemLink = {
+export interface NavigationMenuItemLink {
   title: string;
   href: CandidateRoute | EmployerRoute;
   description: string;
   icon: LucideIcon;
-};
+}
 
 export type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
 
@@ -53,15 +53,15 @@ type SectionBase = Omit<
   "fieldsContainerType" | "itemCountPerContainer"
 >;
 
-type SectionNonCollapsible = SectionBase & {
+interface SectionNonCollapsible extends SectionBase {
   fieldsContainerType?: "static";
   itemCountPerContainer?: never;
-};
+}
 
-type SectionCollapsible = SectionBase & {
+interface SectionCollapsible extends SectionBase {
   fieldsContainerType: "collapsible";
   itemCountPerContainer: number;
-};
+}
 
 export type MappedSectionInsertModel =
   | SectionNonCollapsible

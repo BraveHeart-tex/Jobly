@@ -7,11 +7,11 @@ import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
 import RichTextEditorMenubar from "./RichTextEditorMenubar";
 
-type RichTextEditorProps = {
+interface RichTextEditorProps {
   initialValue?: string;
   placeholder?: string;
   onChange?: (html: string) => void;
-};
+}
 
 const RichTextEditor = ({
   initialValue = "",

@@ -4,9 +4,9 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentBuilderConfig } from "@/lib/types";
 import { useEffect } from "react";
 
-type DocumentInitializerProps = {
+interface DocumentInitializerProps {
   documentData?: DocumentBuilderConfig;
-};
+}
 
 const DocumentInitializer = ({ documentData }: DocumentInitializerProps) => {
   const initializeState = useDocumentBuilderStore(

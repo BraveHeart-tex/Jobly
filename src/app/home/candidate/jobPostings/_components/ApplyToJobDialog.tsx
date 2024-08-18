@@ -12,9 +12,9 @@ import { APP_NAME } from "@/lib/constants";
 import { XIcon } from "lucide-react";
 import type { RouterOutputs } from "trpc-router-types";
 
-type ApplyToJobDialogProps = {
+interface ApplyToJobDialogProps {
   jobDetails: RouterOutputs["userJobListing"]["getJobById"];
-};
+}
 
 const ApplyToJobDialog = ({ jobDetails }: ApplyToJobDialogProps) => {
   return (

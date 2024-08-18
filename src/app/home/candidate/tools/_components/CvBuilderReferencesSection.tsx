@@ -16,9 +16,9 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
-type CvBuilderReferencesSectionProps = {
+interface CvBuilderReferencesSectionProps {
   section: DocumentSection;
-};
+}
 
 export const REFERENCES_SECTION_ITEMS_COUNT = 4;
 

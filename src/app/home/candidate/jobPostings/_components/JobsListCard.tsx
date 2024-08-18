@@ -6,11 +6,11 @@ import { forwardRef } from "react";
 import type { RouterOutputs } from "trpc-router-types";
 import CompanyLogo from "./CompanyLogo";
 
-type JobsListCardProps = {
+interface JobsListCardProps {
   job: ArrayElement<
     RouterOutputs["userJobListing"]["getJobListings"]["jobListings"]
   >;
-};
+}
 
 const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(
   ({ job }, ref) => {

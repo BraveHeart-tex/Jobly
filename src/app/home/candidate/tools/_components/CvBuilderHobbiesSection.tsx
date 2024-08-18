@@ -5,9 +5,9 @@ import type { DocumentSection } from "@/server/db/schema/documentSections";
 import DocumentBuilderTextarea from "./DocumentBuilderTextarea";
 import EditableSectionTitle from "./EditableSectionTitle";
 
-type CvBuilderHobbiesSectionProps = {
+interface CvBuilderHobbiesSectionProps {
   section: DocumentSection;
-};
+}
 
 const CvBuilderHobbiesSection = ({ section }: CvBuilderHobbiesSectionProps) => {
   const field = useDocumentBuilderStore((state) =>

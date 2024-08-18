@@ -30,9 +30,9 @@ import {
 import { useCallback, useRef } from "react";
 import { HEADING_OPTIONS } from "./constants";
 
-type RichTextEditorMenubarProps = {
+interface RichTextEditorMenubarProps {
   editor: Editor | null;
-};
+}
 
 const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
   const linkRef = useRef<HTMLInputElement>(null);

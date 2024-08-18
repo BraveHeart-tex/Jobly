@@ -13,9 +13,9 @@ import { useMarkJobAsViewed } from "../_hooks/useMarkJobAsViewed";
 import ApplyToJobDialog from "./ApplyToJobDialog";
 import CompanyLogo from "./CompanyLogo";
 
-type JobDetailsProps = {
+interface JobDetailsProps {
   currentJobId: number;
-};
+}
 
 const JobDetails = ({ currentJobId }: JobDetailsProps) => {
   const { view, setView } = useJobsListPageSearchParams();

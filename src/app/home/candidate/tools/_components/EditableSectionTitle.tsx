@@ -20,11 +20,11 @@ import { Pencil, RotateCcw, Trash } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useDeleteSection } from "../_hooks/useDeleteSection";
 
-type EditableSectionTitleProps = {
+interface EditableSectionTitleProps {
   containerClassName?: string;
   labelClassName?: string;
   section: DocumentSection | undefined;
-};
+}
 
 const PLACEHOLDER_OFFSET_PX = 26;
 
