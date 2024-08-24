@@ -18,11 +18,13 @@ const companies = mysqlTable(
     website: varchar("website", { length: 2048 }),
     industry: varchar("industry", { length: 255 }),
     address: varchar("address", { length: 512 }),
-    foundedYear: varchar("foundedYear", { length: 50 }),
-    employeeCount: varchar("employeeCount", { length: 50 }),
+    yearOfEstablishment: varchar("yearOfEstablishment", { length: 4 }),
+    companySize: varchar("companySize", { length: 50 }),
     logo: varchar("logo", { length: 2048 }),
     coverImage: varchar("coverImage", { length: 2048 }),
     description: varchar("description", { length: 1024 }),
+    areasOfExpertise: varchar("areasOfExpertise", { length: 256 }),
+    verifiedAt: datetime("verifiedAt", { mode: "string" }),
     createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
     updatedAt: datetime("updatedAt", { mode: "string" })
       .default(sql`(now())`)
