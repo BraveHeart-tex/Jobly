@@ -1,16 +1,17 @@
 import { z } from "zod";
 
 export const companyProfileSetupSchema = z.object({
-  name: z.coerce.string().min(1),
-  bio: z.coerce.string().min(1),
-  website: z.string().optional(),
-  industry: z.coerce.string().min(1),
-  address: z.string().optional(),
-  foundedYear: z.coerce.string().min(1),
-  employeeCount: z.coerce.string().min(1),
-  logo: z.string().optional(),
-  coverImage: z.string().optional(),
-  description: z.string().optional(),
+  name: z.string().min(1),
+  bio: z.string().min(1),
+  website: z.string(),
+  industry: z.string().min(1),
+  address: z.string(),
+  yearOfEstablishment: z.string().min(1),
+  companySize: z.string().min(1),
+  areasOfExpertise: z.string(),
+  logo: z.string(),
+  coverImage: z.string(),
+  description: z.string(),
 });
 
 export type CompanyProfileSetupSchema = z.infer<
