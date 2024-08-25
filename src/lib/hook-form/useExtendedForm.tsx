@@ -8,6 +8,7 @@ import {
   useForm,
 } from "react-hook-form";
 import type { ZodObject } from "zod";
+import { getDefaultValuesFromZodSchema } from "./utils";
 
 type ExtendedUseFormReturn<
   TFieldValues extends FieldValues,
@@ -27,8 +28,15 @@ export const useExtendedForm = <
   schema: ZodObject<any>,
   props?: UseFormProps<TFieldValues, TContext>,
 ): ExtendedUseFormReturn<TFieldValues, TContext, TTransformedValues> => {
+  const defaultValues =
+    props?.defaultValues ||
+    (getDefaultValuesFromZodSchema(schema) as TFieldValues) ||
+    ({} as TFieldValues);
+
   const form = useForm<TFieldValues, TContext, TTransformedValues>({
     ...props,
+    // @ts-ignore
+    defaultValues,
     resolver: zodResolver(schema, {
       errorMap: zodErrorMap,
     }),
@@ -45,8 +53,6 @@ export const useExtendedForm = <
   const getErroredKeys = () => {
     return Object.keys(form.formState.errors) as Array<keyof TFieldValues>;
   };
-
-  // TODO: Set default values from schema
 
   return {
     ...form,

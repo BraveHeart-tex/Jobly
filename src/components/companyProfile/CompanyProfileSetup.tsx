@@ -38,21 +38,6 @@ const CompanyProfileSetup = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const form = useExtendedForm<CompanyProfileSetupSchema>(
     companyProfileSetupSchema,
-    {
-      defaultValues: {
-        name: "",
-        industry: "",
-        website: "",
-        address: "",
-        areasOfExpertise: "",
-        bio: "",
-        companySize: "",
-        coverImage: "",
-        description: "",
-        logo: "",
-        yearOfEstablishment: "",
-      },
-    },
   );
 
   const onSubmit = (values: CompanyProfileSetupSchema) => {
