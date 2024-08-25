@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useExtendedForm } from "@/lib/hook-form";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { type SignInSchema, signInSchema } from "@/schemas/auth/signInSchema";
 import type { DBUser } from "@/server/db/schema/users";

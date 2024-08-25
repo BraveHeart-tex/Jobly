@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useExtendedForm } from "@/lib/hook-form";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import { compareMatchingKeys } from "@/lib/utils";

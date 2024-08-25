@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useExtendedForm } from "@/lib/hook-form";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   type JobPostingSchema,
   jobPostingSchema,

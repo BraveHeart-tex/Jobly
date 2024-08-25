@@ -15,6 +15,7 @@ type ExtendedUseFormReturn<
   TTransformedValues extends FieldValues | undefined,
 > = UseFormReturn<TFieldValues, TContext, TTransformedValues> & {
   setInitialValues: (values: Record<keyof TFieldValues, unknown>) => void;
+  getErroredKeys: () => Array<keyof TFieldValues>;
 };
 
 export const useExtendedForm = <
@@ -41,8 +42,15 @@ export const useExtendedForm = <
     }
   };
 
+  const getErroredKeys = () => {
+    return Object.keys(form.formState.errors) as Array<keyof TFieldValues>;
+  };
+
+  // TODO: Set default values from schema
+
   return {
     ...form,
     setInitialValues,
+    getErroredKeys,
   };
 };

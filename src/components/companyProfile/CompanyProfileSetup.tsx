@@ -9,69 +9,30 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useExtendedForm } from "@/lib/hook-form";
 import {
   type CompanyProfileSetupSchema,
   companyProfileSetupSchema,
 } from "@/schemas/companyProfileSetupSchema";
 import { motion } from "framer-motion";
-import { type PropsWithChildren, useState } from "react";
-import { Button, type ButtonVariant } from "@/components/ui/button";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import type { FieldErrors } from "react-hook-form";
-
-const COMPANY_PROFILE_SETUP_STEPS = [
-  {
-    label: "Basic Information",
-  },
-  {
-    label: "Company Details",
-  },
-  {
-    label: "Company Description",
-  },
-  {
-    label: "Visual Assets",
-  },
-];
-
-const CONTROL_BUTTON_VARIANT: ButtonVariant = "secondary";
-const BASIC_INFORMATION_STEP = 1 as const;
-const COMPANY_DETAILS_STEP = 2 as const;
-const COMPANY_DESCRIPTION_STEP = 3 as const;
-const VISUAL_ASSETS_STEP = 4 as const;
-
-const FIELD_TO_STEP_MAP: Record<keyof CompanyProfileSetupSchema, number> = {
-  name: BASIC_INFORMATION_STEP,
-  industry: BASIC_INFORMATION_STEP,
-  website: BASIC_INFORMATION_STEP,
-
-  yearOfEstablishment: COMPANY_DETAILS_STEP,
-  address: COMPANY_DETAILS_STEP,
-  companySize: COMPANY_DETAILS_STEP,
-  areasOfExpertise: COMPANY_DETAILS_STEP,
-
-  bio: COMPANY_DESCRIPTION_STEP,
-  description: COMPANY_DESCRIPTION_STEP,
-
-  logo: VISUAL_ASSETS_STEP,
-  coverImage: VISUAL_ASSETS_STEP,
-};
-
-const STEP_TO_FIELDS_MAP = Object.entries(FIELD_TO_STEP_MAP).reduce<
-  Record<number, string[]>
->((acc, [field, step]) => {
-  if (!acc[step]) {
-    acc[step] = [];
-  }
-
-  // biome-ignore lint/style/noNonNullAssertion: It cannot be undefined at this point
-  acc[step]!.push(field);
-
-  return acc;
-}, {});
+import {
+  BASIC_INFORMATION_STEP,
+  COMPANY_DESCRIPTION_STEP,
+  COMPANY_DETAILS_STEP,
+  COMPANY_PROFILE_SETUP_STEPS,
+  CONTROL_BUTTON_VARIANT,
+  FIELD_TO_STEP_MAP,
+  STEP_TO_FIELDS_MAP,
+  VISUAL_ASSETS_STEP,
+} from "./constants";
+import type { CompanyProfileSetupFormKey } from "./types";
+import AnimatedFormFieldsContainer from "./AnimatedFormFieldsContainer";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 
 const CompanyProfileSetup = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -153,7 +114,7 @@ const CompanyProfileSetup = () => {
             name="yearOfEstablishment"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Founding Year</FormLabel>
+                <FormLabel>Year of Establishment</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -253,7 +214,9 @@ const CompanyProfileSetup = () => {
           <Button
             type="button"
             variant={CONTROL_BUTTON_VARIANT}
-            onClick={() => setCurrentStep((prev) => prev - 1)}
+            onClick={() => {
+              handleStepChange("prev");
+            }}
           >
             Back
           </Button>
@@ -262,7 +225,11 @@ const CompanyProfileSetup = () => {
           type={isLastStep ? "submit" : "button"}
           variant={isLastStep ? "default" : CONTROL_BUTTON_VARIANT}
           onClick={
-            isLastStep ? undefined : () => setCurrentStep((prev) => prev + 1)
+            isLastStep
+              ? undefined
+              : () => {
+                  handleStepChange("next");
+                }
           }
         >
           {isLastStep ? "Submit" : "Next"}
@@ -271,15 +238,49 @@ const CompanyProfileSetup = () => {
     );
   };
 
+  const handleStepChange = (type: "next" | "prev") => {
+    const nextStepValue = type === "next" ? currentStep + 1 : currentStep - 1;
+    setCurrentStep(nextStepValue);
+    handleFormFocusOnStepChange(nextStepValue);
+  };
+
+  const handleFormFocusOnStepChange = (nextStepValue: number) => {
+    const erroredKeys = form.getErroredKeys();
+    const stepsWithErrors = getErroredSteps(erroredKeys);
+
+    setTimeout(() => {
+      if (stepsWithErrors.includes(nextStepValue)) {
+        const firstErroredFieldKey = erroredKeys.find(
+          (key) => FIELD_TO_STEP_MAP[key] === nextStepValue,
+        );
+
+        if (firstErroredFieldKey) {
+          form.setFocus(firstErroredFieldKey);
+        }
+      }
+    });
+  };
+
   const onFormError = (errors: FieldErrors<CompanyProfileSetupSchema>) => {
-    const erroredFieldKeys = Object.keys(errors) as Array<
-      keyof CompanyProfileSetupSchema
-    >;
-    const stepsWithErrors = erroredFieldKeys
-      .map((field) => FIELD_TO_STEP_MAP[field])
-      .sort((a, b) => a - b);
+    const erroredFieldKeys = Object.keys(
+      errors,
+    ) as Array<CompanyProfileSetupFormKey>;
+
+    const stepsWithErrors = getErroredSteps(erroredFieldKeys);
 
     setCurrentStep(stepsWithErrors[0] as number);
+  };
+
+  const getErroredSteps = (
+    erroredFieldKeys: Array<CompanyProfileSetupFormKey>,
+  ) => {
+    return [
+      ...new Set(
+        erroredFieldKeys
+          .map((field) => FIELD_TO_STEP_MAP[field])
+          .sort((a, b) => a - b),
+      ),
+    ];
   };
 
   return (
@@ -330,7 +331,7 @@ const CompanyProfileSetup = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, onFormError)}
-              className="h-full grid gap-4 lg:h-[395px] overflow-auto px-1"
+              className="grid gap-4 h-[395px] overflow-y-auto px-2 overflow-x-hidden"
               key={currentStep}
             >
               <AnimatedFormFieldsContainer>
@@ -343,22 +344,6 @@ const CompanyProfileSetup = () => {
         </div>
       </div>
     </>
-  );
-};
-
-const AnimatedFormFieldsContainer = ({ children }: PropsWithChildren) => {
-  return (
-    <motion.div
-      className="grid gap-4"
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-    >
-      {children}
-    </motion.div>
   );
 };
 
