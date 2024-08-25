@@ -11,11 +11,12 @@ import { DateTime } from "luxon";
 export const makeCompanyDTOs = (amount = 100): CompanyInsertModel[] => {
   return Array.from({ length: amount }).map(() => ({
     name: faker.company.name(),
-    foundedYear: faker.date.past().getFullYear().toString(),
+    yearOfEstablishment: faker.date.past().getFullYear().toString(),
     address: faker.location.streetAddress(),
     bio: faker.lorem.paragraph(),
     description: faker.lorem.paragraph(),
-    employeeCount: faker.helpers.arrayElement(["1-10", "11-50", "51-100"]),
+    companySize: faker.helpers.arrayElement(["1-10", "11-50", "51-100"]),
+    website: faker.internet.url(),
     industry: faker.helpers.arrayElement([
       "Education",
       "Government",
