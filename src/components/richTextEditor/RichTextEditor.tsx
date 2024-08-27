@@ -47,7 +47,7 @@ const RichTextEditor = ({
   });
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="w-full">
       <div className="border rounded-lg border-muted-foreground/50 bg-background">
         <RichTextEditorMenubar editor={editor} />
         <div

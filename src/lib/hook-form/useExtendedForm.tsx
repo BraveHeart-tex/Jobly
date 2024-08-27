@@ -40,7 +40,6 @@ export const useExtendedForm = <
     resolver: zodResolver(schema, {
       errorMap: zodErrorMap,
     }),
-    mode: "onChange",
   });
 
   const setInitialValues = (values: Record<Path<TFieldValues>, unknown>) => {
