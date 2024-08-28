@@ -126,6 +126,7 @@ const htmlRenderers: HtmlRenderers = {
       {props.children}
     </Link>
   ),
+  p: (props) => <Text {...props} style={{ ...props.style, marginTop: 0 }} />,
 };
 
 const LondonTemplate = ({ data }: LondonTemplateProps) => {
@@ -356,6 +357,7 @@ const ProfessionalSummarySection = ({
   professionalSummarySection: MakeResumeDataReturn["professionalSummarySection"];
 }) => {
   const { professionalSummary } = professionalSummarySection;
+
   return (
     <>
       {removeHTMLTags(professionalSummary || "")?.length ? (
