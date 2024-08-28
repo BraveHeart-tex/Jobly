@@ -13,11 +13,10 @@ import {
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
 import CommaSeparatedText from "../CommaSeparatedText";
-import {
-  type CustomSection,
-  type MakeResumeDataReturn,
-  type makeResumeTemplateData,
-  styleLinksAndCleanElements,
+import type {
+  CustomSection,
+  MakeResumeDataReturn,
+  makeResumeTemplateData,
 } from "../pdf.utils";
 
 export const PDF_BODY_FONT_SIZE = 11 as const;
@@ -38,6 +37,21 @@ Font.register({
     {
       src: "/fonts/EBGaramond-Bold.ttf",
       fontWeight: 600,
+    },
+    {
+      src: "/fonts/EBGaramond-Italic.ttf",
+      fontWeight: 400,
+      fontStyle: "italic",
+    },
+    {
+      src: "/fonts/EBGaramond-MediumItalic.ttf",
+      fontWeight: 500,
+      fontStyle: "italic",
+    },
+    {
+      src: "/fonts/EBGaramond-BoldItalic.ttf",
+      fontWeight: 600,
+      fontStyle: "italic",
     },
   ],
 });
@@ -93,6 +107,20 @@ const styles = StyleSheet.create({
 });
 
 const htmlRenderers: HtmlRenderers = {
+  i: (props) => {
+    return (
+      <Text {...props} style={{ ...props.style, fontStyle: "italic" }}>
+        {props.children}
+      </Text>
+    );
+  },
+  em: (props) => {
+    return (
+      <Text {...props} style={{ ...props.style, fontStyle: "italic" }}>
+        {props.children}
+      </Text>
+    );
+  },
   ol: (props) => (
     <View
       {...props}
@@ -159,6 +187,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         ) {
           return (
             <ProfessionalSummarySection
+              key={section.id}
               professionalSummarySection={
                 section as MakeResumeDataReturn["professionalSummarySection"]
               }
@@ -172,6 +201,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         ) {
           return (
             <EmploymentHistorySection
+              key={section.id}
               employmentHistorySection={
                 section as MakeResumeDataReturn["employmentHistorySection"]
               }
@@ -182,6 +212,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION) {
           return (
             <EducationSection
+              key={section.id}
               educationSection={
                 section as MakeResumeDataReturn["educationSection"]
               }
@@ -195,6 +226,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         ) {
           return (
             <WebsitesAndLinksSection
+              key={section.id}
               websitesAndLinksSection={
                 section as MakeResumeDataReturn["websitesAndLinksSection"]
               }
@@ -205,6 +237,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS) {
           return (
             <SkillsSection
+              key={section.id}
               skillsSection={section as MakeResumeDataReturn["skillsSection"]}
             />
           );
@@ -213,6 +246,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.CUSTOM) {
           return (
             <CustomResumeSection
+              key={section.id}
               customSection={section as unknown as CustomSection}
             />
           );
@@ -221,6 +255,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.INTERNSHIPS) {
           return (
             <InternshipsSection
+              key={section.id}
               internshipsSection={
                 section as MakeResumeDataReturn["internshipsSection"]
               }
@@ -233,6 +268,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         ) {
           return (
             <ExtraCurricularActivitiesSection
+              key={section.id}
               extraCurricularActivitiesSection={
                 section as MakeResumeDataReturn["extraCurricularActivitiesSection"]
               }
@@ -242,6 +278,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.HOBBIES) {
           return (
             <HobbiesSection
+              key={section.id}
               hobbiesSection={section as MakeResumeDataReturn["hobbiesSection"]}
             />
           );
@@ -249,6 +286,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.REFERENCES) {
           return (
             <ReferencesSection
+              key={section.id}
               referencesSection={
                 section as MakeResumeDataReturn["referencesSection"]
               }
@@ -259,6 +297,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.COURSES) {
           return (
             <CoursesSection
+              key={section.id}
               coursesSection={section as MakeResumeDataReturn["coursesSection"]}
             />
           );
@@ -267,6 +306,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
         if (section.internalSectionTag === INTERNAL_SECTION_TAGS.LANGUAGES) {
           return (
             <LanguagesSection
+              key={section.id}
               languagesSection={
                 section as MakeResumeDataReturn["languagesSection"]
               }
@@ -391,7 +431,7 @@ const ProfessionalSummarySection = ({
                 }}
                 renderers={htmlRenderers}
               >
-                {styleLinksAndCleanElements(professionalSummary)}
+                {professionalSummary}
               </Html>
             </View>
           </View>
@@ -474,7 +514,7 @@ const EmploymentHistorySection = ({
                       }}
                       renderers={htmlRenderers}
                     >
-                      {styleLinksAndCleanElements(item.description || "")}
+                      {item.description || ""}
                     </Html>
                   </View>
                   <Text
@@ -572,7 +612,7 @@ const EducationSection = ({
                       }}
                       renderers={htmlRenderers}
                     >
-                      {styleLinksAndCleanElements(item.description || "")}
+                      {item.description || ""}
                     </Html>
                   </View>
                   <Text
@@ -778,7 +818,7 @@ const InternshipsSection = ({
                       }}
                       renderers={htmlRenderers}
                     >
-                      {styleLinksAndCleanElements(item.description || "")}
+                      {item.description || ""}
                     </Html>
                   </View>
                   <Text
@@ -918,7 +958,7 @@ const ExtraCurricularActivitiesSection = ({
                       }}
                       renderers={htmlRenderers}
                     >
-                      {styleLinksAndCleanElements(item.description || "")}
+                      {item.description || ""}
                     </Html>
                   </View>
                 </View>
@@ -1312,7 +1352,7 @@ const CustomResumeSection = ({
                         }}
                         renderers={htmlRenderers}
                       >
-                        {styleLinksAndCleanElements(item.description || "")}
+                        {item.description || ""}
                       </Html>
                     </View>
                   </View>
