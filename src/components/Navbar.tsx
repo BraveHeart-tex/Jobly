@@ -17,7 +17,7 @@ const Navbar = async () => {
     <NavbarContainer>
       <div className="mx-auto flex max-w-screen-2xl items-center lg:justify-between px-3">
         <div className="lg:hidden">
-          <MobileNavigationLinks />
+          <MobileNavigationLinks userRole={currentUser?.role} />
         </div>
 
         <Link
@@ -36,7 +36,7 @@ const Navbar = async () => {
         </Link>
 
         <div className="hidden lg:block">
-          <DesktopNavigationLinks />
+          <DesktopNavigationLinks userRole={currentUser?.role} />
         </div>
         <div className="ml-auto lg:ml-0 flex items-center gap-1">
           {currentUser ? (

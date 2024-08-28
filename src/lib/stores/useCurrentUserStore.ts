@@ -1,11 +1,11 @@
-import type { User } from "lucia";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import type { CtxUserAttributes } from "../auth";
 
-type CurrentUserStore = {
-  user: User | null;
-  setUser: (user: User | null) => void;
-};
+interface CurrentUserStore {
+  user: CtxUserAttributes | null;
+  setUser: (user: CtxUserAttributes | null) => void;
+}
 
 export const useCurrentUserStore = create<
   CurrentUserStore,

@@ -13,15 +13,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { APP_NAME } from "@/lib/constants";
-import { useNavigationLinks } from "@/lib/navigationLinks";
+import { getNavigationLinksByRole } from "@/lib/navigationLinks";
+import type { User } from "lucia";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-const MobileNavigationLinks = () => {
+interface MobileNavigationLinksProps {
+  userRole?: User["role"];
+}
+
+const MobileNavigationLinks = ({ userRole }: MobileNavigationLinksProps) => {
   const [open, setOpen] = useState(false);
-  const navigationLinks = useNavigationLinks();
+  const navigationLinks = getNavigationLinksByRole(userRole);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

@@ -6,14 +6,12 @@ import { DrizzleMySQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { Lucia } from "lucia";
 import { AUTH_COOKIE_NAME } from "../constants";
 
-type DatabaseUserAttributes = Pick<
-  DBUser,
-  "id" | "email" | "role" | "firstName" | "lastName"
->;
+interface DatabaseUserAttributes
+  extends Pick<DBUser, "id" | "email" | "role" | "firstName" | "lastName"> {}
 
-export type CtxUserAttributes = DatabaseUserAttributes & {
+export interface CtxUserAttributes extends DatabaseUserAttributes {
   hasToSetupCompanyInformation?: boolean;
-};
+}
 
 const adapter = new DrizzleMySQLAdapter(db, sessions, users);
 

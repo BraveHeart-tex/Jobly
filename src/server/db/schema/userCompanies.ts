@@ -5,6 +5,7 @@ import {
   int,
   mysqlTable,
   primaryKey,
+  unique,
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
 import users from "./users";
@@ -29,6 +30,7 @@ const userCompanies = mysqlTable(
       }),
       userId: index("userId").on(table.userId),
       companyId: index("companyId").on(table.companyId),
+      userAndCompanyId: unique().on(table.userId),
     };
   },
 );

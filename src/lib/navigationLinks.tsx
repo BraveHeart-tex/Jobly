@@ -1,5 +1,4 @@
 import { PORTAL_TYPE_QUERY_KEY } from "@/lib/constants";
-import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { NavigationMenuItem } from "@/lib/types";
 import {
   AwardIcon,
@@ -29,6 +28,7 @@ import {
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "./routes";
+import type { User } from "lucia";
 
 export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
   {
@@ -229,18 +229,20 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
   },
 ];
 
-export const useNavigationLinks = () => {
-  const userRole = useCurrentUserStore((state) => state?.user?.role);
-  const portalTypeParam = useSearchParams().get(PORTAL_TYPE_QUERY_KEY);
-  const role = userRole || portalTypeParam;
+export const getNavigationLinksByRole = (role?: User["role"]) => {
+  const portalTypeParam = useSearchParams().get(
+    PORTAL_TYPE_QUERY_KEY,
+  ) as User["role"];
+  const validRoles: User["role"][] = ["candidate", "employer"];
 
-  if (role === "candidate") {
-    return CANDIDATE_NAVIGATION_LINKS;
-  }
+  const targetRole =
+    role ||
+    (validRoles.includes(portalTypeParam) ? portalTypeParam : "candidate");
 
-  if (role === "employer") {
-    return EMPLOYER_NAVIGATION_LINKS;
-  }
+  const roleToLinksMap: Record<User["role"], NavigationMenuItem[]> = {
+    candidate: CANDIDATE_NAVIGATION_LINKS,
+    employer: EMPLOYER_NAVIGATION_LINKS,
+  };
 
-  return CANDIDATE_NAVIGATION_LINKS;
+  return roleToLinksMap[targetRole] || CANDIDATE_NAVIGATION_LINKS;
 };

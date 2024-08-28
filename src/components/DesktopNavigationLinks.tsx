@@ -7,14 +7,20 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { useNavigationLinks } from "@/lib/navigationLinks";
+import { getNavigationLinksByRole } from "@/lib/navigationLinks";
 import { cn } from "@/lib/utils";
+import type { User } from "lucia";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
-const DesktopNavigationLinks = () => {
-  const navigationLinks = useNavigationLinks();
+interface DesktopNavigationLinksProps {
+  userRole?: User["role"];
+}
+
+const DesktopNavigationLinks = ({ userRole }: DesktopNavigationLinksProps) => {
+  const navigationLinks = getNavigationLinksByRole(userRole);
+
   return (
     <NavigationMenu>
       <NavigationMenuList>

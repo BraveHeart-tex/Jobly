@@ -31,19 +31,32 @@ import {
   VISUAL_ASSETS_STEP,
 } from "./constants";
 import type { CompanyProfileSetupFormKey } from "./types";
-import AnimatedFormFieldsContainer from "./AnimatedFormFieldsContainer";
+import AnimatedFormFieldsContainer, {
+  TRANSITION_DURATION_MS,
+} from "./AnimatedFormFieldsContainer";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-
-const FOCUS_DELAY_MS = 300 as const;
+import { api } from "@/trpc/react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { EMPLOYER_ROUTES } from "@/lib/routes";
 
 const CompanyProfileSetup = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const router = useRouter();
+  const { mutate: registerCompanyDetails, isPending } =
+    api.company.registerCompanyDetails.useMutation({
+      onSuccess: () => {
+        toast.success("Company details registered successfully.");
+        router.push(EMPLOYER_ROUTES.COMPANY_PROFILE);
+      },
+    });
+
   const form = useExtendedForm<CompanyProfileSetupSchema>(
     companyProfileSetupSchema,
   );
 
   const onSubmit = (values: CompanyProfileSetupSchema) => {
-    console.info("values", values);
+    registerCompanyDetails(values);
   };
 
   const renderFormFields = () => {
@@ -201,6 +214,7 @@ const CompanyProfileSetup = () => {
           <Button
             type="button"
             variant={CONTROL_BUTTON_VARIANT}
+            disabled={isPending}
             onClick={() => {
               handleStepChange("prev");
             }}
@@ -218,6 +232,7 @@ const CompanyProfileSetup = () => {
                   handleStepChange("next");
                 }
           }
+          disabled={isPending}
         >
           {isLastStep ? "Submit" : "Next"}
         </Button>
@@ -236,7 +251,10 @@ const CompanyProfileSetup = () => {
     focusOnErroredFieldInStep(step);
   };
 
-  const focusOnErroredFieldInStep = (nextStep: number) => {
+  const focusOnErroredFieldInStep = (
+    nextStep: number,
+    timeoutDuration: number = TRANSITION_DURATION_MS,
+  ) => {
     const erroredKeys = form.getErroredKeys();
     if (!erroredKeys || erroredKeys.length === 0) {
       return;
@@ -257,7 +275,7 @@ const CompanyProfileSetup = () => {
 
     setTimeout(() => {
       form.setFocus(firstErroredFieldKey);
-    }, FOCUS_DELAY_MS);
+    }, timeoutDuration);
   };
 
   const onFormError = (errors: FieldErrors<CompanyProfileSetupSchema>) => {
@@ -302,6 +320,11 @@ const CompanyProfileSetup = () => {
                     variant="ghost"
                     className="relative hover:bg-muted/45"
                     onClick={() => {
+                      if (isCurrentStep) {
+                        focusOnErroredFieldInStep(stepValue, 0);
+                        return;
+                      }
+
                       gotoStep(stepValue);
                     }}
                   >
