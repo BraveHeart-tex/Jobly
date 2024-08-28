@@ -98,6 +98,7 @@ const htmlRenderers: HtmlRenderers = {
       {...props}
       style={{
         ...props.style,
+        marginTop: 5,
         marginLeft: 0,
       }}
     >
@@ -109,6 +110,7 @@ const htmlRenderers: HtmlRenderers = {
       {...props}
       style={{
         ...props.style,
+        marginTop: 5,
         marginLeft: 0,
       }}
     >
@@ -468,7 +470,7 @@ const EmploymentHistorySection = ({
                     <Html
                       style={{
                         fontSize: PDF_BODY_FONT_SIZE,
-                        marginTop: -2,
+                        marginTop: 7,
                       }}
                       renderers={htmlRenderers}
                     >
@@ -565,7 +567,7 @@ const EducationSection = ({
                     <Html
                       style={{
                         fontSize: PDF_BODY_FONT_SIZE,
-                        marginTop: -2,
+                        marginTop: 7,
                         gap: 0,
                       }}
                       renderers={htmlRenderers}
@@ -772,7 +774,7 @@ const InternshipsSection = ({
                     <Html
                       style={{
                         fontSize: PDF_BODY_FONT_SIZE,
-                        marginTop: -2,
+                        marginTop: 7,
                       }}
                       renderers={htmlRenderers}
                     >
@@ -912,6 +914,7 @@ const ExtraCurricularActivitiesSection = ({
                     <Html
                       style={{
                         fontSize: PDF_BODY_FONT_SIZE,
+                        marginTop: 7,
                       }}
                       renderers={htmlRenderers}
                     >
@@ -1305,6 +1308,7 @@ const CustomResumeSection = ({
                       <Html
                         style={{
                           fontSize: PDF_BODY_FONT_SIZE,
+                          marginTop: 5,
                         }}
                         renderers={htmlRenderers}
                       >
