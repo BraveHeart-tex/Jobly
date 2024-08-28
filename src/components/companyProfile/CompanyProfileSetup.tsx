@@ -34,6 +34,8 @@ import type { CompanyProfileSetupFormKey } from "./types";
 import AnimatedFormFieldsContainer from "./AnimatedFormFieldsContainer";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 
+const FOCUS_DELAY_MS = 300 as const;
+
 const CompanyProfileSetup = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const form = useExtendedForm<CompanyProfileSetupSchema>(
@@ -226,24 +228,36 @@ const CompanyProfileSetup = () => {
   const handleStepChange = (type: "next" | "prev") => {
     const nextStepValue = type === "next" ? currentStep + 1 : currentStep - 1;
     setCurrentStep(nextStepValue);
-    handleFormFocusOnStepChange(nextStepValue);
+    focusOnErroredFieldInStep(nextStepValue);
   };
 
-  const handleFormFocusOnStepChange = (nextStepValue: number) => {
+  const gotoStep = (step: number) => {
+    setCurrentStep(step);
+    focusOnErroredFieldInStep(step);
+  };
+
+  const focusOnErroredFieldInStep = (nextStep: number) => {
     const erroredKeys = form.getErroredKeys();
+    if (!erroredKeys || erroredKeys.length === 0) {
+      return;
+    }
+
     const stepsWithErrors = getErroredSteps(erroredKeys);
+    if (!stepsWithErrors.includes(nextStep)) {
+      return;
+    }
+
+    const firstErroredFieldKey = erroredKeys.find(
+      (key) => FIELD_TO_STEP_MAP[key] === nextStep,
+    );
+
+    if (!firstErroredFieldKey) {
+      return;
+    }
 
     setTimeout(() => {
-      if (stepsWithErrors.includes(nextStepValue)) {
-        const firstErroredFieldKey = erroredKeys.find(
-          (key) => FIELD_TO_STEP_MAP[key] === nextStepValue,
-        );
-
-        if (firstErroredFieldKey) {
-          form.setFocus(firstErroredFieldKey);
-        }
-      }
-    });
+      form.setFocus(firstErroredFieldKey);
+    }, FOCUS_DELAY_MS);
   };
 
   const onFormError = (errors: FieldErrors<CompanyProfileSetupSchema>) => {
@@ -253,7 +267,7 @@ const CompanyProfileSetup = () => {
 
     const stepsWithErrors = getErroredSteps(erroredFieldKeys);
 
-    setCurrentStep(stepsWithErrors[0] as number);
+    gotoStep(stepsWithErrors[0] as number);
   };
 
   const getErroredSteps = (
@@ -287,7 +301,9 @@ const CompanyProfileSetup = () => {
                   <Button
                     variant="ghost"
                     className="relative hover:bg-muted/45"
-                    onClick={() => setCurrentStep(stepValue)}
+                    onClick={() => {
+                      gotoStep(stepValue);
+                    }}
                   >
                     <span>{step.label}</span>
                     {isCurrentStep ? (
