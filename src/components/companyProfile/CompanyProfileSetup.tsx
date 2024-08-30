@@ -39,6 +39,24 @@ import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+
+const companySizeOptions = [
+  "1-10",
+  "11-50",
+  "51-200",
+  "201-500",
+  "501-1,000",
+  "1,001-5,000",
+  "5,001-10,000",
+  "10,001+",
+];
 
 const CompanyProfileSetup = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -128,9 +146,23 @@ const CompanyProfileSetup = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Company Size</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select company size" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {companySizeOptions.map((size) => (
+                      <SelectItem key={size} value={size}>
+                        {size} employees
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
