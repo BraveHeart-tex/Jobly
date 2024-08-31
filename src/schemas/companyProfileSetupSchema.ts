@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const currentYear = new Date().getFullYear();
+const MIN_YEAR_OF_ESTABLISHMENT = 1800 as const;
 
 const yearOfEstablishmentSchema = z
   .string()
@@ -12,10 +13,10 @@ const yearOfEstablishmentSchema = z
   .refine(
     (val) => {
       const year = Number.parseInt(val, 10);
-      return year >= 1800 && year <= currentYear;
+      return year >= MIN_YEAR_OF_ESTABLISHMENT && year <= currentYear;
     },
     {
-      message: `Year must be between 1800 and ${currentYear}`,
+      message: `Year must be between ${MIN_YEAR_OF_ESTABLISHMENT} and ${currentYear}`,
     },
   )
   .default("");
