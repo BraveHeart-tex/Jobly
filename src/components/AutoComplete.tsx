@@ -8,7 +8,8 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { CheckIcon } from "lucide-react";
+import { useClickAway } from "react-use";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Option {
   label: string;
@@ -35,10 +36,15 @@ const AutoComplete = ({
   onValueChange,
   disabled,
 }: AutoCompleteProps) => {
+  const targetAreaRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isOpen, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState<string>(value || "");
+
+  useClickAway(targetAreaRef, () => {
+    setOpen(false);
+  });
 
   const filteredOptions = useMemo(
     () =>
@@ -101,7 +107,7 @@ const AutoComplete = ({
   };
 
   return (
-    <div>
+    <div ref={targetAreaRef}>
       <Input
         ref={inputRef}
         value={inputValue}
@@ -113,37 +119,37 @@ const AutoComplete = ({
         onChange={(e) => setInputValue(e.target.value)}
       />
 
-      {isOpen && (
-        <div
-          className="absolute w-max border-primary max-h-64 overflow-y-auto z-50 border bg-popover p-2 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 -ml-[1px] min-w-[200px]"
-          onKeyDown={handleKeyDown}
-          data-state={isOpen ? "open" : "closed"}
-          data-side="bottom"
-        >
-          <div className="grid ">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
-                <Button
-                  key={option.value}
-                  variant="ghost"
-                  className="cursor-pointer hover:bg-muted justify-start font-normal"
-                  onClick={() => handleSelectOption(option)}
-                >
-                  <span>{option.label}</span>
-
-                  {option.value === value && (
-                    <CheckIcon className="ml-2 h-4 w-4" />
-                  )}
-                </Button>
-              ))
-            ) : (
-              <div className="text-sm text-muted-foreground p-2 w-full text-center">
-                {emptyMessage}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="absolute w-max border-primary max-h-64 overflow-y-auto z-50 border bg-popover p-2 text-popover-foreground shadow-md outline-none -ml-[1px] min-w-[200px]"
+            onKeyDown={handleKeyDown}
+          >
+            <div className="grid ">
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option) => (
+                  <Button
+                    key={option.value}
+                    variant="ghost"
+                    className="cursor-pointer hover:bg-muted justify-start font-normal"
+                    onClick={() => handleSelectOption(option)}
+                  >
+                    <span>{option.label}</span>
+                  </Button>
+                ))
+              ) : (
+                <div className="text-sm text-muted-foreground p-2 w-full text-center">
+                  {emptyMessage}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
