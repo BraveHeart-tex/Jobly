@@ -23,7 +23,9 @@ const yearOfEstablishmentSchema = z
 export const companyProfileSetupSchema = z.object({
   name: z.string().min(1).default(""),
   bio: z.string().min(1).default(""),
-  website: z.string().default(""),
+  website: z
+    .union([z.string().url("Please enter a valid URL"), z.literal("")])
+    .default(""),
   industry: z.string().min(1).default(""),
   address: z.string().default(""),
   yearOfEstablishment: yearOfEstablishmentSchema,
