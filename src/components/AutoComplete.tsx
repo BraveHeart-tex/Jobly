@@ -4,9 +4,10 @@ import {
   useCallback,
   type KeyboardEvent,
   useMemo,
+  useEffect,
 } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useClickAway } from "react-use";
 import { AnimatePresence, motion } from "framer-motion";
@@ -38,9 +39,19 @@ const AutoComplete = ({
 }: AutoCompleteProps) => {
   const targetAreaRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const optionRefs = useRef(new Map());
 
   const [isOpen, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState<string>(value || "");
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const selectedOption = options.find((option) => option.value === value);
+    if (!selectedOption) return;
+
+    scrollToOption(selectedOption.value);
+  }, [isOpen, value, options]);
 
   useClickAway(targetAreaRef, () => {
     setOpen(false);
@@ -106,6 +117,17 @@ const AutoComplete = ({
     }, 50);
   };
 
+  const scrollToOption = (value: string) => {
+    const ref = optionRefs.current.get(value);
+    if (ref) {
+      ref.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      });
+    }
+  };
+
   return (
     <div ref={targetAreaRef}>
       <Input
@@ -134,6 +156,12 @@ const AutoComplete = ({
                 filteredOptions.map((option) => (
                   <Button
                     key={option.value}
+                    ref={(el) => {
+                      if (el) {
+                        optionRefs.current.set(option.value, el);
+                      }
+                    }}
+                    type="button"
                     variant="ghost"
                     className="cursor-pointer hover:bg-muted justify-start font-normal"
                     onClick={() => handleSelectOption(option)}
