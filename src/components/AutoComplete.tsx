@@ -161,7 +161,10 @@ const AutoComplete = ({
         placeholder={placeholder}
         onKeyDown={handleKeyDown}
         className={cn(isOpen && "rounded-bl-none")}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => {
+          if (selectedIndex !== 0) setSelectedIndex(0);
+          setInputValue(e.target.value);
+        }}
       />
 
       <AnimatePresence>
