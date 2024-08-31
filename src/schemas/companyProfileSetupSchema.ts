@@ -17,7 +17,8 @@ const yearOfEstablishmentSchema = z
     {
       message: `Year must be between 1800 and ${currentYear}`,
     },
-  );
+  )
+  .default("");
 
 export const companyProfileSetupSchema = z.object({
   name: z.string().min(1).default(""),
