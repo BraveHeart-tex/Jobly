@@ -43,7 +43,7 @@ export const zodErrorMap: ZodErrorMap = (issue, _ctx) => {
     case ZodIssueCode.too_big:
       if (issue.type === "string") {
         return {
-          message: `Can at most be ${issue.maximum} ${`character${issue.maximum}` === "1" ? "" : "s"}`,
+          message: `Please keep your input to ${issue.maximum} character${issue.maximum === 1 ? "" : "s"} or less.`,
         };
       }
       return {
