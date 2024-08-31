@@ -108,7 +108,7 @@ const CompanyProfileSetup = () => {
                       label: d,
                       value: d,
                     }))}
-                    onValueChange={field.onChange}
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
