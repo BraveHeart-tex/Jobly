@@ -1,7 +1,6 @@
 import {
   useState,
   useRef,
-  useCallback,
   type KeyboardEvent,
   useMemo,
   useEffect,
@@ -26,8 +25,10 @@ interface AutoCompleteProps {
   placeholder?: string;
 }
 
-const ENTER_KEY = "Enter";
-const ESCAPE_KEY = "Escape";
+const ENTER_KEY = "Enter" as const;
+const ESCAPE_KEY = "Escape" as const;
+const ARROW_UP_KEY = "ArrowUp" as const;
+const ARROW_DOWN_KEY = "ArrowDown" as const;
 
 const AutoComplete = ({
   options,
@@ -39,19 +40,26 @@ const AutoComplete = ({
 }: AutoCompleteProps) => {
   const targetAreaRef = useRef(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const optionRefs = useRef(new Map());
+  const optionRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const [isOpen, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState<string>(value || "");
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const selectedOption = options.find((option) => option.value === value);
-    if (!selectedOption) return;
+    const selectedOption = filteredOptions[selectedIndex];
+    if (selectedOption) {
+      scrollToOption(selectedOption.value);
+    }
+  }, [isOpen, selectedIndex]);
 
-    scrollToOption(selectedOption.value);
-  }, [isOpen, value, options]);
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedIndex(-1);
+    }
+  }, [isOpen]);
 
   useClickAway(targetAreaRef, () => {
     setOpen(false);
@@ -65,34 +73,49 @@ const AutoComplete = ({
     [options, inputValue],
   );
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent<HTMLDivElement>) => {
-      const input = inputRef.current;
-      if (!input) return;
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const input = inputRef.current;
+    if (!input) return;
 
-      if (!isOpen) {
-        setOpen(true);
-      }
+    if (!isOpen) {
+      setOpen(true);
+    }
 
-      if (event.key === ENTER_KEY && input.value !== "") {
-        handleEnterKey(input.value);
-      }
+    const commands = {
+      [ARROW_UP_KEY]: () => handleArrowUpKey(),
+      [ARROW_DOWN_KEY]: () => handleArrowDownKey(),
+      [ENTER_KEY]: () => handleEnterKey(input.value),
+      [ESCAPE_KEY]: () => handleEscapeKey(input.value),
+    };
 
-      if (event.key === ESCAPE_KEY) {
-        handleEscapeKey(input.value);
-      }
-    },
-    [isOpen],
-  );
+    const command = commands[event.key as keyof typeof commands];
+    if (command) {
+      event.preventDefault();
+      command();
+    }
+  };
+
+  const handleArrowUpKey = () => {
+    if (selectedIndex > 0) {
+      setSelectedIndex(selectedIndex - 1);
+    }
+  };
+
+  const handleArrowDownKey = () => {
+    if (selectedIndex < filteredOptions.length - 1) {
+      setSelectedIndex(selectedIndex + 1);
+    }
+  };
 
   const handleEnterKey = (inputValue: string) => {
-    if (!inputValue) return;
-
     const selectedOption = findOptionByLabel(inputValue);
+    const selectedOptionByIndex = filteredOptions[selectedIndex];
+
     if (selectedOption) {
       onValueChange?.(selectedOption.value);
-    } else {
-      onValueChange?.(inputValue);
+    } else if (selectedOptionByIndex) {
+      onValueChange?.(selectedOptionByIndex.value);
+      setInputValue(selectedOptionByIndex.label);
     }
 
     setOpen(false);
@@ -121,7 +144,7 @@ const AutoComplete = ({
     const ref = optionRefs.current.get(value);
     if (ref) {
       ref.scrollIntoView({
-        behavior: "smooth",
+        behavior: "instant",
         block: "nearest",
         inline: "start",
       });
@@ -151,9 +174,9 @@ const AutoComplete = ({
             className="absolute w-max border-primary max-h-64 overflow-y-auto z-50 border bg-popover p-2 text-popover-foreground shadow-md outline-none -ml-[1px] min-w-[200px]"
             onKeyDown={handleKeyDown}
           >
-            <div className="grid ">
+            <div className="grid">
               {filteredOptions.length > 0 ? (
-                filteredOptions.map((option) => (
+                filteredOptions.map((option, index) => (
                   <Button
                     key={option.value}
                     ref={(el) => {
@@ -163,7 +186,10 @@ const AutoComplete = ({
                     }}
                     type="button"
                     variant="ghost"
-                    className="cursor-pointer hover:bg-muted justify-start font-normal"
+                    className={cn(
+                      "cursor-pointer hover:bg-muted justify-start font-normal",
+                      selectedIndex === index && "bg-muted",
+                    )}
                     onClick={() => handleSelectOption(option)}
                   >
                     <span>{option.label}</span>
