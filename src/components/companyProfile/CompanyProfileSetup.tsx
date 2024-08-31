@@ -45,7 +45,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 const companySizeOptions = [
   "1-10",
@@ -336,7 +336,7 @@ const CompanyProfileSetup = () => {
     <>
       <div className="grid lg:grid-cols-12 gap-4">
         <div className="p-1 border rounded-md flex items-center justify-center lg:col-span-3">
-          <div className="flex items-center gap-2 lg:flex-col lg:items-start flex-wrap justify-center">
+          <div className="grid gap-4 grid-cols-2 lg:grid-cols-1 w-full">
             {COMPANY_PROFILE_SETUP_STEPS.map((step, index) => {
               const stepValue = index + 1;
               const isCurrentStep = stepValue === currentStep;
@@ -360,7 +360,9 @@ const CompanyProfileSetup = () => {
                       gotoStep(stepValue);
                     }}
                   >
-                    <span>{step.label}</span>
+                    <span className={cn(hasError && "text-destructive")}>
+                      {step.label}
+                    </span>
                     {isCurrentStep ? (
                       <motion.div
                         layoutId="active-step-transition"
