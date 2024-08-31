@@ -46,6 +46,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AutoComplete from "../AutoComplete";
+import { INDUSTRIES_DATASET } from "@/lib/datasets";
 
 const companySizeOptions = [
   "1-10",
@@ -101,7 +103,13 @@ const CompanyProfileSetup = () => {
               <FormItem>
                 <FormLabel>Industry</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <AutoComplete
+                    options={INDUSTRIES_DATASET.map((d) => ({
+                      label: d,
+                      value: d,
+                    }))}
+                    onValueChange={field.onChange}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
