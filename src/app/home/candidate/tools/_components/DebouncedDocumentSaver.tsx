@@ -19,19 +19,21 @@ const DebouncedDocumentSaver = () => {
   useLeavePageConfirm(isSavingDocument);
 
   useEffect(() => {
-    if (!userLostConnection) {
-      const debouncedSaveDocumentDetails = debounce(
-        saveDocumentAndRelatedEntities,
-        SAVE_DOCUMENT_DEBOUNCE_DURATION,
-      );
-      useDocumentBuilderStore.setState({
-        saveDocumentDetailsFn: debouncedSaveDocumentDetails,
-      });
-    } else {
+    if (userLostConnection) {
+      // will write and read from local storage
       useDocumentBuilderStore.setState({
         saveDocumentDetailsFn: () => {},
       });
+      return;
     }
+
+    const debouncedSaveDocumentDetails = debounce(
+      saveDocumentAndRelatedEntities,
+      SAVE_DOCUMENT_DEBOUNCE_DURATION,
+    );
+    useDocumentBuilderStore.setState({
+      saveDocumentDetailsFn: debouncedSaveDocumentDetails,
+    });
   }, [userLostConnection, saveDocumentAndRelatedEntities]);
 
   return (
