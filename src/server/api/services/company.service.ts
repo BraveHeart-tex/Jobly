@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { companies, userCompanies } from "@/server/db/schema";
-import { eq, type InferInsertModel } from "drizzle-orm";
+import { eq, getTableColumns, type InferInsertModel } from "drizzle-orm";
 
 export const checkIfUserHasCompany = async (userId: number) => {
   const [result] = await db
@@ -50,4 +50,24 @@ export const registerNewCompany = async (data: RegisterNewCompanyParams) => {
       trx.rollback();
     }
   });
+};
+
+export const getCompanyDetailsById = async (companyId: number) => {
+  const [company] = await db
+    .select()
+    .from(companies)
+    .where(eq(companies.id, companyId));
+  return company;
+};
+
+export const getCompanyDetailsByEmployerId = async (employerId: number) => {
+  const [company] = await db
+    .select({
+      ...getTableColumns(companies),
+    })
+    .from(companies)
+    .innerJoin(userCompanies, eq(companies.id, userCompanies.companyId))
+    .where(eq(userCompanies.userId, employerId));
+
+  return company;
 };

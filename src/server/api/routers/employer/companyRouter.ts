@@ -28,4 +28,8 @@ export const companyRouter = createTRPCRouter({
         userId: user.id,
       });
     }),
+  getCompanyDetailsByEmployerId: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return companyService.getCompanyDetailsByEmployerId(userId);
+  }),
 });

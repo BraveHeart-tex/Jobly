@@ -1,0 +1,1 @@
+ALTER TABLE `UserCompanies` DROP INDEX `UserCompanies_userId_unique`;

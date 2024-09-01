@@ -43,3 +43,5 @@ export { default as userRoles } from "./userRoles";
 export { default as permissions } from "./permissions";
 export { default as rolePermissions } from "./rolePermissions";
 export { default as entityPermissions } from "./entityPermissions";
+export { default as brandingAssets } from "./brandingAssets";
+export { default as companyBrandingAssets } from "./companyBrandingAssets";
