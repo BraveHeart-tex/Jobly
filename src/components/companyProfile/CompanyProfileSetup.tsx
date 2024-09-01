@@ -28,7 +28,7 @@ import {
   CONTROL_BUTTON_VARIANT,
   FIELD_TO_STEP_MAP,
   STEP_TO_FIELDS_MAP,
-  VISUAL_ASSETS_STEP,
+  SUMMARY_STEP,
 } from "./constants";
 import type { CompanyProfileSetupFormKey } from "./types";
 import AnimatedFormFieldsContainer, {
@@ -38,7 +38,6 @@ import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { EMPLOYER_ROUTES } from "@/lib/routes";
 import {
   Select,
   SelectContent,
@@ -67,7 +66,7 @@ const CompanyProfileSetup = () => {
     api.company.registerCompanyDetails.useMutation({
       onSuccess: () => {
         toast.success("Company details registered successfully.");
-        router.push(EMPLOYER_ROUTES.COMPANY_PROFILE);
+        router.refresh();
       },
     });
 
@@ -233,9 +232,67 @@ const CompanyProfileSetup = () => {
       );
     }
 
-    // Visual Assets: company logo, cover image
-    if (currentStep === VISUAL_ASSETS_STEP) {
-      return <>File upload functionality here</>;
+    if (currentStep === SUMMARY_STEP) {
+      return (
+        <div>
+          <div>
+            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+              Summary
+            </h2>
+            <p className="text-muted-foreground">
+              Please review your information before submitting.
+            </p>
+          </div>
+          <div className="mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+              <div>
+                <div className="grid gap-2">
+                  <p>
+                    <span className="font-medium">Company Name</span>:{" "}
+                    {form.getValues("name")}
+                  </p>
+                  <p>
+                    <span className="font-medium">Industry</span>:{" "}
+                    {form.getValues("industry")}
+                  </p>
+                  <p>
+                    <span className="font-medium">Company Website</span>:{" "}
+                    {form.getValues("website")}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div className="grid gap-2">
+                  <p>
+                    <span className="font-medium">Year of Establishment</span>:{" "}
+                    {form.getValues("yearOfEstablishment")}
+                  </p>
+                  <p>
+                    <span className="font-medium">Company Size</span>:{" "}
+                    {form.getValues("companySize")} employees
+                  </p>
+                  <p>
+                    <span className="font-medium">Address</span>:{" "}
+                    {form.getValues("address")}
+                  </p>
+                </div>
+              </div>
+              <div>
+                <div className="grid gap-2">
+                  <p>
+                    <span className="font-medium">Short Bio</span>:{" "}
+                    {form.getValues("bio")}
+                  </p>
+                  <p>
+                    <span className="font-medium">Detailed Overview</span>:{" "}
+                    {form.getValues("description")}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     }
   };
 
@@ -295,7 +352,9 @@ const CompanyProfileSetup = () => {
     nextStep: number,
     timeoutDuration: number = TRANSITION_DURATION_MS,
   ) => {
-    const erroredKeys = form.getErroredKeys();
+    const erroredKeys =
+      form.getErroredKeys() as Array<CompanyProfileSetupFormKey>;
+
     if (!erroredKeys || erroredKeys.length === 0) {
       return;
     }
@@ -343,7 +402,7 @@ const CompanyProfileSetup = () => {
   return (
     <>
       <div className="grid lg:grid-cols-12 gap-4">
-        <div className="p-1 border rounded-md flex items-center justify-center lg:col-span-3">
+        <div className="p-1 border rounded-md flex items-center justify-center lg:col-span-3 h-max">
           <div className="grid gap-4 grid-cols-2 lg:grid-cols-1 w-full">
             {COMPANY_PROFILE_SETUP_STEPS.map((step, index) => {
               const stepValue = index + 1;
@@ -397,7 +456,7 @@ const CompanyProfileSetup = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, onFormError)}
-              className="grid gap-4 h-[395px] overflow-y-auto px-2 overflow-x-hidden"
+              className="grid gap-4 h-[calc(100vh-30rem)] overflow-y-auto px-2 overflow-x-hidden"
               key={currentStep}
             >
               <AnimatedFormFieldsContainer>

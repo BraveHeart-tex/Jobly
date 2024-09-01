@@ -53,6 +53,7 @@
   },
   "cSpell.words": [
     "autoincrement",
+    "CLIENTVAR",
     "clsx",
     "cmdk",
     "datetime",
@@ -60,15 +61,19 @@
     "Inno",
     "Jiti",
     "lucide",
+    "nextjs",
     "nums",
     "nuqs",
     "pdfs",
     "Pilcrow",
+    "runtimes",
     "sonner",
     "superjson",
+    "tailwindcss",
     "tiptap",
     "TRPC",
     "Unsave",
+    "UPLOADTHING",
     "zustand",
     "zxcvbn"
   ]
