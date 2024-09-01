@@ -1,4 +1,5 @@
 import PageContainer from "@/components/PageContainer";
+import CompanyProfileDetails from "@/components/companyProfile/CompanyProfileDetails";
 import CompanyProfileSetup from "@/components/companyProfile/CompanyProfileSetup";
 import { getCurrentUser } from "@/lib/auth/actions";
 
@@ -38,13 +39,7 @@ const CompanyProfilePage = async ({
       !currentUser?.hasToSetupCompanyInformation &&
       !hasToSetupCompanyInformation
     ) {
-      return (
-        <div>
-          <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-            Company Profile
-          </h1>
-        </div>
-      );
+      return <CompanyProfileDetails />;
     }
   };
 

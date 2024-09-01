@@ -12,7 +12,7 @@ export const COMPANY_PROFILE_SETUP_STEPS = [
     label: "Company Description",
   },
   {
-    label: "Visual Assets",
+    label: "Summary",
   },
 ];
 
@@ -20,7 +20,7 @@ export const CONTROL_BUTTON_VARIANT: ButtonVariant = "secondary";
 export const BASIC_INFORMATION_STEP = 1 as const;
 export const COMPANY_DETAILS_STEP = 2 as const;
 export const COMPANY_DESCRIPTION_STEP = 3 as const;
-export const VISUAL_ASSETS_STEP = 4 as const;
+export const SUMMARY_STEP = 4 as const;
 
 export const FIELD_TO_STEP_MAP: Record<CompanyProfileSetupFormKey, number> = {
   name: BASIC_INFORMATION_STEP,
@@ -34,9 +34,6 @@ export const FIELD_TO_STEP_MAP: Record<CompanyProfileSetupFormKey, number> = {
 
   bio: COMPANY_DESCRIPTION_STEP,
   description: COMPANY_DESCRIPTION_STEP,
-
-  logo: VISUAL_ASSETS_STEP,
-  coverImage: VISUAL_ASSETS_STEP,
 };
 
 export const STEP_TO_FIELDS_MAP = Object.entries(FIELD_TO_STEP_MAP).reduce<
