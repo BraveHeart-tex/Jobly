@@ -1,8 +1,8 @@
 import SignUpForm from "@/components/forms/auth/SignUpForm";
 import { validateRequest } from "@/lib/auth/validate-request";
-import { APP_NAME, contentByPortalType } from "@/lib/constants";
+import { APP_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
-import { capitalizeWord, generateRandomNumber } from "@/lib/utils";
+import { capitalizeWord } from "@/lib/utils";
 import type { DBUser } from "@/server/db/schema/users";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,25 +24,9 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
   }
 
   const portalType = searchParams.portalType ?? "candidate";
-  const contentIndex = generateRandomNumber(1, 4);
-  const supportiveHeading =
-    contentByPortalType[portalType]?.[contentIndex - 1] || "";
 
   return (
-    <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-      <div className="hidden size-full flex-col items-center justify-center lg:flex">
-        <Image
-          src={`/illustrations/${portalType}/${portalType}-${contentIndex}.svg`}
-          alt={supportiveHeading}
-          width={1920}
-          height={1080}
-          className="size-[500px] dark:invert"
-          priority
-        />
-        <h2 className="scroll-m-20 text-center text-2xl font-semibold tracking-tight">
-          {supportiveHeading}
-        </h2>
-      </div>
+    <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[90%] max-w-[450px] gap-6">
           <div className="grid gap-2 text-center">

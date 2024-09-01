@@ -1,12 +1,10 @@
 import { PORTAL_TYPE_QUERY_KEY } from "@/lib/constants";
 import type { NavigationMenuItem } from "@/lib/types";
 import {
-  AwardIcon,
   BarChartIcon,
   BellIcon,
   BookmarkIcon,
   BriefcaseIcon,
-  CalendarIcon,
   ClipboardList,
   ClipboardPlus,
   Clock,
@@ -14,7 +12,6 @@ import {
   FilePen,
   FileTextIcon,
   FilesIcon,
-  FilterIcon,
   GitBranchIcon,
   HistoryIcon,
   Inbox,
@@ -88,12 +85,6 @@ export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
         href: CANDIDATE_ROUTES.UNFINISHED_APPLICATIONS,
         icon: FilePen,
       },
-      {
-        title: "Interviews",
-        description: "Manage your upcoming interviews.",
-        href: CANDIDATE_ROUTES.INTERVIEWS,
-        icon: CalendarIcon,
-      },
     ],
   },
   {
@@ -161,12 +152,6 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
         icon: GitBranchIcon,
       },
       {
-        title: "Interviews",
-        description: "Schedule and manage candidate interviews.",
-        href: EMPLOYER_ROUTES.INTERVIEWS,
-        icon: CalendarIcon,
-      },
-      {
         title: "Talent Pool",
         description: "Access your saved candidate profiles.",
         href: EMPLOYER_ROUTES.TALENT_POOL,
@@ -178,9 +163,9 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
     triggerLabel: "Analytics",
     linkItems: [
       {
-        title: "Job Performance",
+        title: "Job Posting Insights",
         description: "View statistics on your job postings.",
-        href: EMPLOYER_ROUTES.JOB_PERFORMANCE,
+        href: EMPLOYER_ROUTES.JOB_POSTING_INSIGHTS,
         icon: BarChartIcon,
       },
       {
@@ -188,18 +173,6 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
         description: "Analyze applicant demographics and sources.",
         href: EMPLOYER_ROUTES.APPLICANT_INSIGHTS,
         icon: PieChartIcon,
-      },
-      {
-        title: "Hiring Funnel",
-        description: "Track candidates through your hiring process.",
-        href: EMPLOYER_ROUTES.HIRING_FUNNEL,
-        icon: FilterIcon,
-      },
-      {
-        title: "Reports",
-        description: "Generate custom reports on your hiring activities.",
-        href: EMPLOYER_ROUTES.REPORTS,
-        icon: FileTextIcon,
       },
     ],
   },
@@ -211,13 +184,6 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
         description: "Manage your company's public profile.",
         href: EMPLOYER_ROUTES.COMPANY_PROFILE,
         icon: BriefcaseIcon,
-      },
-      // Thumbnails etc, provided by your company...
-      {
-        title: "Employer Branding",
-        description: "Customize your employer branding materials.",
-        href: EMPLOYER_ROUTES.EMPLOYER_BRANDING,
-        icon: AwardIcon,
       },
       {
         title: "Account Settings",

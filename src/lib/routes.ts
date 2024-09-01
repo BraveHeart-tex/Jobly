@@ -42,7 +42,7 @@ export const EMPLOYER_ROUTES = {
   TALENT_POOL: `${BASE_EMPLOYER_ROUTE}/candidates/talent-pool`,
 
   // Analytics
-  JOB_PERFORMANCE: `${BASE_EMPLOYER_ROUTE}/analytics/job-performance`,
+  JOB_POSTING_INSIGHTS: `${BASE_EMPLOYER_ROUTE}/analytics/job-posting-insights`,
   APPLICANT_INSIGHTS: `${BASE_EMPLOYER_ROUTE}/analytics/applicant-insights`,
   HIRING_FUNNEL: `${BASE_EMPLOYER_ROUTE}/analytics/hiring-funnel`,
   REPORTS: `${BASE_EMPLOYER_ROUTE}/analytics/reports`,
