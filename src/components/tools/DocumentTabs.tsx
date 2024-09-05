@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../../hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
@@ -50,6 +50,7 @@ const DocumentTabs = () => {
   } = useDocuments();
   const { createDocumentAndRelatedEntities, isCreatingDocument } =
     useCreateDocumentAndRelatedEntities();
+  const layoutId = useId();
   const [activeTab, setActiveTab] = useState<DocumentTabValue>(
     DOCUMENT_TAB_VALUES.RESUME,
   );
@@ -85,7 +86,7 @@ const DocumentTabs = () => {
         </h1>
         <Button
           onClick={handleCreateNewDocument}
-          className="flex items-center gap-1"
+          className="flex items-center gap-2"
           disabled={isCreatingDocument}
         >
           <Plus size={18} />
@@ -109,7 +110,7 @@ const DocumentTabs = () => {
               </Button>
               {activeTab === item.value && (
                 <motion.div
-                  layoutId="active-tab-transition"
+                  layoutId={layoutId}
                   transition={{ duration: 0.2 }}
                   className="absolute -bottom-[2px] left-0 right-0 h-1 bg-primary w-full rounded-md"
                 />
