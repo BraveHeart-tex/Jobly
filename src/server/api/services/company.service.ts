@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { companies, userCompanies } from "@/server/db/schema";
-import { eq, getTableColumns, type InferInsertModel } from "drizzle-orm";
+import { type InferInsertModel, eq, getTableColumns } from "drizzle-orm";
 
 export const checkIfUserHasCompany = async (userId: number) => {
   const [result] = await db

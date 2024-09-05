@@ -1,7 +1,7 @@
 "use client";
 
+import useCapsLock from "@/hooks/useCapsLock";
 import { ArrowBigUpDashIcon } from "lucide-react";
-import useCapsLock from "./hooks/useCapsLock";
 
 const CapsLockIndicator = () => {
   const isCapsLockActive = useCapsLock();

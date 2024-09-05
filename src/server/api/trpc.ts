@@ -1,4 +1,4 @@
-import { uncachedValidateRequest } from "@/lib/auth/validate-request";
+import { uncachedValidateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/server/db";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";

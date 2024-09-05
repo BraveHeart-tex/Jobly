@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -9,17 +10,32 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { INDUSTRIES_DATASET } from "@/lib/datasets";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { cn } from "@/lib/utils";
 import {
   type CompanyProfileSetupSchema,
   companyProfileSetupSchema,
 } from "@/schemas/companyProfileSetupSchema";
+import { api } from "@/trpc/react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/textarea";
 import type { FieldErrors } from "react-hook-form";
+import { toast } from "sonner";
+import AutoComplete from "../AutoComplete";
+import AnimatedFormFieldsContainer, {
+  TRANSITION_DURATION_MS,
+} from "./AnimatedFormFieldsContainer";
 import {
   BASIC_INFORMATION_STEP,
   COMPANY_DESCRIPTION_STEP,
@@ -31,22 +47,6 @@ import {
   SUMMARY_STEP,
 } from "./constants";
 import type { CompanyProfileSetupFormKey } from "./types";
-import AnimatedFormFieldsContainer, {
-  TRANSITION_DURATION_MS,
-} from "./AnimatedFormFieldsContainer";
-import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import { api } from "@/trpc/react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import AutoComplete from "../AutoComplete";
-import { INDUSTRIES_DATASET } from "@/lib/datasets";
 
 const companySizeOptions = [
   "1-10",

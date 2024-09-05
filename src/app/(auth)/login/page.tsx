@@ -1,5 +1,5 @@
 import SignInForm from "@/components/forms/auth/SignInForm";
-import { validateRequest } from "@/lib/auth/validate-request";
+import { validateRequest } from "@/lib/auth/validateRequest";
 import { APP_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { capitalizeWord } from "@/lib/utils";

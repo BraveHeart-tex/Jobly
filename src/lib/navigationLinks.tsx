@@ -1,5 +1,6 @@
 import { PORTAL_TYPE_QUERY_KEY } from "@/lib/constants";
 import type { NavigationMenuItem } from "@/lib/types";
+import type { User } from "lucia";
 import {
   BarChartIcon,
   BellIcon,
@@ -25,7 +26,6 @@ import {
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "./routes";
-import type { User } from "lucia";
 
 export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
   {

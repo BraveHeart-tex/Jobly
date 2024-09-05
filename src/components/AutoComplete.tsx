@@ -1,17 +1,17 @@
-import {
-  useState,
-  useRef,
-  type KeyboardEvent,
-  useMemo,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useClickAway } from "react-use";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  type KeyboardEvent,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useClickAway } from "react-use";
 
 interface Option {
   label: string;

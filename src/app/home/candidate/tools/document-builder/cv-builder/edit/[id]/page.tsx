@@ -1,7 +1,7 @@
-import ClientOnly from "@/app/home/candidate/tools/_components/ClientOnly";
-import DocumentBuilderPanel from "@/app/home/candidate/tools/_components/DocumentBuilderPanel";
-import DocumentBuilderPreview from "@/app/home/candidate/tools/_components/DocumentBuilderPreview";
-import DocumentInitializer from "@/app/home/candidate/tools/_components/DocumentInitializer";
+import ClientOnly from "@/components/tools/ClientOnly";
+import DocumentBuilderPanel from "@/components/tools/DocumentBuilderPanel";
+import DocumentBuilderPreview from "@/components/tools/DocumentBuilderPreview";
+import DocumentInitializer from "@/components/tools/DocumentInitializer";
 import { buttonVariants } from "@/components/ui/button";
 import { isErrorObject } from "@/lib/guards";
 import { CANDIDATE_ROUTES } from "@/lib/routes";

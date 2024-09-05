@@ -1,6 +1,6 @@
+import JobListSearchToolbar from "@/components/jobPostings/JobListSearchToolbar";
+import JobsList from "@/components/jobPostings/JobsList";
 import { validateRequestByRole } from "@/lib/auth/actions";
-import JobListSearchToolbar from "./_components/JobListSearchToolbar";
-import JobsList from "./_components/JobsList";
 
 const JobsPage = async () => {
   await validateRequestByRole(["candidate"]);

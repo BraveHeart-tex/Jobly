@@ -20,7 +20,7 @@ const CompanyProfileDetailsForm = ({
     return acc;
   }, {} as CompanyProfileSetupSchema);
 
-  const form = useExtendedForm<CompanyProfileSetupSchema>(
+  const _form = useExtendedForm<CompanyProfileSetupSchema>(
     companyProfileSetupSchema,
     {
       defaultValues: mappedDefaultValues,

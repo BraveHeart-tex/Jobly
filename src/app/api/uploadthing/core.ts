@@ -1,5 +1,5 @@
-import { uncachedValidateRequest } from "@/lib/auth/validate-request";
-import { createUploadthing, type FileRouter } from "uploadthing/next";
+import { uncachedValidateRequest } from "@/lib/auth/validateRequest";
+import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();

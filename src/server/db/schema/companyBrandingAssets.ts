@@ -1,7 +1,7 @@
-import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import companies from "./companies";
-import brandingAssets from "./brandingAssets";
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
+import brandingAssets from "./brandingAssets";
+import companies from "./companies";
 
 const companyBrandingAssets = mysqlTable(
   "CompanyBrandingAssets",

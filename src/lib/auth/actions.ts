@@ -11,7 +11,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import zxcvbn from "zxcvbn";
 import { SHARED_ROUTES } from "../routes";
-import { validateRequest } from "./validate-request";
+import { validateRequest } from "./validateRequest";
 
 const DEFAULT_HASH_OPTIONS: Options = {
   memoryCost: 19456,
