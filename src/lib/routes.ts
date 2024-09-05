@@ -23,7 +23,7 @@ export const CANDIDATE_ROUTES = {
   INTERVIEWS: `${BASE_CANDIDATE_ROUTE}/interviews`,
 
   PRIVACY_SETTINGS: `${BASE_CANDIDATE_ROUTE}/profile/privacy-settings`,
-  MY_DOCUMENTS: `${BASE_CANDIDATE_ROUTE}/profile/my-documents`,
+  MY_DOCUMENTS: `${BASE_CANDIDATE_ROUTE}/profile/uploaded-documents`,
 
   DOCUMENT_BUILDER: `${BASE_CANDIDATE_ROUTE}/tools/document-builder`,
 } as const;
