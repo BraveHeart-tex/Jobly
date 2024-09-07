@@ -48,10 +48,9 @@ const UserMenu = ({ user }: UserMenuProps) => {
   useEffect(() => {
     if (!user.hasToSetupCompanyInformation) return;
 
-    const queryString = "?hasToSetupCompanyInformation=true";
-    const redirectPath = `${EMPLOYER_ROUTES.COMPANY_PROFILE}${queryString}`;
+    const redirectPath = `${EMPLOYER_ROUTES.COMPANY_PROFILE}`;
 
-    if (`${pathname}${queryString}` === redirectPath) return;
+    if (pathname === redirectPath) return;
 
     router.push(redirectPath);
   }, [pathname, user, router]);
