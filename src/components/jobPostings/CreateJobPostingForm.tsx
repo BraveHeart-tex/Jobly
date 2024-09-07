@@ -21,11 +21,11 @@ import { DateTime } from "luxon";
 import type { FieldErrors } from "react-hook-form";
 import DateInput from "../DateInput";
 import EditorInput from "../EditorInput";
+import SelectInput from "../SelectInput";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
+import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
 import ClientOnly from "../tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
-import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
-import SelectInput from "../SelectInput";
 
 const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {

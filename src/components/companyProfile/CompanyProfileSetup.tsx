@@ -26,9 +26,9 @@ import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import AutoComplete from "../AutoComplete";
+import SelectInput from "../SelectInput";
 import AnimatedFormFieldsContainer from "../multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
-import SelectInput from "../SelectInput";
 import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
 
 const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
