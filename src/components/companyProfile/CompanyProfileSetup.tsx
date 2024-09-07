@@ -28,7 +28,6 @@ import {
   companyProfileSetupSchema,
 } from "@/schemas/companyProfileSetupSchema";
 import { api } from "@/trpc/react";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
@@ -44,6 +43,7 @@ import {
   STEP_TO_FIELDS_MAP,
   SUMMARY_STEP,
 } from "./constants";
+import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
 
 const companySizeOptions = [
   "1-10",
@@ -368,60 +368,21 @@ const CompanyProfileSetup = () => {
   return (
     <>
       <div className="grid lg:grid-cols-12 gap-4">
-        <div className="p-1 border rounded-md flex items-center justify-center lg:col-span-3 h-max">
-          <div className="grid gap-4 grid-cols-2 lg:grid-cols-1 w-full">
-            {COMPANY_PROFILE_SETUP_STEPS.map((step, index) => {
-              const stepValue = index + 1;
-              const isDisabled = disabledSteps.includes(stepValue);
-              const isCurrentStep = stepValue === currentStep;
-              const hasError = Object.keys(form.formState.errors).find((key) =>
-                STEP_TO_FIELDS_MAP[stepValue]?.includes(key),
-              );
-              return (
-                <div key={step.label} className="grid gap-1 w-full">
-                  <span className="text-xs text-muted-foreground">
-                    Step {stepValue}
-                  </span>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "relative hover:bg-muted/45",
-                      isDisabled && "pointer-events-none opacity-40",
-                    )}
-                    onClick={() => {
-                      if (isCurrentStep) {
-                        focusOnErroredFieldInStep(stepValue, 0);
-                        return;
-                      }
-
-                      gotoStep(stepValue);
-                    }}
-                  >
-                    <span className={cn(hasError && "text-destructive")}>
-                      {step.label}
-                    </span>
-                    {isCurrentStep ? (
-                      <motion.div
-                        layoutId="active-step-transition"
-                        transition={{ duration: 0.2 }}
-                        className="inset absolute bg-muted w-full rounded-md h-full z-[-10]"
-                      />
-                    ) : null}
-                    {hasError ? (
-                      <motion.div
-                        transition={{ duration: 0.2 }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="absolute bg-destructive top-[2px] left-[2px] rounded-full size-2 z-[5]"
-                      />
-                    ) : null}
-                  </Button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <MultiFormStepsPanel
+          STEP_TO_FIELDS_MAP={STEP_TO_FIELDS_MAP}
+          currentStep={currentStep}
+          formSteps={COMPANY_PROFILE_SETUP_STEPS}
+          focusOnErroredFieldInStep={focusOnErroredFieldInStep}
+          formErrors={form.formState.errors}
+          gotoStep={gotoStep}
+          disabledSteps={disabledSteps}
+          styles={{
+            containerClassNames:
+              "p-1 border rounded-md flex items-center justify-center lg:col-span-3 h-max",
+            itemsContainerClassNames:
+              "grid gap-4 grid-cols-2 lg:grid-cols-1 w-full",
+          }}
+        />
         <div className="lg:col-span-9">
           <Form {...form}>
             <form
