@@ -276,49 +276,32 @@ const CreateJobPostingForm = () => {
   };
 
   return (
-    <>
-      <style jsx global>{`
-      .tiptap.ProseMirror {
-        min-height: 200px;
-        padding: 10px;
-        background: hsl(var(--background));
-      }
-
-      .editor-input-container {
-        border: 1px solid hsl(var(--input));
-      }
-
-      .editor-input-menubar {
-        border-bottom: 1px solid hsl(var(--input));
-      }
-    `}</style>
-      <div className="grid lg:grid-cols-12 gap-4">
-        <MultiFormStepsPanel
-          currentStep={currentStep}
-          focusOnErroredFieldInStep={focusOnErroredFieldInStep}
-          formErrors={form.formState.errors}
-          formSteps={createJobPostingFormSteps}
-          gotoStep={gotoStep}
-          disabledSteps={[]}
-          styles={{
-            containerClassNames:
-              "p-1 border rounded-md flex items-center justify-center lg:col-span-3 h-max",
-            itemsContainerClassNames:
-              "grid gap-4 grid-cols-2 lg:grid-cols-1 w-full",
-          }}
-        />
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit, onFormError)}
-            key={currentStep}
-            className="flex flex-col h-[calc(100vh-19rem)] overflow-y-auto px-2 overflow-x-hidden lg:col-span-9 gap-8"
-          >
-            {renderFormFields()}
-            <div>{renderControlButtons()}</div>
-          </form>
-        </Form>
-      </div>
-    </>
+    <div className="grid lg:grid-cols-12 gap-4">
+      <MultiFormStepsPanel
+        currentStep={currentStep}
+        focusOnErroredFieldInStep={focusOnErroredFieldInStep}
+        formErrors={form.formState.errors}
+        formSteps={createJobPostingFormSteps}
+        gotoStep={gotoStep}
+        disabledSteps={[]}
+        styles={{
+          containerClassNames:
+            "p-1 border rounded-md flex items-center justify-center lg:col-span-3 h-max",
+          itemsContainerClassNames:
+            "grid gap-4 grid-cols-2 lg:grid-cols-1 w-full",
+        }}
+      />
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit, onFormError)}
+          key={currentStep}
+          className="flex flex-col h-[calc(100vh-19rem)] overflow-y-auto px-2 overflow-x-hidden lg:col-span-9 gap-8"
+        >
+          {renderFormFields()}
+          <div>{renderControlButtons()}</div>
+        </form>
+      </Form>
+    </div>
   );
 };
 
