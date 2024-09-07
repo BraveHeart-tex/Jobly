@@ -1,10 +1,9 @@
 "use client";
-import { cn } from "@/lib/utils";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useState } from "react";
+import { type PropsWithRef, forwardRef, useImperativeHandle } from "react";
 import RichTextEditorMenubar from "./RichTextEditorMenubar";
 
 interface RichTextEditorProps {
@@ -13,12 +12,14 @@ interface RichTextEditorProps {
   onChange?: (html: string) => void;
 }
 
-const RichTextEditor = ({
-  initialValue = "",
-  placeholder = "",
-  onChange,
-}: RichTextEditorProps) => {
-  const [focused, setFocused] = useState(false);
+interface RichTextEditorRef extends HTMLDivElement {
+  focus: () => void;
+}
+
+const RichTextEditor = forwardRef<
+  PropsWithRef<RichTextEditorRef>,
+  RichTextEditorProps
+>(({ initialValue = "", placeholder = "", onChange }, ref) => {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -38,25 +39,24 @@ const RichTextEditor = ({
       const html = editor.getHTML();
       onChange(html);
     },
-    onFocus: () => {
-      setFocused(true);
-    },
-    onBlur: () => {
-      setFocused(false);
-    },
   });
+
+  useImperativeHandle(ref, () => ({
+    ...({} as HTMLDivElement),
+    focus: () => {
+      if (editor) {
+        editor.commands.focus();
+      }
+    },
+  }));
 
   return (
     <div className="w-full">
-      <div className="border rounded-lg border-muted-foreground/50 bg-background">
+      <div className="border border-muted-foreground/50 bg-background overflow-hidden rounded-md">
         <RichTextEditorMenubar editor={editor} />
-        <div
-          className={cn(
-            "min-h-[200px] overflow-auto",
-            focused && "outline outline-primary outline-1  rounded-b-md",
-          )}
-        >
+        <div className="min-h-[200px] overflow-auto">
           <EditorContent
+            ref={ref}
             editor={editor}
             className="prose max-w-none focus:outline-none"
           />
@@ -64,6 +64,8 @@ const RichTextEditor = ({
       </div>
     </div>
   );
-};
+});
+
+RichTextEditor.displayName = "RichTextEditor";
 
 export default RichTextEditor;

@@ -29,7 +29,7 @@ import jobPostings, {
 } from "@/server/db/schema/jobPostings";
 import { SlidersHorizontal } from "lucide-react";
 
-const employmentOptions: {
+export const employmentOptions: {
   label: Capitalize<JobPostingEmploymentType>;
   value: JobPostingEmploymentType;
 }[] = jobPostings.employmentType.enumValues.map((employmentType) => ({
@@ -37,7 +37,7 @@ const employmentOptions: {
   value: employmentType,
 }));
 
-const workTypeOptions: {
+export const workTypeOptions: {
   label: Capitalize<JobPostingWorkType>;
   value: JobPostingWorkType;
 }[] = jobPostings.workType.enumValues.map((workType) => ({

@@ -1,4 +1,5 @@
 import PageContainer from "@/components/PageContainer";
+import CreateJobPostingForm from "@/components/jobPostings/CreateJobPostingForm";
 import { buttonVariants } from "@/components/ui/button";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,7 @@ const CreateNewJobPostingPage = () => {
             </p>
           </div>
         </div>
+        <CreateJobPostingForm />
       </PageContainer>
     </div>
   );
