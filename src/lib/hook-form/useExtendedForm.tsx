@@ -10,7 +10,7 @@ import {
 import type { ZodObject } from "zod";
 import { getDefaultValuesFromZodSchema } from "./utils";
 
-type ExtendedUseFormReturn<
+export type ExtendedUseFormReturn<
   TFieldValues extends FieldValues,
   TContext,
   TTransformedValues extends FieldValues | undefined,

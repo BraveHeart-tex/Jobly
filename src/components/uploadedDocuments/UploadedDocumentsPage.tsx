@@ -2,8 +2,8 @@
 import { UploadButton } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 import { Loader2, Upload } from "lucide-react";
-import { buttonVariants } from "../ui/button";
 import type { ReactNode } from "react";
+import { buttonVariants } from "../ui/button";
 
 const MyDocumentsTabs = () => {
   return (

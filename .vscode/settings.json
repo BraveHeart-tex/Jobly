@@ -62,6 +62,7 @@
     "Jiti",
     "lucide",
     "luxon",
+    "Millis",
     "nextjs",
     "nums",
     "nuqs",
@@ -77,5 +78,21 @@
     "UPLOADTHING",
     "zustand",
     "zxcvbn"
+  ],
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 500,
+      "server": "51.83.126.129",
+      "driver": "MySQL",
+      "name": "Jobly Prod",
+      "username": "borakara_jobly_dev_user",
+      "database": "borakara_jobly-dev",
+      "group": "Personal Projects",
+      "connectString": "mysql://borakara_jobly_dev_user:%25i%7D3%5D388Dk%2Bw@51.83.126.129:3306/borakara_jobly-dev"
+    }
   ]
 }

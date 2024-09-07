@@ -66,3 +66,8 @@ interface SectionCollapsible extends SectionBase {
 export type MappedSectionInsertModel =
   | SectionNonCollapsible
   | SectionCollapsible;
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type PartialRecord<K extends keyof any, T> = {
+  [P in K]?: T;
+};

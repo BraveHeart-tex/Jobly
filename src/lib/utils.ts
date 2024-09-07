@@ -166,3 +166,13 @@ export const groupBy = <T, K extends keyof T>(
     {} as Record<string, T[]>,
   );
 };
+
+export const getUniqueValuesFromMap = <T extends Record<string, unknown>>(
+  map: T,
+): T[keyof T][] => {
+  return [...new Set(Object.values(map) as T[keyof T][])];
+};
+
+export const isObjectEmpty = <T extends Record<string, unknown>>(obj: T) => {
+  return Object.keys(obj).length === 0;
+};

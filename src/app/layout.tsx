@@ -7,9 +7,9 @@ import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
 import { TRPCReactProvider } from "@/trpc/react";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { GeistSans } from "geist/font/sans";
 import type React from "react";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { fileRouter } from "./api/uploadthing/core";
 

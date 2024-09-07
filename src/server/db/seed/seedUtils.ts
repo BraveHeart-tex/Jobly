@@ -48,6 +48,7 @@ export const makeJobPostingDTOs = (
     location: faker.location.city(),
     expiresAt,
     status: "draft",
+    postingContent: faker.lorem.paragraphs(5),
   }));
 };
 

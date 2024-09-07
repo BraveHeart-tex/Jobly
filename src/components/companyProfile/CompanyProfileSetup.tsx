@@ -19,9 +19,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import { cn } from "@/lib/utils";
+import { cn, isObjectEmpty } from "@/lib/utils";
 import {
   type CompanyProfileSetupSchema,
   companyProfileSetupSchema,
@@ -29,13 +30,10 @@ import {
 import { api } from "@/trpc/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import AutoComplete from "../AutoComplete";
-import AnimatedFormFieldsContainer, {
-  TRANSITION_DURATION_MS,
-} from "./AnimatedFormFieldsContainer";
+import AnimatedFormFieldsContainer from "../multiStepForm/AnimatedFormFieldsContainer";
 import {
   BASIC_INFORMATION_STEP,
   COMPANY_DESCRIPTION_STEP,
@@ -46,7 +44,6 @@ import {
   STEP_TO_FIELDS_MAP,
   SUMMARY_STEP,
 } from "./constants";
-import type { CompanyProfileSetupFormKey } from "./types";
 
 const companySizeOptions = [
   "1-10",
@@ -60,7 +57,9 @@ const companySizeOptions = [
 ];
 
 const CompanyProfileSetup = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const form = useExtendedForm<CompanyProfileSetupSchema>(
+    companyProfileSetupSchema,
+  );
   const router = useRouter();
   const { mutate: registerCompanyDetails, isPending } =
     api.company.registerCompanyDetails.useMutation({
@@ -70,9 +69,32 @@ const CompanyProfileSetup = () => {
       },
     });
 
-  const form = useExtendedForm<CompanyProfileSetupSchema>(
-    companyProfileSetupSchema,
-  );
+  const makeDisabledSteps = () => {
+    const disabledSteps = [];
+    const { errors, touchedFields } = form.formState;
+    const hasTouchedForm = !isObjectEmpty(touchedFields);
+    const formHasErrors = !isObjectEmpty(errors);
+
+    if (formHasErrors || !hasTouchedForm) {
+      disabledSteps.push(SUMMARY_STEP);
+    }
+
+    return disabledSteps;
+  };
+
+  const disabledSteps = makeDisabledSteps();
+
+  const {
+    currentStep,
+    focusOnErroredFieldInStep,
+    gotoStep,
+    goToFirstErroredStep,
+    handleStepChange,
+  } = useMultiStepForm<CompanyProfileSetupSchema>({
+    FIELD_TO_STEP_MAP,
+    form,
+    disabledSteps,
+  });
 
   const onSubmit = (values: CompanyProfileSetupSchema) => {
     registerCompanyDetails(values);
@@ -337,66 +359,10 @@ const CompanyProfileSetup = () => {
     );
   };
 
-  const handleStepChange = (type: "next" | "prev") => {
-    const nextStepValue = type === "next" ? currentStep + 1 : currentStep - 1;
-    setCurrentStep(nextStepValue);
-    focusOnErroredFieldInStep(nextStepValue);
-  };
-
-  const gotoStep = (step: number) => {
-    setCurrentStep(step);
-    focusOnErroredFieldInStep(step);
-  };
-
-  const focusOnErroredFieldInStep = (
-    nextStep: number,
-    timeoutDuration: number = TRANSITION_DURATION_MS,
-  ) => {
-    const erroredKeys =
-      form.getErroredKeys() as Array<CompanyProfileSetupFormKey>;
-
-    if (!erroredKeys || erroredKeys.length === 0) {
-      return;
-    }
-
-    const stepsWithErrors = getErroredSteps(erroredKeys);
-    if (!stepsWithErrors.includes(nextStep)) {
-      return;
-    }
-
-    const firstErroredFieldKey = erroredKeys.find(
-      (key) => FIELD_TO_STEP_MAP[key] === nextStep,
-    );
-
-    if (!firstErroredFieldKey) {
-      return;
-    }
-
-    setTimeout(() => {
-      form.setFocus(firstErroredFieldKey);
-    }, timeoutDuration);
-  };
-
   const onFormError = (errors: FieldErrors<CompanyProfileSetupSchema>) => {
-    const erroredFieldKeys = Object.keys(
-      errors,
-    ) as Array<CompanyProfileSetupFormKey>;
-
-    const stepsWithErrors = getErroredSteps(erroredFieldKeys);
-
-    gotoStep(stepsWithErrors[0] as number);
-  };
-
-  const getErroredSteps = (
-    erroredFieldKeys: Array<CompanyProfileSetupFormKey>,
-  ) => {
-    return [
-      ...new Set(
-        erroredFieldKeys
-          .map((field) => FIELD_TO_STEP_MAP[field])
-          .sort((a, b) => a - b),
-      ),
-    ];
+    goToFirstErroredStep(
+      Object.keys(errors) as (keyof CompanyProfileSetupSchema)[],
+    );
   };
 
   return (
@@ -406,6 +372,7 @@ const CompanyProfileSetup = () => {
           <div className="grid gap-4 grid-cols-2 lg:grid-cols-1 w-full">
             {COMPANY_PROFILE_SETUP_STEPS.map((step, index) => {
               const stepValue = index + 1;
+              const isDisabled = disabledSteps.includes(stepValue);
               const isCurrentStep = stepValue === currentStep;
               const hasError = Object.keys(form.formState.errors).find((key) =>
                 STEP_TO_FIELDS_MAP[stepValue]?.includes(key),
@@ -417,7 +384,10 @@ const CompanyProfileSetup = () => {
                   </span>
                   <Button
                     variant="ghost"
-                    className="relative hover:bg-muted/45"
+                    className={cn(
+                      "relative hover:bg-muted/45",
+                      isDisabled && "pointer-events-none opacity-40",
+                    )}
                     onClick={() => {
                       if (isCurrentStep) {
                         focusOnErroredFieldInStep(stepValue, 0);

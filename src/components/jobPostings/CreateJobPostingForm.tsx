@@ -21,11 +21,11 @@ import {
   type JobPostingSchema,
   jobPostingSchema,
 } from "@/schemas/jobPostingSchema";
-import { employmentOptions, workTypeOptions } from "./JobListFilters";
-import RichTextEditor from "../richTextEditor/RichTextEditor";
-import DateInput from "../DateInput";
-import ClientOnly from "../tools/ClientOnly";
 import { DateTime } from "luxon";
+import DateInput from "../DateInput";
+import RichTextEditor from "../richTextEditor/RichTextEditor";
+import ClientOnly from "../tools/ClientOnly";
+import { employmentOptions, workTypeOptions } from "./JobListFilters";
 
 const CreateJobPostingForm = () => {
   const form = useExtendedForm<JobPostingSchema>(jobPostingSchema);
