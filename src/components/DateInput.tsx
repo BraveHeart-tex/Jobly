@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { DateTime } from "luxon";
+import type React from "react";
 import { type PropsWithRef, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -38,6 +39,48 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
     },
     ref,
   ) => {
+    const timeValue = value
+      ? DateTime.fromISO(value).toFormat("HH:mm")
+      : "00:00";
+
+    const getHoursAndMinutesFromString = (value: string) => {
+      const [hour, minute] = value.split(":") as [string, string];
+      return {
+        hour: Number.parseInt(hour),
+        minute: Number.parseInt(minute),
+      };
+    };
+
+    const handleTimeValueChange = (
+      event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+      if (!value) return;
+      const eventValue = event.target.value;
+      const { hour, minute } = getHoursAndMinutesFromString(eventValue);
+
+      const isoDate = DateTime.fromISO(value)
+        .set({
+          hour,
+          minute,
+        })
+        .toISO();
+      if (!isoDate) return;
+      onChange(isoDate);
+    };
+
+    const handleDateSelect = (date: Date | undefined) => {
+      if (!date) return;
+      const { hour, minute } = getHoursAndMinutesFromString(timeValue);
+      const isoDate = DateTime.fromJSDate(date)
+        .set({
+          hour,
+          minute,
+        })
+        .toISO();
+      if (!isoDate) return;
+      onChange(isoDate);
+    };
+
     return (
       <Popover>
         <PopoverTrigger asChild>
@@ -59,12 +102,7 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
           <Calendar
             mode="single"
             selected={new Date(value)}
-            onSelect={(date) => {
-              if (!date) return;
-              const isoDate = DateTime.fromJSDate(date).toISO();
-              if (!isoDate) return;
-              onChange(isoDate);
-            }}
+            onSelect={handleDateSelect}
             disabled={(date) => {
               if (disabled !== undefined) return disabled;
               if (!date) return false;
@@ -80,26 +118,8 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
               <Input
                 id="time"
                 type="time"
-                value={DateTime.fromISO(value).toFormat("HH:mm")}
-                onChange={(e) => {
-                  if (!value) return;
-                  const eventValue = e.target.value;
-                  const hour = Number.parseInt(
-                    eventValue.split(":")[0] as string,
-                  );
-                  const minute = Number.parseInt(
-                    eventValue.split(":")[1] as string,
-                  );
-
-                  const isoDate = DateTime.fromISO(value)
-                    .set({
-                      hour,
-                      minute,
-                    })
-                    .toISO();
-                  if (!isoDate) return;
-                  onChange(isoDate);
-                }}
+                value={timeValue}
+                onChange={handleTimeValueChange}
               />
             </>
           )}
