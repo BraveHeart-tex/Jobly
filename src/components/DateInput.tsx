@@ -3,9 +3,15 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import { type PropsWithRef, forwardRef } from "react";
-import { Button } from "./ui/button";
-import { Calendar } from "./ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Label } from "./ui/label";
 
 interface DateInputProps {
   value: string;
@@ -15,6 +21,7 @@ interface DateInputProps {
   disabled?: boolean;
   showFutureDates?: boolean;
   showPastDates?: boolean;
+  showTimeOptions?: boolean;
 }
 
 const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
@@ -26,6 +33,7 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
       showFutureDates,
       showPastDates,
       disabled,
+      showTimeOptions = false,
       format = DateTime.DATETIME_SHORT,
     },
     ref,
@@ -66,6 +74,35 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
             }}
             initialFocus
           />
+          {showTimeOptions && (
+            <>
+              <Label htmlFor="time">Time</Label>
+              <Input
+                id="time"
+                type="time"
+                value={DateTime.fromISO(value).toFormat("HH:mm")}
+                onChange={(e) => {
+                  if (!value) return;
+                  const eventValue = e.target.value;
+                  const hour = Number.parseInt(
+                    eventValue.split(":")[0] as string,
+                  );
+                  const minute = Number.parseInt(
+                    eventValue.split(":")[1] as string,
+                  );
+
+                  const isoDate = DateTime.fromISO(value)
+                    .set({
+                      hour,
+                      minute,
+                    })
+                    .toISO();
+                  if (!isoDate) return;
+                  onChange(isoDate);
+                }}
+              />
+            </>
+          )}
         </PopoverContent>
       </Popover>
     );

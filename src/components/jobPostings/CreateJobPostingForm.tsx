@@ -195,6 +195,7 @@ const CreateJobPostingForm = () => {
                       onChange={field.onChange}
                       ref={field.ref}
                       showFutureDates
+                      showTimeOptions
                       showPastDates={false}
                       format={DateTime.DATETIME_MED_WITH_WEEKDAY}
                     />
