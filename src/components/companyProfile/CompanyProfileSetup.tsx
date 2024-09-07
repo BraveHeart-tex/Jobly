@@ -11,13 +11,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
@@ -35,6 +28,8 @@ import { toast } from "sonner";
 import AutoComplete from "../AutoComplete";
 import AnimatedFormFieldsContainer from "../multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
+import SelectInput from "../SelectInput";
+import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
 
 const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
   {
@@ -195,23 +190,14 @@ const CompanyProfileSetup = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Company Size</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select company size" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {companySizeOptions.map((size) => (
-                      <SelectItem key={size} value={size}>
-                        {size} employees
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <SelectInput
+                  options={companySizeOptions.map((size) => ({
+                    label: size,
+                    value: size,
+                  }))}
+                  {...field}
+                  placeholder="Select company size"
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -276,64 +262,24 @@ const CompanyProfileSetup = () => {
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <div>
-          <div>
-            <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-              Summary
-            </h2>
-            <p className="text-muted-foreground">
-              Please review your information before submitting.
-            </p>
-          </div>
-          <div className="mt-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-              <div>
-                <div className="grid gap-2">
-                  <p>
-                    <span className="font-medium">Company Name</span>:{" "}
-                    {form.getValues("name")}
-                  </p>
-                  <p>
-                    <span className="font-medium">Industry</span>:{" "}
-                    {form.getValues("industry")}
-                  </p>
-                  <p>
-                    <span className="font-medium">Company Website</span>:{" "}
-                    {form.getValues("website")}
-                  </p>
-                </div>
-              </div>
-              <div>
-                <div className="grid gap-2">
-                  <p>
-                    <span className="font-medium">Year of Establishment</span>:{" "}
-                    {form.getValues("yearOfEstablishment")}
-                  </p>
-                  <p>
-                    <span className="font-medium">Company Size</span>:{" "}
-                    {form.getValues("companySize")} employees
-                  </p>
-                  <p>
-                    <span className="font-medium">Address</span>:{" "}
-                    {form.getValues("address")}
-                  </p>
-                </div>
-              </div>
-              <div>
-                <div className="grid gap-2">
-                  <p>
-                    <span className="font-medium">Short Bio</span>:{" "}
-                    {form.getValues("bio")}
-                  </p>
-                  <p>
-                    <span className="font-medium">Detailed Overview</span>:{" "}
-                    {form.getValues("description")}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <MultiStepFormSummary
+          summarizedSteps={[
+            { label: "Company Name", value: form.getValues("name") },
+            { label: "Industry", value: form.getValues("industry") },
+            { label: "Company Website", value: form.getValues("website") },
+            {
+              label: "Year of Establishment",
+              value: form.getValues("yearOfEstablishment"),
+            },
+            { label: "Company Size", value: form.getValues("companySize") },
+            { label: "Company Address", value: form.getValues("address") },
+            { label: "Short Company Bio", value: form.getValues("bio") },
+            {
+              label: "Detailed Overview",
+              value: form.getValues("description"),
+            },
+          ]}
+        />
       );
     }
   };

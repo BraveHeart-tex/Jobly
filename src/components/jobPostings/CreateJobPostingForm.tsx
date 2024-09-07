@@ -9,17 +9,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import { cn } from "@/lib/utils";
+import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
 import {
   type JobPostingSchema,
   jobPostingSchema,
@@ -31,6 +24,8 @@ import EditorInput from "../EditorInput";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
 import ClientOnly from "../tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
+import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
+import SelectInput from "../SelectInput";
 
 const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -112,22 +107,11 @@ const CreateJobPostingForm = () => {
                 <FormItem>
                   <FormLabel>Work Type</FormLabel>
                   <FormControl>
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-full" ref={field.ref}>
-                        <SelectValue placeholder="Theme" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {workTypeOptions.map((option) => (
-                          <SelectItem value={option.value} key={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SelectInput
+                      options={workTypeOptions}
+                      {...field}
+                      placeholder="Select Work Type"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,22 +124,11 @@ const CreateJobPostingForm = () => {
                 <FormItem>
                   <FormLabel>Employment Type</FormLabel>
                   <FormControl>
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-full" ref={field.ref}>
-                        <SelectValue placeholder="Select Employment Type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {employmentOptions.map((option) => (
-                          <SelectItem value={option.value} key={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <SelectInput
+                      options={employmentOptions}
+                      {...field}
+                      placeholder="Select Employment Type"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -227,7 +200,34 @@ const CreateJobPostingForm = () => {
     }
 
     if (currentStep === SUMMARY_STEP) {
-      return "Summary";
+      return (
+        <MultiStepFormSummary
+          summarizedSteps={[
+            { label: "Job Posting Title", value: form.watch("title") },
+            { label: "Location", value: form.watch("location") },
+            {
+              label: "Work Type",
+              value: capitalizeString(form.watch("workType") || ""),
+            },
+            {
+              label: "Employment Type",
+              value: generateReadableEnumLabel(
+                form.watch("employmentType") || "",
+              ),
+            },
+            {
+              label: "Salary Range",
+              value: form.watch("salaryRange"),
+            },
+            {
+              label: "Posting Expiration Date",
+              value: DateTime.fromISO(form.watch("expiresAt")).toLocaleString(
+                DateTime.DATETIME_MED_WITH_WEEKDAY,
+              ),
+            },
+          ]}
+        />
+      );
     }
   };
 
