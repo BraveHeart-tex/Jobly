@@ -1,3 +1,4 @@
+import type { ButtonVariant } from "@/components/ui/button";
 import type { ColumnId } from "@/lib/stores/useJobTrackerBoardStore";
 import type { DBUser } from "@/server/db/schema/users";
 import {
@@ -9,7 +10,6 @@ import {
   XIcon,
 } from "lucide-react";
 import type { InferValueTypeFromConst } from "./types";
-import type { ButtonVariant } from "@/components/ui/button";
 
 export const contentByPortalType: Record<DBUser["role"], string[]> = {
   candidate: [

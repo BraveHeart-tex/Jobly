@@ -53,7 +53,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 p-2 border-b border-muted-foreground/50">
+    <div className="flex flex-wrap gap-2 p-2 border-b border-muted-foreground/50 editor-input-menubar">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">

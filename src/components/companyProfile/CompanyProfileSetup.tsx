@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
+import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { cn, isObjectEmpty } from "@/lib/utils";
@@ -34,7 +35,6 @@ import { toast } from "sonner";
 import AutoComplete from "../AutoComplete";
 import AnimatedFormFieldsContainer from "../multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
-import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 
 const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
   {

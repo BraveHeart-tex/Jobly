@@ -16,21 +16,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
+import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { cn } from "@/lib/utils";
 import {
   type JobPostingSchema,
   jobPostingSchema,
 } from "@/schemas/jobPostingSchema";
 import { DateTime } from "luxon";
+import type { FieldErrors } from "react-hook-form";
 import DateInput from "../DateInput";
-import RichTextEditor from "../richTextEditor/RichTextEditor";
+import EditorInput from "../EditorInput";
+import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
 import ClientOnly from "../tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
-import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
-import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
-import { cn } from "@/lib/utils";
-import type { FieldErrors } from "react-hook-form";
-import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 
 const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -207,7 +207,7 @@ const CreateJobPostingForm = () => {
               <FormItem>
                 <FormLabel>Job Posting Content</FormLabel>
                 <FormControl>
-                  <RichTextEditor
+                  <EditorInput
                     initialValue={field.value}
                     onChange={field.onChange}
                     ref={field.ref}
@@ -278,6 +278,14 @@ const CreateJobPostingForm = () => {
         min-height: 200px;
         padding: 10px;
         background: hsl(var(--background));
+      }
+
+      .editor-input-container {
+        border: 1px solid hsl(var(--input));
+      }
+
+      .editor-input-menubar {
+        border-bottom: 1px solid hsl(var(--input));
       }
     `}</style>
       <div className="grid lg:grid-cols-12 gap-4">

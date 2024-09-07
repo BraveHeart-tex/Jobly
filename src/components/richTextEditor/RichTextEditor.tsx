@@ -6,13 +6,13 @@ import StarterKit from "@tiptap/starter-kit";
 import { type PropsWithRef, forwardRef, useImperativeHandle } from "react";
 import RichTextEditorMenubar from "./RichTextEditorMenubar";
 
-interface RichTextEditorProps {
+export interface RichTextEditorProps {
   initialValue?: string;
   placeholder?: string;
   onChange?: (html: string) => void;
 }
 
-interface RichTextEditorRef extends HTMLDivElement {
+export interface RichTextEditorRef extends HTMLDivElement {
   focus: () => void;
 }
 
@@ -36,8 +36,8 @@ const RichTextEditor = forwardRef<
     content: initialValue,
     onUpdate: ({ editor }) => {
       if (!onChange) return;
-      const html = editor.getHTML();
-      onChange(html);
+      const content = editor.getText() ? editor.getHTML() : "";
+      onChange(content);
     },
   });
 
@@ -52,7 +52,7 @@ const RichTextEditor = forwardRef<
 
   return (
     <div className="w-full">
-      <div className="border border-muted-foreground/50 bg-background overflow-hidden rounded-md">
+      <div className="border border-muted-foreground/50 bg-background overflow-hidden rounded-md editor-input-container">
         <RichTextEditorMenubar editor={editor} />
         <div className="min-h-[200px] overflow-auto">
           <EditorContent
