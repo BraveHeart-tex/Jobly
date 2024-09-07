@@ -4,11 +4,11 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { useId } from "react";
 import type { FieldErrors } from "react-hook-form";
+import type { StepItem } from "@/hooks/useMultiStepForm";
 
 interface MultiFormStepsPanelProps {
-  formSteps: {
-    label: string;
-  }[];
+  // biome-ignore lint/suspicious/noExplicitAny: We don't need a generic argument here
+  formSteps: Array<StepItem<any>>;
   currentStep: number;
   disabledSteps?: Array<number>;
   focusOnErroredFieldInStep: (
@@ -16,9 +16,8 @@ interface MultiFormStepsPanelProps {
     timeoutDuration?: number,
   ) => void;
   gotoStep: (step: number) => void;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  // biome-ignore lint/suspicious/noExplicitAny: We don't need a generic argument here
   formErrors: FieldErrors<any>;
-  STEP_TO_FIELDS_MAP: Record<number, string[]>;
   styles?: {
     containerClassNames: string;
     itemsContainerClassNames: string;
@@ -32,7 +31,6 @@ const MultiFormStepsPanel = ({
   focusOnErroredFieldInStep,
   gotoStep,
   formErrors,
-  STEP_TO_FIELDS_MAP,
   styles,
 }: MultiFormStepsPanelProps) => {
   const layoutId = useId();
@@ -44,11 +42,12 @@ const MultiFormStepsPanel = ({
           const stepValue = index + 1;
           const isDisabled = disabledSteps?.includes(stepValue);
           const isCurrentStep = stepValue === currentStep;
-          const hasError = Object.keys(formErrors).find((key) =>
-            STEP_TO_FIELDS_MAP[stepValue]?.includes(key),
+          const stepHasError = step.fields.some((field) =>
+            Object.keys(formErrors).includes(field as string),
           );
+
           return (
-            <div key={step.label} className="grid gap-1 w-full">
+            <div key={step.stepTitle} className="grid gap-1 w-full">
               <span className="text-xs text-muted-foreground">
                 Step {stepValue}
               </span>
@@ -67,8 +66,8 @@ const MultiFormStepsPanel = ({
                   gotoStep(stepValue);
                 }}
               >
-                <span className={cn(hasError && "text-destructive")}>
-                  {step.label}
+                <span className={cn(stepHasError && "text-destructive")}>
+                  {step.stepTitle}
                 </span>
                 {isCurrentStep ? (
                   <motion.div
@@ -77,7 +76,7 @@ const MultiFormStepsPanel = ({
                     className="inset absolute bg-muted w-full rounded-md h-full z-[-10]"
                   />
                 ) : null}
-                {hasError ? (
+                {stepHasError ? (
                   <motion.div
                     transition={{ duration: 0.2 }}
                     initial={{ opacity: 0 }}

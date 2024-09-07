@@ -9,6 +9,7 @@ import {
   XIcon,
 } from "lucide-react";
 import type { InferValueTypeFromConst } from "./types";
+import type { ButtonVariant } from "@/components/ui/button";
 
 export const contentByPortalType: Record<DBUser["role"], string[]> = {
   candidate: [
@@ -136,3 +137,5 @@ export const PORTAL_TYPE_QUERY_KEY = "portalType" as const;
 
 export const ISO_8601_REGEX =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(?:[+-]\d{2}:\d{2}|Z)$/;
+
+export const CONTROL_BUTTON_VARIANT: ButtonVariant = "secondary";

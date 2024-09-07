@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useMultiStepForm } from "@/hooks/useMultiStepForm";
+import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { cn, isObjectEmpty } from "@/lib/utils";
@@ -33,17 +33,37 @@ import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import AutoComplete from "../AutoComplete";
 import AnimatedFormFieldsContainer from "../multiStepForm/AnimatedFormFieldsContainer";
-import {
-  BASIC_INFORMATION_STEP,
-  COMPANY_DESCRIPTION_STEP,
-  COMPANY_DETAILS_STEP,
-  COMPANY_PROFILE_SETUP_STEPS,
-  CONTROL_BUTTON_VARIANT,
-  COMPANY_SETUP_FORM_FIELD_TO_STEP_MAP,
-  STEP_TO_FIELDS_MAP,
-  SUMMARY_STEP,
-} from "./constants";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
+import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
+
+const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
+  {
+    stepTitle: "Basic Information",
+    fields: ["name", "industry", "website"],
+  },
+  {
+    stepTitle: "Company Details",
+    fields: [
+      "yearOfEstablishment",
+      "address",
+      "companySize",
+      "areasOfExpertise",
+    ],
+  },
+  {
+    stepTitle: "Company Description",
+    fields: ["bio", "description"],
+  },
+  {
+    stepTitle: "Summary",
+    fields: [],
+  },
+];
+
+const BASIC_INFORMATION_STEP = 1;
+const COMPANY_DETAILS_STEP = 2;
+const COMPANY_DESCRIPTION_STEP = 3;
+const SUMMARY_STEP = 4;
 
 const companySizeOptions = [
   "1-10",
@@ -91,7 +111,7 @@ const CompanyProfileSetup = () => {
     goToFirstErroredStep,
     handleStepChange,
   } = useMultiStepForm<CompanyProfileSetupSchema>({
-    FIELD_TO_STEP_MAP: COMPANY_SETUP_FORM_FIELD_TO_STEP_MAP,
+    steps: companyProfileSteps,
     form,
     disabledSteps,
   });
@@ -320,7 +340,7 @@ const CompanyProfileSetup = () => {
 
   const renderControlButtons = () => {
     const isFirstStep = currentStep === 1;
-    const isLastStep = currentStep === COMPANY_PROFILE_SETUP_STEPS.length;
+    const isLastStep = currentStep === companyProfileSteps.length;
 
     return (
       <div
@@ -369,9 +389,8 @@ const CompanyProfileSetup = () => {
     <>
       <div className="grid lg:grid-cols-12 gap-4">
         <MultiFormStepsPanel
-          STEP_TO_FIELDS_MAP={STEP_TO_FIELDS_MAP}
           currentStep={currentStep}
-          formSteps={COMPANY_PROFILE_SETUP_STEPS}
+          formSteps={companyProfileSteps}
           focusOnErroredFieldInStep={focusOnErroredFieldInStep}
           formErrors={form.formState.errors}
           gotoStep={gotoStep}

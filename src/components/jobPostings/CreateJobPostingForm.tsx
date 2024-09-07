@@ -26,36 +26,24 @@ import DateInput from "../DateInput";
 import RichTextEditor from "../richTextEditor/RichTextEditor";
 import ClientOnly from "../tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
-import { useMultiStepForm } from "@/hooks/useMultiStepForm";
+import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
-import { makeStepToFieldsMap } from "../multiStepForm/utils";
-import { CONTROL_BUTTON_VARIANT } from "../companyProfile/constants";
 import { cn } from "@/lib/utils";
 import type { FieldErrors } from "react-hook-form";
-import type { PartialRecord } from "@/lib/types";
+import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 
-const CREATE_JOB_POSTING_FIELD_TO_STEP_MAP: PartialRecord<
-  keyof JobPostingSchema,
-  number
-> = {
-  title: 1,
-  location: 1,
-  workType: 1,
-  employmentType: 1,
-  salaryRange: 1,
-
-  postingContent: 2,
-  expiresAt: 2,
-};
-const createJobPostingFormSteps = [
+const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
-    label: "Preview Details",
+    stepTitle: "Preview Details",
+    fields: ["title", "location", "workType", "employmentType", "salaryRange"],
   },
   {
-    label: "Posting Description",
+    stepTitle: "Posting Description",
+    fields: ["postingContent", "expiresAt"],
   },
   {
-    label: "Summary",
+    stepTitle: "Summary",
+    fields: [],
   },
 ];
 
@@ -73,7 +61,7 @@ const CreateJobPostingForm = () => {
     gotoStep,
     handleStepChange,
   } = useMultiStepForm({
-    FIELD_TO_STEP_MAP: CREATE_JOB_POSTING_FIELD_TO_STEP_MAP,
+    steps: createJobPostingFormSteps,
     form,
     disabledSteps: [],
   });
@@ -294,9 +282,6 @@ const CreateJobPostingForm = () => {
     `}</style>
       <div className="grid lg:grid-cols-12 gap-4">
         <MultiFormStepsPanel
-          STEP_TO_FIELDS_MAP={makeStepToFieldsMap(
-            CREATE_JOB_POSTING_FIELD_TO_STEP_MAP,
-          )}
           currentStep={currentStep}
           focusOnErroredFieldInStep={focusOnErroredFieldInStep}
           formErrors={form.formState.errors}
@@ -314,7 +299,7 @@ const CreateJobPostingForm = () => {
           <form
             onSubmit={form.handleSubmit(onSubmit, onFormError)}
             key={currentStep}
-            className="flex flex-col h-[calc(100vh-10rem)] overflow-y-auto px-2 overflow-x-hidden lg:col-span-9 gap-8"
+            className="flex flex-col h-[calc(100vh-19rem)] overflow-y-auto px-2 overflow-x-hidden lg:col-span-9 gap-8"
           >
             {renderFormFields()}
             <div>{renderControlButtons()}</div>

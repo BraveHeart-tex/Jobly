@@ -1,18 +1,22 @@
 import { TRANSITION_DURATION_MS } from "@/components/multiStepForm/AnimatedFormFieldsContainer";
 import type { ExtendedUseFormReturn } from "@/lib/hook-form/useExtendedForm";
-import type { PartialRecord } from "@/lib/types";
 import { useState } from "react";
 import type { FieldValues, Path } from "react-hook-form";
 
+export interface StepItem<T extends FieldValues = FieldValues> {
+  stepTitle: string;
+  fields: Array<Partial<keyof T>>;
+}
+
 interface useMultiStepFormProps<T extends FieldValues = FieldValues> {
-  FIELD_TO_STEP_MAP: PartialRecord<keyof T, number>;
+  steps: Array<StepItem<T>>;
   form: ExtendedUseFormReturn<T, undefined, undefined>;
   disabledSteps?: Array<number>;
 }
 
 export const useMultiStepForm = <T extends FieldValues>({
-  FIELD_TO_STEP_MAP,
   form,
+  steps,
   disabledSteps,
 }: useMultiStepFormProps<T>) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -48,9 +52,11 @@ export const useMultiStepForm = <T extends FieldValues>({
       return;
     }
 
-    const firstErroredFieldKey = erroredKeys.find(
-      (key) => FIELD_TO_STEP_MAP[key] === nextStep,
-    );
+    const firstErroredFieldKey = erroredKeys.find((key) => {
+      const stepIndex = nextStep - 1;
+      const step = steps[stepIndex];
+      return step?.fields?.includes(key);
+    });
 
     if (!firstErroredFieldKey) {
       return;
@@ -61,17 +67,15 @@ export const useMultiStepForm = <T extends FieldValues>({
     }, timeoutDuration);
   };
 
-  const getErroredSteps = (
-    erroredFieldKeys: Array<keyof typeof FIELD_TO_STEP_MAP>,
-  ) => {
-    return [
-      ...new Set(
-        erroredFieldKeys
-          .map((field) => FIELD_TO_STEP_MAP[field])
-          .filter((step): step is number => step !== undefined)
-          .sort((a, b) => a - b),
-      ),
-    ];
+  const getErroredSteps = (erroredFieldKeys: Array<keyof T>) => {
+    return steps
+      .map((step, index) => {
+        const stepHasErrors = step.fields.some((field) =>
+          erroredFieldKeys.includes(field),
+        );
+        return stepHasErrors ? index + 1 : null;
+      })
+      .filter((step) => step !== null);
   };
 
   const goToFirstErroredStep = (erroredFieldKeys: Path<T>[]) => {
