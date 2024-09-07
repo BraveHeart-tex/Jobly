@@ -1,5 +1,6 @@
 import type { ButtonVariant } from "@/components/ui/button";
 import type { CompanyProfileSetupFormKey } from "./types";
+import { makeStepToFieldsMap } from "../multiStepForm/utils";
 
 export const COMPANY_PROFILE_SETUP_STEPS = [
   {
@@ -22,7 +23,10 @@ export const COMPANY_DETAILS_STEP = 2 as const;
 export const COMPANY_DESCRIPTION_STEP = 3 as const;
 export const SUMMARY_STEP = 4 as const;
 
-export const FIELD_TO_STEP_MAP: Record<CompanyProfileSetupFormKey, number> = {
+export const COMPANY_SETUP_FORM_FIELD_TO_STEP_MAP: Record<
+  CompanyProfileSetupFormKey,
+  number
+> = {
   name: BASIC_INFORMATION_STEP,
   industry: BASIC_INFORMATION_STEP,
   website: BASIC_INFORMATION_STEP,
@@ -36,15 +40,6 @@ export const FIELD_TO_STEP_MAP: Record<CompanyProfileSetupFormKey, number> = {
   description: COMPANY_DESCRIPTION_STEP,
 };
 
-export const STEP_TO_FIELDS_MAP = Object.entries(FIELD_TO_STEP_MAP).reduce<
-  Record<number, string[]>
->((acc, [field, step]) => {
-  if (!acc[step]) {
-    acc[step] = [];
-  }
-
-  // biome-ignore lint/style/noNonNullAssertion: It cannot be undefined at this point
-  acc[step]!.push(field);
-
-  return acc;
-}, {});
+export const STEP_TO_FIELDS_MAP = makeStepToFieldsMap(
+  COMPANY_SETUP_FORM_FIELD_TO_STEP_MAP,
+);

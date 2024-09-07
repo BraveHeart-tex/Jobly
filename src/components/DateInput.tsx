@@ -53,7 +53,9 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
             selected={new Date(value)}
             onSelect={(date) => {
               if (!date) return;
-              onChange(date.toISOString());
+              const isoDate = DateTime.fromJSDate(date).toISO();
+              if (!isoDate) return;
+              onChange(isoDate);
             }}
             disabled={(date) => {
               if (disabled !== undefined) return disabled;

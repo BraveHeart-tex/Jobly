@@ -39,7 +39,7 @@ import {
   COMPANY_DETAILS_STEP,
   COMPANY_PROFILE_SETUP_STEPS,
   CONTROL_BUTTON_VARIANT,
-  FIELD_TO_STEP_MAP,
+  COMPANY_SETUP_FORM_FIELD_TO_STEP_MAP,
   STEP_TO_FIELDS_MAP,
   SUMMARY_STEP,
 } from "./constants";
@@ -91,7 +91,7 @@ const CompanyProfileSetup = () => {
     goToFirstErroredStep,
     handleStepChange,
   } = useMultiStepForm<CompanyProfileSetupSchema>({
-    FIELD_TO_STEP_MAP,
+    FIELD_TO_STEP_MAP: COMPANY_SETUP_FORM_FIELD_TO_STEP_MAP,
     form,
     disabledSteps,
   });

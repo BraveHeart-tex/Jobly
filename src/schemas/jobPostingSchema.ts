@@ -1,3 +1,4 @@
+import { ISO_8601_REGEX } from "@/lib/constants";
 import { jobPostings } from "@/server/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { DateTime } from "luxon";
@@ -22,7 +23,7 @@ export const jobPostingSchema = createInsertSchema(jobPostings, {
     .default("full-time"),
   status: z.enum(jobPostings.status.enumValues).default("draft"),
   postedAt: z.string().optional(),
-  expiresAt: z.string().min(1).datetime().default(oneWeekFromNow),
+  expiresAt: z.string().regex(ISO_8601_REGEX).default(oneWeekFromNow),
   updatedAt: z.string().optional(),
 });
 

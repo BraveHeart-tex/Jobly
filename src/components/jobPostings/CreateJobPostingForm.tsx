@@ -26,24 +26,66 @@ import DateInput from "../DateInput";
 import RichTextEditor from "../richTextEditor/RichTextEditor";
 import ClientOnly from "../tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
+import { useMultiStepForm } from "@/hooks/useMultiStepForm";
+import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
+import { makeStepToFieldsMap } from "../multiStepForm/utils";
+import { CONTROL_BUTTON_VARIANT } from "../companyProfile/constants";
+import { cn } from "@/lib/utils";
+import type { FieldErrors } from "react-hook-form";
+import type { PartialRecord } from "@/lib/types";
+
+const CREATE_JOB_POSTING_FIELD_TO_STEP_MAP: PartialRecord<
+  keyof JobPostingSchema,
+  number
+> = {
+  title: 1,
+  location: 1,
+  workType: 1,
+  employmentType: 1,
+  salaryRange: 1,
+
+  postingContent: 2,
+  expiresAt: 2,
+};
+const createJobPostingFormSteps = [
+  {
+    label: "Preview Details",
+  },
+  {
+    label: "Posting Description",
+  },
+  {
+    label: "Summary",
+  },
+];
 
 const CreateJobPostingForm = () => {
-  const form = useExtendedForm<JobPostingSchema>(jobPostingSchema);
+  const form = useExtendedForm<JobPostingSchema>(
+    jobPostingSchema.omit({ companyId: true }),
+  );
+  // TODO: Will remove later
+  const isPending = false;
 
-  const onSubmit = () => {};
+  const {
+    currentStep,
+    focusOnErroredFieldInStep,
+    goToFirstErroredStep,
+    gotoStep,
+    handleStepChange,
+  } = useMultiStepForm({
+    FIELD_TO_STEP_MAP: CREATE_JOB_POSTING_FIELD_TO_STEP_MAP,
+    form,
+    disabledSteps: [],
+  });
 
-  return (
-    <>
-      <style jsx global>{`
-      .tiptap.ProseMirror {
-        min-height: 200px;
-        padding: 10px;
-        background: hsl(var(--background));
-        z-index: 0;
-      }
-    `}</style>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+  const onSubmit = (values: JobPostingSchema) => {
+    console.info(values);
+  };
+
+  const renderFormFields = () => {
+    if (currentStep === 1) {
+      return (
+        <>
           <FormField
             control={form.control}
             name="title"
@@ -70,7 +112,7 @@ const CreateJobPostingForm = () => {
               </FormItem>
             )}
           />
-          <div className="grid lg:grid-cols-2 gap-2">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-2">
             <FormField
               control={form.control}
               name="workType"
@@ -141,24 +183,13 @@ const CreateJobPostingForm = () => {
               </FormItem>
             )}
           />
+        </>
+      );
+    }
 
-          <FormField
-            control={form.control}
-            name="postingContent"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job Posting Content</FormLabel>
-                <FormControl>
-                  <RichTextEditor
-                    initialValue={field.value}
-                    onChange={field.onChange}
-                    ref={field.ref}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    if (currentStep === 2) {
+      return (
+        <>
           <FormField
             control={form.control}
             name="expiresAt"
@@ -181,9 +212,115 @@ const CreateJobPostingForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+          <FormField
+            control={form.control}
+            name="postingContent"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Job Posting Content</FormLabel>
+                <FormControl>
+                  <RichTextEditor
+                    initialValue={field.value}
+                    onChange={field.onChange}
+                    ref={field.ref}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      );
+    }
+
+    if (currentStep === 3) {
+      return "Summary";
+    }
+  };
+
+  const renderControlButtons = () => {
+    const isFirstStep = currentStep === 1;
+    const isLastStep = currentStep === createJobPostingFormSteps.length;
+
+    return (
+      <div
+        className={cn(
+          "w-full flex items-center justify-between",
+          isFirstStep && "justify-end",
+        )}
+      >
+        {!isFirstStep && (
+          <Button
+            type="button"
+            variant={CONTROL_BUTTON_VARIANT}
+            disabled={isPending}
+            onClick={() => {
+              handleStepChange("prev");
+            }}
+          >
+            Back
+          </Button>
+        )}
+        <Button
+          type={isLastStep ? "submit" : "button"}
+          variant={isLastStep ? "default" : CONTROL_BUTTON_VARIANT}
+          onClick={
+            isLastStep
+              ? undefined
+              : () => {
+                  handleStepChange("next");
+                }
+          }
+          disabled={isPending}
+        >
+          {isLastStep ? "Submit" : "Next"}
+        </Button>
+      </div>
+    );
+  };
+
+  const onFormError = (errors: FieldErrors<JobPostingSchema>) => {
+    goToFirstErroredStep(Object.keys(errors) as (keyof JobPostingSchema)[]);
+  };
+
+  return (
+    <>
+      <style jsx global>{`
+      .tiptap.ProseMirror {
+        min-height: 200px;
+        padding: 10px;
+        background: hsl(var(--background));
+      }
+    `}</style>
+      <div className="grid lg:grid-cols-12 gap-4">
+        <MultiFormStepsPanel
+          STEP_TO_FIELDS_MAP={makeStepToFieldsMap(
+            CREATE_JOB_POSTING_FIELD_TO_STEP_MAP,
+          )}
+          currentStep={currentStep}
+          focusOnErroredFieldInStep={focusOnErroredFieldInStep}
+          formErrors={form.formState.errors}
+          formSteps={createJobPostingFormSteps}
+          gotoStep={gotoStep}
+          disabledSteps={[]}
+          styles={{
+            containerClassNames:
+              "p-1 border rounded-md flex items-center justify-center lg:col-span-3 h-max",
+            itemsContainerClassNames:
+              "grid gap-4 grid-cols-2 lg:grid-cols-1 w-full",
+          }}
+        />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit, onFormError)}
+            key={currentStep}
+            className="flex flex-col h-[calc(100vh-10rem)] overflow-y-auto px-2 overflow-x-hidden lg:col-span-9 gap-8"
+          >
+            {renderFormFields()}
+            <div>{renderControlButtons()}</div>
+          </form>
+        </Form>
+      </div>
     </>
   );
 };

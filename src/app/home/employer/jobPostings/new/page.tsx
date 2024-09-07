@@ -1,26 +1,11 @@
 import PageContainer from "@/components/PageContainer";
 import CreateJobPostingForm from "@/components/jobPostings/CreateJobPostingForm";
-import { buttonVariants } from "@/components/ui/button";
-import { EMPLOYER_ROUTES } from "@/lib/routes";
-import { cn } from "@/lib/utils";
-import { ArrowLeftIcon } from "lucide-react";
-import Link from "next/link";
 
 const CreateNewJobPostingPage = () => {
   return (
     <div>
       <PageContainer>
-        <div className="grid gap-4">
-          <Link
-            href={EMPLOYER_ROUTES.ACTIVE_LISTINGS}
-            className={cn(
-              buttonVariants({ variant: "secondary" }),
-              "flex items-center gap-1 w-max justify-start",
-            )}
-          >
-            <ArrowLeftIcon />
-            <span>Back to Job Postings</span>
-          </Link>
+        <div className="grid gap-4 mb-4">
           <div className="grid gap-1">
             <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
               New Job Posting
