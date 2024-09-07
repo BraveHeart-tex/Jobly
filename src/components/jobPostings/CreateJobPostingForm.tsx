@@ -47,6 +47,10 @@ const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   },
 ];
 
+const PREVIEW_DETAILS_STEP = 1;
+const POSTING_DESCRIPTION_STEP = 2;
+const SUMMARY_STEP = 3;
+
 const CreateJobPostingForm = () => {
   const form = useExtendedForm<JobPostingSchema>(
     jobPostingSchema.omit({ companyId: true }),
@@ -71,7 +75,7 @@ const CreateJobPostingForm = () => {
   };
 
   const renderFormFields = () => {
-    if (currentStep === 1) {
+    if (currentStep === PREVIEW_DETAILS_STEP) {
       return (
         <>
           <FormField
@@ -175,7 +179,7 @@ const CreateJobPostingForm = () => {
       );
     }
 
-    if (currentStep === 2) {
+    if (currentStep === POSTING_DESCRIPTION_STEP) {
       return (
         <>
           <FormField
@@ -221,7 +225,7 @@ const CreateJobPostingForm = () => {
       );
     }
 
-    if (currentStep === 3) {
+    if (currentStep === SUMMARY_STEP) {
       return "Summary";
     }
   };
