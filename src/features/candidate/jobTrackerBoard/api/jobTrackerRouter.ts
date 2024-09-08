@@ -2,17 +2,17 @@ import { jobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSche
 import { jobTrackerApplications } from "@/server/db/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
-import * as jobTrackerService from "../../services/jobTracker.service";
-import { createTRPCRouter, protectedProcedure } from "../../trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { jobTrackerApplicationService } from "../services/jobTrackerApplicationService";
 
 export const jobTrackerRouter = createTRPCRouter({
   getJobTrackerApplications: protectedProcedure.query(async ({ ctx }) => {
-    return jobTrackerService.getJobTrackerApplications(ctx.user.id);
+    return jobTrackerApplicationService.getApplications(ctx.user.id);
   }),
   addJobTrackerApplication: protectedProcedure
     .input(jobTrackerApplicationSchema)
     .mutation(async ({ ctx, input }) => {
-      return jobTrackerService.createJobTrackerApplication({
+      return jobTrackerApplicationService.createApplication({
         ...input,
         userId: ctx.user.id,
       });
@@ -20,7 +20,7 @@ export const jobTrackerRouter = createTRPCRouter({
   deleteById: protectedProcedure
     .input(createSelectSchema(jobTrackerApplications).pick({ id: true }))
     .mutation(async ({ ctx, input }) => {
-      return jobTrackerService.deleteJobTrackerApplicationById({
+      return jobTrackerApplicationService.deleteApplication({
         id: input.id,
         userId: ctx.user.id,
       });
@@ -32,7 +32,7 @@ export const jobTrackerRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return jobTrackerService.updateJobTrackerApplication({
+      return jobTrackerApplicationService.updateApplication({
         ...input,
         userId: ctx.user.id,
       });
@@ -44,7 +44,7 @@ export const jobTrackerRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return jobTrackerService.deleteJobTrackerApplicationByStatus({
+      return jobTrackerApplicationService.deleteApplicationsByStatus({
         status: input.status,
         userId: ctx.user.id,
       });
@@ -56,7 +56,7 @@ export const jobTrackerRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return jobTrackerService.saveJobTrackerApplicationDetails(
+      return jobTrackerApplicationService.saveApplicationDetails(
         input.data.map((item) => ({
           ...item,
           userId: ctx.user.id,
