@@ -1,5 +1,5 @@
-import AuthPageContainer from "@/components/auth/AuthPageContainer";
-import SignUpForm from "@/components/forms/auth/SignUpForm";
+import AuthPageContainer from "@/features/auth/components/AuthPageContainer";
+import SignUpForm from "@/features/auth/components/SignUpForm";
 import { validateRequest } from "@/lib/auth/validateRequest";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";

@@ -1,5 +1,4 @@
 "use client";
-import { useUpdateDisplayOrderByStatus } from "@/components/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
 import {
   type ColumnId,
   useJobTrackerBoardStore,
@@ -25,6 +24,7 @@ import { BoardColumn, BoardContainer } from "./BoardColumn";
 import { JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 import { hasDraggableData } from "../utils";
+import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
 
 interface JobTrackerApplicationsBoardProps {
   data: JobTrackerApplication[];

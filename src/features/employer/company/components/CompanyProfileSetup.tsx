@@ -25,11 +25,11 @@ import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
-import AutoComplete from "../AutoComplete";
-import SelectInput from "../SelectInput";
-import AnimatedFormFieldsContainer from "../multiStepForm/AnimatedFormFieldsContainer";
-import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
-import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
+import AutoComplete from "../../../../components/common/AutoComplete";
+import SelectInput from "../../../../components/common/SelectInput";
+import AnimatedFormFieldsContainer from "../../../../components/multiStepForm/AnimatedFormFieldsContainer";
+import MultiFormStepsPanel from "../../../../components/multiStepForm/MultiFormStepsPanel";
+import MultiStepFormSummary from "../../../../components/multiStepForm/MultiStepFormSummary";
 
 const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
   {

@@ -1,5 +1,5 @@
 "use client";
-import CapsLockIndicator from "@/components/CapsLockIndicator";
+import CapsLockIndicator from "@/components/common/CapsLockIndicator";
 import { Button } from "@/components/ui/button";
 import {
   Form,

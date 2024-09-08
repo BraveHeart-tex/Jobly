@@ -1,6 +1,6 @@
-import PageContainer from "@/components/PageContainer";
-import CompanyProfileDetails from "@/components/companyProfile/CompanyProfileDetails";
-import CompanyProfileSetup from "@/components/companyProfile/CompanyProfileSetup";
+import PageContainer from "@/components/common/PageContainer";
+import CompanyProfileDetails from "@/features/employer/company/components/CompanyProfileDetails";
+import CompanyProfileSetup from "@/features/employer/company/components/CompanyProfileSetup";
 import { getCurrentUser } from "@/lib/auth/actions";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { redirect } from "next/navigation";

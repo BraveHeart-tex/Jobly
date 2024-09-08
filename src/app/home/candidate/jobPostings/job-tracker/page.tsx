@@ -1,7 +1,7 @@
-import PageContainer from "@/components/PageContainer";
 import { api } from "@/trpc/server";
 import ClientOnly from "@/components/common/ClientOnly";
 import { JobTrackerApplicationsBoard } from "@/features/candidate/jobTrackerBoard/components/JobTrackerBoard";
+import PageContainer from "@/components/common/PageContainer";
 
 const JobTrackerPage = async () => {
   const data = await api.jobTracker.getJobTrackerApplications();

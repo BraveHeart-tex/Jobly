@@ -1,4 +1,4 @@
-import QueryStringInput from "@/components/QueryStringInput";
+import QueryStringInput from "@/components/common/QueryStringInput";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { MapPin } from "lucide-react";
 

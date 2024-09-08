@@ -1,4 +1,4 @@
-import PageContainer from "@/components/PageContainer";
+import PageContainer from "@/components/common/PageContainer";
 import { buttonVariants } from "@/components/ui/button";
 import { validateRequestByRole } from "@/lib/auth/actions";
 import { EMPLOYER_ROUTES } from "@/lib/routes";

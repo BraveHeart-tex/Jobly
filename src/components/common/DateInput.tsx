@@ -12,7 +12,7 @@ import { CalendarIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import type React from "react";
 import { type PropsWithRef, forwardRef } from "react";
-import { Label } from "./ui/label";
+import { Label } from "../ui/label";
 
 interface DateInputProps {
   value: string;

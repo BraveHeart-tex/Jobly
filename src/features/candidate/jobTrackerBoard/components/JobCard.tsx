@@ -1,6 +1,5 @@
 "use client";
 import JobTrackerApplicationForm from "@/components/forms/jobTracker/JobTrackerApplicationForm";
-import { useUpdateDisplayOrderByStatus } from "@/components/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -29,6 +28,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { TaskDragData } from "../types";
+import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
 
 interface JobCardProps {
   job: JobTrackerApplication;

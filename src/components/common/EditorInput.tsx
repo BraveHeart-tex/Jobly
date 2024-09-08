@@ -2,7 +2,7 @@ import { type PropsWithRef, forwardRef } from "react";
 import RichTextEditor, {
   type RichTextEditorProps,
   type RichTextEditorRef,
-} from "./richTextEditor/RichTextEditor";
+} from "../richTextEditor/RichTextEditor";
 
 const EditorInput = forwardRef<
   PropsWithRef<RichTextEditorRef>,

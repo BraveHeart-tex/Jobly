@@ -1,8 +1,7 @@
 import "@/styles/globals.css";
 import "@/styles/reactPdf.css";
 import "@/styles/tiptap.css";
-import ConfirmDialog from "@/components/ConfirmDialog";
-import Navbar from "@/components/Navbar";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
@@ -13,6 +12,7 @@ import type React from "react";
 import { extractRouterConfig } from "uploadthing/server";
 import { fileRouter } from "./api/uploadthing/core";
 import NextTopLoader from "nextjs-toploader";
+import Navbar from "@/components/common/Navbar";
 
 export const metadata = {
   title: APP_NAME,

@@ -1,5 +1,5 @@
-import PageContainer from "@/components/PageContainer";
-import CreateJobPostingForm from "@/components/jobPostings/CreateJobPostingForm";
+import PageContainer from "@/components/common/PageContainer";
+import CreateJobPostingForm from "@/features/candidate/jobs/components/CreateJobPostingForm";
 import { validateRequestByRole } from "@/lib/auth/actions";
 
 const CreateNewJobPostingPage = async () => {

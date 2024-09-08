@@ -2,7 +2,7 @@
 import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { useDebounce } from "react-use";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 interface QueryStringInputProps {
   queryKey: string;
