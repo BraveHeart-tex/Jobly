@@ -29,22 +29,27 @@ import { employmentOptions, workTypeOptions } from "./JobListFilters";
 
 const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
-    stepTitle: "Preview Details",
-    fields: ["title", "location", "workType", "employmentType", "salaryRange"],
+    stepTitle: "Job Basics",
+    fields: ["title", "location", "workType", "employmentType"],
   },
   {
-    stepTitle: "Posting Description",
+    stepTitle: "Skills & Benefits",
+    fields: ["skills", "benefits", "salaryRange"],
+  },
+  {
+    stepTitle: "Job Description & Expiry",
     fields: ["postingContent", "expiresAt"],
   },
   {
-    stepTitle: "Summary",
+    stepTitle: "Review & Submit",
     fields: [],
   },
 ];
 
-const PREVIEW_DETAILS_STEP = 1;
-const POSTING_DESCRIPTION_STEP = 2;
-const SUMMARY_STEP = 3;
+const JOB_BASICS_STEP = 1;
+const SKILLS_AND_BENEFITS_STEP = 2;
+const DESCRIPTION_EXPIRY_STEP = 3;
+const SUMMARY_STEP = 4;
 
 const CreateJobPostingForm = () => {
   const form = useExtendedForm<JobPostingSchema>(
@@ -70,7 +75,7 @@ const CreateJobPostingForm = () => {
   };
 
   const renderFormFields = () => {
-    if (currentStep === PREVIEW_DETAILS_STEP) {
+    if (currentStep === JOB_BASICS_STEP) {
       return (
         <>
           <FormField
@@ -152,7 +157,11 @@ const CreateJobPostingForm = () => {
       );
     }
 
-    if (currentStep === POSTING_DESCRIPTION_STEP) {
+    if (currentStep === SKILLS_AND_BENEFITS_STEP) {
+      return "TODO";
+    }
+
+    if (currentStep === DESCRIPTION_EXPIRY_STEP) {
       return (
         <>
           <FormField

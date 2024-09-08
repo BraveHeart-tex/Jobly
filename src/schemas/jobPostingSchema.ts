@@ -25,6 +25,9 @@ export const jobPostingSchema = createInsertSchema(jobPostings, {
   postedAt: z.string().optional(),
   expiresAt: z.string().regex(ISO_8601_REGEX).default(oneWeekFromNow),
   updatedAt: z.string().optional(),
+}).extend({
+  skills: z.array(z.string()).default([]),
+  benefits: z.array(z.string()).default([]),
 });
 
 export type JobPostingSchema = z.infer<typeof jobPostingSchema>;
