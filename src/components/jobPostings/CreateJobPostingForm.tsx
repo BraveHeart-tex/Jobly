@@ -26,6 +26,7 @@ import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
 import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
 import ClientOnly from "../tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
+import CreatableMultiSelect from "../CreatableMultiSelect";
 
 const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -158,7 +159,35 @@ const CreateJobPostingForm = () => {
     }
 
     if (currentStep === SKILLS_AND_BENEFITS_STEP) {
-      return "TODO";
+      return (
+        <>
+          <FormField
+            control={form.control}
+            name="benefits"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Benefits</FormLabel>
+                <FormControl>
+                  <CreatableMultiSelect
+                    placeholder="Select or add benefits"
+                    options={[
+                      {
+                        label: "Option 1",
+                        value: "Option 1",
+                      },
+                      {
+                        label: "Option 2",
+                        value: "Option 2",
+                      },
+                    ]}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      );
     }
 
     if (currentStep === DESCRIPTION_EXPIRY_STEP) {
