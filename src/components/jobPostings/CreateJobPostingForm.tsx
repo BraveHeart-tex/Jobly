@@ -19,14 +19,14 @@ import {
 } from "@/schemas/jobPostingSchema";
 import { DateTime } from "luxon";
 import type { FieldErrors } from "react-hook-form";
-import DateInput from "../DateInput";
-import EditorInput from "../EditorInput";
-import SelectInput from "../SelectInput";
-import MultiFormStepsPanel from "../multiStepForm/MultiFormStepsPanel";
-import MultiStepFormSummary from "../multiStepForm/MultiStepFormSummary";
-import ClientOnly from "../tools/ClientOnly";
+import DateInput from "@/components/DateInput";
+import EditorInput from "@/components/EditorInput";
+import SelectInput from "@/components/SelectInput";
+import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
+import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
+import ClientOnly from "@/components/tools/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
-import CreatableMultiSelect from "../CreatableMultiSelect";
+import CreatableMultiSelect from "@/components/CreatableMultiSelect";
 
 const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -47,6 +47,31 @@ const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   },
 ];
 
+const jobBenefitsDatasetExample = [
+  "Health Insurance",
+  "Paid Time Off",
+  "Flexible Hours",
+  "Retirement Plan",
+  "Work From Home",
+  "Gym Membership",
+  "Parental Leave",
+  "Professional Development",
+  "Stock Options",
+];
+
+const jobSkillsDatasetExample = [
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Node.js",
+  "SQL",
+  "HTML & CSS",
+  "Python",
+  "Communication",
+  "Project Management",
+  "Problem Solving",
+];
+
 const JOB_BASICS_STEP = 1;
 const SKILLS_AND_BENEFITS_STEP = 2;
 const DESCRIPTION_EXPIRY_STEP = 3;
@@ -56,7 +81,6 @@ const CreateJobPostingForm = () => {
   const form = useExtendedForm<JobPostingSchema>(
     jobPostingSchema.omit({ companyId: true }),
   );
-  // TODO: Will remove later
   const isPending = false;
 
   const {
@@ -170,16 +194,39 @@ const CreateJobPostingForm = () => {
                 <FormControl>
                   <CreatableMultiSelect
                     placeholder="Select or add benefits"
-                    options={[
-                      {
-                        label: "Option 1",
-                        value: "Option 1",
-                      },
-                      {
-                        label: "Option 2",
-                        value: "Option 2",
-                      },
-                    ]}
+                    options={jobBenefitsDatasetExample}
+                    value={field.value}
+                    onChange={(values) => {
+                      field.onChange(values);
+                    }}
+                    onCreateOption={(value) => {
+                      field.onChange([...field.value, value]);
+                    }}
+                    ref={field.ref}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="skills"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Skills</FormLabel>
+                <FormControl>
+                  <CreatableMultiSelect
+                    placeholder="Select or add skills"
+                    options={jobSkillsDatasetExample}
+                    ref={field.ref}
+                    value={field.value}
+                    onChange={(newValues) => {
+                      field.onChange(newValues);
+                    }}
+                    onCreateOption={(value) => {
+                      field.onChange([...field.value, value]);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />

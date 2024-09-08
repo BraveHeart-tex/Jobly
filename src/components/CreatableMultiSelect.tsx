@@ -2,12 +2,22 @@
 
 import CreatableSelect from "react-select/creatable";
 import { cn } from "@/lib/utils";
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { ChevronDownIcon, XIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import type { PropsValue } from "react-select";
+import { Button } from "@/components/ui/button";
 import type React from "react";
 import { forwardRef } from "react";
+
+const generateOptions = (baseOptions: (string | number)[]): OptionType[] => {
+  return baseOptions.map((value) => ({
+    label: value.toString(),
+    value: value.toString(),
+  }));
+};
+
+const getNewValues = (newValues: OptionType[]): string[] => {
+  return newValues.map((item) => item.value);
+};
 
 interface OptionType {
   value: string;
@@ -15,12 +25,12 @@ interface OptionType {
 }
 
 interface CreatableSelectProps {
-  value?: PropsValue<OptionType>;
+  value: string[];
   placeholder?: string;
   className?: string;
-  options: OptionType[];
+  options: string[];
   onCreateOption?: (value: string) => void;
-  onChange?: (value: OptionType[]) => void;
+  onChange?: (newValues: string[]) => void;
 }
 
 const CreatableMultiSelect = forwardRef(
@@ -34,17 +44,25 @@ const CreatableMultiSelect = forwardRef(
     }: CreatableSelectProps,
     ref,
   ) => {
+    const mappedOptions = options.map((option) => ({
+      label: option,
+      value: option,
+    }));
+    const mappedValue = generateOptions(value);
+
     return (
       <CreatableSelect<OptionType, true>
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         ref={ref as any}
         isClearable
         isMulti
-        // biome-ignore lint/suspicious/noExplicitAny:
-        onChange={onChange as any}
+        onChange={(newValue) => {
+          const newValues = getNewValues(newValue as OptionType[]);
+          onChange?.(newValues);
+        }}
         onCreateOption={onCreateOption}
-        options={options}
-        value={value}
+        options={mappedOptions}
+        value={mappedValue}
         placeholder={placeholder}
         classNames={{
           control: ({ isFocused }) =>
