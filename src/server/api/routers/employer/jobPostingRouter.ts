@@ -1,6 +1,8 @@
 import { z } from "zod";
 import * as jobPostingService from "../../services/jobPosting.service";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
+import { getCompanyDetailsByEmployerId } from "../../services/company.service";
+import { TRPCError } from "@trpc/server";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure
@@ -9,12 +11,18 @@ export const jobPostingRouter = createTRPCRouter({
         listingStatus: z.enum(["published", "draft", "expired"]).optional(),
       }),
     )
-    .query(async ({ input }) => {
-      // TODO: Get dynamically from ctx user
-      const companyId = 1;
+    .query(async ({ ctx, input }) => {
+      const company = await getCompanyDetailsByEmployerId(ctx.user.id);
+      if (!company) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "Company not found. Please setup your company profile first.",
+        });
+      }
       return jobPostingService.getJobPostings({
         ...input,
-        companyId,
+        companyId: company.id,
       });
     }),
 });

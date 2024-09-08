@@ -11,6 +11,7 @@ interface DatabaseUserAttributes
 
 export interface CtxUserAttributes extends DatabaseUserAttributes {
   hasToSetupCompanyInformation?: boolean;
+  companyId?: number;
 }
 
 const adapter = new DrizzleMySQLAdapter(db, sessions, users);
