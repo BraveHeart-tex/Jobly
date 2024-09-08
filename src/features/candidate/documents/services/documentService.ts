@@ -1,8 +1,5 @@
 "use server";
 import type { DocumentBuilderConfig } from "@/features/candidate/document-builder/types";
-import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
-import type { MakeFieldsRequired, Trx } from "@/lib/types";
-import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import {
   bulkDeleteFields,
   deleteDocumentById,
@@ -13,7 +10,17 @@ import {
   upsertSectionFieldValues,
   upsertSectionFields,
   upsertSections,
-} from "@/server/api/repositories/document.repository";
+} from "@/features/candidate/documents/repositories/documentRepository";
+import {
+  getFieldInsertTemplateBySectionTag,
+  getPredefinedDocumentSectionsWithDocumentId,
+  makeFieldInsertDTOs,
+  makeFieldValueInsertDTOs,
+  normalizeDocumentStructure,
+} from "@/features/candidate/documents/utils";
+import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
+import type { MakeFieldsRequired, Trx } from "@/lib/types";
+import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { db } from "@/server/db";
 import {
   documentSectionFields as fieldSchema,
@@ -33,13 +40,6 @@ import type {
   DocumentInsertModel,
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
-import {
-  getFieldInsertTemplateBySectionTag,
-  getPredefinedDocumentSectionsWithDocumentId,
-  makeFieldInsertDTOs,
-  makeFieldValueInsertDTOs,
-  normalizeDocumentStructure,
-} from "@/server/utils/document.service.utils";
 import { eq } from "drizzle-orm";
 import type { User } from "lucia";
 
@@ -71,9 +71,12 @@ export const createDocumentAndRelatedEntities = async (
       return;
     }
     const documentId = documentInsertResponse.id;
+
     const sectionInsertTemplates =
       getPredefinedDocumentSectionsWithDocumentId(documentId);
+
     const sectionInsertIds = await insertSections(trx, sectionInsertTemplates);
+
     const hasSectionInsertFailures =
       sectionInsertTemplates.length !== sectionInsertIds.length;
 

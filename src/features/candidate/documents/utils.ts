@@ -3,17 +3,17 @@ import {
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import { exclude } from "@/lib/utils";
-import type { getDocumentWithSectionsAndFields } from "@/server/api/repositories/document.repository";
-import type { DocumentSectionFieldValueInsertModel } from "../db/schema/documentSectionFieldValues";
+import type { DocumentSectionFieldValueInsertModel } from "@/server/db/schema/documentSectionFieldValues";
 import type {
   DocumentSectionField,
   DocumentSectionFieldInsertModel,
-} from "../db/schema/documentSectionFields";
+} from "@/server/db/schema/documentSectionFields";
 import type {
   DocumentSection,
   DocumentSectionInsertModel,
-} from "../db/schema/documentSections";
-import type { DocumentSelectModel } from "../db/schema/documents";
+} from "@/server/db/schema/documentSections";
+import type { DocumentSelectModel } from "@/server/db/schema/documents";
+import type { getDocumentWithSectionsAndFields } from "@/features/candidate/documents/repositories/documentRepository";
 
 export const getFieldInsertTemplateBySectionTag = (
   sectionId: DocumentSection["id"],

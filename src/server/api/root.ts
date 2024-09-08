@@ -1,6 +1,6 @@
 import { userJobListingRouter } from "@/server/api/routers/employee/job";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
-import { documentRouter } from "./routers/employee/documentRouter";
+import { documentRouter } from "../../features/candidate/documents/api/documentRouter";
 import { jobTrackerRouter } from "./routers/employee/jobTracker";
 import { companyRouter } from "./routers/employer/companyRouter";
 import { jobPostingRouter } from "./routers/employer/jobPostingRouter";

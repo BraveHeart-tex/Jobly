@@ -2,10 +2,10 @@ import type { MakeFieldsRequired, Trx } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
-  documents as documentSchema,
-  documentSectionFields as fieldSchema,
-  documentSectionFieldValues as fieldValueSchema,
-  documentSections as sectionSchema,
+  documentSectionFieldValues,
+  documentSectionFields,
+  documentSections,
+  documents,
 } from "@/server/db/schema";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
@@ -14,11 +14,11 @@ import type { User } from "lucia";
 
 export const upsertDocument = async (
   trx: Trx,
-  document: SaveDocumentDetailsSchema["document"],
+  documentValues: SaveDocumentDetailsSchema["document"],
 ) => {
   return trx
-    .insert(documentSchema)
-    .values(document)
+    .insert(documents)
+    .values(documentValues)
     .onDuplicateKeyUpdate({
       set: document,
     })
@@ -27,13 +27,13 @@ export const upsertDocument = async (
 
 export const upsertSections = (
   trx: Trx,
-  sections: SaveDocumentDetailsSchema["sections"],
+  sectionValues: SaveDocumentDetailsSchema["sections"],
 ) => {
   return trx
-    .insert(sectionSchema)
-    .values(sections)
+    .insert(documentSections)
+    .values(sectionValues)
     .onDuplicateKeyUpdate({
-      set: buildConflictUpdateColumns(sectionSchema, ["id", "documentId"]),
+      set: buildConflictUpdateColumns(documentSections, ["id", "documentId"]),
     });
 };
 
@@ -42,10 +42,13 @@ export const upsertSectionFields = (
   fields: SaveDocumentDetailsSchema["fields"],
 ) => {
   return trx
-    .insert(fieldSchema)
+    .insert(documentSectionFields)
     .values(fields)
     .onDuplicateKeyUpdate({
-      set: buildConflictUpdateColumns(fieldSchema, ["id", "sectionId"]),
+      set: buildConflictUpdateColumns(documentSectionFields, [
+        "id",
+        "sectionId",
+      ]),
     })
     .$returningId();
 };
@@ -55,10 +58,13 @@ export const upsertSectionFieldValues = (
   fieldValues: SaveDocumentDetailsSchema["fieldValues"],
 ) => {
   return trx
-    .insert(fieldValueSchema)
+    .insert(documentSectionFieldValues)
     .values(fieldValues)
     .onDuplicateKeyUpdate({
-      set: buildConflictUpdateColumns(fieldValueSchema, ["fieldId", "id"]),
+      set: buildConflictUpdateColumns(documentSectionFieldValues, [
+        "fieldId",
+        "id",
+      ]),
     });
 };
 
@@ -70,15 +76,12 @@ export const getDocumentWithSectionsAndFields = ({
   userId: User["id"];
 }) => {
   return db.query.documents.findFirst({
-    where: and(
-      eq(documentSchema.id, documentId),
-      eq(documentSchema.userId, userId),
-    ),
+    where: and(eq(documents.id, documentId), eq(documents.userId, userId)),
     with: {
       sections: {
         with: {
           fields: {
-            orderBy: () => asc(fieldSchema.displayOrder),
+            orderBy: () => asc(documentSectionFields.displayOrder),
             with: {
               fieldValues: true,
             },
@@ -92,24 +95,23 @@ export const getDocumentWithSectionsAndFields = ({
 export const getDocumentsByUserId = (userId: User["id"]) => {
   return db
     .select()
-    .from(documentSchema)
-    .where(eq(documentSchema.userId, userId))
-    .orderBy(desc(documentSchema.createdAt));
+    .from(documents)
+    .where(eq(documents.userId, userId))
+    .orderBy(desc(documents.createdAt));
 };
 
 export const deleteDocumentById = (documentId: DocumentSelectModel["id"]) => {
-  return db.delete(documentSchema).where(eq(documentSchema.id, documentId));
+  return db.delete(documents).where(eq(documents.id, documentId));
 };
 
 export const bulkDeleteFields = (fieldIds: DocumentSectionField["id"][]) => {
-  return db.delete(fieldSchema).where(inArray(fieldSchema.id, fieldIds));
+  return db
+    .delete(documentSectionFields)
+    .where(inArray(documentSectionFields.id, fieldIds));
 };
 
 export const updateDocumentById = (
   input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
 ) => {
-  return db
-    .update(documentSchema)
-    .set(input)
-    .where(eq(documentSchema.id, input.id));
+  return db.update(documents).set(input).where(eq(documents.id, input.id));
 };
