@@ -2,7 +2,7 @@ import { getJobListingsSchema } from "@/schemas/getJobListingsSchema";
 import { jobSchema } from "@/schemas/jobSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
-import * as jobService from "../../services/job.service";
+import { jobService } from "../services/jobService";
 
 export const userJobListingRouter = createTRPCRouter({
   getJobListings: protectedProcedure
