@@ -2,7 +2,7 @@
 import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useJobsListPageSearchParams } from "@/hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import { cn, exclude } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import React, {

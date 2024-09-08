@@ -1,13 +1,13 @@
-import { COURSES_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderCoursesSection";
-import { CUSTOM_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderCustomSection";
-import { EDUCATION_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderEducationSection";
-import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderEmploymentHistorySection";
-import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderExtraCurricularSection";
-import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderInternshipsSection";
-import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderLanguagesSection";
-import { REFERENCES_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderReferencesSection";
-import { SKILL_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderSkillsSection";
-import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/components/tools/CvBuilderWebsitesAndLinks";
+import { COURSES_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderCoursesSection";
+import { CUSTOM_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderCustomSection";
+import { EDUCATION_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderEducationSection";
+import { EMPLOYMENT_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderEmploymentHistorySection";
+import { EXTRA_CURRICULAR_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderExtraCurricularSection";
+import { INTERNSHIP_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderInternshipsSection";
+import { LANGUAGES_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderLanguagesSection";
+import { REFERENCES_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderReferencesSection";
+import { SKILL_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderSkillsSection";
+import { WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT } from "@/features/candidate/document-builder/components/CvBuilderWebsitesAndLinks";
 import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,

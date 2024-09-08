@@ -1,7 +1,5 @@
-import type {
-  JobTrackerApplication,
-  JobTrackerApplicationStatus,
-} from "@/server/db/schema/jobTrackerApplications";
+import type { Column } from "@/features/candidate/jobTrackerBoard/types";
+import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { create } from "zustand";
 
 const defaultCols = [
@@ -70,10 +68,5 @@ export const useJobTrackerBoardStore = create<JobTrackerBoardStore>(
     },
   }),
 );
-
-export type Column = {
-  id: JobTrackerApplicationStatus;
-  title: string;
-};
 
 export type ColumnId = (typeof defaultCols)[number]["id"];

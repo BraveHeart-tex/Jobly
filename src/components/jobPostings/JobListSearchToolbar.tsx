@@ -1,6 +1,6 @@
 "use client";
 
-import { useJobsListPageSearchParams } from "@/hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import { cn } from "@/lib/utils";
 import JobListFilters from "./JobListFilters";
 import JobListLocationInput from "./JobListLocationInput";

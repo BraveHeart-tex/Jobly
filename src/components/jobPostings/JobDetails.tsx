@@ -2,16 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useBookmark } from "@/hooks/useBookmark";
-import { useDeleteBookmark } from "@/hooks/useDeleteBookmark";
-import { useJobsListPageSearchParams } from "@/hooks/useJobsListPageSearchParams";
-import { useMarkJobAsViewed } from "@/hooks/useMarkJobAsViewed";
+import { useDeleteBookmark } from "@/features/candidate/jobs/hooks/useDeleteBookmark";
+import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
+import { useMarkJobAsViewed } from "@/features/candidate/jobs/hooks/useMarkJobAsViewed";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { ArrowLeft, BookmarkPlus, BookmarkX } from "lucide-react";
 import { useEffect, useRef } from "react";
 import ApplyToJobDialog from "./ApplyToJobDialog";
 import CompanyLogo from "./CompanyLogo";
+import { useBookmark } from "@/features/candidate/jobs/hooks/useBookmark";
 
 interface JobDetailsProps {
   currentJobId: number;

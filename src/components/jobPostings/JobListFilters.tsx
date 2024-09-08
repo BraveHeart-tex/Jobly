@@ -21,7 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useJobsListPageSearchParams } from "@/hooks/useJobsListPageSearchParams";
+import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import { capitalizeString } from "@/lib/utils";
 import jobPostings, {
   type JobPostingWorkType,

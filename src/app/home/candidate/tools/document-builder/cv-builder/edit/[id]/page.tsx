@@ -1,7 +1,7 @@
-import ClientOnly from "@/components/tools/ClientOnly";
-import DocumentBuilderPanel from "@/components/tools/DocumentBuilderPanel";
-import DocumentBuilderPreview from "@/components/tools/DocumentBuilderPreview";
-import DocumentInitializer from "@/components/tools/DocumentInitializer";
+import ClientOnly from "@/components/common/ClientOnly";
+import DocumentBuilderPanel from "@/features/candidate/document-builder/components/DocumentBuilderPanel";
+import DocumentBuilderPreview from "@/features/candidate/document-builder/components/DocumentBuilderPreview";
+import DocumentInitializer from "@/features/candidate/document-builder/components/DocumentInitializer";
 import { buttonVariants } from "@/components/ui/button";
 import { isErrorObject } from "@/lib/guards";
 import { CANDIDATE_ROUTES } from "@/lib/routes";

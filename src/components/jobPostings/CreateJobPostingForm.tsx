@@ -24,7 +24,7 @@ import EditorInput from "@/components/EditorInput";
 import SelectInput from "@/components/SelectInput";
 import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
 import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
-import ClientOnly from "@/components/tools/ClientOnly";
+import ClientOnly from "@/components/common/ClientOnly";
 import { employmentOptions, workTypeOptions } from "./JobListFilters";
 import CreatableMultiSelect from "@/components/CreatableMultiSelect";
 

@@ -1,6 +1,6 @@
 import PageContainer from "@/components/PageContainer";
 import { validateRequestByRole } from "@/lib/auth/actions";
-import DocumentTabs from "../../../../../components/tools/DocumentTabs";
+import DocumentTabs from "../../../../../features/candidate/documents/components/DocumentTabs";
 
 const DocumentsPage = async () => {
   await validateRequestByRole(["candidate"]);
