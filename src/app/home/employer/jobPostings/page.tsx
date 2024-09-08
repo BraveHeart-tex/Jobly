@@ -1,11 +1,13 @@
 import PageContainer from "@/components/PageContainer";
 import { buttonVariants } from "@/components/ui/button";
+import { validateRequestByRole } from "@/lib/auth/actions";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 
-const JobPostingsPage = () => {
+const JobPostingsPage = async () => {
+  await validateRequestByRole(["employer"]);
   return (
     <div>
       <PageContainer>

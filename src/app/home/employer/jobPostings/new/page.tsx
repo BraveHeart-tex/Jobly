@@ -1,7 +1,9 @@
 import PageContainer from "@/components/PageContainer";
 import CreateJobPostingForm from "@/components/jobPostings/CreateJobPostingForm";
+import { validateRequestByRole } from "@/lib/auth/actions";
 
-const CreateNewJobPostingPage = () => {
+const CreateNewJobPostingPage = async () => {
+  await validateRequestByRole(["employer"]);
   return (
     <div>
       <PageContainer>

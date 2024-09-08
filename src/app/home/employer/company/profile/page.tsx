@@ -2,6 +2,8 @@ import PageContainer from "@/components/PageContainer";
 import CompanyProfileDetails from "@/components/companyProfile/CompanyProfileDetails";
 import CompanyProfileSetup from "@/components/companyProfile/CompanyProfileSetup";
 import { getCurrentUser } from "@/lib/auth/actions";
+import { SHARED_ROUTES } from "@/lib/routes";
+import { redirect } from "next/navigation";
 
 interface CompanyProfilePageSearchParams {
   hasToSetupCompanyInformation?: boolean;
@@ -16,6 +18,10 @@ const CompanyProfilePage = async ({
 }: CompanyProfilePageProps) => {
   const { hasToSetupCompanyInformation } = searchParams;
   const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    redirect(SHARED_ROUTES.LOGIN);
+  }
 
   const renderContent = () => {
     if (currentUser?.hasToSetupCompanyInformation) {
