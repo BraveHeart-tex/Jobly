@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import type { RouterOutputs } from "@/lib/types";
 import { type SignUpSchema, signUpSchema } from "@/schemas/auth/signUpSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { toast } from "sonner";
-import type { RouterOutputs } from "trpc-router-types";
 
 interface SignUpFormProps {
   portalType?: DBUser["role"];

@@ -1,9 +1,8 @@
 "use client";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
-import type { ArrayElement } from "@/lib/types";
+import type { ArrayElement, RouterOutputs } from "@/lib/types";
 import { cn, generateReadableEnumLabel } from "@/lib/utils";
 import { forwardRef } from "react";
-import type { RouterOutputs } from "trpc-router-types";
 import CompanyLogo from "./CompanyLogo";
 
 interface JobsListCardProps {

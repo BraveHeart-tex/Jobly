@@ -1,8 +1,8 @@
 "use client";
 
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { DocumentBuilderConfig } from "@/lib/types";
 import { useEffect } from "react";
+import type { DocumentBuilderConfig } from "../types";
 
 interface DocumentInitializerProps {
   documentData?: DocumentBuilderConfig;

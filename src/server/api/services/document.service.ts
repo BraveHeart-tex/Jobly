@@ -1,10 +1,7 @@
 "use server";
+import type { DocumentBuilderConfig } from "@/features/candidate/document-builder/types";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
-import type {
-  DocumentBuilderConfig,
-  MakeFieldsRequired,
-  Trx,
-} from "@/lib/types";
+import type { MakeFieldsRequired, Trx } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import {
   bulkDeleteFields,

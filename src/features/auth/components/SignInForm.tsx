@@ -12,13 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { SHARED_ROUTES } from "@/lib/routes";
+import type { RouterOutputs } from "@/lib/types";
 import { type SignInSchema, signInSchema } from "@/schemas/auth/signInSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { toast } from "sonner";
-import type { RouterOutputs } from "trpc-router-types";
 
 interface SignInFormProps {
   portalType?: DBUser["role"];

@@ -1,5 +1,4 @@
 "use client";
-import JobTrackerApplicationForm from "@/components/forms/jobTracker/JobTrackerApplicationForm";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -29,6 +28,7 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { TaskDragData } from "../types";
 import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
+import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
 
 interface JobCardProps {
   job: JobTrackerApplication;

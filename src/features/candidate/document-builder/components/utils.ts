@@ -12,9 +12,9 @@ import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import type { DocumentBuilderConfig } from "@/lib/types";
 import { exclude, groupEveryN } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import type { DocumentBuilderConfig } from "../types";
 
 export type SectionFieldWithValue = DocumentSectionField & {
   value: string;

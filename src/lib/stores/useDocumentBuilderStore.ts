@@ -1,10 +1,10 @@
+import type { DocumentBuilderConfig } from "@/features/candidate/document-builder/types";
 import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { DocumentBuilderConfig } from "../types";
 
 type SetSectionValueParams<K extends keyof DocumentSection> = {
   sectionId: DocumentSection["id"];

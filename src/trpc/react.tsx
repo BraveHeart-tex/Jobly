@@ -1,5 +1,6 @@
 "use client";
 
+import type { AppRouter } from "@/lib/types";
 import {
   MutationCache,
   QueryCache,
@@ -12,7 +13,6 @@ import { useState } from "react";
 import type React from "react";
 import { toast } from "sonner";
 import SuperJSON from "superjson";
-import type { AppRouter } from "trpc-router-types";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;

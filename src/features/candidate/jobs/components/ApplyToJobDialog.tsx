@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { APP_NAME } from "@/lib/constants";
+import type { RouterOutputs } from "@/lib/types";
 import { XIcon } from "lucide-react";
-import type { RouterOutputs } from "trpc-router-types";
 
 interface ApplyToJobDialogProps {
   jobDetails: RouterOutputs["userJobListing"]["getJobById"];

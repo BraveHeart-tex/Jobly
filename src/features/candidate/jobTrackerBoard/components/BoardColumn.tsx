@@ -20,7 +20,6 @@ import { cva } from "class-variance-authority";
 import { ListXIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 import { toast } from "sonner";
-import JobTrackerApplicationForm from "@/components/forms/jobTracker/JobTrackerApplicationForm";
 import {
   Card,
   CardContent,
@@ -36,6 +35,7 @@ import {
 } from "@/components/ui/tooltip";
 import { JobCard } from "./JobCard";
 import type { Column } from "../types";
+import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
 
 export type ColumnType = "Column";
 
