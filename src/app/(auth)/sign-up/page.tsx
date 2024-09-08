@@ -24,7 +24,7 @@ const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
   const portalType = searchParams.portalType ?? "candidate";
 
   return (
-    <AuthPageContainer portalType={portalType}>
+    <AuthPageContainer portalType={portalType} authType="Sign Up">
       <SignUpForm portalType={portalType} />
       <div className="mt-1 text-center text-sm">
         Already have an account?{" "}
