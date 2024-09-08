@@ -1,11 +1,12 @@
 "use client";
-import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
-import PDFViewer from "@/components/pdfs/PDFViewer";
-import { preparePdfData } from "@/components/pdfs/pdf.utils";
+
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import { useNetworkState } from "react-use";
+import PDFViewer from "./PDFViewer";
+import LondonTemplate from "./LondonTemplate";
+import { preparePdfData } from "./utils";
 
 const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;
 

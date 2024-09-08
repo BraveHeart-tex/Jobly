@@ -12,12 +12,12 @@ import {
 } from "@react-pdf/renderer";
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
-import CommaSeparatedText from "../CommaSeparatedText";
+import CommaSeparatedPDFText from "./CommaSeparatedPDFText";
 import type {
   CustomSection,
   MakeResumeDataReturn,
   makeResumeTemplateData,
-} from "../pdf.utils";
+} from "./utils";
 
 export const PDF_BODY_FONT_SIZE = 11 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 14 as const;
@@ -323,7 +323,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
           {firstName} {lastName}
           {jobTitle ? `, ${jobTitle}` : null}
         </Text>
-        <CommaSeparatedText
+        <CommaSeparatedPDFText
           style={styles.documentDescription}
           fields={[address, city, postalCode, placeOfBirth, phone, email]}
         />

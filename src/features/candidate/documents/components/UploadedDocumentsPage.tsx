@@ -3,7 +3,7 @@ import { UploadButton } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 import { Loader2, Upload } from "lucide-react";
 import type { ReactNode } from "react";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 const MyDocumentsTabs = () => {
   return (

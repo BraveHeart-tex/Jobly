@@ -1,6 +1,4 @@
 "use client";
-import LondonTemplate from "@/components/pdfs/London/LondonTemplate";
-import { preparePdfData } from "@/components/pdfs/pdf.utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,6 +25,8 @@ import { DateTime } from "luxon";
 import { useRouter } from "nextjs-toploader/app";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import LondonTemplate from "../../document-builder/components/LondonTemplate";
+import { preparePdfData } from "../../document-builder/components/utils";
 
 interface DocumentListItemProps {
   item: DocumentSelectModel;

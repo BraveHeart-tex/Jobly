@@ -1,5 +1,5 @@
 import PageContainer from "@/components/common/PageContainer";
-import MyDocumentsTabs from "@/components/uploadedDocuments/UploadedDocumentsPage";
+import MyDocumentsTabs from "@/features/candidate/documents/components/UploadedDocumentsPage";
 
 const MyDocumentsPage = () => {
   return (

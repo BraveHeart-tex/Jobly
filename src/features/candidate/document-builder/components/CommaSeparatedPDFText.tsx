@@ -1,12 +1,15 @@
 import { Text } from "@react-pdf/renderer";
 import React from "react";
 
-interface CommaSeparatedTextProps {
+interface CommaSeparatedPDFTextProps {
   style: Record<string, unknown>;
   fields: string[];
 }
 
-const CommaSeparatedText = ({ style, fields }: CommaSeparatedTextProps) => {
+const CommaSeparatedPDFText = ({
+  style,
+  fields,
+}: CommaSeparatedPDFTextProps) => {
   const nonEmptyFields = fields.filter((field) => field.trim() !== "");
 
   return (
@@ -21,4 +24,4 @@ const CommaSeparatedText = ({ style, fields }: CommaSeparatedTextProps) => {
   );
 };
 
-export default CommaSeparatedText;
+export default CommaSeparatedPDFText;
