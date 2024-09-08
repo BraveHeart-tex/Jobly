@@ -1,43 +1,27 @@
-import { relations } from "drizzle-orm";
-import {
-  index,
-  int,
-  mysqlTable,
-  primaryKey,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
+import skills from "./skills";
 
 const jobPostingSkills = mysqlTable(
   "JobPostingSkills",
   {
-    id: int("id").primaryKey().autoincrement().notNull(),
     jobPostingId: int("jobPostingId")
-      .notNull()
-      .references(() => jobPostings.id, {
-        onDelete: "cascade",
-      }),
-    skillName: varchar("skillName", { length: 256 }).notNull(),
+      .references(() => jobPostings.id)
+      .notNull(),
+    skillId: int("skillId")
+      .references(() => skills.id)
+      .notNull(),
   },
   (table) => {
     return {
-      jobId: index("jobId").on(table.jobPostingId),
-      JobSkill_id: primaryKey({
-        columns: [table.id],
+      JobPostingSkill_id: primaryKey({
+        columns: [table.jobPostingId, table.skillId],
         name: "JobPostingSkill_id",
       }),
+      jobPostingId: index("jobPostingId").on(table.jobPostingId),
+      skillId: index("skillId").on(table.skillId),
     };
   },
-);
-
-export const jobPostingSkillRelations = relations(
-  jobPostingSkills,
-  ({ one }) => ({
-    job: one(jobPostings, {
-      fields: [jobPostingSkills.jobPostingId],
-      references: [jobPostings.id],
-    }),
-  }),
 );
 
 export default jobPostingSkills;
