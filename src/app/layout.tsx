@@ -12,6 +12,7 @@ import { GeistSans } from "geist/font/sans";
 import type React from "react";
 import { extractRouterConfig } from "uploadthing/server";
 import { fileRouter } from "./api/uploadthing/core";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata = {
   title: APP_NAME,
@@ -30,6 +31,11 @@ export default function RootLayout({
             <Toaster richColors closeButton />
             <ConfirmDialog />
             <Navbar />
+            <NextTopLoader
+              showSpinner={false}
+              color="hsl(var(--primary))"
+              shadow="0 0 10px hsl(var(--primary)), 0 0 5px hsl(var(--primary))"
+            />
             {children}
           </ThemeProvider>
         </TRPCReactProvider>

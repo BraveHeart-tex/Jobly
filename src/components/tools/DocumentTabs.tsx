@@ -9,7 +9,7 @@ import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { motion } from "framer-motion";
 import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useId, useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../../hooks/useDocuments";

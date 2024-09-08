@@ -15,7 +15,7 @@ import { SHARED_ROUTES } from "@/lib/routes";
 import { type SignInSchema, signInSchema } from "@/schemas/auth/signInSchema";
 import type { DBUser } from "@/server/db/schema/users";
 import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { RouterOutputs } from "trpc-router-types";

@@ -14,7 +14,9 @@ import { CANDIDATE_ROUTES, EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
+
 import { useEffect } from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 

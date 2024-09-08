@@ -24,7 +24,7 @@ import { api } from "@/trpc/react";
 import { pdf } from "@react-pdf/renderer";
 import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
 import { DateTime } from "luxon";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 

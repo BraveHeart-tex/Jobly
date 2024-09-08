@@ -22,7 +22,7 @@ import {
   companyProfileSetupSchema,
 } from "@/schemas/companyProfileSetupSchema";
 import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import AutoComplete from "../AutoComplete";
