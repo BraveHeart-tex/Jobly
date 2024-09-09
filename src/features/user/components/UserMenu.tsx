@@ -9,8 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "@/features/auth/utils";
 import type { CtxUserAttributes } from "@/lib/auth";
-import { signOut } from "@/lib/auth/actions";
 import { CANDIDATE_ROUTES, EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { LockIcon, UserIcon } from "lucide-react";

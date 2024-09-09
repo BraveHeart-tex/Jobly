@@ -1,4 +1,4 @@
-import { validateRequestByRole } from "@/lib/auth/actions";
+import { validateRequestByRole } from "@/features/auth/utils";
 
 const CreateCoverLetterPage = async () => {
   await validateRequestByRole(["candidate"]);

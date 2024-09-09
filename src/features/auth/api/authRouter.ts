@@ -1,17 +1,17 @@
 import { userRepository } from "@/features/user/repositories/userRepository";
-import {
-  checkPasswordPwned,
-  checkPasswordStrength,
-  createSessionWithUserId,
-  hashPassword,
-  verifyPassword,
-} from "@/lib/auth/actions";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 import { signInSchema } from "@/schemas/auth/signInSchema";
 import { signUpSchema } from "@/schemas/auth/signUpSchema";
 import * as authService from "@/server/api/services/auth.service";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
+import { authActions } from "../actions/authActions";
+import {
+  checkPasswordStrength,
+  createSessionWithUserId,
+  hashPassword,
+  verifyPassword,
+} from "../utils";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -36,7 +36,7 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const isPasswordPwned = await checkPasswordPwned(password);
+      const isPasswordPwned = await authActions.checkPasswordPwned(password);
 
       if (isPasswordPwned) {
         return {

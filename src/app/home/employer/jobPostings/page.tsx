@@ -1,6 +1,6 @@
 import PageContainer from "@/components/common/PageContainer";
 import { buttonVariants } from "@/components/ui/button";
-import { validateRequestByRole } from "@/lib/auth/actions";
+import { validateRequestByRole } from "@/features/auth/utils";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { PlusIcon } from "lucide-react";

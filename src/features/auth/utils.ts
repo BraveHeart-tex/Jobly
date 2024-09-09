@@ -1,17 +1,15 @@
 "use server";
-
-// biome-ignore lint/correctness/noNodejsModules: This is server code
+// biome-ignore lint/correctness/noNodejsModules:
 import { createHash } from "node:crypto";
-import { type CtxUserAttributes, lucia } from "@/lib/auth/index";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
-import { getCompanyDetailsByEmployerId } from "@/server/api/services/company.service";
-import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
+import zxcvbn from "zxcvbn";
+import type { DBUser } from "@/server/db/schema/users";
+import { lucia } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import zxcvbn from "zxcvbn";
-import { SHARED_ROUTES } from "../routes";
-import { validateRequest } from "./validateRequest";
+import { SHARED_ROUTES } from "@/lib/routes";
+import { validateRequest } from "@/lib/auth/validateRequest";
 
 const DEFAULT_HASH_OPTIONS: Options = {
   memoryCost: 19456,
@@ -20,29 +18,9 @@ const DEFAULT_HASH_OPTIONS: Options = {
   parallelism: 1,
 };
 
-async function hashPasswordSHA1(password: string): Promise<string> {
+export async function hashPasswordSHA1(password: string): Promise<string> {
   return createHash("sha1").update(password).digest("hex").toUpperCase();
 }
-
-export const checkPasswordPwned = async (password: string) => {
-  const sha1Hash = await hashPasswordSHA1(password);
-  const prefix = sha1Hash.substring(0, 5);
-  const suffix = sha1Hash.slice(5);
-
-  const url = `https://api.pwnedpasswords.com/range/${prefix}`;
-  const response = await fetch(url);
-  const data = await response.text();
-
-  const hashes = data.split("\r\n").map((line: string) => line.split(":"));
-
-  for (const [hashSuffix] of hashes) {
-    if (hashSuffix?.toUpperCase() === suffix) {
-      return true;
-    }
-  }
-
-  return false;
-};
 
 export const checkPasswordStrength = async (password: string) => {
   const result = zxcvbn(password);
@@ -73,6 +51,17 @@ export const checkPasswordStrength = async (password: string) => {
     suggestions: result.feedback.suggestions,
     message: strengthMessage,
   };
+};
+
+export const hashPassword = async (password: string) => {
+  return hash(password, DEFAULT_HASH_OPTIONS);
+};
+
+export const verifyPassword = async (
+  hashedPassword: string,
+  password: string,
+) => {
+  return verify(hashedPassword, password, DEFAULT_HASH_OPTIONS);
 };
 
 export const createSessionWithUserId = async (userId: DBUser["id"]) => {
@@ -111,33 +100,4 @@ export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {
   }
 
   return { user, session };
-};
-
-export const hashPassword = async (password: string) => {
-  return hash(password, DEFAULT_HASH_OPTIONS);
-};
-
-export const verifyPassword = async (
-  hashedPassword: string,
-  password: string,
-) => {
-  return verify(hashedPassword, password, DEFAULT_HASH_OPTIONS);
-};
-
-export const getCurrentUser = async () => {
-  const result = await validateRequest();
-  if (!result.user) return;
-
-  const ctxUser: CtxUserAttributes = result.user;
-
-  if (ctxUser?.role === "employer") {
-    const companyDetails = await getCompanyDetailsByEmployerId(ctxUser.id);
-    if (!companyDetails) {
-      ctxUser.hasToSetupCompanyInformation = true;
-    } else {
-      ctxUser.companyId = companyDetails.id;
-    }
-  }
-
-  return ctxUser;
 };
