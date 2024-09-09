@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { URL_SEARCH_QUERY_KEYS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { Button } from "@/components/ui/button";
 
 interface PaginationProps {
   hasNextPage: boolean;

@@ -1,8 +1,8 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { getCompanyDetailsByEmployerId } from "../../services/company.service";
 import * as jobPostingService from "../../services/jobPosting.service";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
-import { getCompanyDetailsByEmployerId } from "../../services/company.service";
-import { TRPCError } from "@trpc/server";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure

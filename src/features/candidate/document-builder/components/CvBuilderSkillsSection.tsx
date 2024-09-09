@@ -1,11 +1,11 @@
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
 import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
 import CvBuilderSkillLevelSelector from "@/features/candidate/document-builder/components/CvBuilderSkillLevelSelector";
 import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
@@ -14,8 +14,8 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
 import { useRemoveFields } from "../hooks/useRemoveFields";
+import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const SKILL_SECTION_ITEMS_COUNT = 2;
 

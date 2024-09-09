@@ -1,3 +1,4 @@
+import type { getDocumentWithSectionsAndFields } from "@/features/candidate/documents/repositories/documentRepository";
 import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
@@ -13,7 +14,6 @@ import type {
   DocumentSectionInsertModel,
 } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
-import type { getDocumentWithSectionsAndFields } from "@/features/candidate/documents/repositories/documentRepository";
 
 export const getFieldInsertTemplateBySectionTag = (
   sectionId: DocumentSection["id"],

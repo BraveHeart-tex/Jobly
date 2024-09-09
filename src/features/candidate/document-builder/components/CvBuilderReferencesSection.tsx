@@ -1,6 +1,6 @@
-import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,

@@ -1,9 +1,9 @@
+import type { MakeFieldsRequired } from "@/lib/types";
 import type {
   JobTrackerApplication,
   JobTrackerApplicationInsertModel,
 } from "@/server/db/schema/jobTrackerApplications";
 import { jobTrackerApplicationRepository } from "../repositories/jobTrackerRepository";
-import type { MakeFieldsRequired } from "@/lib/types";
 
 export const jobTrackerApplicationService = {
   async getApplications(userId: number) {

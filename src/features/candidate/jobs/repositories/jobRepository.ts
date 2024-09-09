@@ -1,3 +1,5 @@
+import type { MakeFieldsRequired, Nullable } from "@/lib/types";
+import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
 import { db } from "@/server/db";
 import {
   companies,
@@ -5,15 +7,13 @@ import {
   userBookmarksJobPosting,
   userViewsJobPosting,
 } from "@/server/db/schema";
-import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
-import { withBookmarkJoin, withUserViewsJobJoin } from "../utils";
-import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
-import type { User } from "lucia";
 import type {
   JobPosting,
   JobPostingInsertModel,
 } from "@/server/db/schema/jobPostings";
-import type { MakeFieldsRequired, Nullable } from "@/lib/types";
+import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
+import type { User } from "lucia";
+import { withBookmarkJoin, withUserViewsJobJoin } from "../utils";
 
 export const jobRepository = {
   async getJobDetailsList({

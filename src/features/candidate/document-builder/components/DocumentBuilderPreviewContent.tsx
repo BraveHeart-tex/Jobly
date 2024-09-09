@@ -4,8 +4,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import { useNetworkState } from "react-use";
-import PDFViewer from "./PDFViewer";
 import LondonTemplate from "./LondonTemplate";
+import PDFViewer from "./PDFViewer";
 import { preparePdfData } from "./utils";
 
 const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;

@@ -1,6 +1,6 @@
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import jobPostings from "./jobPostings";
 import benefits from "./benefits";
+import jobPostings from "./jobPostings";
 
 const jobPostingBenefits = mysqlTable(
   "JobPostingBenefits",

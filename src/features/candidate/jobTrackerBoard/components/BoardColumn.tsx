@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -7,6 +14,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
@@ -20,21 +33,8 @@ import { cva } from "class-variance-authority";
 import { ListXIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 import { toast } from "sonner";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { JobCard } from "./JobCard";
 import type { Column } from "../types";
+import { JobCard } from "./JobCard";
 import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
 
 export type ColumnType = "Column";

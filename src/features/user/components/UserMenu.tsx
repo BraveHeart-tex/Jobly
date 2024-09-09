@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface UserMenuProps {
   user: CtxUserAttributes;

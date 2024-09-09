@@ -1,4 +1,5 @@
 "use client";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -25,9 +26,8 @@ import { cva } from "class-variance-authority";
 import { GripVertical, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import type { TaskDragData } from "../types";
 import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
+import type { TaskDragData } from "../types";
 import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
 
 interface JobCardProps {

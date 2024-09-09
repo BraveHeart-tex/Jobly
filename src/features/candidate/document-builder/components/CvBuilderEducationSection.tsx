@@ -8,6 +8,7 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
+import { useRemoveFields } from "../hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
@@ -15,7 +16,6 @@ import DocumentBuilderInput from "./DocumentBuilderInput";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
-import { useRemoveFields } from "../hooks/useRemoveFields";
 
 export const EDUCATION_SECTION_ITEMS_COUNT = 6;
 

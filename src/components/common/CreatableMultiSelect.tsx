@@ -1,12 +1,12 @@
 "use client";
 
-import CreatableSelect from "react-select/creatable";
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { ChevronDownIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ChevronDownIcon, XIcon } from "lucide-react";
 import type React from "react";
 import { forwardRef } from "react";
+import CreatableSelect from "react-select/creatable";
 
 const generateOptions = (baseOptions: (string | number)[]): OptionType[] => {
   return baseOptions.map((value) => ({

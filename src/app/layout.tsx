@@ -2,17 +2,17 @@ import "@/styles/globals.css";
 import "@/styles/reactPdf.css";
 import "@/styles/tiptap.css";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
+import Navbar from "@/components/common/Navbar";
 import ThemeProvider from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
 import { TRPCReactProvider } from "@/trpc/react";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { GeistSans } from "geist/font/sans";
+import NextTopLoader from "nextjs-toploader";
 import type React from "react";
 import { extractRouterConfig } from "uploadthing/server";
 import { fileRouter } from "./api/uploadthing/core";
-import NextTopLoader from "nextjs-toploader";
-import Navbar from "@/components/common/Navbar";
 
 export const metadata = {
   title: APP_NAME,

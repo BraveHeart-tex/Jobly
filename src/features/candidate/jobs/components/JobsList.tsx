@@ -1,4 +1,5 @@
 "use client";
+import Pagination from "@/components/common/Pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
@@ -13,7 +14,6 @@ import React, {
 import { useMedia } from "react-use";
 import JobDetails from "./JobDetails";
 import JobsListCard from "./JobsListCard";
-import Pagination from "@/components/common/Pagination";
 
 const JobsList = () => {
   const {

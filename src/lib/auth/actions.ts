@@ -4,6 +4,7 @@
 import { createHash } from "node:crypto";
 import { type CtxUserAttributes, lucia } from "@/lib/auth/index";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import { getCompanyDetailsByEmployerId } from "@/server/api/services/company.service";
 import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
@@ -11,7 +12,6 @@ import { redirect } from "next/navigation";
 import zxcvbn from "zxcvbn";
 import { SHARED_ROUTES } from "../routes";
 import { validateRequest } from "./validateRequest";
-import { getCompanyDetailsByEmployerId } from "@/server/api/services/company.service";
 
 const DEFAULT_HASH_OPTIONS: Options = {
   memoryCost: 19456,

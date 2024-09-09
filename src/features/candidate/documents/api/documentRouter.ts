@@ -1,4 +1,6 @@
+import * as documentService from "@/features/candidate/documents/services/documentService";
 import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   documentSectionFields,
   documentSections,
@@ -6,8 +8,6 @@ import {
 } from "@/server/db/schema";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import * as documentService from "@/features/candidate/documents/services/documentService";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
 export const documentRouter = createTRPCRouter({
   createDocumentAndRelatedEntities: protectedProcedure

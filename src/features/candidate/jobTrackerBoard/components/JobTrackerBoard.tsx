@@ -20,11 +20,11 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
+import { hasDraggableData } from "../utils";
 import { BoardColumn, BoardContainer } from "./BoardColumn";
 import { JobCard } from "./JobCard";
 import { coordinateGetter } from "./multipleContainersKeyboardPreset";
-import { hasDraggableData } from "../utils";
-import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
 
 interface JobTrackerApplicationsBoardProps {
   data: JobTrackerApplication[];

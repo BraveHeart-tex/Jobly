@@ -1,11 +1,4 @@
 "use client";
-import CvBuilderPersonalDetailsSection from "@/features/candidate/document-builder/components/CvBuilderPersonalDetailsSection";
-import CvBuilderProfessionalSummarySection from "@/features/candidate/document-builder/components/CvBuilderProfessionalSummarySection";
-import CvBuilderSkillsSection from "@/features/candidate/document-builder/components/CvBuilderSkillsSection";
-import CvBuilderWebsitesAndLinks from "@/features/candidate/document-builder/components/CvBuilderWebsitesAndLinks";
-import DocumentBuilderHeader from "@/features/candidate/document-builder/components/DocumentBuilderHeader";
-import DocumentBuilderViewToggle from "@/features/candidate/document-builder/components/DocumentBuilderViewToggle";
-import SectionsDndContext from "@/features/candidate/document-builder/components/SectionsDndContext";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Tooltip,
@@ -13,6 +6,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import CvBuilderPersonalDetailsSection from "@/features/candidate/document-builder/components/CvBuilderPersonalDetailsSection";
+import CvBuilderProfessionalSummarySection from "@/features/candidate/document-builder/components/CvBuilderProfessionalSummarySection";
+import CvBuilderSkillsSection from "@/features/candidate/document-builder/components/CvBuilderSkillsSection";
+import CvBuilderWebsitesAndLinks from "@/features/candidate/document-builder/components/CvBuilderWebsitesAndLinks";
+import DocumentBuilderHeader from "@/features/candidate/document-builder/components/DocumentBuilderHeader";
+import DocumentBuilderViewToggle from "@/features/candidate/document-builder/components/DocumentBuilderViewToggle";
+import SectionsDndContext from "@/features/candidate/document-builder/components/SectionsDndContext";
 import { useDocumentBuilderSearchParams } from "@/features/candidate/document-builder/hooks/useDocumentBuilderSearchParams";
 import {
   type INTERNAL_SECTION_TAG,
