@@ -1,14 +1,18 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { getCompanyDetailsByEmployerId } from "../../services/company.service";
-import * as jobPostingService from "../../services/jobPosting.service";
-import { createTRPCRouter, protectedProcedure } from "../../trpc";
+import { getCompanyDetailsByEmployerId } from "@/server/api/services/company.service";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
+import { jobPostings } from "@/server/db/schema";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure
     .input(
       z.object({
-        listingStatus: z.enum(["published", "draft", "expired"]).optional(),
+        status: z
+          .enum(jobPostings.status.enumValues)
+          .optional()
+          .default("published"),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -20,7 +24,7 @@ export const jobPostingRouter = createTRPCRouter({
             "Company not found. Please setup your company profile first.",
         });
       }
-      return jobPostingService.getJobPostings({
+      return employerJobPostingService.getJobPostings({
         ...input,
         companyId: company.id,
       });

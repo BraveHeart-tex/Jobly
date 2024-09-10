@@ -26,9 +26,12 @@ import {
 } from "@/schemas/jobPostingSchema";
 import { DateTime } from "luxon";
 import type { FieldErrors } from "react-hook-form";
-import { employmentOptions, workTypeOptions } from "./JobListFilters";
+import {
+  employmentOptions,
+  workTypeOptions,
+} from "@/features/candidate/jobs/components/JobListFilters";
 
-const createJobPostingFormSteps: StepItem<JobPostingSchema>[] = [
+const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
     stepTitle: "Job Basics",
     fields: ["title", "location", "workType", "employmentType"],
@@ -77,7 +80,7 @@ const SKILLS_AND_BENEFITS_STEP = 2;
 const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
-const CreateJobPostingForm = () => {
+const JobPostingForm = () => {
   const form = useExtendedForm<JobPostingSchema>(
     jobPostingSchema.omit({ companyId: true }),
   );
@@ -90,7 +93,7 @@ const CreateJobPostingForm = () => {
     gotoStep,
     handleStepChange,
   } = useMultiStepForm({
-    steps: createJobPostingFormSteps,
+    steps: jobPostingFormSteps,
     form,
     disabledSteps: [],
   });
@@ -318,7 +321,7 @@ const CreateJobPostingForm = () => {
 
   const renderControlButtons = () => {
     const isFirstStep = currentStep === 1;
-    const isLastStep = currentStep === createJobPostingFormSteps.length;
+    const isLastStep = currentStep === jobPostingFormSteps.length;
 
     return (
       <div
@@ -367,7 +370,7 @@ const CreateJobPostingForm = () => {
         currentStep={currentStep}
         focusOnErroredFieldInStep={focusOnErroredFieldInStep}
         formErrors={form.formState.errors}
-        formSteps={createJobPostingFormSteps}
+        formSteps={jobPostingFormSteps}
         gotoStep={gotoStep}
         disabledSteps={[]}
         styles={{
@@ -391,4 +394,4 @@ const CreateJobPostingForm = () => {
   );
 };
 
-export default CreateJobPostingForm;
+export default JobPostingForm;

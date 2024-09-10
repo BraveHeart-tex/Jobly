@@ -4,7 +4,7 @@ import { jobTrackerRouter } from "@/features/candidate/jobTrackerBoard/api/jobTr
 import { userJobListingRouter } from "@/features/candidate/jobs/api/jobRouter";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { companyRouter } from "./routers/employer/companyRouter";
-import { jobPostingRouter } from "./routers/employer/jobPostingRouter";
+import { jobPostingRouter } from "@/features/employer/jobPosting/api/jobPostingRouter";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
