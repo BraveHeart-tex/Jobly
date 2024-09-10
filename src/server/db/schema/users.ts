@@ -1,4 +1,4 @@
-import type { InferSelectModel } from "drizzle-orm";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   index,
   int,
@@ -31,5 +31,6 @@ const users = mysqlTable(
 );
 
 export type DBUser = InferSelectModel<typeof users>;
+export type DBUserInsertModel = InferInsertModel<typeof users>;
 
 export default users;

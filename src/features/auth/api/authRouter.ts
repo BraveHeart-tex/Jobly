@@ -1,8 +1,6 @@
-import { userRepository } from "@/features/user/repositories/userRepository";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 import { signInSchema } from "@/schemas/auth/signInSchema";
 import { signUpSchema } from "@/schemas/auth/signUpSchema";
-import * as authService from "@/server/api/services/auth.service";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { authActions } from "../actions/authActions";
@@ -12,6 +10,7 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utils";
+import { userService } from "@/features/user/services/userService";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -27,7 +26,7 @@ export const authRouter = createTRPCRouter({
 
       const { email, firstName, lastName, password, role } = input;
 
-      const userAlreadyExists = await userRepository.getUserByEmail(email);
+      const userAlreadyExists = await userService.getUserByEmail(email);
 
       if (userAlreadyExists) {
         throw new TRPCError({
@@ -61,7 +60,7 @@ export const authRouter = createTRPCRouter({
 
       const hashedPassword = await hashPassword(password);
 
-      const userId = await authService.signUp({
+      const userId = await userService.createUser({
         email,
         firstName,
         lastName,
@@ -96,7 +95,7 @@ export const authRouter = createTRPCRouter({
       }
 
       const { email, password } = input;
-      const existingUser = await userRepository.getUserByEmail(email);
+      const existingUser = await userService.getUserByEmail(email);
       if (!existingUser) {
         return {
           error: "Incorrect username or password.",
