@@ -48,8 +48,12 @@ export const documentRouter = createTRPCRouter({
     }),
   deleteDocument: protectedProcedure
     .input(z.object({ documentId: z.number() }))
-    .mutation(async ({ input: { documentId } }) => {
-      return documentService.deleteDocument(documentId);
+    .mutation(async ({ ctx, input: { documentId } }) => {
+      const userId = ctx.user.id;
+      return documentService.deleteDocument({
+        documentId,
+        userId,
+      });
     }),
   saveDocumentAndRelatedEntities: protectedProcedure
     .input(saveDocumentDetailsSchema.partial())

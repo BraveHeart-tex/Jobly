@@ -100,8 +100,16 @@ export const getDocumentsByUserId = (userId: User["id"]) => {
     .orderBy(desc(documents.createdAt));
 };
 
-export const deleteDocumentById = (documentId: DocumentSelectModel["id"]) => {
-  return db.delete(documents).where(eq(documents.id, documentId));
+export const deleteDocumentById = ({
+  documentId,
+  userId,
+}: {
+  documentId: DocumentSelectModel["id"];
+  userId: User["id"];
+}) => {
+  return db
+    .delete(documents)
+    .where(and(eq(documents.id, documentId), eq(documents.userId, userId)));
 };
 
 export const bulkDeleteFields = (fieldIds: DocumentSectionField["id"][]) => {

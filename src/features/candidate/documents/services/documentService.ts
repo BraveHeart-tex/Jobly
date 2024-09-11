@@ -47,8 +47,17 @@ export const getUserDocuments = async (userId: User["id"]) => {
   return getDocumentsByUserId(userId);
 };
 
-export const deleteDocument = async (documentId: DocumentSelectModel["id"]) => {
-  return deleteDocumentById(documentId);
+export const deleteDocument = async ({
+  documentId,
+  userId,
+}: {
+  documentId: DocumentSelectModel["id"];
+  userId: User["id"];
+}) => {
+  return deleteDocumentById({
+    documentId,
+    userId,
+  });
 };
 
 export const updateDocument = async (
