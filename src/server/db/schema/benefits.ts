@@ -1,3 +1,4 @@
+import type { InferInsertModel } from "drizzle-orm";
 import {
   index,
   int,
@@ -19,5 +20,7 @@ const benefits = mysqlTable(
     };
   },
 );
+
+export type BenefitInsertModel = InferInsertModel<typeof benefits>;
 
 export default benefits;

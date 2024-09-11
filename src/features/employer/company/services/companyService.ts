@@ -1,9 +1,9 @@
 import { db } from "@/server/db";
 import type { CompanySelectModel } from "@/server/db/schema/companies";
+import { TRPCError } from "@trpc/server";
 import { companyRepository } from "../repositories/companyRepository";
 import { userCompanyRepository } from "../repositories/userCompanyRepository";
 import type { CreateCompanyParams } from "../types";
-import { TRPCError } from "@trpc/server";
 
 export const companyService = {
   async createCompany(data: CreateCompanyParams) {

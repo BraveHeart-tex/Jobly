@@ -1,7 +1,7 @@
+import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 import type { CtxUserAttributes } from "@/lib/auth";
 import { validateRequest } from "@/lib/auth/validateRequest";
 import { hashPasswordSHA1 } from "../utils";
-import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 
 export const authActions = {
   async checkPasswordPwned(password: string) {

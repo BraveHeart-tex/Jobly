@@ -1,3 +1,4 @@
+import type { InferInsertModel } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import benefits from "./benefits";
 import jobPostings from "./jobPostings";
@@ -23,5 +24,9 @@ const jobPostingBenefits = mysqlTable(
     };
   },
 );
+
+export type JobPostingBenefitInsertModel = InferInsertModel<
+  typeof jobPostingBenefits
+>;
 
 export default jobPostingBenefits;

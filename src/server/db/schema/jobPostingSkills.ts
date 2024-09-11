@@ -1,3 +1,4 @@
+import type { InferInsertModel } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 import skills from "./skills";
@@ -23,5 +24,9 @@ const jobPostingSkills = mysqlTable(
     };
   },
 );
+
+export type JobPostingSkillInsertModel = InferInsertModel<
+  typeof jobPostingSkills
+>;
 
 export default jobPostingSkills;

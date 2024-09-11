@@ -1,8 +1,8 @@
-import { companyProfileSetupSchema } from "@/schemas/companyProfileSetupSchema";
-import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 import { companyService } from "@/features/employer/company/services/companyService";
+import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
+import { companyProfileSetupSchema } from "@/schemas/companyProfileSetupSchema";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 export const companyRouter = createTRPCRouter({
   registerCompanyDetails: protectedProcedure

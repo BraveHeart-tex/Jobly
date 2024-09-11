@@ -1,9 +1,10 @@
+import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
+import { jobPostingSchema } from "@/schemas/jobPostingSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { userCompanyService } from "../../company/services/userCompanyService";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure
@@ -27,6 +28,34 @@ export const jobPostingRouter = createTRPCRouter({
         });
       }
       return employerJobPostingService.getJobPostings({
+        ...input,
+        companyId: company.id,
+      });
+    }),
+  createJobPosting: protectedProcedure
+    .input(jobPostingSchema.omit({ companyId: true }))
+    .mutation(async ({ ctx, input }) => {
+      const user = ctx.user;
+      if (user.role !== "employer") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+      }
+
+      const company = await userCompanyService.getUserCompanyDetailsByUserId(
+        user.id,
+      );
+
+      if (!company) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "Company not found. Please setup your company profile first to create a job posting.",
+        });
+      }
+
+      return employerJobPostingService.createJobPosting({
         ...input,
         companyId: company.id,
       });
