@@ -4,6 +4,7 @@ import CreatableMultiSelect from "@/components/common/CreatableMultiSelect";
 import DateInput from "@/components/common/DateInput";
 import EditorInput from "@/components/common/EditorInput";
 import SelectInput from "@/components/common/SelectInput";
+import AnimatedFormFieldsContainer from "@/components/multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
 import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
 import { Button } from "@/components/ui/button";
@@ -384,10 +385,14 @@ const JobPostingForm = () => {
         <form
           onSubmit={form.handleSubmit(onSubmit, onFormError)}
           key={currentStep}
-          className="flex flex-col h-[calc(100vh-19rem)] overflow-y-auto px-2 overflow-x-hidden lg:col-span-9 gap-8"
+          className="lg:col-span-9"
         >
-          {renderFormFields()}
-          <div>{renderControlButtons()}</div>
+          <div className="flex flex-col h-[calc(100vh-32rem)] overflow-y-auto px-2 overflow-x-hidden gap-8">
+            <AnimatedFormFieldsContainer>
+              {renderFormFields()}
+            </AnimatedFormFieldsContainer>
+          </div>
+          <div className="mt-4">{renderControlButtons()}</div>
         </form>
       </Form>
     </div>
