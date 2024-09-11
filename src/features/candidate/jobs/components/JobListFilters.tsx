@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
-import { capitalizeString } from "@/lib/utils";
+import { generateReadableEnumLabel } from "@/lib/utils";
 import jobPostings, {
   type JobPostingWorkType,
   type JobPostingEmploymentType,
@@ -30,18 +30,18 @@ import jobPostings, {
 import { SlidersHorizontal } from "lucide-react";
 
 export const employmentOptions: {
-  label: Capitalize<JobPostingEmploymentType>;
+  label: string;
   value: JobPostingEmploymentType;
 }[] = jobPostings.employmentType.enumValues.map((employmentType) => ({
-  label: capitalizeString<JobPostingEmploymentType>(employmentType),
+  label: generateReadableEnumLabel(employmentType),
   value: employmentType,
 }));
 
 export const workTypeOptions: {
-  label: Capitalize<JobPostingWorkType>;
+  label: string;
   value: JobPostingWorkType;
 }[] = jobPostings.workType.enumValues.map((workType) => ({
-  label: capitalizeString<JobPostingWorkType>(workType),
+  label: generateReadableEnumLabel(workType),
   value: workType,
 }));
 
