@@ -1,4 +1,3 @@
-import type { GenericServiceError } from "@/lib/types";
 import type {
   CompanyInsertModel,
   CompanySelectModel,
@@ -11,5 +10,3 @@ export interface CreateCompanyParams extends CompanyInsertModel {
 export interface CreateCompanySuccess {
   companyId: CompanySelectModel["id"];
 }
-
-export type CreateCompanyResult = GenericServiceError | CreateCompanySuccess;

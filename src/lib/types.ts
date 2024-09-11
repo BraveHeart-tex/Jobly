@@ -1,10 +1,6 @@
 import type { appRouter } from "@/server/api/root";
 import type * as schema from "@/server/db/schema";
-import type {
-  TRPCError,
-  inferRouterInputs,
-  inferRouterOutputs,
-} from "@trpc/server";
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import type { ExtractTablesWithRelations } from "drizzle-orm";
 import type { MySqlTransaction } from "drizzle-orm/mysql-core";
 import type {
@@ -60,8 +56,3 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export type Nullable<T> = T | null;
-
-export interface GenericServiceError {
-  error: string;
-  code: TRPCError["code"];
-}

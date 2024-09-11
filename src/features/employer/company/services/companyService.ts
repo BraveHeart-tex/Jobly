@@ -2,10 +2,11 @@ import { db } from "@/server/db";
 import type { CompanySelectModel } from "@/server/db/schema/companies";
 import { companyRepository } from "../repositories/companyRepository";
 import { userCompanyRepository } from "../repositories/userCompanyRepository";
-import type { CreateCompanyParams, CreateCompanyResult } from "../types";
+import type { CreateCompanyParams } from "../types";
+import { TRPCError } from "@trpc/server";
 
 export const companyService = {
-  async createCompany(data: CreateCompanyParams): Promise<CreateCompanyResult> {
+  async createCompany(data: CreateCompanyParams) {
     return await db.transaction(async (transaction) => {
       const genericErrorMessage =
         "We encountered a problem while registering the company. Please try again later.";
@@ -18,10 +19,10 @@ export const companyService = {
 
         if (hasAlreadyCreatedCompany) {
           transaction.rollback();
-          return {
-            error: "You already have a company registered.",
+          throw new TRPCError({
+            message: "You already have a company registered.",
             code: "BAD_REQUEST",
-          };
+          });
         }
 
         const insertedCompanyId = await companyRepository.createCompany(
@@ -31,10 +32,10 @@ export const companyService = {
 
         if (!insertedCompanyId) {
           transaction.rollback();
-          return {
-            error: genericErrorMessage,
+          throw new TRPCError({
+            message: genericErrorMessage,
             code: "INTERNAL_SERVER_ERROR",
-          };
+          });
         }
 
         const userCompanyInsertId =
@@ -48,10 +49,10 @@ export const companyService = {
 
         if (!userCompanyInsertId) {
           transaction.rollback();
-          return {
-            error: genericErrorMessage,
+          throw new TRPCError({
+            message: genericErrorMessage,
             code: "INTERNAL_SERVER_ERROR",
-          };
+          });
         }
 
         return {
@@ -60,10 +61,14 @@ export const companyService = {
       } catch (error) {
         transaction.rollback();
         console.error("companyService.createCompany error", error);
-        return {
-          error: genericErrorMessage,
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
+        throw new TRPCError({
+          message: genericErrorMessage,
           code: "INTERNAL_SERVER_ERROR",
-        };
+        });
       }
     });
   },

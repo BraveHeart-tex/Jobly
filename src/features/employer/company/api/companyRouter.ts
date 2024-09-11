@@ -21,13 +21,6 @@ export const companyRouter = createTRPCRouter({
         userId: user.id,
       });
 
-      if ("error" in createCompanyResult) {
-        throw new TRPCError({
-          code: createCompanyResult.code,
-          message: createCompanyResult.error,
-        });
-      }
-
       return {
         companyId: createCompanyResult.companyId,
       };
