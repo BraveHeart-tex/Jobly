@@ -387,11 +387,9 @@ const JobPostingForm = () => {
           key={currentStep}
           className="lg:col-span-9"
         >
-          <div className="flex flex-col h-[calc(100vh-32rem)] overflow-y-auto px-2 overflow-x-hidden gap-8">
-            <AnimatedFormFieldsContainer>
-              {renderFormFields()}
-            </AnimatedFormFieldsContainer>
-          </div>
+          <AnimatedFormFieldsContainer>
+            {renderFormFields()}
+          </AnimatedFormFieldsContainer>
           <div className="mt-4">{renderControlButtons()}</div>
         </form>
       </Form>

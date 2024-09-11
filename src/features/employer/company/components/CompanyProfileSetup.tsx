@@ -25,11 +25,11 @@ import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
-import AutoComplete from "../../../../components/common/AutoComplete";
-import SelectInput from "../../../../components/common/SelectInput";
-import AnimatedFormFieldsContainer from "../../../../components/multiStepForm/AnimatedFormFieldsContainer";
-import MultiFormStepsPanel from "../../../../components/multiStepForm/MultiFormStepsPanel";
-import MultiStepFormSummary from "../../../../components/multiStepForm/MultiStepFormSummary";
+import AutoComplete from "@/components/common/AutoComplete";
+import SelectInput from "@/components/common/SelectInput";
+import AnimatedFormFieldsContainer from "@/components/multiStepForm/AnimatedFormFieldsContainer";
+import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
+import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
 
 const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
   {
@@ -352,7 +352,6 @@ const CompanyProfileSetup = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, onFormError)}
-              className="grid gap-4 h-[calc(100vh-30rem)] overflow-y-auto px-2 overflow-x-hidden"
               key={currentStep}
             >
               <AnimatedFormFieldsContainer>

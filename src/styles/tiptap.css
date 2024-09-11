@@ -2,6 +2,8 @@
 	min-height: 200px;
 	padding: 10px;
 	background: hsl(var(--muted) / 0.3);
+	max-height: 200px;
+	overflow: auto;
 }
 
 .tiptap p.is-editor-empty:first-child::before {
