@@ -1,4 +1,4 @@
-import type { MakeFieldsRequired, Trx } from "@/lib/types";
+import type { MakeFieldsRequired, Transaction } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
@@ -13,7 +13,7 @@ import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const upsertDocument = async (
-  trx: Trx,
+  trx: Transaction,
   documentValues: SaveDocumentDetailsSchema["document"],
 ) => {
   return trx
@@ -26,7 +26,7 @@ export const upsertDocument = async (
 };
 
 export const upsertSections = (
-  trx: Trx,
+  trx: Transaction,
   sectionValues: SaveDocumentDetailsSchema["sections"],
 ) => {
   return trx
@@ -38,7 +38,7 @@ export const upsertSections = (
 };
 
 export const upsertSectionFields = (
-  trx: Trx,
+  trx: Transaction,
   fields: SaveDocumentDetailsSchema["fields"],
 ) => {
   return trx
@@ -54,7 +54,7 @@ export const upsertSectionFields = (
 };
 
 export const upsertSectionFieldValues = (
-  trx: Trx,
+  trx: Transaction,
   fieldValues: SaveDocumentDetailsSchema["fieldValues"],
 ) => {
   return trx

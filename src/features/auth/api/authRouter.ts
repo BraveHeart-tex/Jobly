@@ -1,3 +1,4 @@
+import { userService } from "@/features/user/services/userService";
 import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 import { signInSchema } from "@/schemas/auth/signInSchema";
 import { signUpSchema } from "@/schemas/auth/signUpSchema";
@@ -10,7 +11,6 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utils";
-import { userService } from "@/features/user/services/userService";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure

@@ -2,13 +2,13 @@ import ColorModeToggle from "@/components/common/ColorModeToggle";
 import DesktopNavigationLinks from "@/components/common/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/common/MobileNavigationLinks";
 import NavbarContainer from "@/components/common/NavbarContainer";
+import { authActions } from "@/features/auth/actions/authActions";
+import GuestAuthPopover from "@/features/user/components/GuestAuthPopover";
 import UserMenu from "@/features/user/components/UserMenu";
 import { APP_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import Image from "next/image";
 import Link from "next/link";
-import GuestAuthPopover from "@/features/user/components/GuestAuthPopover";
-import { authActions } from "@/features/auth/actions/authActions";
 
 const Navbar = async () => {
   const currentUser = await authActions.getCurrentUser();

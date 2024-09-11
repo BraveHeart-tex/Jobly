@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
-import { and, eq, gt, lt } from "drizzle-orm";
 import { jobPostings } from "@/server/db/schema";
 import type { JobPosting } from "@/server/db/schema/jobPostings";
+import { and, eq, gt, lt } from "drizzle-orm";
 
 export const employerJobPostingRepository = {
   async getActiveJobPostingsByCompanyId(companyId: JobPosting["companyId"]) {

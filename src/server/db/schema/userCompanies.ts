@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
   datetime,
   index,
@@ -32,5 +32,8 @@ const userCompanies = mysqlTable(
     };
   },
 );
+
+export type UserCompany = InferSelectModel<typeof userCompanies>;
+export type UserCompanyInsertModel = InferInsertModel<typeof userCompanies>;
 
 export default userCompanies;

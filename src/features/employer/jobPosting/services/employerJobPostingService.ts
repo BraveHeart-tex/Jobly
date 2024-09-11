@@ -1,5 +1,5 @@
-import type { GetEmployerJobPostingsParams } from "../types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
+import type { GetEmployerJobPostingsParams } from "../types";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {

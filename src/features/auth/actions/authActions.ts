@@ -1,7 +1,7 @@
 import type { CtxUserAttributes } from "@/lib/auth";
 import { validateRequest } from "@/lib/auth/validateRequest";
-import { getCompanyDetailsByEmployerId } from "@/server/api/services/company.service";
 import { hashPasswordSHA1 } from "../utils";
+import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 
 export const authActions = {
   async checkPasswordPwned(password: string) {
@@ -31,7 +31,8 @@ export const authActions = {
     const ctxUser: CtxUserAttributes = result.user;
 
     if (ctxUser?.role === "employer") {
-      const companyDetails = await getCompanyDetailsByEmployerId(ctxUser.id);
+      const companyDetails =
+        await userCompanyService.getUserCompanyDetailsByUserId(ctxUser.id);
       if (!companyDetails) {
         ctxUser.hasToSetupCompanyInformation = true;
       } else {

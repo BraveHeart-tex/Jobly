@@ -16,6 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  employmentOptions,
+  workTypeOptions,
+} from "@/features/candidate/jobs/components/JobListFilters";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
@@ -26,10 +30,6 @@ import {
 } from "@/schemas/jobPostingSchema";
 import { DateTime } from "luxon";
 import type { FieldErrors } from "react-hook-form";
-import {
-  employmentOptions,
-  workTypeOptions,
-} from "@/features/candidate/jobs/components/JobListFilters";
 
 const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {

@@ -1,9 +1,9 @@
+import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { jobPostings } from "@/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { getCompanyDetailsByEmployerId } from "@/server/api/services/company.service";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
-import { jobPostings } from "@/server/db/schema";
+import { userCompanyService } from "../../company/services/userCompanyService";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure
@@ -16,7 +16,9 @@ export const jobPostingRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const company = await getCompanyDetailsByEmployerId(ctx.user.id);
+      const company = await userCompanyService.getUserCompanyDetailsByUserId(
+        ctx.user.id,
+      );
       if (!company) {
         throw new TRPCError({
           code: "BAD_REQUEST",

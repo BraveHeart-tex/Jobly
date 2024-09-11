@@ -1,15 +1,15 @@
 "use server";
 // biome-ignore lint/correctness/noNodejsModules:
 import { createHash } from "node:crypto";
-import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
-import { type Options, hash, verify } from "@node-rs/argon2";
-import zxcvbn from "zxcvbn";
-import type { DBUser } from "@/server/db/schema/users";
 import { lucia } from "@/lib/auth";
+import { validateRequest } from "@/lib/auth/validateRequest";
+import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
+import { SHARED_ROUTES } from "@/lib/routes";
+import type { DBUser } from "@/server/db/schema/users";
+import { type Options, hash, verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { SHARED_ROUTES } from "@/lib/routes";
-import { validateRequest } from "@/lib/auth/validateRequest";
+import zxcvbn from "zxcvbn";
 
 const DEFAULT_HASH_OPTIONS: Options = {
   memoryCost: 19456,

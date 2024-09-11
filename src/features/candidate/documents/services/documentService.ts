@@ -19,7 +19,7 @@ import {
   normalizeDocumentStructure,
 } from "@/features/candidate/documents/utils";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
-import type { MakeFieldsRequired, Trx } from "@/lib/types";
+import type { MakeFieldsRequired, Transaction } from "@/lib/types";
 import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { db } from "@/server/db";
 import {
@@ -130,7 +130,7 @@ export const createDocumentAndRelatedEntities = async (
 };
 
 const insertSections = async (
-  trx: Trx,
+  trx: Transaction,
   sections: DocumentSectionInsertModel[],
 ) => {
   const result = await trx
@@ -142,7 +142,7 @@ const insertSections = async (
 };
 
 const insertFields = async (
-  trx: Trx,
+  trx: Transaction,
   sectionId: DocumentSection["id"],
   fields: Omit<DocumentSectionFieldInsertModel, "sectionId">[],
 ) => {
@@ -160,7 +160,7 @@ const insertFields = async (
 };
 
 const insertFieldValues = async (
-  trx: Trx,
+  trx: Transaction,
   fieldIds: DocumentSectionField["id"][],
 ) => {
   const result = await trx
