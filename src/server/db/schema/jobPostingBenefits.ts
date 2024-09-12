@@ -6,6 +6,7 @@ import jobPostings from "./jobPostings";
 const jobPostingBenefits = mysqlTable(
   "JobPostingBenefits",
   {
+    id: int("id").autoincrement().notNull().primaryKey(),
     jobPostingId: int("jobPostingId")
       .references(() => jobPostings.id)
       .notNull(),
@@ -16,7 +17,7 @@ const jobPostingBenefits = mysqlTable(
   (table) => {
     return {
       JobPostingBenefit_id: primaryKey({
-        columns: [table.jobPostingId, table.benefitId],
+        columns: [table.id],
         name: "JobPostingBenefit_id",
       }),
       jobPostingId: index("jobPostingId").on(table.jobPostingId),

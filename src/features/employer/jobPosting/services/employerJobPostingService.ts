@@ -45,12 +45,11 @@ export const employerJobPostingService = {
           jobPostingId: insertedJobPostingId,
         };
       } catch (error) {
-        transaction.rollback();
-
         console.error(
           "employerJobPostingService.createJobPosting error",
           error,
         );
+        transaction.rollback();
 
         if (error instanceof TRPCError) {
           throw error;

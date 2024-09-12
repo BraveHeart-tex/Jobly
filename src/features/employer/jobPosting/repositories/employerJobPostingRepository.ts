@@ -44,7 +44,10 @@ export const employerJobPostingRepository = {
     const dbLayer = transaction || db;
     const [result] = await dbLayer
       .insert(jobPostings)
-      .values(data)
+      .values({
+        ...data,
+        status: "published",
+      })
       .$returningId();
     return result?.id;
   },

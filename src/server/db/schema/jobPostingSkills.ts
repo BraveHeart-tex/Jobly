@@ -6,6 +6,7 @@ import skills from "./skills";
 const jobPostingSkills = mysqlTable(
   "JobPostingSkills",
   {
+    id: int("id").autoincrement().notNull().primaryKey(),
     jobPostingId: int("jobPostingId")
       .references(() => jobPostings.id)
       .notNull(),
@@ -16,7 +17,7 @@ const jobPostingSkills = mysqlTable(
   (table) => {
     return {
       JobPostingSkill_id: primaryKey({
-        columns: [table.jobPostingId, table.skillId],
+        columns: [table.id],
         name: "JobPostingSkill_id",
       }),
       jobPostingId: index("jobPostingId").on(table.jobPostingId),

@@ -8,6 +8,7 @@ import Link from "next/link";
 
 const JobPostingsPage = async () => {
   await validateRequestByRole(["employer"]);
+
   return (
     <div>
       <PageContainer>

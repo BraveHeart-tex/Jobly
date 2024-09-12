@@ -24,13 +24,17 @@ import {
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
 import {
   type JobPostingSchema,
   jobPostingSchema,
 } from "@/schemas/jobPostingSchema";
+import { api } from "@/trpc/react";
 import { DateTime } from "luxon";
+import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
+import { toast } from "sonner";
 
 const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -82,10 +86,17 @@ const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
 const JobPostingForm = () => {
+  const router = useRouter();
   const form = useExtendedForm<JobPostingSchema>(
     jobPostingSchema.omit({ companyId: true }),
   );
-  const isPending = false;
+  const { mutate: createJobPosting, isPending } =
+    api.jobPosting.createJobPosting.useMutation({
+      onSuccess: () => {
+        toast.success("Job posting created successfully.");
+        router.push(EMPLOYER_ROUTES.ACTIVE_LISTINGS);
+      },
+    });
 
   const {
     currentStep,
@@ -100,7 +111,7 @@ const JobPostingForm = () => {
   });
 
   const onSubmit = (values: JobPostingSchema) => {
-    console.info(values);
+    createJobPosting(values);
   };
 
   const renderFormFields = () => {

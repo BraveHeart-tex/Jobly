@@ -141,6 +141,13 @@
       "when": 1725779362864,
       "tag": "0019_mature_skullbuster",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1726122990452,
+      "tag": "0020_wandering_dark_beast",
+      "breakpoints": true
     }
   ]
 }
