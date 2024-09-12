@@ -104,6 +104,7 @@ const JobPostingForm = () => {
     goToFirstErroredStep,
     gotoStep,
     handleStepChange,
+    goToStepByKey,
   } = useMultiStepForm({
     steps: jobPostingFormSteps,
     form,
@@ -180,19 +181,6 @@ const JobPostingForm = () => {
               )}
             />
           </div>
-          <FormField
-            control={form.control}
-            name="salaryRange"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Salary Range (Optional)</FormLabel>
-                <FormControl>
-                  <Input {...field} value={field.value || ""} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </>
       );
     }
@@ -243,6 +231,19 @@ const JobPostingForm = () => {
                       field.onChange([...field.value, value]);
                     }}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="salaryRange"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Salary Range (Optional)</FormLabel>
+                <FormControl>
+                  <Input {...field} value={field.value || ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -301,29 +302,42 @@ const JobPostingForm = () => {
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <MultiStepFormSummary
+        <MultiStepFormSummary<JobPostingSchema>
+          goToStepByKey={goToStepByKey}
           summarizedSteps={[
-            { label: "Job Posting Title", value: form.watch("title") },
-            { label: "Location", value: form.watch("location") },
+            {
+              label: "Job Posting Title",
+              value: form.watch("title"),
+              key: "title",
+            },
+            {
+              label: "Location",
+              value: form.watch("location"),
+              key: "location",
+            },
             {
               label: "Work Type",
               value: capitalizeString(form.watch("workType") || ""),
+              key: "workType",
             },
             {
               label: "Employment Type",
               value: generateReadableEnumLabel(
                 form.watch("employmentType") || "",
               ),
+              key: "employmentType",
             },
             {
               label: "Salary Range",
               value: form.watch("salaryRange"),
+              key: "salaryRange",
             },
             {
               label: "Posting Expiration Date",
               value: DateTime.fromISO(form.watch("expiresAt")).toLocaleString(
                 DateTime.DATETIME_MED_WITH_WEEKDAY,
               ),
+              key: "expiresAt",
             },
           ]}
         />

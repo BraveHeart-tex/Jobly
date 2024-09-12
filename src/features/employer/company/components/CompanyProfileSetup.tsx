@@ -105,6 +105,7 @@ const CompanyProfileSetup = () => {
     gotoStep,
     goToFirstErroredStep,
     handleStepChange,
+    goToStepByKey,
   } = useMultiStepForm<CompanyProfileSetupSchema>({
     steps: companyProfileSteps,
     form,
@@ -262,21 +263,48 @@ const CompanyProfileSetup = () => {
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <MultiStepFormSummary
+        <MultiStepFormSummary<CompanyProfileSetupSchema>
+          goToStepByKey={goToStepByKey}
           summarizedSteps={[
-            { label: "Company Name", value: form.getValues("name") },
-            { label: "Industry", value: form.getValues("industry") },
-            { label: "Company Website", value: form.getValues("website") },
+            {
+              label: "Company Name",
+              value: form.getValues("name"),
+              key: "name",
+            },
+            {
+              label: "Industry",
+              value: form.getValues("industry"),
+              key: "industry",
+            },
+            {
+              label: "Company Website",
+              value: form.getValues("website"),
+              key: "website",
+            },
             {
               label: "Year of Establishment",
               value: form.getValues("yearOfEstablishment"),
+              key: "yearOfEstablishment",
             },
-            { label: "Company Size", value: form.getValues("companySize") },
-            { label: "Company Address", value: form.getValues("address") },
-            { label: "Short Company Bio", value: form.getValues("bio") },
+            {
+              label: "Company Size",
+              value: form.getValues("companySize"),
+              key: "companySize",
+            },
+            {
+              label: "Company Address",
+              value: form.getValues("address"),
+              key: "address",
+            },
+            {
+              label: "Short Company Bio",
+              value: form.getValues("bio"),
+              key: "bio",
+            },
             {
               label: "Detailed Overview",
               value: form.getValues("description"),
+              key: "description",
             },
           ]}
         />

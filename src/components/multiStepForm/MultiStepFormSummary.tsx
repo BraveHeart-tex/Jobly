@@ -1,10 +1,27 @@
-interface MultiStepFormSummaryProps {
-  summarizedSteps: { label: string; value?: string | null }[];
+import { EditIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+interface SummarizedStep<T> {
+  label: string;
+  value?: string | null;
+  key: keyof T;
 }
 
-const MultiStepFormSummary = ({
+interface MultiStepFormSummaryProps<T> {
+  summarizedSteps: SummarizedStep<T>[];
+  goToStepByKey: (key: keyof T) => void;
+}
+
+const MultiStepFormSummary = <T,>({
   summarizedSteps,
-}: MultiStepFormSummaryProps) => {
+  goToStepByKey,
+}: MultiStepFormSummaryProps<T>) => {
   return (
     <div>
       <div>
@@ -18,10 +35,30 @@ const MultiStepFormSummary = ({
       <div className="mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {summarizedSteps.map((step) => (
-            <p key={step.label}>
-              <span className="font-medium">{step.label}</span>:{" "}
-              {step.value || "Not Provided"}
-            </p>
+            <div key={step.label} className="flex items-center gap-1">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      type="button"
+                      className="text-foreground"
+                      onClick={() => goToStepByKey(step.key)}
+                    >
+                      <EditIcon size={20} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Go to "{step.label}"</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <p>
+                <span className="font-medium">{step.label}</span>:{" "}
+                {step.value || "Not Provided"}
+              </p>
+            </div>
           ))}
         </div>
       </div>

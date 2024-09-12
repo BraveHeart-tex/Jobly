@@ -56,3 +56,5 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export type Nullable<T> = T | null;
+
+export type ValueOf<T> = T[keyof T];
