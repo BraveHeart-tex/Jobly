@@ -32,6 +32,13 @@ export const useMultiStepForm = <T extends FieldValues>({
     focusOnErroredFieldInStep(nextStepValue);
   };
 
+  const goToStepByKey = (key: keyof T) => {
+    const stepIndex = steps.findIndex((step) => step.fields.includes(key));
+    if (stepIndex === -1) return;
+    gotoStep(stepIndex + 1);
+    focusField(key);
+  };
+
   const gotoStep = (step: number) => {
     setCurrentStep(step);
     focusOnErroredFieldInStep(step);
@@ -62,8 +69,15 @@ export const useMultiStepForm = <T extends FieldValues>({
       return;
     }
 
+    focusField(firstErroredFieldKey, timeoutDuration);
+  };
+
+  const focusField = (
+    key: keyof T,
+    timeoutDuration: number = TRANSITION_DURATION_MS,
+  ) => {
     setTimeout(() => {
-      form.setFocus(firstErroredFieldKey);
+      form.setFocus(key as Path<T>);
     }, timeoutDuration);
   };
 
@@ -91,5 +105,6 @@ export const useMultiStepForm = <T extends FieldValues>({
     gotoStep,
     handleStepChange,
     goToFirstErroredStep,
+    goToStepByKey,
   };
 };
