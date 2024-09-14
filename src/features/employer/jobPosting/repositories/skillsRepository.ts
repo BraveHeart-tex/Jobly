@@ -2,6 +2,7 @@ import type { Transaction } from "@/lib/types";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import type { SkillInsertModel } from "@/server/db/schema/skills";
 import skills from "@/server/db/schema/skills";
+import { like } from "drizzle-orm";
 
 export const skillsRepository = {
   async addSkills(data: SkillInsertModel[], transaction?: Transaction) {
@@ -13,5 +14,12 @@ export const skillsRepository = {
         set: buildConflictUpdateColumns(skills, ["name"]),
       })
       .$returningId();
+  },
+  async getSkillsByName(query: string) {
+    return await db
+      .select()
+      .from(skills)
+      .where(like(skills.name, `%${query}%`))
+      .limit(10);
   },
 };

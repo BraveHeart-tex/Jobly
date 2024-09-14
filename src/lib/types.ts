@@ -9,6 +9,7 @@ import type {
 } from "drizzle-orm/mysql2";
 import type { LucideIcon } from "lucide-react";
 import type { CandidateRoute, EmployerRoute } from "./routes";
+import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
 
 export interface NavigationMenuItem {
   triggerLabel: string;
@@ -42,18 +43,9 @@ export type PartialRecord<K extends keyof any, T> = {
 };
 
 export type AppRouter = typeof appRouter;
-
-/**
- * Inference helper for inputs.
- * @example type HelloInput = RouterInputs['example']['hello']
- */
 export type RouterInputs = inferRouterInputs<AppRouter>;
-
-/**
- * Inference helper for outputs.
- * @example type HelloOutput = RouterOutputs['example']['hello']
- */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
 
 export type Nullable<T> = T | null;
 

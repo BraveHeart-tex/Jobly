@@ -31,6 +31,7 @@ interface CreatableSelectProps {
   options: string[];
   onCreateOption?: (value: string) => void;
   onChange?: (newValues: string[]) => void;
+  onInputChange?: (inputValue: string) => void;
 }
 
 const CreatableMultiSelect = forwardRef(
@@ -41,6 +42,7 @@ const CreatableMultiSelect = forwardRef(
       options,
       onCreateOption,
       onChange,
+      onInputChange,
     }: CreatableSelectProps,
     ref,
   ) => {
@@ -59,6 +61,9 @@ const CreatableMultiSelect = forwardRef(
           ref={ref as any}
           isClearable
           isMulti
+          onInputChange={(inputValue) => {
+            onInputChange?.(inputValue);
+          }}
           onChange={(newValue) => {
             const newValues = getNewValues(newValue as OptionType[]);
             onChange?.(newValues);

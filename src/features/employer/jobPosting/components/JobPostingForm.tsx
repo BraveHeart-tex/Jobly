@@ -21,6 +21,7 @@ import {
   employmentOptions,
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
+import { useFetchSkills } from "@/hooks/useFetchSkills";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
@@ -30,11 +31,12 @@ import {
   type JobPostingSchema,
   jobPostingSchema,
 } from "@/schemas/jobPostingSchema";
-import { api } from "@/trpc/react";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
+import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
+import { useState } from "react";
 
 const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -47,7 +49,7 @@ const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   },
   {
     stepTitle: "Job Description & Expiry",
-    fields: ["postingContent", "expiresAt"],
+    fields: ["expiresAt", "postingContent"],
   },
   {
     stepTitle: "Review & Submit",
@@ -86,17 +88,20 @@ const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
 const JobPostingForm = () => {
+  const [skillsQuery, setSkillsQuery] = useState("");
   const router = useRouter();
   const form = useExtendedForm<JobPostingSchema>(
     jobPostingSchema.omit({ companyId: true }),
   );
-  const { mutate: createJobPosting, isPending } =
-    api.jobPosting.createJobPosting.useMutation({
-      onSuccess: () => {
-        toast.success("Job posting created successfully.");
-        router.push(EMPLOYER_ROUTES.ACTIVE_LISTINGS);
-      },
-    });
+
+  const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
+    onSuccess: () => {
+      toast.success("Job posting created successfully.");
+      router.push(EMPLOYER_ROUTES.ACTIVE_LISTINGS);
+    },
+  });
+
+  const { skills, isFetchingSkills } = useFetchSkills(skillsQuery);
 
   const {
     currentStep,
@@ -221,11 +226,14 @@ const JobPostingForm = () => {
                 <FormControl>
                   <CreatableMultiSelect
                     placeholder="Select or add skills"
-                    options={jobSkillsDatasetExample}
+                    options={skills?.map((skill) => skill.name) || []}
                     ref={field.ref}
                     value={field.value}
                     onChange={(newValues) => {
                       field.onChange(newValues);
+                    }}
+                    onInputChange={(inputValue) => {
+                      setSkillsQuery(inputValue);
                     }}
                     onCreateOption={(value) => {
                       field.onChange([...field.value, value]);
@@ -360,7 +368,7 @@ const JobPostingForm = () => {
           <Button
             type="button"
             variant={CONTROL_BUTTON_VARIANT}
-            disabled={isPending}
+            disabled={isCreatingJobPosting}
             onClick={() => {
               handleStepChange("prev");
             }}
@@ -378,7 +386,7 @@ const JobPostingForm = () => {
                   handleStepChange("next");
                 }
           }
-          disabled={isPending}
+          disabled={isCreatingJobPosting}
         >
           {isLastStep ? "Submit" : "Next"}
         </Button>
