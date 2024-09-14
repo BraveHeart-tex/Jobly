@@ -225,6 +225,7 @@ const JobPostingForm = () => {
                 <FormLabel>Skills</FormLabel>
                 <FormControl>
                   <CreatableMultiSelect
+                    isLoading={isFetchingSkills}
                     placeholder="Select or add skills"
                     options={skills?.map((skill) => skill.name) || []}
                     ref={field.ref}

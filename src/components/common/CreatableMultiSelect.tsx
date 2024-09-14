@@ -3,9 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChevronDownIcon, XIcon } from "lucide-react";
+import debounce from "lodash.debounce";
+import { ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
 import type React from "react";
-import { forwardRef, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 
 const generateOptions = (baseOptions: (string | number)[]): OptionType[] => {
@@ -32,7 +33,10 @@ interface CreatableSelectProps {
   onCreateOption?: (value: string) => void;
   onChange?: (newValues: string[]) => void;
   onInputChange?: (inputValue: string) => void;
+  isLoading?: boolean;
 }
+
+const DEBOUNCE_DELAY_MS = 300;
 
 const CreatableMultiSelect = forwardRef(
   (
@@ -43,16 +47,26 @@ const CreatableMultiSelect = forwardRef(
       onCreateOption,
       onChange,
       onInputChange,
+      isLoading,
     }: CreatableSelectProps,
     ref,
   ) => {
     const [menuPortalTarget, setMenuPortalTarget] =
       useState<HTMLElement | null>(null);
+
     const mappedOptions = options.map((option) => ({
       label: option,
       value: option,
     }));
+
     const mappedValue = generateOptions(value);
+
+    const debouncedInputChange = useCallback(
+      debounce((inputValue) => {
+        onInputChange?.(inputValue);
+      }, DEBOUNCE_DELAY_MS),
+      [],
+    );
 
     return (
       <div ref={(el) => setMenuPortalTarget(el)}>
@@ -62,12 +76,15 @@ const CreatableMultiSelect = forwardRef(
           isClearable
           isMulti
           onInputChange={(inputValue) => {
-            onInputChange?.(inputValue);
+            if (!onInputChange) return;
+            debouncedInputChange(inputValue);
           }}
           onChange={(newValue) => {
             const newValues = getNewValues(newValue as OptionType[]);
             onChange?.(newValues);
           }}
+          isLoading={isLoading}
+          loadingMessage={() => "Loading..."}
           onCreateOption={onCreateOption}
           options={mappedOptions}
           value={mappedValue}
@@ -94,6 +111,12 @@ const CreatableMultiSelect = forwardRef(
           }}
           unstyled
           components={{
+            LoadingIndicator: () => (
+              <div className="flex items-center justify-center text-sm text-muted-foreground">
+                <Loader2Icon size={16} className="animate-spin" />
+              </div>
+            ),
+            LoadingMessage: () => null,
             IndicatorSeparator: () => null,
             MultiValue: ({ data, removeProps }) => (
               <Badge variant="secondary" className="mr-1 mb-1">
