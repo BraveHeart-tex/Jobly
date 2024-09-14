@@ -179,44 +179,42 @@ const EditableSectionTitle = ({
       )}
 
       {!isEditing && (
-        <>
-          <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300 flex items-center gap-2">
+        <div className="lg:opacity-0 lg:-translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all ease-in-out duration-300 flex items-center gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="px-1 py-0"
+                  onClick={() => handleRenameClick()}
+                >
+                  <Pencil size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Rename</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          {section.name !== section.defaultName ? (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
                     variant="ghost"
                     className="px-1 py-0"
-                    onClick={() => handleRenameClick()}
+                    onClick={() => handleResetSectionNameClick()}
                   >
-                    <Pencil size={18} />
+                    <RotateCcw size={18} />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Rename</p>
+                  <p>Reset section name to default</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            {section.name !== section.defaultName ? (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="px-1 py-0"
-                      onClick={() => handleResetSectionNameClick()}
-                    >
-                      <RotateCcw size={18} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Reset section name to default</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : null}
-          </div>
-        </>
+          ) : null}
+        </div>
       )}
       {!isEditing && isSectionDeletable ? (
         <>

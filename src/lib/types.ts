@@ -1,5 +1,6 @@
 import type { appRouter } from "@/server/api/root";
 import type * as schema from "@/server/db/schema";
+import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import type { ExtractTablesWithRelations } from "drizzle-orm";
 import type { MySqlTransaction } from "drizzle-orm/mysql-core";
@@ -9,7 +10,6 @@ import type {
 } from "drizzle-orm/mysql2";
 import type { LucideIcon } from "lucide-react";
 import type { CandidateRoute, EmployerRoute } from "./routes";
-import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
 
 export interface NavigationMenuItem {
   triggerLabel: string;

@@ -28,7 +28,7 @@ const DocumentBuilderInput = ({
   );
   const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
 
-  const inputValue = value ? value : fieldValueObject?.value ?? "";
+  const inputValue = value ? value : (fieldValueObject?.value ?? "");
 
   const setValue = (value: string) => {
     if (field?.id) {
