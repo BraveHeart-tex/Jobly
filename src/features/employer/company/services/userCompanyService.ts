@@ -8,4 +8,13 @@ export const userCompanyService = {
   async getUserCompanyDetailsByUserId(userId: DBUser["id"]) {
     return await userCompanyRepository.getUserCompanyDetailsByUserId(userId);
   },
+  async verifyUserCompanyAssociation({
+    userId,
+    companyId,
+  }: { userId: DBUser["id"]; companyId: number }) {
+    return await userCompanyRepository.verifyUserCompanyAssociation({
+      userId,
+      companyId,
+    });
+  },
 };

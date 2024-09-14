@@ -176,3 +176,15 @@ export const getUniqueValuesFromMap = <T extends Record<string, unknown>>(
 export const isObjectEmpty = <T extends Record<string, unknown>>(obj: T) => {
   return Object.keys(obj).length === 0;
 };
+
+export const LOG_COLORS = {
+  RESET: "\x1b[0m",
+  GREEN: "\x1b[32m",
+  YELLOW: "\x1b[33m",
+  RED: "\x1b[31m",
+  CYAN: "\x1b[36m",
+  BLUE: "\x1b[34m",
+};
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

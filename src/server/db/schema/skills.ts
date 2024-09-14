@@ -1,4 +1,4 @@
-import type { InferInsertModel } from "drizzle-orm";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   index,
   int,
@@ -22,5 +22,6 @@ const skills = mysqlTable(
 );
 
 export type SkillInsertModel = InferInsertModel<typeof skills>;
+export type SkillSelectModel = InferSelectModel<typeof skills>;
 
 export default skills;

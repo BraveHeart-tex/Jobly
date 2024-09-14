@@ -1,9 +1,9 @@
-import type { JobPostingSchema } from "@/schemas/jobPostingSchema";
 import { db } from "@/server/db";
 import { TRPCError } from "@trpc/server";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
-import { getGenericTrpcError, handleBenefits, handleSkills } from "../utils";
+import { getGenericTrpcError, insertBenefits, insertSkills } from "../utils";
+import type { CreateJobPostingParams } from "../../company/types";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {
@@ -15,9 +15,10 @@ export const employerJobPostingService = {
 
     return statusToMethodMap[status](companyId);
   },
-  async createJobPosting(jobPostingData: JobPostingSchema) {
+  async createJobPosting(jobPostingData: CreateJobPostingParams) {
     return await db.transaction(async (transaction) => {
       try {
+        const { createdBenefits, createdSkills } = jobPostingData;
         const insertedJobPostingId =
           await employerJobPostingRepository.createJobPosting(
             jobPostingData,
@@ -29,16 +30,8 @@ export const employerJobPostingService = {
         }
 
         await Promise.all([
-          handleSkills(
-            jobPostingData.skills,
-            insertedJobPostingId,
-            transaction,
-          ),
-          handleBenefits(
-            jobPostingData.benefits,
-            insertedJobPostingId,
-            transaction,
-          ),
+          insertSkills(createdSkills, insertedJobPostingId, transaction),
+          insertBenefits(createdBenefits, insertedJobPostingId, transaction),
         ]);
 
         return {

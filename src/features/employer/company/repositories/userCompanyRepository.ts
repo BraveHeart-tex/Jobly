@@ -3,7 +3,8 @@ import { db } from "@/server/db";
 import { companies, userCompanies } from "@/server/db/schema";
 import type { UserCompanyInsertModel } from "@/server/db/schema/userCompanies";
 import type { DBUser } from "@/server/db/schema/users";
-import { count, eq, getTableColumns } from "drizzle-orm";
+import { and, count, eq, getTableColumns, sql } from "drizzle-orm";
+import type { VerifyUserCompanyAssociationParams } from "../types";
 
 export const userCompanyRepository = {
   async checkIfUserHasCompany(userId: DBUser["id"], transaction?: Transaction) {
@@ -41,5 +42,20 @@ export const userCompanyRepository = {
       .where(eq(userCompanies.userId, userId));
 
     return company;
+  },
+  async verifyUserCompanyAssociation({
+    userId,
+    companyId,
+  }: VerifyUserCompanyAssociationParams) {
+    const exists = await db
+      .select({
+        exists: sql`1`,
+      })
+      .from(companies)
+      .innerJoin(userCompanies, eq(companies.id, userCompanies.companyId))
+      .where(and(eq(userCompanies.userId, userId), eq(companies.id, companyId)))
+      .limit(1);
+
+    return exists?.length > 0;
   },
 };

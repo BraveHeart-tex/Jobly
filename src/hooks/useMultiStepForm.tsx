@@ -17,7 +17,7 @@ interface useMultiStepFormProps<T extends FieldValues = FieldValues> {
 export const useMultiStepForm = <T extends FieldValues>({
   form,
   steps,
-  disabledSteps,
+  disabledSteps = [],
 }: useMultiStepFormProps<T>) => {
   const [currentStep, setCurrentStep] = useState(1);
 

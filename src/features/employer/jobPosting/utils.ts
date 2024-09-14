@@ -20,7 +20,7 @@ export const doesBulkInsertHaveFailures = (
   return inputArray.length !== resultArray.length;
 };
 
-export const handleSkills = async (
+export const insertSkills = async (
   skills: string[],
   jobPostingId: number,
   transaction: Transaction,
@@ -33,26 +33,16 @@ export const handleSkills = async (
     transaction,
   );
 
-  if (doesBulkInsertHaveFailures(skills, skillInsertIds)) {
-    throw getGenericTrpcError();
-  }
-
-  // insert to job posting skills
-  const jobPostingSkillInsertIds =
-    await jobPostingSkillsRepository.addJobSkills(
-      skills.map((_, index) => ({
-        jobPostingId,
-        skillId: skillInsertIds[index]?.id as number,
-      })),
-      transaction,
-    );
-
-  if (doesBulkInsertHaveFailures(skills, jobPostingSkillInsertIds)) {
-    throw getGenericTrpcError();
-  }
+  await jobPostingSkillsRepository.addJobSkills(
+    skills.map((_, index) => ({
+      jobPostingId,
+      skillId: skillInsertIds[index]?.id as number,
+    })),
+    transaction,
+  );
 };
 
-export const handleBenefits = async (
+export const insertBenefits = async (
   benefits: string[],
   jobPostingId: number,
   transaction: Transaction,
@@ -63,19 +53,12 @@ export const handleBenefits = async (
     benefits.map((benefit) => ({ name: benefit })),
     transaction,
   );
-  if (doesBulkInsertHaveFailures(benefits, benefitInsertIds)) {
-    throw getGenericTrpcError();
-  }
 
-  const jobPostingBenefitInsertIds =
-    await jobPostingBenefitsRepository.addJobPostingBenefits(
-      benefits.map((_, index) => ({
-        jobPostingId,
-        benefitId: benefitInsertIds[index]?.id as number,
-      })),
-      transaction,
-    );
-  if (doesBulkInsertHaveFailures(benefits, jobPostingBenefitInsertIds)) {
-    throw getGenericTrpcError();
-  }
+  await jobPostingBenefitsRepository.addJobPostingBenefits(
+    benefits.map((_, index) => ({
+      jobPostingId,
+      benefitId: benefitInsertIds[index]?.id as number,
+    })),
+    transaction,
+  );
 };

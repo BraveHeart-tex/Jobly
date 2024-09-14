@@ -1,3 +1,4 @@
+import type { JobPostingFormSchema } from "@/schemas/jobPostingFormSchema";
 import type {
   CompanyInsertModel,
   CompanySelectModel,
@@ -9,4 +10,13 @@ export interface CreateCompanyParams extends CompanyInsertModel {
 
 export interface CreateCompanySuccess {
   companyId: CompanySelectModel["id"];
+}
+
+export interface VerifyUserCompanyAssociationParams {
+  userId: number;
+  companyId: number;
+}
+
+export interface CreateJobPostingParams extends JobPostingFormSchema {
+  companyId: number;
 }

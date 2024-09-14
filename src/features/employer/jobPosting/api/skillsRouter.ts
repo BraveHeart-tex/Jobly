@@ -6,6 +6,6 @@ export const skillsRouter = createTRPCRouter({
   getSkillsByName: protectedProcedure
     .input(z.object({ query: z.string() }))
     .query(async ({ input }) => {
-      return skillsService.getSkillsByName(input.query);
+      return await skillsService.getSkillsByName(input.query);
     }),
 });

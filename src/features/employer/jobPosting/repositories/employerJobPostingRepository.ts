@@ -1,11 +1,9 @@
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import { jobPostings } from "@/server/db/schema";
-import type {
-  JobPosting,
-  JobPostingInsertModel,
-} from "@/server/db/schema/jobPostings";
+import type { JobPosting } from "@/server/db/schema/jobPostings";
 import { and, eq, gt, lt } from "drizzle-orm";
+import type { CreateJobPostingParams } from "../../company/types";
 
 export const employerJobPostingRepository = {
   async getActiveJobPostingsByCompanyId(companyId: JobPosting["companyId"]) {
@@ -38,7 +36,7 @@ export const employerJobPostingRepository = {
     });
   },
   async createJobPosting(
-    data: JobPostingInsertModel,
+    data: CreateJobPostingParams,
     transaction: Transaction,
   ) {
     const dbLayer = transaction || db;

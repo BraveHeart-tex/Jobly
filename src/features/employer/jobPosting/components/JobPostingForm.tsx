@@ -27,18 +27,17 @@ import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
-import {
-  type JobPostingSchema,
-  jobPostingSchema,
-} from "@/schemas/jobPostingSchema";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useFetchBenefits } from "@/hooks/useFetchBenefits";
+import jobPostingFormSchema, {
+  type JobPostingFormSchema,
+} from "@/schemas/jobPostingFormSchema";
 
-const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
+const jobPostingFormSteps: StepItem<JobPostingFormSchema>[] = [
   {
     stepTitle: "Job Basics",
     fields: ["title", "location", "workType", "employmentType"],
@@ -64,9 +63,7 @@ const SUMMARY_STEP = 4;
 
 const JobPostingForm = () => {
   const router = useRouter();
-  const form = useExtendedForm<JobPostingSchema>(
-    jobPostingSchema.omit({ companyId: true }),
-  );
+  const form = useExtendedForm<JobPostingFormSchema>(jobPostingFormSchema);
 
   const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
     onSuccess: () => {
@@ -88,10 +85,9 @@ const JobPostingForm = () => {
   } = useMultiStepForm({
     steps: jobPostingFormSteps,
     form,
-    disabledSteps: [],
   });
 
-  const onSubmit = (values: JobPostingSchema) => {
+  const onSubmit = (values: JobPostingFormSchema) => {
     createJobPosting(values);
   };
 
@@ -185,6 +181,10 @@ const JobPostingForm = () => {
                     }}
                     onCreateOption={(value) => {
                       field.onChange([...field.value, value]);
+                      form.setValue("createdBenefits", [
+                        ...form.getValues("createdBenefits"),
+                        value,
+                      ]);
                     }}
                     onInputChange={(inputValue) => {
                       fetchBenefits(inputValue);
@@ -217,6 +217,10 @@ const JobPostingForm = () => {
                     }}
                     onCreateOption={(value) => {
                       field.onChange([...field.value, value]);
+                      form.setValue("createdSkills", [
+                        ...form.getValues("createdSkills"),
+                        value,
+                      ]);
                     }}
                   />
                 </FormControl>
@@ -290,7 +294,7 @@ const JobPostingForm = () => {
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <MultiStepFormSummary<JobPostingSchema>
+        <MultiStepFormSummary<JobPostingFormSchema>
           goToStepByKey={goToStepByKey}
           summarizedSteps={[
             {
@@ -374,8 +378,8 @@ const JobPostingForm = () => {
     );
   };
 
-  const onFormError = (errors: FieldErrors<JobPostingSchema>) => {
-    goToFirstErroredStep(Object.keys(errors) as (keyof JobPostingSchema)[]);
+  const onFormError = (errors: FieldErrors<JobPostingFormSchema>) => {
+    goToFirstErroredStep(Object.keys(errors) as (keyof JobPostingFormSchema)[]);
   };
 
   return (
