@@ -83,12 +83,15 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
 
     return (
       <Popover>
-        <PopoverTrigger asChild>
+        <PopoverTrigger
+          asChild
+          ref={ref}
+          className="focus-within:outline-none focus-within:ring-1 focus-within:ring-ring"
+        >
           <Button
             variant="outline"
-            ref={ref}
             className={cn(
-              "pl-3 text-left font-normal",
+              "pl-3 text-left font-normal ",
               !value && "text-muted-foreground",
             )}
           >
