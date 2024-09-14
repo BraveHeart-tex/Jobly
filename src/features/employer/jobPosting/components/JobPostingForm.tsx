@@ -36,7 +36,6 @@ import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
-import { useState } from "react";
 
 const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -69,26 +68,12 @@ const jobBenefitsDatasetExample = [
   "Stock Options",
 ];
 
-const jobSkillsDatasetExample = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Node.js",
-  "SQL",
-  "HTML & CSS",
-  "Python",
-  "Communication",
-  "Project Management",
-  "Problem Solving",
-];
-
 const JOB_BASICS_STEP = 1;
 const SKILLS_AND_BENEFITS_STEP = 2;
 const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
 const JobPostingForm = () => {
-  const [skillsQuery, setSkillsQuery] = useState("");
   const router = useRouter();
   const form = useExtendedForm<JobPostingSchema>(
     jobPostingSchema.omit({ companyId: true }),
@@ -101,7 +86,7 @@ const JobPostingForm = () => {
     },
   });
 
-  const { skills, isFetchingSkills } = useFetchSkills(skillsQuery);
+  const { skills, isFetchingSkills, fetchSkills } = useFetchSkills();
 
   const {
     currentStep,
@@ -234,7 +219,7 @@ const JobPostingForm = () => {
                       field.onChange(newValues);
                     }}
                     onInputChange={(inputValue) => {
-                      setSkillsQuery(inputValue);
+                      fetchSkills(inputValue);
                     }}
                     onCreateOption={(value) => {
                       field.onChange([...field.value, value]);
