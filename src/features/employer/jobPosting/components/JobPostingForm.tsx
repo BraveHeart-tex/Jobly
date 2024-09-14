@@ -36,6 +36,7 @@ import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
+import { useFetchBenefits } from "@/hooks/useFetchBenefits";
 
 const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
   {
@@ -54,18 +55,6 @@ const jobPostingFormSteps: StepItem<JobPostingSchema>[] = [
     stepTitle: "Review & Submit",
     fields: [],
   },
-];
-
-const jobBenefitsDatasetExample = [
-  "Health Insurance",
-  "Paid Time Off",
-  "Flexible Hours",
-  "Retirement Plan",
-  "Work From Home",
-  "Gym Membership",
-  "Parental Leave",
-  "Professional Development",
-  "Stock Options",
 ];
 
 const JOB_BASICS_STEP = 1;
@@ -87,6 +76,7 @@ const JobPostingForm = () => {
   });
 
   const { skills, isFetchingSkills, fetchSkills } = useFetchSkills();
+  const { benefits, isFetchingBenefits, fetchBenefits } = useFetchBenefits();
 
   const {
     currentStep,
@@ -186,14 +176,18 @@ const JobPostingForm = () => {
                 <FormLabel>Benefits</FormLabel>
                 <FormControl>
                   <CreatableMultiSelect
+                    isLoading={isFetchingBenefits}
                     placeholder="Select or add benefits"
-                    options={jobBenefitsDatasetExample}
+                    options={benefits?.map((benefit) => benefit.name) || []}
                     value={field.value}
                     onChange={(values) => {
                       field.onChange(values);
                     }}
                     onCreateOption={(value) => {
                       field.onChange([...field.value, value]);
+                    }}
+                    onInputChange={(inputValue) => {
+                      fetchBenefits(inputValue);
                     }}
                     ref={field.ref}
                   />
