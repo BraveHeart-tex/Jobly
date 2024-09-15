@@ -1,13 +1,9 @@
 import { db } from "@/server/db";
 import { TRPCError } from "@trpc/server";
+import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
-import {
-  getGenericTrpcError,
-  insertJobPostingBenefits,
-  insertJobPostingSkills,
-} from "../utils";
-import type { CreateJobPostingParams } from "../../company/types";
+import { insertJobPostingBenefits, insertJobPostingSkills } from "../utils";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {
@@ -30,7 +26,9 @@ export const employerJobPostingService = {
           );
 
         if (!insertedJobPostingId) {
-          throw getGenericTrpcError();
+          throw new Error(
+            "Something went wrong while creating the job posting. Please try again later.",
+          );
         }
 
         await Promise.all([
@@ -43,16 +41,34 @@ export const employerJobPostingService = {
         };
       } catch (error) {
         console.error(
-          "employerJobPostingService.createJobPosting error",
+          "Error in employerJobPostingService.createJobPosting:",
           error,
         );
-        transaction.rollback();
 
-        if (error instanceof TRPCError) {
-          throw error;
+        try {
+          await transaction.rollback();
+          console.info("Transaction rolled back successfully.");
+        } catch (rollbackError) {
+          console.error("Transaction rollback failed:", rollbackError);
         }
 
-        throw getGenericTrpcError();
+        if (
+          error instanceof Error &&
+          error.message ===
+            "Something went wrong while creating the job posting. Please try again later."
+        ) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message:
+              "Something went wrong while creating the job posting. Please try again later.",
+          });
+        }
+
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message:
+            "An unexpected error occurred while creating the job posting.",
+        });
       }
     });
   },

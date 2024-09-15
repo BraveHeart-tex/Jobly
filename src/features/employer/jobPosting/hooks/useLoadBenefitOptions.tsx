@@ -1,6 +1,7 @@
 import type { OptionType } from "@/components/common/CreatableMultiSelect";
+import { useDebouncedOptionLoader } from "@/hooks/useDebouncedOptionLoader";
+import type { BenefitSelectModel } from "@/server/db/schema/benefits";
 import { api } from "@/trpc/react";
-import { useDebouncedOptionLoader } from "../../../../hooks/useDebouncedOptionLoader";
 
 export const useLoadBenefitOptions = () => {
   const queryClientUtils = api.useUtils();
@@ -11,9 +12,9 @@ export const useLoadBenefitOptions = () => {
     });
   };
 
-  const mapBenefitToOption = (benefit: { name: string }): OptionType => ({
+  const mapBenefitToOption = (benefit: BenefitSelectModel): OptionType => ({
     label: benefit.name,
-    value: benefit.name,
+    value: benefit.id,
   });
 
   return useDebouncedOptionLoader(fetchBenefits, mapBenefitToOption);

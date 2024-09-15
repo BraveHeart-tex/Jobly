@@ -21,23 +21,23 @@ import {
   employmentOptions,
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
+import { useLoadBenefitOptions } from "@/features/employer/jobPosting/hooks/useLoadBenefitOptions";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
+import jobPostingFormSchema, {
+  type JobPostingFormSchema,
+} from "@/schemas/jobPostingFormSchema";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
+import { useCreateBenefit } from "../hooks/useCreateBenefit";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
-import jobPostingFormSchema, {
-  type JobPostingFormSchema,
-} from "@/schemas/jobPostingFormSchema";
-import { useLoadBenefitOptions } from "@/features/employer/jobPosting/hooks/useLoadBenefitOptions";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
-import { useCreateBenefit } from "../hooks/useCreateBenefit";
 
 const jobPostingFormSteps: StepItem<JobPostingFormSchema>[] = [
   {
@@ -225,7 +225,7 @@ const JobPostingForm = () => {
                     }))}
                     onChange={(values) => {
                       const mappedValues = values.map((item) => ({
-                        id: item.value,
+                        id: Number(item.value as string),
                         name: item.label,
                       }));
                       field.onChange(mappedValues);
@@ -256,7 +256,7 @@ const JobPostingForm = () => {
                     }))}
                     onChange={(newValues) => {
                       const mappedValues = newValues.map((item) => ({
-                        id: item.value,
+                        id: Number(item.value as string),
                         name: item.label,
                       }));
                       field.onChange(mappedValues);
