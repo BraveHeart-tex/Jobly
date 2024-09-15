@@ -71,7 +71,7 @@ export const jobPostingsRelations = relations(jobPostings, ({ one }) => ({
 }));
 
 export type JobPostingInsertModel = InferInsertModel<typeof jobPostings>;
-export type JobPosting = InferSelectModel<typeof jobPostings>;
+export type JobPostingSelectModel = InferSelectModel<typeof jobPostings>;
 export type JobPostingEmploymentType =
   (typeof jobPostings.employmentType.enumValues)[number];
 export type JobPostingWorkType =

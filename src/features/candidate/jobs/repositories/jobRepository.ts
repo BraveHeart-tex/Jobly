@@ -8,8 +8,8 @@ import {
   userViewsJobPosting,
 } from "@/server/db/schema";
 import type {
-  JobPosting,
   JobPostingInsertModel,
+  JobPostingSelectModel,
 } from "@/server/db/schema/jobPostings";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import type { User } from "lucia";
@@ -200,8 +200,8 @@ export const jobRepository = {
 };
 
 interface GetJobDetailsListParams extends Omit<GetJobListingsSchema, "page"> {
-  workType?: Nullable<JobPosting["workType"]>;
-  employmentType?: Nullable<JobPosting["employmentType"]>;
+  workType?: Nullable<JobPostingSelectModel["workType"]>;
+  employmentType?: Nullable<JobPostingSelectModel["employmentType"]>;
   userId: User["id"];
   limit: number;
   skipAmount: number;
@@ -209,14 +209,14 @@ interface GetJobDetailsListParams extends Omit<GetJobListingsSchema, "page"> {
 
 interface GetJobDetailsCountParams {
   query: string;
-  workType?: Nullable<JobPosting["workType"]>;
-  employmentType?: Nullable<JobPosting["employmentType"]>;
+  workType?: Nullable<JobPostingSelectModel["workType"]>;
+  employmentType?: Nullable<JobPostingSelectModel["employmentType"]>;
   userId: User["id"];
   bookmarked: boolean;
   viewed: boolean;
 }
 
 interface GetJobByIdParams {
-  jobId: JobPosting["id"];
+  jobId: JobPostingSelectModel["id"];
   userId: User["id"];
 }

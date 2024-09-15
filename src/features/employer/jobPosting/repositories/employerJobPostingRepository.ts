@@ -1,12 +1,14 @@
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import { jobPostings } from "@/server/db/schema";
-import type { JobPosting } from "@/server/db/schema/jobPostings";
+import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
 import { and, eq, gt, lt } from "drizzle-orm";
 import type { CreateJobPostingParams } from "../../company/types";
 
 export const employerJobPostingRepository = {
-  async getActiveJobPostingsByCompanyId(companyId: JobPosting["companyId"]) {
+  async getActiveJobPostingsByCompanyId(
+    companyId: JobPostingSelectModel["companyId"],
+  ) {
     return db.query.jobPostings.findMany({
       where: () =>
         and(
@@ -16,7 +18,9 @@ export const employerJobPostingRepository = {
         ),
     });
   },
-  async getDraftJobPostingsByCompanyId(companyId: JobPosting["companyId"]) {
+  async getDraftJobPostingsByCompanyId(
+    companyId: JobPostingSelectModel["companyId"],
+  ) {
     return db.query.jobPostings.findMany({
       where: () =>
         and(
@@ -25,7 +29,9 @@ export const employerJobPostingRepository = {
         ),
     });
   },
-  async getExpiredJobPostingsByCompanyId(companyId: JobPosting["companyId"]) {
+  async getExpiredJobPostingsByCompanyId(
+    companyId: JobPostingSelectModel["companyId"],
+  ) {
     return db.query.jobPostings.findMany({
       where: () =>
         and(

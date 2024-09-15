@@ -119,7 +119,7 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
       {
         title: "Active Listings",
         description: "Manage your current job postings.",
-        href: EMPLOYER_ROUTES.ACTIVE_LISTINGS,
+        href: EMPLOYER_ROUTES.PUBLISHED_LISTINGS,
         icon: ClipboardList,
       },
       {

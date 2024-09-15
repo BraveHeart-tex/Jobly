@@ -1,6 +1,6 @@
-import type { JobPosting } from "@/server/db/schema/jobPostings";
+import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
 
 export interface GetEmployerJobPostingsParams {
-  companyId: JobPosting["companyId"];
-  status: JobPosting["status"] | "expired";
+  companyId: JobPostingSelectModel["companyId"];
+  status: JobPostingSelectModel["status"] | "expired";
 }

@@ -26,7 +26,12 @@ import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
-import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
+import {
+  capitalizeString,
+  cn,
+  generateReadableEnumLabel,
+  isObjectEmpty,
+} from "@/lib/utils";
 import jobPostingFormSchema, {
   type JobPostingFormSchema,
 } from "@/schemas/jobPostingFormSchema";
@@ -63,14 +68,20 @@ const SKILLS_AND_BENEFITS_STEP = 2;
 const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
-const JobPostingForm = () => {
+interface JobPostingFormProps {
+  initialData: JobPostingFormSchema;
+}
+
+const JobPostingForm = ({ initialData }: JobPostingFormProps) => {
   const router = useRouter();
-  const form = useExtendedForm<JobPostingFormSchema>(jobPostingFormSchema);
+  const form = useExtendedForm<JobPostingFormSchema>(jobPostingFormSchema, {
+    defaultValues: isObjectEmpty(initialData) ? undefined : initialData,
+  });
 
   const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
     onSuccess: () => {
       toast.success("Job posting created successfully.");
-      router.push(EMPLOYER_ROUTES.ACTIVE_LISTINGS);
+      router.push(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
     },
   });
 
