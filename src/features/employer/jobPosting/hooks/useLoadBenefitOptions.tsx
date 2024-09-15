@@ -1,6 +1,6 @@
 import type { OptionType } from "@/components/common/CreatableMultiSelect";
 import { api } from "@/trpc/react";
-import { useDebouncedOptionLoader } from "./useDebouncedOptionLoader";
+import { useDebouncedOptionLoader } from "../../../../hooks/useDebouncedOptionLoader";
 
 export const useLoadBenefitOptions = () => {
   const queryClientUtils = api.useUtils();

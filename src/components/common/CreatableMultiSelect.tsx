@@ -9,29 +9,17 @@ import type React from "react";
 import { forwardRef, useState } from "react";
 import AsyncCreatableSelect from "react-select/async-creatable";
 
-const generateOptions = (baseOptions: (string | number)[]): OptionType[] => {
-  return baseOptions.map((value) => ({
-    label: value.toString(),
-    value: value.toString(),
-  }));
-};
-
-const getNewValues = (newValues: OptionType[]): string[] => {
-  return newValues.map((item) => item.value);
-};
-
 export interface OptionType {
-  value: string;
+  value: string | number;
   label: string;
 }
 
 interface CreatableSelectProps {
-  value: string[];
+  value: OptionType[];
   placeholder?: string;
   className?: string;
-  options?: string[];
   onCreateOption?: (value: string) => void;
-  onChange?: (newValues: string[]) => void;
+  onChange?: (newValues: MultiValue<OptionType>) => void;
   onInputChange?: (inputValue: string) => void;
   isLoading?: boolean;
   loadOptions?: (inputValue: string) => Promise<OptionType[]>;
@@ -42,7 +30,6 @@ const CreatableMultiSelect = forwardRef(
     {
       value,
       placeholder,
-      options = [],
       onCreateOption,
       onChange,
       onInputChange,
@@ -54,20 +41,12 @@ const CreatableMultiSelect = forwardRef(
     const [menuPortalTarget, setMenuPortalTarget] =
       useState<HTMLElement | null>(null);
 
-    const mappedOptions = options?.map((option) => ({
-      label: option,
-      value: option,
-    }));
-
-    const mappedValue = generateOptions(value);
-
     const handleInputChange = (inputValue: string) => {
       onInputChange?.(inputValue);
     };
 
     const handleValueChange = (newValue: MultiValue<OptionType>) => {
-      const newValues = getNewValues(newValue as OptionType[]);
-      onChange?.(newValues);
+      onChange?.(newValue);
     };
 
     return (
@@ -85,8 +64,7 @@ const CreatableMultiSelect = forwardRef(
           loadOptions={loadOptions}
           isLoading={isLoading}
           onCreateOption={onCreateOption}
-          options={mappedOptions}
-          value={mappedValue}
+          value={value}
           placeholder={placeholder}
           classNames={{
             control: ({ isFocused }) =>

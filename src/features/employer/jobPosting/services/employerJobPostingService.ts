@@ -2,7 +2,11 @@ import { db } from "@/server/db";
 import { TRPCError } from "@trpc/server";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
-import { getGenericTrpcError, insertBenefits, insertSkills } from "../utils";
+import {
+  getGenericTrpcError,
+  insertJobPostingBenefits,
+  insertJobPostingSkills,
+} from "../utils";
 import type { CreateJobPostingParams } from "../../company/types";
 
 export const employerJobPostingService = {
@@ -18,7 +22,7 @@ export const employerJobPostingService = {
   async createJobPosting(jobPostingData: CreateJobPostingParams) {
     return await db.transaction(async (transaction) => {
       try {
-        const { createdBenefits, createdSkills } = jobPostingData;
+        const { benefits, skills } = jobPostingData;
         const insertedJobPostingId =
           await employerJobPostingRepository.createJobPosting(
             jobPostingData,
@@ -30,8 +34,8 @@ export const employerJobPostingService = {
         }
 
         await Promise.all([
-          insertSkills(createdSkills, insertedJobPostingId, transaction),
-          insertBenefits(createdBenefits, insertedJobPostingId, transaction),
+          insertJobPostingSkills(skills, insertedJobPostingId, transaction),
+          insertJobPostingBenefits(benefits, insertedJobPostingId, transaction),
         ]);
 
         return {

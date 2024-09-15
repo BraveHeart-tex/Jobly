@@ -1,6 +1,6 @@
 import { api } from "@/trpc/react";
 import type { OptionType } from "@/components/common/CreatableMultiSelect";
-import { useDebouncedOptionLoader } from "./useDebouncedOptionLoader";
+import { useDebouncedOptionLoader } from "../../../../hooks/useDebouncedOptionLoader";
 
 export const useLoadSkillOptions = () => {
   const queryClientUtils = api.useUtils();
@@ -11,9 +11,12 @@ export const useLoadSkillOptions = () => {
     });
   };
 
-  const mapSkillToOption = (skill: { name: string }): OptionType => ({
+  const mapSkillToOption = (skill: {
+    name: string;
+    id: number;
+  }): OptionType => ({
     label: skill.name,
-    value: skill.name,
+    value: skill.id.toString(),
   });
 
   return useDebouncedOptionLoader(fetchSkills, mapSkillToOption);

@@ -1,9 +1,9 @@
 import type { Transaction } from "@/lib/types";
 import { TRPCError } from "@trpc/server";
-import { benefitsRepository } from "./repositories/benefitsRepository";
 import { jobPostingBenefitsRepository } from "./repositories/jobPostingBenefitsRepository";
 import { jobPostingSkillsRepository } from "./repositories/jobPostingSkillsRepository";
-import { skillsRepository } from "./repositories/skillsRepository";
+import type { SkillSelectModel } from "@/server/db/schema/skills";
+import type { BenefitSelectModel } from "@/server/db/schema/benefits";
 
 export const getGenericTrpcError = () => {
   return new TRPCError({
@@ -20,44 +20,33 @@ export const doesBulkInsertHaveFailures = (
   return inputArray.length !== resultArray.length;
 };
 
-export const insertSkills = async (
-  skills: string[],
+export const insertJobPostingSkills = async (
+  skills: SkillSelectModel[],
   jobPostingId: number,
   transaction: Transaction,
 ) => {
   if (!skills.length) return [];
-  const skillInsertIds = await skillsRepository.addSkills(
-    skills.map((skill) => ({
-      name: skill,
-    })),
-    transaction,
-  );
 
   await jobPostingSkillsRepository.addJobSkills(
-    skills.map((_, index) => ({
+    skills.map((skill) => ({
       jobPostingId,
-      skillId: skillInsertIds[index]?.id as number,
+      skillId: skill.id,
     })),
     transaction,
   );
 };
 
-export const insertBenefits = async (
-  benefits: string[],
+export const insertJobPostingBenefits = async (
+  benefits: BenefitSelectModel[],
   jobPostingId: number,
   transaction: Transaction,
 ) => {
   if (!benefits.length) return [];
 
-  const benefitInsertIds = await benefitsRepository.addBenefits(
-    benefits.map((benefit) => ({ name: benefit })),
-    transaction,
-  );
-
   await jobPostingBenefitsRepository.addJobPostingBenefits(
-    benefits.map((_, index) => ({
+    benefits.map((benefit) => ({
       jobPostingId,
-      benefitId: benefitInsertIds[index]?.id as number,
+      benefitId: benefit.id,
     })),
     transaction,
   );

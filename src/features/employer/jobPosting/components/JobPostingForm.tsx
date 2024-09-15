@@ -34,8 +34,10 @@ import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import jobPostingFormSchema, {
   type JobPostingFormSchema,
 } from "@/schemas/jobPostingFormSchema";
-import { useLoadSkillOptions } from "@/hooks/useLoadSkillOptions";
-import { useLoadBenefitOptions } from "@/hooks/useLoadBenefitOptions";
+import { useLoadBenefitOptions } from "@/features/employer/jobPosting/hooks/useLoadBenefitOptions";
+import { useCreateSkill } from "../hooks/useCreateSkill";
+import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
+import { useCreateBenefit } from "../hooks/useCreateBenefit";
 
 const jobPostingFormSteps: StepItem<JobPostingFormSchema>[] = [
   {
@@ -72,6 +74,42 @@ const JobPostingForm = () => {
     },
   });
 
+  const handleMultiSelectValueCreateSuccess = (
+    key: "skills" | "benefits",
+    insertId: number,
+    name: string,
+  ) => {
+    form.setValue(key, [
+      ...form.getValues(key),
+      {
+        id: insertId,
+        name,
+      },
+    ]);
+  };
+
+  const { createSkill, isCreatingSkill } = useCreateSkill({
+    onSuccess: (data, variables) => {
+      const insertId = data[0]?.id;
+      if (insertId) {
+        handleMultiSelectValueCreateSuccess("skills", insertId, variables.name);
+      }
+    },
+  });
+
+  const { createBenefit, isCreatingBenefit } = useCreateBenefit({
+    onSuccess: (data, variables) => {
+      const insertId = data[0]?.id;
+      if (insertId) {
+        handleMultiSelectValueCreateSuccess(
+          "benefits",
+          insertId,
+          variables.name,
+        );
+      }
+    },
+  });
+
   const loadSkillOptions = useLoadSkillOptions();
   const loadBenefitOptions = useLoadBenefitOptions();
 
@@ -89,6 +127,14 @@ const JobPostingForm = () => {
 
   const onSubmit = (values: JobPostingFormSchema) => {
     createJobPosting(values);
+  };
+
+  const handleCreateSkill = (name: string) => {
+    createSkill({ name });
+  };
+
+  const handleCreateBenefit = (name: string) => {
+    createBenefit({ name });
   };
 
   const renderFormFields = () => {
@@ -173,17 +219,18 @@ const JobPostingForm = () => {
                 <FormControl>
                   <CreatableMultiSelect
                     placeholder="Select or add benefits"
-                    value={field.value}
+                    value={field.value.map((benefit) => ({
+                      label: benefit?.name,
+                      value: benefit?.id,
+                    }))}
                     onChange={(values) => {
-                      field.onChange(values);
+                      const mappedValues = values.map((item) => ({
+                        id: item.value,
+                        name: item.label,
+                      }));
+                      field.onChange(mappedValues);
                     }}
-                    onCreateOption={(value) => {
-                      field.onChange([...field.value, value]);
-                      form.setValue("createdBenefits", [
-                        ...form.getValues("createdBenefits"),
-                        value,
-                      ]);
-                    }}
+                    onCreateOption={handleCreateBenefit}
                     loadOptions={loadBenefitOptions}
                     ref={field.ref}
                   />
@@ -203,17 +250,18 @@ const JobPostingForm = () => {
                     placeholder="Select or add skills"
                     loadOptions={loadSkillOptions}
                     ref={field.ref}
-                    value={field.value}
+                    value={field.value.map((skill) => ({
+                      label: skill?.name,
+                      value: skill?.id,
+                    }))}
                     onChange={(newValues) => {
-                      field.onChange(newValues);
+                      const mappedValues = newValues.map((item) => ({
+                        id: item.value,
+                        name: item.label,
+                      }));
+                      field.onChange(mappedValues);
                     }}
-                    onCreateOption={(value) => {
-                      field.onChange([...field.value, value]);
-                      form.setValue("createdSkills", [
-                        ...form.getValues("createdSkills"),
-                        value,
-                      ]);
-                    }}
+                    onCreateOption={handleCreateSkill}
                   />
                 </FormControl>
                 <FormMessage />
@@ -332,6 +380,8 @@ const JobPostingForm = () => {
   const renderControlButtons = () => {
     const isFirstStep = currentStep === 1;
     const isLastStep = currentStep === jobPostingFormSteps.length;
+    const areControlButtonsDisabled =
+      isCreatingJobPosting || isCreatingBenefit || isCreatingSkill;
 
     return (
       <div
@@ -344,7 +394,7 @@ const JobPostingForm = () => {
           <Button
             type="button"
             variant={CONTROL_BUTTON_VARIANT}
-            disabled={isCreatingJobPosting}
+            disabled={areControlButtonsDisabled}
             onClick={() => {
               handleStepChange("prev");
             }}
@@ -362,7 +412,7 @@ const JobPostingForm = () => {
                   handleStepChange("next");
                 }
           }
-          disabled={isCreatingJobPosting}
+          disabled={areControlButtonsDisabled}
         >
           {isLastStep ? "Submit" : "Next"}
         </Button>
