@@ -1,24 +1,19 @@
-import { getSkillsByName } from "@/features/employer/jobPosting/actions/skillActions";
-import type { SkillSelectModel } from "@/server/db/schema/skills";
-import { useState, useTransition } from "react";
-import debounce from "lodash.debounce";
-
-const FETCH_SKILLS_DEBOUNCE_MS = 500;
+import { api } from "@/trpc/react";
+import type { OptionType } from "@/components/common/CreatableMultiSelect";
 
 export const useFetchSkills = () => {
-  const [isFetchingSkills, startTransition] = useTransition();
-  const [skills, setSkills] = useState<SkillSelectModel[]>([]);
+  const utils = api.useUtils();
 
-  const debouncedFetchSkills = debounce(async (query: string) => {
-    const dbSkills = await getSkillsByName(query);
-    setSkills(dbSkills);
-  }, FETCH_SKILLS_DEBOUNCE_MS);
-
-  const fetchSkills = (query: string) => {
-    startTransition(async () => {
-      await debouncedFetchSkills(query);
+  const fetchSkills = async (query: string): Promise<OptionType[]> => {
+    const skills = await utils.skill.getSkillsByName.fetch({
+      query,
     });
+
+    return skills.map((skill) => ({
+      label: skill.name,
+      value: skill.name,
+    }));
   };
 
-  return { fetchSkills, skills, isFetchingSkills };
+  return { fetchSkills };
 };

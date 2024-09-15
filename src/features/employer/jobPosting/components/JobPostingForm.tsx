@@ -72,8 +72,8 @@ const JobPostingForm = () => {
     },
   });
 
-  const { skills, isFetchingSkills, fetchSkills } = useFetchSkills();
-  const { benefits, isFetchingBenefits, fetchBenefits } = useFetchBenefits();
+  const { fetchSkills } = useFetchSkills();
+  const { fetchBenefits } = useFetchBenefits();
 
   const {
     currentStep,
@@ -172,9 +172,7 @@ const JobPostingForm = () => {
                 <FormLabel>Benefits</FormLabel>
                 <FormControl>
                   <CreatableMultiSelect
-                    isLoading={isFetchingBenefits}
                     placeholder="Select or add benefits"
-                    options={benefits?.map((benefit) => benefit.name) || []}
                     value={field.value}
                     onChange={(values) => {
                       field.onChange(values);
@@ -186,9 +184,7 @@ const JobPostingForm = () => {
                         value,
                       ]);
                     }}
-                    onInputChange={(inputValue) => {
-                      fetchBenefits(inputValue);
-                    }}
+                    loadOptions={fetchBenefits}
                     ref={field.ref}
                   />
                 </FormControl>
@@ -204,16 +200,12 @@ const JobPostingForm = () => {
                 <FormLabel>Skills</FormLabel>
                 <FormControl>
                   <CreatableMultiSelect
-                    isLoading={isFetchingSkills}
                     placeholder="Select or add skills"
-                    options={skills?.map((skill) => skill.name) || []}
+                    loadOptions={fetchSkills}
                     ref={field.ref}
                     value={field.value}
                     onChange={(newValues) => {
                       field.onChange(newValues);
-                    }}
-                    onInputChange={(inputValue) => {
-                      fetchSkills(inputValue);
                     }}
                     onCreateOption={(value) => {
                       field.onChange([...field.value, value]);

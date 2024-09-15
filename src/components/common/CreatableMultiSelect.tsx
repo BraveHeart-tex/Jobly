@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
+import type { MultiValue } from "react-select";
 import type React from "react";
 import { forwardRef, useState } from "react";
 import AsyncCreatableSelect from "react-select/async-creatable";
@@ -19,7 +20,7 @@ const getNewValues = (newValues: OptionType[]): string[] => {
   return newValues.map((item) => item.value);
 };
 
-interface OptionType {
+export interface OptionType {
   value: string;
   label: string;
 }
@@ -28,12 +29,12 @@ interface CreatableSelectProps {
   value: string[];
   placeholder?: string;
   className?: string;
-  options: string[];
+  options?: string[];
   onCreateOption?: (value: string) => void;
   onChange?: (newValues: string[]) => void;
   onInputChange?: (inputValue: string) => void;
   isLoading?: boolean;
-  loadOptions: (inputValue: string) => void;
+  loadOptions?: (inputValue: string) => Promise<OptionType[]>;
 }
 
 const CreatableMultiSelect = forwardRef(
@@ -41,7 +42,7 @@ const CreatableMultiSelect = forwardRef(
     {
       value,
       placeholder,
-      options,
+      options = [],
       onCreateOption,
       onChange,
       onInputChange,
@@ -53,12 +54,21 @@ const CreatableMultiSelect = forwardRef(
     const [menuPortalTarget, setMenuPortalTarget] =
       useState<HTMLElement | null>(null);
 
-    const mappedOptions = options.map((option) => ({
+    const mappedOptions = options?.map((option) => ({
       label: option,
       value: option,
     }));
 
     const mappedValue = generateOptions(value);
+
+    const handleInputChange = (inputValue: string) => {
+      onInputChange?.(inputValue);
+    };
+
+    const handleValueChange = (newValue: MultiValue<OptionType>) => {
+      const newValues = getNewValues(newValue as OptionType[]);
+      onChange?.(newValues);
+    };
 
     return (
       <div ref={(el) => setMenuPortalTarget(el)}>
@@ -67,17 +77,11 @@ const CreatableMultiSelect = forwardRef(
           ref={ref as any}
           isClearable
           isMulti
-          onInputChange={(inputValue) => {
-            onInputChange?.(inputValue);
-          }}
+          onInputChange={handleInputChange}
           allowCreateWhileLoading={false}
-          onChange={(newValue) => {
-            const newValues = getNewValues(newValue as OptionType[]);
-            onChange?.(newValues);
-          }}
-          loadOptions={(inputValue) => {
-            loadOptions(inputValue);
-          }}
+          onChange={handleValueChange}
+          defaultOptions
+          loadOptions={loadOptions}
           isLoading={isLoading}
           onCreateOption={onCreateOption}
           options={mappedOptions}

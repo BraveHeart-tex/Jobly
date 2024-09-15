@@ -1,18 +1,21 @@
+import type { OptionType } from "@/components/common/CreatableMultiSelect";
 import { api } from "@/trpc/react";
 
 export const useFetchBenefits = () => {
   const queryClientUtils = api.useUtils();
 
-  const { isFetching: isFetchingBenefits, data: benefits } =
-    api.benefit.getBenefitsByName.useQuery({
-      query: "",
-    });
-
-  const fetchBenefits = (benefitsQuery: string) => {
-    queryClientUtils.benefit.getBenefitsByName.fetch({
+  const fetchBenefits = async (
+    benefitsQuery: string,
+  ): Promise<OptionType[]> => {
+    const benefits = await queryClientUtils.benefit.getBenefitsByName.fetch({
       query: benefitsQuery,
     });
+
+    return benefits.map((benefit) => ({
+      label: benefit.name,
+      value: benefit.name,
+    }));
   };
 
-  return { fetchBenefits, benefits, isFetchingBenefits };
+  return { fetchBenefits };
 };
