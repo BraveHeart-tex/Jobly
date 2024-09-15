@@ -81,6 +81,7 @@ const CreatableMultiSelect = forwardRef(
           allowCreateWhileLoading={false}
           onChange={handleValueChange}
           defaultOptions
+          cacheOptions
           loadOptions={loadOptions}
           isLoading={isLoading}
           onCreateOption={onCreateOption}

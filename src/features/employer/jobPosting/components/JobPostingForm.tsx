@@ -21,7 +21,6 @@ import {
   employmentOptions,
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
-import { useFetchSkills } from "@/hooks/useFetchSkills";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
@@ -32,10 +31,11 @@ import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
-import { useFetchBenefits } from "@/hooks/useFetchBenefits";
 import jobPostingFormSchema, {
   type JobPostingFormSchema,
 } from "@/schemas/jobPostingFormSchema";
+import { useLoadSkillOptions } from "@/hooks/useLoadSkillOptions";
+import { useLoadBenefitOptions } from "@/hooks/useLoadBenefitOptions";
 
 const jobPostingFormSteps: StepItem<JobPostingFormSchema>[] = [
   {
@@ -72,8 +72,8 @@ const JobPostingForm = () => {
     },
   });
 
-  const { fetchSkills } = useFetchSkills();
-  const { fetchBenefits } = useFetchBenefits();
+  const loadSkillOptions = useLoadSkillOptions();
+  const loadBenefitOptions = useLoadBenefitOptions();
 
   const {
     currentStep,
@@ -184,7 +184,7 @@ const JobPostingForm = () => {
                         value,
                       ]);
                     }}
-                    loadOptions={fetchBenefits}
+                    loadOptions={loadBenefitOptions}
                     ref={field.ref}
                   />
                 </FormControl>
@@ -201,7 +201,7 @@ const JobPostingForm = () => {
                 <FormControl>
                   <CreatableMultiSelect
                     placeholder="Select or add skills"
-                    loadOptions={fetchSkills}
+                    loadOptions={loadSkillOptions}
                     ref={field.ref}
                     value={field.value}
                     onChange={(newValues) => {
