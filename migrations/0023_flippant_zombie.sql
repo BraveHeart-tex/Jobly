@@ -1,0 +1,1 @@
+ALTER TABLE `JobPostings` MODIFY COLUMN `postedAt` datetime NOT NULL DEFAULT (now());

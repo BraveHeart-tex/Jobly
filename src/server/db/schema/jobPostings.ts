@@ -15,6 +15,7 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
+import users from "./users";
 
 const jobPostings = mysqlTable(
   "JobPostings",
@@ -44,7 +45,12 @@ const jobPostings = mysqlTable(
       .default("full-time")
       .notNull(),
     status: mysqlEnum("status", ["draft", "published"]).notNull(),
-    postedAt: datetime("postedAt", { mode: "string" }).default(sql`(now())`),
+    postedAt: datetime("postedAt", { mode: "string" })
+      .default(sql`(now())`)
+      .notNull(),
+    createdUserId: int("createdUserId")
+      .references(() => users.id)
+      .notNull(),
     expiresAt: datetime("expiresAt", { mode: "string" }).notNull(),
     updatedAt: datetime("updatedAt", { mode: "string" })
       .default(sql`(now())`)

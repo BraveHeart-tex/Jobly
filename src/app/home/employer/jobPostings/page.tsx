@@ -1,9 +1,8 @@
 import MotionClientWrapper from "@/components/common/MotionClientWrapper";
 import PageContainer from "@/components/common/PageContainer";
 import { buttonVariants } from "@/components/ui/button";
-
 import { validateRequestByRole } from "@/features/auth/utils";
-import JobPostingListItem from "@/features/employer/jobPosting/components/JobPostingListItem";
+import EmployerJobPostingListItem from "@/features/employer/jobPosting/components/EmployerJobPostingListItem";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { parseEnumValue } from "@/schemas/utils";
@@ -94,7 +93,10 @@ const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
         </div>
         <div className="grid lg:grid-cols-4">
           {jobPostingsList.map((jobPosting) => (
-            <JobPostingListItem key={jobPosting.id} jobPosting={jobPosting} />
+            <EmployerJobPostingListItem
+              key={jobPosting.id}
+              jobPosting={jobPosting}
+            />
           ))}
         </div>
       </PageContainer>

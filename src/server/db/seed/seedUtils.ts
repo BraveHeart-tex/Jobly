@@ -49,6 +49,7 @@ export const makeJobPostingDTOs = (
     expiresAt,
     status: "draft",
     postingContent: faker.lorem.paragraphs(5),
+    createdUserId: 3,
   }));
 };
 

@@ -33,7 +33,9 @@ const DesktopNavigationLinks = ({ userRole }: DesktopNavigationLinksProps) => {
               <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
                 {menuItem.linkItems.map((linkItem) => (
                   <NavigationLinkItem
-                    href={linkItem.href}
+                    href={
+                      typeof linkItem.href === "string" ? linkItem.href : "#"
+                    }
                     title={linkItem.title}
                     key={linkItem.title}
                     icon={linkItem.icon}

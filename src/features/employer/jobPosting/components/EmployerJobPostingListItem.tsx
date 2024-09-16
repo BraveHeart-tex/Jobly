@@ -1,16 +1,18 @@
 import { buttonVariants } from "@/components/ui/button";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
+import type { RouterOutputs } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
 import { EditIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import Link from "next/link";
 
-interface JobPostingListItemProps {
-  jobPosting: JobPostingSelectModel;
+interface EmployerJobPostingListItemProps {
+  jobPosting: RouterOutputs["jobPosting"]["getJobPostings"][number];
 }
 
-const JobPostingListItem = ({ jobPosting }: JobPostingListItemProps) => {
+const EmployerJobPostingListItem = ({
+  jobPosting,
+}: EmployerJobPostingListItemProps) => {
   return (
     <article className="grid gap-2 rounded-md border p-4 bg-card group">
       <div className="flex items-center justify-between">
@@ -41,10 +43,11 @@ const JobPostingListItem = ({ jobPosting }: JobPostingListItemProps) => {
           year: "numeric",
           hour: "2-digit",
           minute: "2-digit",
-        })}
+        })}{" "}
+        by {jobPosting.createdUserName}
       </footer>
     </article>
   );
 };
 
-export default JobPostingListItem;
+export default EmployerJobPostingListItem;

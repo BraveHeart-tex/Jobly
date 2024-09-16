@@ -66,13 +66,19 @@ const MobileNavigationLinks = ({ userRole }: MobileNavigationLinksProps) => {
                 </AccordionTrigger>
                 {navigationMenuItem.linkItems.map((linkItem) => (
                   <AccordionContent
-                    key={linkItem.href}
+                    key={
+                      typeof linkItem.href === "string" ? linkItem.href : "#"
+                    }
                     className="border-b px-1 py-4 hover:bg-muted"
                     onClick={() => {
                       setOpen(false);
                     }}
                   >
-                    <Link href={linkItem.href}>
+                    <Link
+                      href={
+                        typeof linkItem.href === "string" ? linkItem.href : "#"
+                      }
+                    >
                       <div className="mb-1 flex items-center gap-1">
                         <linkItem.icon size={21} />
                         <h3 className="text-base font-medium text-foreground">

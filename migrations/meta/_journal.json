@@ -148,6 +148,27 @@
       "when": 1726122990452,
       "tag": "0020_wandering_dark_beast",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1726491098132,
+      "tag": "0021_hard_maverick",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1726491188597,
+      "tag": "0022_empty_prima",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1726492781381,
+      "tag": "0023_flippant_zombie",
+      "breakpoints": true
     }
   ]
 }

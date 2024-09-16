@@ -1,0 +1,2 @@
+ALTER TABLE `JobPostings` ADD `createdUserId` int NOT NULL;--> statement-breakpoint
+ALTER TABLE `JobPostings` ADD CONSTRAINT `JobPostings_createdUserId_Users_id_fk` FOREIGN KEY (`createdUserId`) REFERENCES `Users`(`id`) ON DELETE set null ON UPDATE no action;

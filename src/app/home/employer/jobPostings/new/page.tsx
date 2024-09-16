@@ -1,6 +1,6 @@
 import PageContainer from "@/components/common/PageContainer";
 import { validateRequestByRole } from "@/features/auth/utils";
-import JobPostingForm from "@/features/employer/jobPosting/components/JobPostingForm";
+import EmployerJobPostingForm from "@/features/employer/jobPosting/components/EmployerJobPostingForm";
 
 const CreateNewJobPostingPage = async () => {
   await validateRequestByRole(["employer"]);
@@ -17,7 +17,7 @@ const CreateNewJobPostingPage = async () => {
             </p>
           </div>
         </div>
-        <JobPostingForm />
+        <EmployerJobPostingForm />
       </PageContainer>
     </div>
   );

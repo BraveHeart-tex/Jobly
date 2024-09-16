@@ -26,14 +26,9 @@ import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
-import {
-  capitalizeString,
-  cn,
-  generateReadableEnumLabel,
-  isObjectEmpty,
-} from "@/lib/utils";
-import jobPostingFormSchema, {
-  type JobPostingFormSchema,
+import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
+import employerJobPostingFormSchema, {
+  type EmployerJobPostingFormSchema,
 } from "@/schemas/jobPostingFormSchema";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
@@ -44,7 +39,7 @@ import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
 
-const jobPostingFormSteps: StepItem<JobPostingFormSchema>[] = [
+const jobPostingFormSteps: StepItem<EmployerJobPostingFormSchema>[] = [
   {
     stepTitle: "Job Basics",
     fields: ["title", "location", "workType", "employmentType"],
@@ -68,15 +63,20 @@ const SKILLS_AND_BENEFITS_STEP = 2;
 const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
-interface JobPostingFormProps {
-  initialData: JobPostingFormSchema;
+interface EmployerJobPostingFormProps {
+  initialData?: EmployerJobPostingFormSchema;
 }
 
-const JobPostingForm = ({ initialData }: JobPostingFormProps) => {
+const EmployerJobPostingForm = ({
+  initialData,
+}: EmployerJobPostingFormProps) => {
   const router = useRouter();
-  const form = useExtendedForm<JobPostingFormSchema>(jobPostingFormSchema, {
-    defaultValues: isObjectEmpty(initialData) ? undefined : initialData,
-  });
+  const form = useExtendedForm<EmployerJobPostingFormSchema>(
+    employerJobPostingFormSchema,
+    {
+      defaultValues: initialData,
+    },
+  );
 
   const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
     onSuccess: () => {
@@ -136,7 +136,7 @@ const JobPostingForm = ({ initialData }: JobPostingFormProps) => {
     form,
   });
 
-  const onSubmit = (values: JobPostingFormSchema) => {
+  const onSubmit = (values: EmployerJobPostingFormSchema) => {
     createJobPosting(values);
   };
 
@@ -345,7 +345,7 @@ const JobPostingForm = ({ initialData }: JobPostingFormProps) => {
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <MultiStepFormSummary<JobPostingFormSchema>
+        <MultiStepFormSummary<EmployerJobPostingFormSchema>
           goToStepByKey={goToStepByKey}
           summarizedSteps={[
             {
@@ -431,8 +431,10 @@ const JobPostingForm = ({ initialData }: JobPostingFormProps) => {
     );
   };
 
-  const onFormError = (errors: FieldErrors<JobPostingFormSchema>) => {
-    goToFirstErroredStep(Object.keys(errors) as (keyof JobPostingFormSchema)[]);
+  const onFormError = (errors: FieldErrors<EmployerJobPostingFormSchema>) => {
+    goToFirstErroredStep(
+      Object.keys(errors) as (keyof EmployerJobPostingFormSchema)[],
+    );
   };
 
   return (
@@ -467,4 +469,4 @@ const JobPostingForm = ({ initialData }: JobPostingFormProps) => {
   );
 };
 
-export default JobPostingForm;
+export default EmployerJobPostingForm;
