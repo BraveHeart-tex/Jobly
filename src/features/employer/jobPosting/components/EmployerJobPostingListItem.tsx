@@ -33,18 +33,20 @@ const EmployerJobPostingListItem = ({
         </Link>
       </div>
       <footer className="mt-auto self-end text-muted-foreground text-sm">
-        Posted at{" "}
-        {DateTime.fromFormat(
-          jobPosting.postedAt,
-          "yyyy-MM-dd HH:mm:ss",
-        ).toLocaleString({
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}{" "}
-        by {jobPosting.createdUserName}
+        <p>
+          Posted at{" "}
+          {DateTime.fromFormat(
+            jobPosting.postedAt,
+            "yyyy-MM-dd HH:mm:ss",
+          ).toLocaleString({
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
+        <p>Created by {jobPosting.createdUserName}</p>
       </footer>
     </article>
   );
