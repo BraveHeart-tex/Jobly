@@ -1,4 +1,5 @@
 "use client";
+import PageTitle from "@/components/common/PageTitle";
 import { buttonVariants } from "@/components/ui/button";
 import { UploadButton } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
@@ -9,9 +10,7 @@ const MyDocumentsTabs = () => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-          Uploaded Documents
-        </h1>
+        <PageTitle>Uploaded Documents</PageTitle>
         <UploadButton
           endpoint="imageUploader"
           className="ut-button:bg-primary ut-button:w-max ut-allowed-content:hidden ut-button:ut-uploading:bg-primary"

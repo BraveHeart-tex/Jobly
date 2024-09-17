@@ -1,5 +1,6 @@
 import ClientOnly from "@/components/common/ClientOnly";
 import PageContainer from "@/components/common/PageContainer";
+import PageTitle from "@/components/common/PageTitle";
 import { JobTrackerApplicationsBoard } from "@/features/candidate/jobTrackerBoard/components/JobTrackerBoard";
 import { api } from "@/trpc/server";
 
@@ -10,9 +11,7 @@ const JobTrackerPage = async () => {
     <main>
       <PageContainer>
         <div className="grid gap-1">
-          <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-            Job Tracker Board
-          </h1>
+          <PageTitle>Job Tracker Board</PageTitle>
           <p className="text-muted-foreground">
             Track / organize your job applications and interviews. Click on the
             job card to see more.

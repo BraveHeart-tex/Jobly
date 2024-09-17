@@ -14,6 +14,7 @@ import { useId, useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
+import PageTitle from "@/components/common/PageTitle";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",
@@ -81,9 +82,7 @@ const DocumentTabs = () => {
   return (
     <div className="grid gap-2">
       <div className="flex items-center justify-between">
-        <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-          Your Documents
-        </h1>
+        <PageTitle>Your Documents</PageTitle>
         <Button
           onClick={handleCreateNewDocument}
           className="flex items-center gap-2"

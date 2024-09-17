@@ -1,4 +1,4 @@
-import type { InferInsertModel } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import benefits from "./benefits";
 import jobPostings from "./jobPostings";
@@ -24,6 +24,20 @@ const jobPostingBenefits = mysqlTable(
       benefitId: index("benefitId").on(table.benefitId),
     };
   },
+);
+
+export const jobPostingBenefitsRelations = relations(
+  jobPostingBenefits,
+  ({ one }) => ({
+    jobPosting: one(jobPostings, {
+      fields: [jobPostingBenefits.jobPostingId],
+      references: [jobPostings.id],
+    }),
+    benefit: one(benefits, {
+      fields: [jobPostingBenefits.benefitId],
+      references: [benefits.id],
+    }),
+  }),
 );
 
 export type JobPostingBenefitInsertModel = InferInsertModel<

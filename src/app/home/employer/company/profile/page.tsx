@@ -1,4 +1,5 @@
 import PageContainer from "@/components/common/PageContainer";
+import PageTitle from "@/components/common/PageTitle";
 import { authActions } from "@/features/auth/actions/authActions";
 import CompanyProfileDetails from "@/features/employer/company/components/CompanyProfileDetails";
 import CompanyProfileSetup from "@/features/employer/company/components/CompanyProfileSetup";
@@ -28,9 +29,7 @@ const CompanyProfilePage = async ({
       return (
         <>
           <div className="grid mb-4">
-            <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-              Set Up Your Company Profile
-            </h1>
+            <PageTitle>Set Up Your Company Profile</PageTitle>
             <p className="text-muted-foreground">
               In order to use our platform, you need to set up your company
               profile.

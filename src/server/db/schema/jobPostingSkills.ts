@@ -1,4 +1,4 @@
-import type { InferInsertModel } from "drizzle-orm";
+import { relations, type InferInsertModel } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 import skills from "./skills";
@@ -24,6 +24,20 @@ const jobPostingSkills = mysqlTable(
       skillId: index("skillId").on(table.skillId),
     };
   },
+);
+
+export const jobPostingSkillsRelations = relations(
+  jobPostingSkills,
+  ({ one }) => ({
+    jobPosting: one(jobPostings, {
+      fields: [jobPostingSkills.jobPostingId],
+      references: [jobPostings.id],
+    }),
+    skill: one(skills, {
+      fields: [jobPostingSkills.skillId],
+      references: [skills.id],
+    }),
+  }),
 );
 
 export type JobPostingSkillInsertModel = InferInsertModel<

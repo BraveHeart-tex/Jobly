@@ -36,6 +36,12 @@ export { default as brandingAssets } from "./brandingAssets";
 // TODO: REMOVE THIS LATER
 export { default as companyBrandingAssets } from "./companyBrandingAssets";
 export { default as benefits } from "./benefits";
-export { default as jobPostingBenefits } from "./jobPostingBenefits";
+export {
+  default as jobPostingBenefits,
+  jobPostingBenefitsRelations,
+} from "./jobPostingBenefits";
 export { default as skills } from "./skills";
-export { default as jobPostingSkills } from "./jobPostingSkills";
+export {
+  default as jobPostingSkills,
+  jobPostingSkillsRelations,
+} from "./jobPostingSkills";

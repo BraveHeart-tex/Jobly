@@ -74,4 +74,22 @@ export const jobPostingRouter = createTRPCRouter({
         createdUserId: user.id,
       });
     }),
+  getJobPostingById: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+      const user = ctx.user;
+      if (user.role !== "employer") {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+      }
+
+      return employerJobPostingService.getJobPostingById(id);
+    }),
 });

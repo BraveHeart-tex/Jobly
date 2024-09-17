@@ -102,4 +102,21 @@ export const employerJobPostingRepository = {
       .$returningId();
     return result?.id;
   },
+  async getJobPostingById(id: JobPostingSelectModel["id"]) {
+    return db.query.jobPostings.findFirst({
+      with: {
+        jobPostingSkills: {
+          with: {
+            skill: true,
+          },
+        },
+        jobPostingBenefits: {
+          with: {
+            benefit: true,
+          },
+        },
+      },
+      where: () => eq(jobPostings.id, id),
+    });
+  },
 };

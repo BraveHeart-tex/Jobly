@@ -4,6 +4,7 @@ import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
 import { insertJobPostingBenefits, insertJobPostingSkills } from "../utils";
+import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {
@@ -71,5 +72,8 @@ export const employerJobPostingService = {
         });
       }
     });
+  },
+  async getJobPostingById(jobPostingId: JobPostingSelectModel["id"]) {
+    return employerJobPostingRepository.getJobPostingById(jobPostingId);
   },
 };

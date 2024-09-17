@@ -16,6 +16,8 @@ import {
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
 import users from "./users";
+import jobPostingSkills from "./jobPostingSkills";
+import { jobPostingBenefits } from "@/server/db/schema/index";
 
 const jobPostings = mysqlTable(
   "JobPostings",
@@ -69,11 +71,13 @@ const jobPostings = mysqlTable(
   },
 );
 
-export const jobPostingsRelations = relations(jobPostings, ({ one }) => ({
+export const jobPostingsRelations = relations(jobPostings, ({ one, many }) => ({
   company: one(companies, {
     fields: [jobPostings.companyId],
     references: [companies.id],
   }),
+  jobPostingSkills: many(jobPostingSkills),
+  jobPostingBenefits: many(jobPostingBenefits),
 }));
 
 export type JobPostingInsertModel = InferInsertModel<typeof jobPostings>;

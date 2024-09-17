@@ -38,6 +38,7 @@ import { useCreateBenefit } from "../hooks/useCreateBenefit";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
+import type { MakeFieldsRequired } from "@/lib/types";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormSchema>[] = [
   {
@@ -64,7 +65,7 @@ const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
 interface EmployerJobPostingFormProps {
-  initialData?: EmployerJobPostingFormSchema;
+  initialData?: MakeFieldsRequired<EmployerJobPostingFormSchema, "id">;
 }
 
 const EmployerJobPostingForm = ({

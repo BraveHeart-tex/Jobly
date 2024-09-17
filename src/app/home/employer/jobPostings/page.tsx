@@ -1,5 +1,6 @@
 import MotionClientWrapper from "@/components/common/MotionClientWrapper";
 import PageContainer from "@/components/common/PageContainer";
+import PageTitle from "@/components/common/PageTitle";
 import { buttonVariants } from "@/components/ui/button";
 import { validateRequestByRole } from "@/features/auth/utils";
 import EmployerJobPostingListItem from "@/features/employer/jobPosting/components/EmployerJobPostingListItem";
@@ -50,9 +51,7 @@ const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
       <PageContainer className="grid gap-2">
         <div className="grid">
           <div className="flex items-center justify-between">
-            <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-              Job Postings
-            </h1>
+            <PageTitle>Job Postings</PageTitle>
             <Link
               href={EMPLOYER_ROUTES.NEW_LISTING}
               className={cn(

@@ -1,5 +1,6 @@
 import { api } from "@/trpc/server";
 import CompanyProfileDetailsForm from "./CompanyProfileDetailsForm";
+import PageTitle from "@/components/common/PageTitle";
 
 const CompanyProfileDetails = async () => {
   const company = await api.company.getUserCompanyDetailsByUserId();
@@ -7,9 +8,7 @@ const CompanyProfileDetails = async () => {
 
   return (
     <div>
-      <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight">
-        Company Profile Details
-      </h1>
+      <PageTitle>Company Profile Details</PageTitle>
       <CompanyProfileDetailsForm company={company} />
     </div>
   );

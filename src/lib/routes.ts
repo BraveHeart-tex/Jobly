@@ -34,7 +34,7 @@ export const EMPLOYER_ROUTES = {
   PUBLISHED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=published`,
   DRAFT_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=draft`,
   EXPIRED_LISTINGS: `${BASE_EMPLOYER_ROUTE}/jobPostings?status=expired`,
-  EDIT_LISTING: (id: number) => `${BASE_EMPLOYER_ROUTE}/jobPostings/${id}/edit`,
+  EDIT_LISTING: (id: number) => `${BASE_EMPLOYER_ROUTE}/jobPostings/edit/${id}`,
 
   // Candidates
   ALL_APPLICATIONS: `${BASE_EMPLOYER_ROUTE}/candidates/applications`,
