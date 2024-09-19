@@ -31,10 +31,6 @@ export { default as userRoles } from "./userRoles";
 export { default as permissions } from "./permissions";
 export { default as rolePermissions } from "./rolePermissions";
 export { default as entityPermissions } from "./entityPermissions";
-// TODO: REMOVE THIS LATER
-export { default as brandingAssets } from "./brandingAssets";
-// TODO: REMOVE THIS LATER
-export { default as companyBrandingAssets } from "./companyBrandingAssets";
 export { default as benefits } from "./benefits";
 export {
   default as jobPostingBenefits,

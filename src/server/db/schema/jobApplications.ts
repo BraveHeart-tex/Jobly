@@ -5,12 +5,12 @@ import {
   sql,
 } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlEnum,
   mysqlTable,
   primaryKey,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import documents from "./documents";
 import jobPostings from "./jobPostings";
@@ -37,7 +37,7 @@ const jobApplications = mysqlTable(
       "interview",
       "offer",
     ] as const).default("applied"),
-    appliedAt: datetime("appliedAt", { mode: "string" }).default(sql`(now())`),
+    appliedAt: timestamp("appliedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {

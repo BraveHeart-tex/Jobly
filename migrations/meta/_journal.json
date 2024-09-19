@@ -169,6 +169,20 @@
       "when": 1726492781381,
       "tag": "0023_flippant_zombie",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1726729175596,
+      "tag": "0024_gigantic_trish_tilby",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1726729291504,
+      "tag": "0025_cultured_gorgon",
+      "breakpoints": true
     }
   ]
 }

@@ -1,12 +1,12 @@
 import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
-  datetime,
   decimal,
   index,
   int,
   mysqlEnum,
   mysqlTable,
   text,
+  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
@@ -33,10 +33,10 @@ const jobTrackerApplications = mysqlTable(
     notes: text("notes"),
     jobDescription: text("jobDescription"),
     displayOrder: int("displayOrder").notNull(),
-    createdAt: datetime("createdAt", { mode: "string" })
+    createdAt: timestamp("createdAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string" })
+    updatedAt: timestamp("updatedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull()
       .$onUpdate(() => sql`(now())`),

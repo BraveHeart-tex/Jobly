@@ -5,12 +5,12 @@ import {
   sql,
 } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlEnum,
   mysqlTable,
   primaryKey,
+  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import documentSections from "./documentSections";
@@ -26,10 +26,10 @@ const documents = mysqlTable(
       .notNull(),
     type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
     language: varchar("language", { length: 100 }).notNull(),
-    createdAt: datetime("createdAt", { mode: "string" })
+    createdAt: timestamp("createdAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string" })
+    updatedAt: timestamp("updatedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull()
       .$onUpdate(() => sql`(now())`),

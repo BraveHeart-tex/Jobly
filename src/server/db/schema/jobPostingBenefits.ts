@@ -8,7 +8,9 @@ const jobPostingBenefits = mysqlTable(
   {
     id: int("id").autoincrement().notNull().primaryKey(),
     jobPostingId: int("jobPostingId")
-      .references(() => jobPostings.id)
+      .references(() => jobPostings.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     benefitId: int("benefitId")
       .references(() => benefits.id)

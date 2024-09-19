@@ -1,10 +1,10 @@
 import { sql } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlTable,
   primaryKey,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 import users from "./users";
@@ -23,7 +23,7 @@ const userBookmarksJobPosting = mysqlTable(
       .references(() => jobPostings.id, {
         onDelete: "cascade",
       }),
-    bookmarkedAt: datetime("bookmarkedAt", { mode: "string" }).default(
+    bookmarkedAt: timestamp("bookmarkedAt", { mode: "string" }).default(
       sql`(now())`,
     ),
   },

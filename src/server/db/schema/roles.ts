@@ -1,9 +1,9 @@
 import { sql } from "drizzle-orm";
 import {
-  datetime,
   int,
   mysqlTable,
   primaryKey,
+  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
@@ -18,8 +18,8 @@ const roles = mysqlTable(
       .references(() => users.id)
       .notNull(),
     updatedBy: int("updatedBy").references(() => users.id),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" })
+    createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: timestamp("updatedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull()
       .$onUpdate(() => sql`(now())`),

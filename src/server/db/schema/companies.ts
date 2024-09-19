@@ -1,11 +1,11 @@
 import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlTable,
   primaryKey,
   text,
+  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 
@@ -26,9 +26,9 @@ const companies = mysqlTable(
     coverImage: varchar("coverImage", { length: 2048 }),
     description: varchar("description", { length: 1024 }),
     areasOfExpertise: varchar("areasOfExpertise", { length: 256 }),
-    verifiedAt: datetime("verifiedAt", { mode: "string" }),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: datetime("updatedAt", { mode: "string" })
+    verifiedAt: timestamp("verifiedAt", { mode: "string" }),
+    createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
+    updatedAt: timestamp("updatedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull()
       .$onUpdate(() => sql`(now())`),

@@ -1,10 +1,11 @@
 import { db } from "@/server/db";
+import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
+import { formatISODateTimeToUTC, formatSqlDateToISO } from "@/server/db/utils";
 import { TRPCError } from "@trpc/server";
 import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
 import { insertJobPostingBenefits, insertJobPostingSkills } from "../utils";
-import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {
@@ -19,10 +20,14 @@ export const employerJobPostingService = {
   async createJobPosting(jobPostingData: CreateJobPostingParams) {
     return await db.transaction(async (transaction) => {
       try {
-        const { benefits, skills } = jobPostingData;
+        const { benefits, skills, expiresAt } = jobPostingData;
+        const expiresAtFormatted = formatISODateTimeToUTC(expiresAt);
         const insertedJobPostingId =
           await employerJobPostingRepository.createJobPosting(
-            jobPostingData,
+            {
+              ...jobPostingData,
+              expiresAt: expiresAtFormatted,
+            },
             transaction,
           );
 
@@ -74,6 +79,13 @@ export const employerJobPostingService = {
     });
   },
   async getJobPostingById(jobPostingId: JobPostingSelectModel["id"]) {
-    return employerJobPostingRepository.getJobPostingById(jobPostingId);
+    const jobPosting =
+      await employerJobPostingRepository.getJobPostingById(jobPostingId);
+
+    if (jobPosting) {
+      jobPosting.expiresAt = formatSqlDateToISO(jobPosting.expiresAt);
+    }
+
+    return jobPosting;
   },
 };

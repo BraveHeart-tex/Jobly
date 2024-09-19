@@ -1,4 +1,4 @@
-import { relations, type InferInsertModel } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 import skills from "./skills";
@@ -8,7 +8,9 @@ const jobPostingSkills = mysqlTable(
   {
     id: int("id").autoincrement().notNull().primaryKey(),
     jobPostingId: int("jobPostingId")
-      .references(() => jobPostings.id)
+      .references(() => jobPostings.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     skillId: int("skillId")
       .references(() => skills.id)

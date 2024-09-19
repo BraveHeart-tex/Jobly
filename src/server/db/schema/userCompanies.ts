@@ -1,10 +1,10 @@
 import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlTable,
   primaryKey,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
 import users from "./users";
@@ -19,7 +19,7 @@ const userCompanies = mysqlTable(
     companyId: int("companyId")
       .references(() => companies.id, { onDelete: "cascade" })
       .notNull(),
-    createdAt: datetime("createdAt", { mode: "string" }).default(sql`(now())`),
+    createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {

@@ -1,3 +1,4 @@
+import { jobPostingBenefits } from "@/server/db/schema/index";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -5,19 +6,18 @@ import {
   sql,
 } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlEnum,
   mysqlTable,
   primaryKey,
   text,
+  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
-import users from "./users";
 import jobPostingSkills from "./jobPostingSkills";
-import { jobPostingBenefits } from "@/server/db/schema/index";
+import users from "./users";
 
 const jobPostings = mysqlTable(
   "JobPostings",
@@ -47,14 +47,14 @@ const jobPostings = mysqlTable(
       .default("full-time")
       .notNull(),
     status: mysqlEnum("status", ["draft", "published"]).notNull(),
-    postedAt: datetime("postedAt", { mode: "string" })
+    postedAt: timestamp("postedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull(),
     createdUserId: int("createdUserId")
       .references(() => users.id)
       .notNull(),
-    expiresAt: datetime("expiresAt", { mode: "string" }).notNull(),
-    updatedAt: datetime("updatedAt", { mode: "string" })
+    expiresAt: timestamp("expiresAt", { mode: "string" }).notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "string" })
       .default(sql`(now())`)
       .notNull()
       .$onUpdate(() => sql`(now())`),

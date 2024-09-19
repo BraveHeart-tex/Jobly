@@ -1,10 +1,10 @@
 import { sql } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlTable,
   primaryKey,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 import users from "./users";
@@ -23,7 +23,7 @@ const userViewsJobPosting = mysqlTable(
       .references(() => jobPostings.id, {
         onDelete: "cascade",
       }),
-    viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
+    viewedAt: timestamp("viewedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {

@@ -90,7 +90,7 @@ const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
             ))}
           </div>
         </div>
-        <div className="grid lg:grid-cols-4">
+        <div className="grid lg:grid-cols-4 gap-4">
           {jobPostingsList.map((jobPosting) => (
             <EmployerJobPostingListItem
               key={jobPosting.id}

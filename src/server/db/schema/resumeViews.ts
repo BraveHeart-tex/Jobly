@@ -1,10 +1,10 @@
 import { sql } from "drizzle-orm";
 import {
-  datetime,
   index,
   int,
   mysqlTable,
   primaryKey,
+  timestamp,
 } from "drizzle-orm/mysql-core";
 import { documents } from "../schema";
 import companies from "./companies";
@@ -19,7 +19,7 @@ const resumeViews = mysqlTable(
     viewedResumeId: int("viewedResumeId")
       .notNull()
       .references(() => documents.id),
-    viewedAt: datetime("viewedAt", { mode: "string" }).default(sql`(now())`),
+    viewedAt: timestamp("viewedAt", { mode: "string" }).default(sql`(now())`),
   },
   (table) => {
     return {
