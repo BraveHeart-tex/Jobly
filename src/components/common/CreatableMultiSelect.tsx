@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
 import type React from "react";
 import { forwardRef, useState } from "react";
 import { type MultiValue, components } from "react-select";
@@ -102,9 +102,24 @@ const CreatableMultiSelect = forwardRef(
               const isSelected = value.find(
                 (item) => item.label === props.label,
               );
-              if (isSelected) return null;
+
               return (
-                <components.Option {...props}>{props.label}</components.Option>
+                <components.Option
+                  {...props}
+                  className={cn(
+                    props.className,
+                    isSelected && "pointer-events-none opacity-50 w-full",
+                  )}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    {props.label}
+                    {isSelected ? (
+                      <span className="ml-auto">
+                        <CheckIcon size={20} />
+                      </span>
+                    ) : null}
+                  </div>
+                </components.Option>
               );
             },
             IndicatorSeparator: () => null,
