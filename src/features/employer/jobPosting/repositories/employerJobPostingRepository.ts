@@ -3,7 +3,7 @@ import { db } from "@/server/db";
 import { jobPostings, users } from "@/server/db/schema";
 import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
 import { getCurrentTimestamp } from "@/server/db/utils";
-import { and, eq, gt, lt, sql } from "drizzle-orm";
+import { and, desc, eq, gt, lt, sql } from "drizzle-orm";
 import type { CreateJobPostingParams } from "../../company/types";
 
 const baseJobPostingsQuery = (companyId: number) => {
@@ -24,6 +24,7 @@ const baseJobPostingsQuery = (companyId: number) => {
     .from(jobPostings)
     .innerJoin(users, eq(users.id, jobPostings.createdUserId))
     .where(eq(jobPostings.companyId, companyId))
+    .orderBy(desc(jobPostings.id))
     .$dynamic();
 };
 
