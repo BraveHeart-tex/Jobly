@@ -1,8 +1,8 @@
+import { customTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
   relations,
-  sql,
 } from "drizzle-orm";
 import {
   index,
@@ -10,7 +10,6 @@ import {
   mysqlEnum,
   mysqlTable,
   primaryKey,
-  timestamp,
 } from "drizzle-orm/mysql-core";
 import documents from "./documents";
 import jobPostings from "./jobPostings";
@@ -37,7 +36,7 @@ const jobApplications = mysqlTable(
       "interview",
       "offer",
     ] as const).default("applied"),
-    appliedAt: timestamp("appliedAt", { mode: "string" }).default(sql`(now())`),
+    appliedAt: customTimestamp("appliedAt"),
   },
   (table) => {
     return {

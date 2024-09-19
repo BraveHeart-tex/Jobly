@@ -1,8 +1,8 @@
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
   relations,
-  sql,
 } from "drizzle-orm";
 import {
   index,
@@ -10,7 +10,6 @@ import {
   mysqlEnum,
   mysqlTable,
   primaryKey,
-  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import documentSections from "./documentSections";
@@ -26,13 +25,13 @@ const documents = mysqlTable(
       .notNull(),
     type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
     language: varchar("language", { length: 100 }).notNull(),
-    createdAt: timestamp("createdAt", { mode: "string" })
-      .default(sql`(now())`)
+    createdAt: customTimestamp("createdAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull(),
-    updatedAt: timestamp("updatedAt", { mode: "string" })
-      .default(sql`(now())`)
+    updatedAt: customTimestamp("updatedAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull()
-      .$onUpdate(() => sql`(now())`),
+      .$onUpdate(() => getCurrentTimestamp()),
   },
   (table) => {
     return {

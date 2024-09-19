@@ -13,7 +13,9 @@ const userRoles = mysqlTable(
       })
       .notNull(),
     roleId: int("roleId")
-      .references(() => roles.id)
+      .references(() => roles.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     companyId: int("companyId").references(() => companies.id, {
       onDelete: "cascade",

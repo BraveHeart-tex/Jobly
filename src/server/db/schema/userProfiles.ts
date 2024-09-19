@@ -1,11 +1,10 @@
-import { sql } from "drizzle-orm";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   index,
   int,
   mysqlTable,
   primaryKey,
   text,
-  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
@@ -24,11 +23,13 @@ const userProfiles = mysqlTable(
     github: varchar("github", { length: 255 }),
     portfolio: varchar("portfolio", { length: 255 }),
     image: varchar("image", { length: 512 }),
-    createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: timestamp("updatedAt", { mode: "string" })
-      .default(sql`(now())`)
+    createdAt: customTimestamp("createdAt").$defaultFn(() =>
+      getCurrentTimestamp(),
+    ),
+    updatedAt: customTimestamp("updatedAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull()
-      .$onUpdate(() => sql`(now())`),
+      .$onUpdate(() => getCurrentTimestamp()),
   },
   (table) => {
     return {

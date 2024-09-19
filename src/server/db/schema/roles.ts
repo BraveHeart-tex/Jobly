@@ -1,11 +1,5 @@
-import { sql } from "drizzle-orm";
-import {
-  int,
-  mysqlTable,
-  primaryKey,
-  timestamp,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
+import { int, mysqlTable, primaryKey, varchar } from "drizzle-orm/mysql-core";
 import users from "./users";
 
 const roles = mysqlTable(
@@ -18,11 +12,13 @@ const roles = mysqlTable(
       .references(() => users.id)
       .notNull(),
     updatedBy: int("updatedBy").references(() => users.id),
-    createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: timestamp("updatedAt", { mode: "string" })
-      .default(sql`(now())`)
+    createdAt: customTimestamp("createdAt").$defaultFn(() =>
+      getCurrentTimestamp(),
+    ),
+    updatedAt: customTimestamp("updatedAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull()
-      .$onUpdate(() => sql`(now())`),
+      .$onUpdate(() => getCurrentTimestamp()),
   },
   (table) => {
     return {

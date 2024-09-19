@@ -1,13 +1,17 @@
 import { buttonVariants } from "@/components/ui/button";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
-import type { RouterOutputs } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { EditIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import Link from "next/link";
 
 interface EmployerJobPostingListItemProps {
-  jobPosting: RouterOutputs["jobPosting"]["getJobPostings"][number];
+  jobPosting: {
+    id: number;
+    title: string;
+    postedAt: string;
+    createdUserName: string;
+  };
 }
 
 const EmployerJobPostingListItem = ({
@@ -35,10 +39,7 @@ const EmployerJobPostingListItem = ({
       <footer className="mt-auto self-end text-muted-foreground text-sm">
         <p>
           Posted at{" "}
-          {DateTime.fromFormat(
-            jobPosting.postedAt,
-            "yyyy-MM-dd HH:mm:ss",
-          ).toLocaleString({
+          {DateTime.fromISO(jobPosting.postedAt).toLocaleString({
             day: "2-digit",
             month: "long",
             year: "numeric",

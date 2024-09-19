@@ -1,11 +1,5 @@
-import { sql } from "drizzle-orm";
-import {
-  index,
-  int,
-  mysqlTable,
-  primaryKey,
-  timestamp,
-} from "drizzle-orm/mysql-core";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
+import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import jobPostings from "./jobPostings";
 import users from "./users";
 
@@ -23,7 +17,9 @@ const userViewsJobPosting = mysqlTable(
       .references(() => jobPostings.id, {
         onDelete: "cascade",
       }),
-    viewedAt: timestamp("viewedAt", { mode: "string" }).default(sql`(now())`),
+    viewedAt: customTimestamp("viewedAt").$defaultFn(() =>
+      getCurrentTimestamp(),
+    ),
   },
   (table) => {
     return {

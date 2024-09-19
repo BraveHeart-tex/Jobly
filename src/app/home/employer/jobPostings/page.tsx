@@ -31,13 +31,18 @@ const jobPostingsFilterOptions = [
     value: "draft",
     href: EMPLOYER_ROUTES.DRAFT_LISTINGS,
   },
+  {
+    label: "Expired",
+    value: "expired",
+    href: EMPLOYER_ROUTES.EXPIRED_LISTINGS,
+  },
 ];
 
 const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
   await validateRequestByRole(["employer"]);
 
   const jobPostingStatusParam = parseEnumValue(
-    jobPostings.status.enumValues,
+    [...jobPostings.status.enumValues, "expired"],
     searchParams?.status,
     "published",
   );
@@ -67,7 +72,7 @@ const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
         <div className="w-full border-b relative">
           <div className="flex items-center gap-4 w-max">
             {jobPostingsFilterOptions.map((option) => (
-              <div key={option.value} className="relative w-max">
+              <div key={option.value} className="relative w-max min-[75px]">
                 <Link
                   href={option.href}
                   className={cn(

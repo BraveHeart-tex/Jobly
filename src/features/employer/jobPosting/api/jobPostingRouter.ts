@@ -11,7 +11,7 @@ export const jobPostingRouter = createTRPCRouter({
     .input(
       z.object({
         status: z
-          .enum(jobPostings.status.enumValues)
+          .enum([...jobPostings.status.enumValues, "expired"])
           .optional()
           .default("published"),
       }),

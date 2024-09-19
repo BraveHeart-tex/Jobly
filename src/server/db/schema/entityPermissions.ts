@@ -1,5 +1,5 @@
-import { sql } from "drizzle-orm";
-import { int, mysqlTable, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
+import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core";
 import permissions from "./permissions";
 import users from "./users";
 
@@ -13,11 +13,13 @@ const entityPermissions = mysqlTable("EntityPermissions", {
   permissionId: int("permissionId")
     .references(() => permissions.id)
     .notNull(),
-  createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
-  updatedAt: timestamp("updatedAt", { mode: "string" })
-    .default(sql`(now())`)
+  createdAt: customTimestamp("createdAt").$defaultFn(() =>
+    getCurrentTimestamp(),
+  ),
+  updatedAt: customTimestamp("updatedAt")
+    .$defaultFn(() => getCurrentTimestamp())
     .notNull()
-    .$onUpdate(() => sql`(now())`),
+    .$onUpdate(() => getCurrentTimestamp()),
 });
 
 export default entityPermissions;

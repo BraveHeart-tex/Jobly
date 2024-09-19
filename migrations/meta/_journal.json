@@ -183,6 +183,13 @@
       "when": 1726729291504,
       "tag": "0025_cultured_gorgon",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1726743336735,
+      "tag": "0026_plain_big_bertha",
+      "breakpoints": true
     }
   ]
 }

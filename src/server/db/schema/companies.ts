@@ -1,11 +1,11 @@
-import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
   index,
   int,
   mysqlTable,
   primaryKey,
   text,
-  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 
@@ -26,12 +26,14 @@ const companies = mysqlTable(
     coverImage: varchar("coverImage", { length: 2048 }),
     description: varchar("description", { length: 1024 }),
     areasOfExpertise: varchar("areasOfExpertise", { length: 256 }),
-    verifiedAt: timestamp("verifiedAt", { mode: "string" }),
-    createdAt: timestamp("createdAt", { mode: "string" }).default(sql`(now())`),
-    updatedAt: timestamp("updatedAt", { mode: "string" })
-      .default(sql`(now())`)
+    verifiedAt: customTimestamp("verifiedAt"),
+    createdAt: customTimestamp("createdAt").$defaultFn(() =>
+      getCurrentTimestamp(),
+    ),
+    updatedAt: customTimestamp("updatedAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull()
-      .$onUpdate(() => sql`(now())`),
+      .$onUpdate(() => getCurrentTimestamp()),
   },
   (table) => {
     return {
