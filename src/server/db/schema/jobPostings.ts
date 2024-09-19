@@ -1,9 +1,9 @@
 import { jobPostingBenefits } from "@/server/db/schema/index";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
   relations,
-  sql,
 } from "drizzle-orm";
 import {
   index,
@@ -12,7 +12,6 @@ import {
   mysqlTable,
   primaryKey,
   text,
-  timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
 import companies from "./companies";
@@ -47,17 +46,17 @@ const jobPostings = mysqlTable(
       .default("full-time")
       .notNull(),
     status: mysqlEnum("status", ["draft", "published"]).notNull(),
-    postedAt: timestamp("postedAt", { mode: "string" })
-      .default(sql`(now())`)
+    postedAt: customTimestamp("postedAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull(),
     createdUserId: int("createdUserId")
       .references(() => users.id)
       .notNull(),
-    expiresAt: timestamp("expiresAt", { mode: "string" }).notNull(),
-    updatedAt: timestamp("updatedAt", { mode: "string" })
-      .default(sql`(now())`)
+    expiresAt: customTimestamp("expiresAt").notNull(),
+    updatedAt: customTimestamp("updatedAt")
+      .$defaultFn(() => getCurrentTimestamp())
       .notNull()
-      .$onUpdate(() => sql`(now())`),
+      .$onUpdate(() => getCurrentTimestamp()),
   },
   (table) => {
     return {

@@ -1,6 +1,5 @@
 import { db } from "@/server/db";
 import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
-import { formatISODateTimeToUTC, formatSqlDateToISO } from "@/server/db/utils";
 import { TRPCError } from "@trpc/server";
 import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
@@ -20,14 +19,10 @@ export const employerJobPostingService = {
   async createJobPosting(jobPostingData: CreateJobPostingParams) {
     return await db.transaction(async (transaction) => {
       try {
-        const { benefits, skills, expiresAt } = jobPostingData;
-        const expiresAtFormatted = formatISODateTimeToUTC(expiresAt);
+        const { benefits, skills } = jobPostingData;
         const insertedJobPostingId =
           await employerJobPostingRepository.createJobPosting(
-            {
-              ...jobPostingData,
-              expiresAt: expiresAtFormatted,
-            },
+            jobPostingData,
             transaction,
           );
 
@@ -79,13 +74,6 @@ export const employerJobPostingService = {
     });
   },
   async getJobPostingById(jobPostingId: JobPostingSelectModel["id"]) {
-    const jobPosting =
-      await employerJobPostingRepository.getJobPostingById(jobPostingId);
-
-    if (jobPosting) {
-      jobPosting.expiresAt = formatSqlDateToISO(jobPosting.expiresAt);
-    }
-
-    return jobPosting;
+    return employerJobPostingRepository.getJobPostingById(jobPostingId);
   },
 };
