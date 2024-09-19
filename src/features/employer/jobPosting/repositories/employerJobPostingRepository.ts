@@ -71,11 +71,6 @@ export const employerJobPostingRepository = {
             skill: true,
           },
         },
-        jobPostingBenefits: {
-          with: {
-            benefit: true,
-          },
-        },
       },
       where: () => eq(jobPostings.id, id),
     });

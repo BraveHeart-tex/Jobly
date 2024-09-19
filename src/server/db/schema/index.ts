@@ -31,11 +31,6 @@ export { default as userRoles } from "./userRoles";
 export { default as permissions } from "./permissions";
 export { default as rolePermissions } from "./rolePermissions";
 export { default as entityPermissions } from "./entityPermissions";
-export { default as benefits } from "./benefits";
-export {
-  default as jobPostingBenefits,
-  jobPostingBenefitsRelations,
-} from "./jobPostingBenefits";
 export { default as skills } from "./skills";
 export {
   default as jobPostingSkills,

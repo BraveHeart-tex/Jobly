@@ -190,6 +190,13 @@
       "when": 1726743336735,
       "tag": "0026_plain_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "5",
+      "when": 1726766013519,
+      "tag": "0027_windy_strong_guy",
+      "breakpoints": true
     }
   ]
 }

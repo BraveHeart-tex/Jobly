@@ -30,12 +30,6 @@ const EditJobPostingPage = async ({ params }: EditJobPostingPageParams) => {
     redirect(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
   }
 
-  const mappedJobPostingDetails = {
-    ...jobPostingDetails,
-    skills: jobPostingDetails.jobPostingSkills.map((item) => item.skill),
-    benefits: jobPostingDetails.jobPostingBenefits.map((item) => item.benefit),
-  };
-
   return (
     <main>
       <PageContainer className="grid gap-6">
@@ -63,7 +57,7 @@ const EditJobPostingPage = async ({ params }: EditJobPostingPageParams) => {
             </p>
           ) : null}
         </div>
-        <EmployerJobPostingForm initialData={mappedJobPostingDetails} />
+        <EmployerJobPostingForm initialData={jobPostingDetails} />
       </PageContainer>
     </main>
   );

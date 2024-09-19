@@ -1,4 +1,3 @@
-import { jobPostingBenefits } from "@/server/db/schema/index";
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
@@ -76,7 +75,6 @@ export const jobPostingsRelations = relations(jobPostings, ({ one, many }) => ({
     references: [companies.id],
   }),
   jobPostingSkills: many(jobPostingSkills),
-  jobPostingBenefits: many(jobPostingBenefits),
 }));
 
 export type JobPostingInsertModel = InferInsertModel<typeof jobPostings>;

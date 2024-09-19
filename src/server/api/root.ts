@@ -3,7 +3,6 @@ import { documentRouter } from "@/features/candidate/documents/api/documentRoute
 import { jobTrackerRouter } from "@/features/candidate/jobTrackerBoard/api/jobTrackerRouter";
 import { userJobListingRouter } from "@/features/candidate/jobs/api/jobRouter";
 import { companyRouter } from "@/features/employer/company/api/companyRouter";
-import { benefitRouter } from "@/features/employer/jobPosting/api/benefitRouter";
 import { jobPostingRouter } from "@/features/employer/jobPosting/api/jobPostingRouter";
 import { skillsRouter } from "@/features/employer/jobPosting/api/skillsRouter";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
@@ -16,7 +15,6 @@ export const appRouter = createTRPCRouter({
   jobPosting: jobPostingRouter,
   company: companyRouter,
   skill: skillsRouter,
-  benefit: benefitRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);

@@ -4,7 +4,7 @@ import { TRPCError } from "@trpc/server";
 import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
-import { insertJobPostingBenefits, insertJobPostingSkills } from "../utils";
+import { insertJobPostingSkills } from "../utils";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {
@@ -19,7 +19,7 @@ export const employerJobPostingService = {
   async createJobPosting(jobPostingData: CreateJobPostingParams) {
     return await db.transaction(async (transaction) => {
       try {
-        const { benefits, skills } = jobPostingData;
+        const { skills } = jobPostingData;
         const insertedJobPostingId =
           await employerJobPostingRepository.createJobPosting(
             jobPostingData,
@@ -32,10 +32,7 @@ export const employerJobPostingService = {
           );
         }
 
-        await Promise.all([
-          insertJobPostingSkills(skills, insertedJobPostingId, transaction),
-          insertJobPostingBenefits(benefits, insertedJobPostingId, transaction),
-        ]);
+        await insertJobPostingSkills(skills, insertedJobPostingId, transaction);
 
         return {
           jobPostingId: insertedJobPostingId,
@@ -74,7 +71,15 @@ export const employerJobPostingService = {
     });
   },
   async getJobPostingById(jobPostingId: number) {
-    return employerJobPostingRepository.getJobPostingById(jobPostingId);
+    const jobPosting =
+      await employerJobPostingRepository.getJobPostingById(jobPostingId);
+
+    if (!jobPosting) return undefined;
+
+    return {
+      ...jobPosting,
+      skills: jobPosting.jobPostingSkills.map((item) => item.skill),
+    };
   },
   async updateJobPosting(data: JobPostingSelectModel) {
     return employerJobPostingRepository.updateJobPosting(data);
