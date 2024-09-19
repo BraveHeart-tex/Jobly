@@ -4,9 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
-import type { MultiValue } from "react-select";
 import type React from "react";
 import { forwardRef, useState } from "react";
+import { type MultiValue, components } from "react-select";
 import AsyncCreatableSelect from "react-select/async-creatable";
 
 export interface OptionType {
@@ -98,6 +98,15 @@ const CreatableMultiSelect = forwardRef(
                 <p>Loading...</p>
               </div>
             ),
+            Option: (props) => {
+              const isSelected = value.find(
+                (item) => item.label === props.label,
+              );
+              if (isSelected) return null;
+              return (
+                <components.Option {...props}>{props.label}</components.Option>
+              );
+            },
             IndicatorSeparator: () => null,
             MultiValue: ({ data, removeProps }) => (
               <Badge variant="secondary" className="mr-1 mb-1">
