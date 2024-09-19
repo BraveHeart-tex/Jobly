@@ -73,7 +73,10 @@ export const employerJobPostingService = {
       }
     });
   },
-  async getJobPostingById(jobPostingId: JobPostingSelectModel["id"]) {
+  async getJobPostingById(jobPostingId: number) {
     return employerJobPostingRepository.getJobPostingById(jobPostingId);
+  },
+  async updateJobPosting(data: JobPostingSelectModel) {
+    return employerJobPostingRepository.updateJobPosting(data);
   },
 };

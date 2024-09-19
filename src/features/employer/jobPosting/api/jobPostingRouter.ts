@@ -1,5 +1,7 @@
 import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
+import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
+import { updateJobPostingSchema } from "@/schemas/employer/updateJobPostingSchema";
 import employerJobPostingFormSchema from "@/schemas/jobPostingFormSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
@@ -36,41 +38,11 @@ export const jobPostingRouter = createTRPCRouter({
     .input(employerJobPostingFormSchema)
     .mutation(async ({ ctx, input }) => {
       const user = ctx.user;
-      if (user.role !== "employer") {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You are not authorized to perform this action.",
-        });
-      }
-
-      const company = await userCompanyService.getUserCompanyDetailsByUserId(
-        user.id,
-      );
-
-      if (!company) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message:
-            "Please setup your company profile first to create a job posting.",
-        });
-      }
-
-      const isAssociatedWithCompany =
-        await userCompanyService.verifyUserCompanyAssociation({
-          userId: user.id,
-          companyId: company.id,
-        });
-
-      if (!isAssociatedWithCompany) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "You are not associated with this company.",
-        });
-      }
+      const companyId = await ensureEmployerCompanyLink(user);
 
       return employerJobPostingService.createJobPosting({
         ...input,
-        companyId: company.id,
+        companyId,
         createdUserId: user.id,
       });
     }),
@@ -91,5 +63,16 @@ export const jobPostingRouter = createTRPCRouter({
       }
 
       return employerJobPostingService.getJobPostingById(id);
+    }),
+  updateJobPosting: protectedProcedure
+    .input(updateJobPostingSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = ctx.user;
+      const companyId = await ensureEmployerCompanyLink(user);
+
+      return employerJobPostingService.updateJobPosting({
+        ...input,
+        companyId,
+      });
     }),
 });

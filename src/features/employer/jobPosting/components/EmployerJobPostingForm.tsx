@@ -26,6 +26,7 @@ import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
+import type { MakeFieldsRequired } from "@/lib/types";
 import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
 import employerJobPostingFormSchema, {
   type EmployerJobPostingFormSchema,
@@ -38,7 +39,6 @@ import { useCreateBenefit } from "../hooks/useCreateBenefit";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
-import type { MakeFieldsRequired } from "@/lib/types";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormSchema>[] = [
   {
@@ -78,6 +78,7 @@ const EmployerJobPostingForm = ({
       defaultValues: initialData,
     },
   );
+  const isEditMode = !!initialData;
 
   const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
     onSuccess: () => {
@@ -138,6 +139,10 @@ const EmployerJobPostingForm = ({
   });
 
   const onSubmit = (values: EmployerJobPostingFormSchema) => {
+    if (isEditMode) {
+      return;
+    }
+
     createJobPosting(values);
   };
 
