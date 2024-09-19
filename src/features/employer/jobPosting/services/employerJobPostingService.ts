@@ -1,5 +1,7 @@
+import { jobPostingSkillsRepository } from "@/features/employer/jobPosting/repositories/jobPostingSkillsRepository";
 import { db } from "@/server/db";
 import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
+import type { SkillSelectModel } from "@/server/db/schema/skills";
 import { TRPCError } from "@trpc/server";
 import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
@@ -74,14 +76,55 @@ export const employerJobPostingService = {
     const jobPosting =
       await employerJobPostingRepository.getJobPostingById(jobPostingId);
 
-    if (!jobPosting) return undefined;
+    if (!jobPosting) return null;
 
     return {
       ...jobPosting,
       skills: jobPosting.jobPostingSkills.map((item) => item.skill),
     };
   },
-  async updateJobPosting(data: JobPostingSelectModel) {
+  async updateJobPosting(
+    data: JobPostingSelectModel & { skills: SkillSelectModel[] },
+  ) {
+    const jobPostingSkills =
+      await jobPostingSkillsRepository.getJobPostingSkillsByJobPostingId(
+        data.id,
+      );
+
+    const existingSkillIds = jobPostingSkills.map((skill) => skill.id);
+    const updatedSkillIds = data.skills.map((skill) => skill.id);
+
+    const skillsToRemove = jobPostingSkills.filter(
+      (skill) => !updatedSkillIds.includes(skill.id),
+    );
+
+    const skillsToAdd = data.skills.filter(
+      (skill) => !existingSkillIds.includes(skill.id),
+    );
+
+    const operations = [];
+
+    if (skillsToRemove.length > 0) {
+      operations.push(
+        jobPostingSkillsRepository.deleteById(
+          skillsToRemove.map((item) => item.id),
+        ),
+      );
+    }
+
+    if (skillsToAdd.length > 0) {
+      operations.push(
+        jobPostingSkillsRepository.addJobSkills(
+          skillsToAdd.map((item) => ({
+            jobPostingId: data.id,
+            skillId: item.id,
+          })),
+        ),
+      );
+    }
+
+    await Promise.all(operations);
+
     return employerJobPostingRepository.updateJobPosting(data);
   },
 };

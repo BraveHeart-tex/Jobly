@@ -73,6 +73,7 @@ export const jobPostingRouter = createTRPCRouter({
       return employerJobPostingService.updateJobPosting({
         ...input,
         companyId,
+        createdUserId: user.id,
       });
     }),
 });

@@ -21,6 +21,7 @@ import {
   employmentOptions,
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
+import { useUpdateJobPosting } from "@/features/employer/jobPosting/hooks/useUpdateJobPosting";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
@@ -31,6 +32,7 @@ import {
   capitalizeString,
   generateReadableEnumLabel,
 } from "@/lib/utils/stringUtils";
+import type { UpdateJobPostingSchema } from "@/schemas/employer/updateJobPostingSchema";
 import employerJobPostingFormSchema, {
   type EmployerJobPostingFormSchema,
 } from "@/schemas/jobPostingFormSchema";
@@ -82,10 +84,22 @@ const EmployerJobPostingForm = ({
   );
   const isEditMode = !!initialData;
 
+  const goToPath = (path: string) => {
+    router.push(path);
+    router.refresh();
+  };
+
   const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
     onSuccess: () => {
       toast.success("Job posting created successfully.");
-      router.push(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
+      goToPath(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
+    },
+  });
+
+  const { updateJobPosting, isUpdatingJobPosting } = useUpdateJobPosting({
+    onSuccess: () => {
+      toast.success("Job posting updated successfully.");
+      goToPath(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
     },
   });
 
@@ -118,8 +132,11 @@ const EmployerJobPostingForm = ({
     form,
   });
 
-  const onSubmit = (values: EmployerJobPostingFormSchema) => {
+  const onSubmit = (
+    values: EmployerJobPostingFormSchema | UpdateJobPostingSchema,
+  ) => {
     if (isEditMode) {
+      updateJobPosting(values as UpdateJobPostingSchema);
       return;
     }
 
@@ -344,7 +361,8 @@ const EmployerJobPostingForm = ({
   const renderControlButtons = () => {
     const isFirstStep = currentStep === 1;
     const isLastStep = currentStep === jobPostingFormSteps.length;
-    const areControlButtonsDisabled = isCreatingJobPosting || isCreatingSkill;
+    const areControlButtonsDisabled =
+      isCreatingJobPosting || isCreatingSkill || isUpdatingJobPosting;
 
     return (
       <div
