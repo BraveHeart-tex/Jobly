@@ -5,7 +5,8 @@ import {
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { cn, removeHTMLTags } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { removeHTMLTags } from "@/lib/utils/stringUtils";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 

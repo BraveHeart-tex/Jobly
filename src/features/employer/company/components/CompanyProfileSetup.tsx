@@ -21,7 +21,8 @@ import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import { cn, isObjectEmpty } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { isObjectEmpty } from "@/lib/utils/objectUtils";
 import {
   type CompanyProfileSetupSchema,
   companyProfileSetupSchema,

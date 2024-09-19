@@ -1,7 +1,8 @@
 "use client";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import type { ArrayElement, RouterOutputs } from "@/lib/types";
-import { cn, generateReadableEnumLabel } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
 import { forwardRef } from "react";
 import CompanyLogo from "./CompanyLogo";
 

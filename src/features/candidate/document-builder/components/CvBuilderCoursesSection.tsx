@@ -4,10 +4,10 @@ import {
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { groupEveryN } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 
+import { groupEveryN } from "@/lib/utils/objectUtils";
 import { useRemoveFields } from "../hooks/useRemoveFields";
 import AddSectionItemButton from "./AddSectionItemButton";
 import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";

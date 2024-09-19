@@ -139,3 +139,12 @@ export const ISO_8601_REGEX =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(?:[+-]\d{2}:\d{2}|Z)$/;
 
 export const CONTROL_BUTTON_VARIANT: ButtonVariant = "secondary";
+
+export const LOG_COLORS = {
+  RESET: "\x1b[0m",
+  GREEN: "\x1b[32m",
+  YELLOW: "\x1b[33m",
+  RED: "\x1b[31m",
+  CYAN: "\x1b[36m",
+  BLUE: "\x1b[34m",
+};

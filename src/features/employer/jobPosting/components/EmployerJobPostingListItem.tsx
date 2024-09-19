@@ -1,8 +1,9 @@
+import ClientOnly from "@/components/common/ClientOnly";
 import { buttonVariants } from "@/components/ui/button";
+import EmployerJobListItemFooter from "@/features/employer/jobPosting/components/EmployerJobListItemFooter";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { EditIcon } from "lucide-react";
-import { DateTime } from "luxon";
 import Link from "next/link";
 
 interface EmployerJobPostingListItemProps {
@@ -36,19 +37,12 @@ const EmployerJobPostingListItem = ({
           <EditIcon size={20} />
         </Link>
       </div>
-      <footer className="mt-auto self-end text-muted-foreground text-sm">
-        <p>
-          Posted at{" "}
-          {DateTime.fromISO(jobPosting.postedAt).toLocaleString({
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </p>
-        <p>Created by {jobPosting.createdUserName}</p>
-      </footer>
+      <ClientOnly>
+        <EmployerJobListItemFooter
+          postedAt={jobPosting.postedAt}
+          createdUserName={jobPosting.createdUserName}
+        />
+      </ClientOnly>
     </article>
   );
 };

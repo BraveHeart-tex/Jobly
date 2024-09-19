@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
-import { generateReadableEnumLabel } from "@/lib/utils";
+import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
 import jobPostings, {
   type JobPostingWorkType,
   type JobPostingEmploymentType,

@@ -3,7 +3,8 @@ import Pagination from "@/components/common/Pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
-import { cn, exclude } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { exclude } from "@/lib/utils/objectUtils";
 import { api } from "@/trpc/react";
 import React, {
   type LegacyRef,

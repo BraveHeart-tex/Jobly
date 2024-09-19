@@ -6,7 +6,6 @@ import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { ArrowLeftIcon } from "lucide-react";
-import { DateTime } from "luxon";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -33,29 +32,19 @@ const EditJobPostingPage = async ({ params }: EditJobPostingPageParams) => {
   return (
     <main>
       <PageContainer className="grid gap-6">
-        <div className="grid gap-2">
-          <div className="flex items-center gap-2">
-            <Link
-              href={EMPLOYER_ROUTES.PUBLISHED_LISTINGS}
-              className={cn(
-                buttonVariants({
-                  size: "icon",
-                  variant: "secondary",
-                }),
-              )}
-            >
-              <ArrowLeftIcon />
-            </Link>
-            <PageTitle>Editing "{jobPostingDetails?.title}"</PageTitle>
-          </div>
-          {jobPostingDetails.updatedAt ? (
-            <p className="text-muted-foreground text-sm">
-              Last Updated:{" "}
-              {DateTime.fromISO(jobPostingDetails.updatedAt).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY,
-              )}
-            </p>
-          ) : null}
+        <div className="flex items-center gap-2">
+          <Link
+            href={EMPLOYER_ROUTES.PUBLISHED_LISTINGS}
+            className={cn(
+              buttonVariants({
+                size: "icon",
+                variant: "secondary",
+              }),
+            )}
+          >
+            <ArrowLeftIcon />
+          </Link>
+          <PageTitle>Editing "{jobPostingDetails?.title}"</PageTitle>
         </div>
         <EmployerJobPostingForm initialData={jobPostingDetails} />
       </PageContainer>

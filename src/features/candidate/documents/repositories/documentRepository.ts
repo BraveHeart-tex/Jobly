@@ -20,7 +20,7 @@ export const upsertDocument = async (
     .insert(documents)
     .values(documentValues)
     .onDuplicateKeyUpdate({
-      set: document,
+      set: documentValues,
     })
     .$returningId();
 };

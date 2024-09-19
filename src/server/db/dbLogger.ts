@@ -1,4 +1,4 @@
-import { LOG_COLORS } from "@/lib/utils";
+import { LOG_COLORS } from "@/lib/constants";
 import type { Logger } from "drizzle-orm";
 
 class DbLogger implements Logger {

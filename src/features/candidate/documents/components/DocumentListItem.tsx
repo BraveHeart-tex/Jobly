@@ -17,11 +17,11 @@ import { useUpdateDocument } from "@/features/candidate/document-builder/hooks/u
 import { isErrorObject } from "@/lib/guards";
 import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/dateUtils";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
 import { pdf } from "@react-pdf/renderer";
 import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
-import { DateTime } from "luxon";
 import { useRouter } from "nextjs-toploader/app";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
@@ -194,17 +194,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
         </Popover>
       </div>
       <p className="text-sm text-muted-foreground">
-        Last updated:{" "}
-        {DateTime.fromFormat(
-          item.updatedAt,
-          "yyyy-MM-dd HH:mm:ss",
-        ).toLocaleString({
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
+        Last updated: {formatToMediumDateTimeWithWeekday(item.updatedAt)}
       </p>
     </article>
   );

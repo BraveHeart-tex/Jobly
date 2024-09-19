@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
-import { compareMatchingKeys } from "@/lib/utils";
+import { compareMatchingKeys } from "@/lib/utils/objectUtils";
 import {
   type JobTrackerApplicationSchema,
   jobTrackerApplicationSchema,

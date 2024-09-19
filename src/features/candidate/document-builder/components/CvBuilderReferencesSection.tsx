@@ -6,7 +6,7 @@ import {
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { groupEveryN } from "@/lib/utils";
+import { groupEveryN } from "@/lib/utils/objectUtils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { useRemoveFields } from "../hooks/useRemoveFields";

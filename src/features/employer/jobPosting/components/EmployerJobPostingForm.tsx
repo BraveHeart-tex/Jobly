@@ -26,7 +26,11 @@ import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import type { MakeFieldsRequired } from "@/lib/types";
-import { capitalizeString, cn, generateReadableEnumLabel } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import {
+  capitalizeString,
+  generateReadableEnumLabel,
+} from "@/lib/utils/stringUtils";
 import employerJobPostingFormSchema, {
   type EmployerJobPostingFormSchema,
 } from "@/schemas/jobPostingFormSchema";

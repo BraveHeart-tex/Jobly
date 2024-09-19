@@ -1,8 +1,15 @@
 "use client";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { mapItemDisplayOrderByIndex } from "@/lib/utils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
+
+const mapItemDisplayOrderByIndex = (
+  item: DocumentSectionField,
+  index: number,
+) => ({
+  ...item,
+  displayOrder: index + 1,
+});
 
 export const useUpdateFieldDisplayOrdersOnDelete = () => {
   const allFields = useDocumentBuilderStore((state) => state.fields);

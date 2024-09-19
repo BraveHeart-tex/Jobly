@@ -75,10 +75,12 @@ export const createDocumentAndRelatedEntities = async (
       trx,
       documentCreateInput,
     );
+
     if (!documentInsertResponse) {
       trx.rollback();
       return;
     }
+
     const documentId = documentInsertResponse.id;
 
     const sectionInsertTemplates =
@@ -106,6 +108,7 @@ export const createDocumentAndRelatedEntities = async (
 
     const hasFieldInsertFailures =
       fieldInsertDTOs.length !== fieldInsertIds.length;
+
     if (hasFieldInsertFailures) {
       trx.rollback();
       return;

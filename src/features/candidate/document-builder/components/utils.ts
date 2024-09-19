@@ -12,7 +12,7 @@ import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import { exclude, groupEveryN } from "@/lib/utils";
+import { exclude, groupEveryN } from "@/lib/utils/objectUtils";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentBuilderConfig } from "../types";
 

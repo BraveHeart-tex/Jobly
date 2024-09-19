@@ -1,5 +1,6 @@
 "use client";
-import { cn, matchPathnameToEditPath } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { matchPathnameToEditPath } from "@/lib/utils/stringUtils";
 import { usePathname } from "next/navigation";
 import type React from "react";
 
