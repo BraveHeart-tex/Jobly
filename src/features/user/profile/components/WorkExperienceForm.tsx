@@ -1,7 +1,4 @@
-import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import workExperienceSchema, {
-  type WorkExperienceSchema,
-} from "@/schemas/user/profile/workExperienceSchema";
+import DateInput from "@/components/common/dateInput/DateInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,11 +9,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import DateInput from "@/components/common/dateInput/DateInput";
-import { DateTime } from "luxon";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import workExperienceSchema, {
+  type WorkExperienceSchema,
+} from "@/schemas/user/profile/workExperienceSchema";
+import { DateTime } from "luxon";
 import { useState } from "react";
 
 const WorkExperienceForm = () => {
@@ -68,7 +68,7 @@ const WorkExperienceForm = () => {
             <FormItem>
               <FormLabel>Employer</FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input type="text" {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -103,7 +103,7 @@ const WorkExperienceForm = () => {
                   <DateInput
                     ref={field.ref}
                     onChange={field.onChange}
-                    value={field.value}
+                    value={field.value || ""}
                     format={DateTime.DATE_MED}
                     placeholder={isCurrentEmployment ? "Present" : undefined}
                     disabled={isCurrentEmployment}
@@ -121,7 +121,7 @@ const WorkExperienceForm = () => {
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input type="text" {...field} value={field.value || ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -134,7 +134,12 @@ const WorkExperienceForm = () => {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea {...field} className="resize-none" rows={10} />
+                <Textarea
+                  {...field}
+                  value={field.value || ""}
+                  className="resize-none"
+                  rows={10}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,7 +1,9 @@
 "use client";
+import ClientOnly from "@/components/common/ClientOnly";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -12,7 +14,6 @@ import { CalendarIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import type React from "react";
 import { type PropsWithRef, forwardRef } from "react";
-import { Label } from "@/components/ui/label";
 
 interface DateInputProps {
   value: string;
@@ -100,10 +101,12 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
               !value && "text-muted-foreground",
             )}
           >
-            {value
-              ? DateTime.fromISO(value).toLocaleString(format)
-              : placeholder || ""}
-            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <ClientOnly>
+              {value
+                ? DateTime.fromISO(value).toLocaleString(format)
+                : placeholder || ""}
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            </ClientOnly>
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -113,6 +116,7 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
             toYear={toYear}
             mode="single"
             selected={value ? new Date(value) : new Date()}
+            defaultMonth={value ? new Date(value) : new Date()}
             onSelect={handleDateSelect}
             disabled={(date) => {
               if (disabled !== undefined) return disabled;

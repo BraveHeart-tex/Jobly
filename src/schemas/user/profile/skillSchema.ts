@@ -1,9 +1,8 @@
-import { z } from "zod";
+import { skills } from "@/server/db/schema";
+import { createSelectSchema } from "drizzle-zod";
+import type { z } from "zod";
 
-const skillSchema = z.object({
-  name: z.string().min(1).default(""),
-  level: z.string().min(1).default(""),
-});
+const skillSchema = createSelectSchema(skills);
 
 export type SkillSchema = z.infer<typeof skillSchema>;
 export default skillSchema;

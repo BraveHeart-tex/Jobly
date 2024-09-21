@@ -1,13 +1,6 @@
 "use client";
-
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
-import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import userProfileFormSchema, {
-  type UserProfileFormSchema,
-} from "@/schemas/user/profile/userProfileFormSchema";
-import ProfileFormSectionHeader from "./ProfileFormSectionHeader";
+import DateInput from "@/components/common/dateInput/DateInput";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,12 +10,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import DateInput from "@/components/common/dateInput/DateInput";
-import { DateTime } from "luxon";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import ProfileFormSectionContainer from "./ProfileFormSectionContainer";
+import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { cn } from "@/lib/utils";
+import userProfileFormSchema, {
+  type UserProfileFormSchema,
+} from "@/schemas/user/profile/userProfileFormSchema";
+import { motion } from "framer-motion";
+import { DateTime } from "luxon";
 import ProfileFormDialog from "./ProfileFormDialog";
+import ProfileFormSectionContainer from "./ProfileFormSectionContainer";
+import ProfileFormSectionHeader from "./ProfileFormSectionHeader";
 import WorkExperienceForm from "./WorkExperienceForm";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
@@ -31,7 +30,6 @@ const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
     fields: [
       "firstName",
       "lastName",
-      "email",
       "phoneNumber",
       "country",
       "city",
@@ -139,25 +137,16 @@ const EditUserProfileForm = () => {
                   />
                   <FormField
                     control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
                     name="phoneNumber"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input type="tel" {...field} />
+                          <Input
+                            type="tel"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -170,7 +159,11 @@ const EditUserProfileForm = () => {
                       <FormItem>
                         <FormLabel>Country</FormLabel>
                         <FormControl>
-                          <Input type="text" {...field} />
+                          <Input
+                            type="text"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -183,7 +176,11 @@ const EditUserProfileForm = () => {
                       <FormItem>
                         <FormLabel>City</FormLabel>
                         <FormControl>
-                          <Input type="text" {...field} />
+                          <Input
+                            type="text"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -196,7 +193,11 @@ const EditUserProfileForm = () => {
                       <FormItem>
                         <FormLabel>Address</FormLabel>
                         <FormControl>
-                          <Input type="text" {...field} />
+                          <Input
+                            type="text"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -209,7 +210,11 @@ const EditUserProfileForm = () => {
                       <FormItem>
                         <FormLabel>Postal Code</FormLabel>
                         <FormControl>
-                          <Input type="text" {...field} />
+                          <Input
+                            type="text"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -223,48 +228,53 @@ const EditUserProfileForm = () => {
                       <FormItem>
                         <FormLabel>Driving License</FormLabel>
                         <FormControl>
-                          <Input type="text" {...field} />
+                          <Input
+                            type="text"
+                            {...field}
+                            value={field.value || ""}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <div className="grid grid-cols-2 gap-2">
-                    <FormField
-                      control={form.control}
-                      name="placeOfBirth"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Place of Birth</FormLabel>
-                          <FormControl>
-                            <Input type="text" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="dateOfBirth"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Date of Birth</FormLabel>
-                          <FormControl>
-                            <DateInput
-                              ref={field.ref}
-                              onChange={field.onChange}
-                              value={field.value}
-                              showFutureDates={false}
-                              showTimeOptions={false}
-                              format={DateTime.DATE_SHORT}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name="placeOfBirth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Place of Birth</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="dateOfBirth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date of Birth</FormLabel>
+                        <FormControl>
+                          <DateInput
+                            ref={field.ref}
+                            onChange={field.onChange}
+                            value={field.value || ""}
+                            showFutureDates={false}
+                            showTimeOptions={false}
+                            format={DateTime.DATE_SHORT}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </ProfileFormSectionContainer>
             )}
@@ -295,6 +305,7 @@ const EditUserProfileForm = () => {
                         <FormControl>
                           <Textarea
                             {...field}
+                            value={field.value || ""}
                             className="resize-none"
                             rows={5}
                           />

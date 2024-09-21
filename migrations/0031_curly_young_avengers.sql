@@ -1,0 +1,1 @@
+ALTER TABLE `UserSkills` MODIFY COLUMN `level` varchar(50);

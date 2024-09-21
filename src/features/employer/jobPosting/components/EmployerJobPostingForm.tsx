@@ -1,9 +1,8 @@
 "use client";
-import ClientOnly from "@/components/common/ClientOnly";
 import CreatableMultiSelect from "@/components/common/CreatableMultiSelect";
-import DateInput from "@/components/common/dateInput/DateInput";
 import EditorInput from "@/components/common/EditorInput";
 import SelectInput from "@/components/common/SelectInput";
+import DateInput from "@/components/common/dateInput/DateInput";
 import AnimatedFormFieldsContainer from "@/components/multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
 import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
@@ -276,17 +275,15 @@ const EmployerJobPostingForm = ({
               <FormItem className="grid gap-1">
                 <FormLabel>Posting Expiration Date</FormLabel>
                 <FormControl>
-                  <ClientOnly>
-                    <DateInput
-                      value={field.value}
-                      onChange={field.onChange}
-                      ref={field.ref}
-                      showFutureDates
-                      showTimeOptions
-                      showPastDates={false}
-                      format={DateTime.DATETIME_MED_WITH_WEEKDAY}
-                    />
-                  </ClientOnly>
+                  <DateInput
+                    value={field.value}
+                    onChange={field.onChange}
+                    ref={field.ref}
+                    showFutureDates
+                    showTimeOptions
+                    showPastDates={false}
+                    format={DateTime.DATETIME_MED_WITH_WEEKDAY}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

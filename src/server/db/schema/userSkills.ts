@@ -22,7 +22,7 @@ const userSkills = mysqlTable(
         onDelete: "cascade",
       })
       .notNull(),
-    level: varchar("level", { length: 50 }).notNull(),
+    level: varchar("level", { length: 50 }),
   },
   (table) => {
     return {
