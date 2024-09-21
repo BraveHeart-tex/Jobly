@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import DateInput from "@/components/common/DateInput";
+import { DateTime } from "luxon";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   {
@@ -63,7 +64,9 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
       form,
     });
 
-  const onSubmit = (data: UserProfileFormSchema) => {};
+  const onSubmit = (data: UserProfileFormSchema) => {
+    console.info(data);
+  };
 
   return (
     <div>
@@ -242,7 +245,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                               value={field.value}
                               showFutureDates={false}
                               showTimeOptions={false}
-                              format={"yyyy-MM-dd"}
+                              format={DateTime.DATE_SHORT}
                             />
                           </FormControl>
                         </FormItem>

@@ -18,7 +18,7 @@ interface DateInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  format?: Intl.DateTimeFormatOptions | string;
+  format?: Intl.DateTimeFormatOptions;
   disabled?: boolean;
   showFutureDates?: boolean;
   showPastDates?: boolean;
