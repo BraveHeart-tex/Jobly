@@ -22,6 +22,8 @@ import { DateTime } from "luxon";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ProfileFormSectionContainer from "./ProfileFormSectionContainer";
+import ProfileFormDialog from "./ProfileFormDialog";
+import WorkExperienceForm from "./WorkExperienceForm";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   {
@@ -271,6 +273,17 @@ const EditUserProfileForm = () => {
                 <ProfileFormSectionHeader
                   title="Work Experience"
                   description="Add your most recent work experience."
+                  headerActionElement={
+                    <ProfileFormDialog
+                      trigger={
+                        <Button variant="secondary">Add Experience</Button>
+                      }
+                      title="Add Work Experience"
+                      description="Use the form below to add your work experience."
+                    >
+                      <WorkExperienceForm />
+                    </ProfileFormDialog>
+                  }
                 />
                 <div className="grid gap-4">
                   <FormField

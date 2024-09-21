@@ -90,6 +90,7 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
         <PopoverTrigger
           asChild
           ref={ref}
+          disabled={disabled}
           className="focus-within:outline-none focus-within:ring-1 focus-within:ring-ring w-full"
         >
           <Button
