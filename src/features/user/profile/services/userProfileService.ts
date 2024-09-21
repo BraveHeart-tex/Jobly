@@ -1,7 +1,11 @@
 import type { UserProfileFormSchema } from "@/schemas/user/profile/userProfileFormSchema";
 import { db } from "@/server/db";
-import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import {
+  educationalBackgrounds,
+  users,
+  workExperiences,
+} from "@/server/db/schema";
+import { desc, eq } from "drizzle-orm";
 
 export const userProfileService = {
   getUserProfileInformation: async (
@@ -16,8 +20,12 @@ export const userProfileService = {
       },
       where: () => eq(users.id, userId),
       with: {
-        workExperiences: true,
-        educationalBackgrounds: true,
+        workExperiences: {
+          orderBy: () => desc(workExperiences.startDate),
+        },
+        educationalBackgrounds: {
+          orderBy: () => desc(educationalBackgrounds.startDate),
+        },
         personalDetail: true,
         userSkills: {
           with: {
