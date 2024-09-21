@@ -19,9 +19,16 @@ import workExperienceSchema, {
 import { DateTime } from "luxon";
 import { useState } from "react";
 
-const WorkExperienceForm = () => {
+interface WorkExperienceFormProps {
+  initialData?: WorkExperienceSchema;
+}
+
+const WorkExperienceForm = ({ initialData }: WorkExperienceFormProps) => {
   const [isCurrentEmployment, setIsCurrentEmployment] = useState(false);
-  const form = useExtendedForm<WorkExperienceSchema>(workExperienceSchema);
+  const form = useExtendedForm<WorkExperienceSchema>(workExperienceSchema, {
+    defaultValues: initialData,
+  });
+  const isEditMode = !!initialData;
 
   const onSubmit = (values: WorkExperienceSchema) => {
     console.info(values);

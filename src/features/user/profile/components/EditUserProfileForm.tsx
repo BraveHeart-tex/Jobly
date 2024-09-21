@@ -55,8 +55,14 @@ const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   },
 ];
 
-const EditUserProfileForm = () => {
-  const form = useExtendedForm<UserProfileFormSchema>(userProfileFormSchema);
+interface EditUserProfileFormProps {
+  initialData?: UserProfileFormSchema;
+}
+
+const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
+  const form = useExtendedForm<UserProfileFormSchema>(userProfileFormSchema, {
+    defaultValues: initialData,
+  });
 
   const { currentStep, setCurrentStep } =
     useMultiStepForm<UserProfileFormSchema>({
