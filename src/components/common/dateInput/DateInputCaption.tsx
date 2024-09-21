@@ -1,3 +1,4 @@
+"use client";
 import {
   Select,
   SelectContent,
@@ -9,19 +10,34 @@ import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { useDayPicker, useNavigation } from "react-day-picker";
 
+interface CaptionSelectItem {
+  label: string;
+  value: string;
+}
+
 const DateInputCaption = () => {
   const { goToMonth, currentMonth } = useNavigation();
   const { fromDate, fromMonth, fromYear, toDate, toMonth, toYear } =
     useDayPicker();
 
-  const years = useMemo(() => {
-    const currentYear = DateTime.now().year;
-    return Array.from({ length: 10 }, (_, i) =>
-      (currentYear - 5 + i).toString(),
-    );
-  }, []);
+  const years: CaptionSelectItem[] = useMemo(() => {
+    const earliestYear =
+      fromYear || fromMonth?.getFullYear() || fromDate?.getFullYear();
+    const latestYear =
+      toYear || toMonth?.getFullYear() || toDate?.getFullYear();
 
-  const months = useMemo(() => {
+    if (earliestYear && latestYear) {
+      const yearsLength = latestYear - earliestYear + 1;
+      return Array.from({ length: yearsLength }, (_, i) => ({
+        label: DateTime.fromObject({ year: earliestYear + i }).toFormat("yyyy"),
+        value: (earliestYear + i).toString(),
+      }));
+    }
+
+    return [];
+  }, [fromDate, fromMonth, fromYear, toDate, toMonth, toYear]);
+
+  const months: CaptionSelectItem[] = useMemo(() => {
     return Array.from({ length: 12 }, (_, i) => {
       const month = DateTime.fromObject({ month: i + 1 });
       return {
@@ -73,8 +89,8 @@ const DateInputCaption = () => {
         </SelectTrigger>
         <SelectContent>
           {years.map((year) => (
-            <SelectItem key={year} value={year}>
-              {year}
+            <SelectItem key={year.value} value={year.value}>
+              {year.label}
             </SelectItem>
           ))}
         </SelectContent>

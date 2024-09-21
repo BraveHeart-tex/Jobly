@@ -13,7 +13,6 @@ import { DateTime } from "luxon";
 import type React from "react";
 import { type PropsWithRef, forwardRef } from "react";
 import { Label } from "@/components/ui/label";
-import DateInputCaption from "./DateInputCaption";
 
 interface DateInputProps {
   value: string;
@@ -24,6 +23,8 @@ interface DateInputProps {
   showFutureDates?: boolean;
   showPastDates?: boolean;
   showTimeOptions?: boolean;
+  fromYear?: number;
+  toYear?: number;
 }
 
 const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
@@ -37,6 +38,8 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
       disabled,
       showTimeOptions = false,
       format = DateTime.DATETIME_SHORT,
+      fromYear = 1900,
+      toYear = new Date().getFullYear(),
     },
     ref,
   ) => {
@@ -105,14 +108,11 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
         <PopoverContent>
           <Calendar
             captionLayout="dropdown-buttons"
-            fromYear={1900}
-            toYear={2100}
+            fromYear={fromYear}
+            toYear={toYear}
             mode="single"
             selected={value ? new Date(value) : new Date()}
             onSelect={handleDateSelect}
-            components={{
-              Caption: DateInputCaption,
-            }}
             disabled={(date) => {
               if (disabled !== undefined) return disabled;
               if (!date) return false;
