@@ -1,6 +1,6 @@
+import PageTitle from "@/components/common/PageTitle";
 import { api } from "@/trpc/server";
 import CompanyProfileDetailsForm from "./CompanyProfileDetailsForm";
-import PageTitle from "@/components/common/PageTitle";
 
 const CompanyProfileDetails = async () => {
   const company = await api.company.getUserCompanyDetailsByUserId();

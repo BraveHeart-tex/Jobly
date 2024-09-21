@@ -1,8 +1,8 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { skills } from "@/server/db/schema";
+import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { skillsService } from "../services/skillsService";
-import { createInsertSchema } from "drizzle-zod";
-import { skills } from "@/server/db/schema";
 
 export const skillsRouter = createTRPCRouter({
   getSkillsByName: protectedProcedure

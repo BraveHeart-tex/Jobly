@@ -3,8 +3,8 @@ import { type SQL, getTableColumns, sql } from "drizzle-orm";
 import type { MySqlTable } from "drizzle-orm/mysql-core";
 import { drizzle } from "drizzle-orm/mysql2";
 import { type Pool, createPool } from "mysql2/promise";
-import * as schema from "./schema";
 import { dbLogger } from "./dbLogger";
+import * as schema from "./schema";
 
 const globalForDb = globalThis as unknown as {
   conn: Pool | undefined;

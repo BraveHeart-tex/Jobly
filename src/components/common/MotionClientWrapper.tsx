@@ -1,5 +1,5 @@
 "use client";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { type HTMLMotionProps, motion } from "framer-motion";
 import type { HTMLAttributes, ReactHTML } from "react";
 
 type MotionClientWrapperProps<T extends keyof ReactHTML> = {

@@ -1,4 +1,5 @@
 "use client";
+import PageTitle from "@/components/common/PageTitle";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCreateDocumentAndRelatedEntities } from "@/features/candidate/document-builder/hooks/useCreateDocumentAndRelatedEntities";
@@ -14,7 +15,6 @@ import { useId, useState } from "react";
 import { toast } from "sonner";
 import { useDocuments } from "../hooks/useDocuments";
 import DocumentListItem from "./DocumentListItem";
-import PageTitle from "@/components/common/PageTitle";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",
