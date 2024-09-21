@@ -24,7 +24,7 @@ const workExperiences = mysqlTable(
     }).notNull(),
     employer: varchar("employer", {
       length: 255,
-    }),
+    }).notNull(),
     startDate: date("startDate", {
       mode: "string",
     }).notNull(),

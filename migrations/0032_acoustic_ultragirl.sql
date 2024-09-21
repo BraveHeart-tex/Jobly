@@ -1,0 +1,1 @@
+ALTER TABLE `WorkExperiences` MODIFY COLUMN `employer` varchar(255) NOT NULL;

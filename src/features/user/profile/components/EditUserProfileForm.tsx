@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import WorkExperienceCard from "@/features/user/profile/components/WorkExperienceCard";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ import userProfileFormSchema, {
 } from "@/schemas/user/profile/userProfileFormSchema";
 import { motion } from "framer-motion";
 import { DateTime } from "luxon";
+import Image from "next/image";
 import ProfileFormDialog from "./ProfileFormDialog";
 import ProfileFormSectionContainer from "./ProfileFormSectionContainer";
 import ProfileFormSectionHeader from "./ProfileFormSectionHeader";
@@ -73,6 +75,8 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
   const onSubmit = (data: UserProfileFormSchema) => {
     console.info(data);
   };
+
+  const workExperiences = form.getValues("workExperiences");
 
   return (
     <div>
@@ -281,6 +285,24 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="professionalSummary"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>Professional Summary</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            {...field}
+                            value={field.value || ""}
+                            className="resize-none"
+                            rows={5}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
               </ProfileFormSectionContainer>
             )}
@@ -301,26 +323,29 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
                     </ProfileFormDialog>
                   }
                 />
-                <div className="grid gap-4">
-                  <FormField
-                    control={form.control}
-                    name="professionalSummary"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Professional Summary</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            {...field}
-                            value={field.value || ""}
-                            className="resize-none"
-                            rows={5}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                {workExperiences.length > 0 ? (
+                  <div className="grid gap-2">
+                    {workExperiences.map((workExperience) => (
+                      <WorkExperienceCard
+                        key={workExperience.id}
+                        workExperience={workExperience}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center flex-col">
+                    <Image
+                      src={"/illustrations/empty-list.svg"}
+                      className="dark:invert"
+                      alt="Empty list"
+                      width={300}
+                      height={300}
+                    />
+                    <p className="text-muted-foreground text-base">
+                      You haven't added any work experiences yet.
+                    </p>
+                  </div>
+                )}
               </ProfileFormSectionContainer>
             )}
             {currentStep === 3 && (
@@ -339,9 +364,6 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
                 />
               </div>
             )}
-            <div className="flex justify-end mt-4">
-              <Button type="submit">Save Changes</Button>
-            </div>
           </div>
         </form>
       </Form>

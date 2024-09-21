@@ -225,6 +225,13 @@
       "when": 1726947147536,
       "tag": "0031_curly_young_avengers",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1726948610213,
+      "tag": "0032_acoustic_ultragirl",
+      "breakpoints": true
     }
   ]
 }
