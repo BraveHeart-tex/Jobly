@@ -8,14 +8,18 @@ import {
 } from "@/components/ui/select";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import { useDayPicker, useNavigation } from "react-day-picker";
+import {
+  useDayPicker,
+  useNavigation,
+  type DropdownProps,
+} from "react-day-picker";
 
 interface CaptionSelectItem {
   label: string;
   value: string;
 }
 
-const DateInputCaption = () => {
+const DateInputCaption = (props: DropdownProps) => {
   const { goToMonth, currentMonth } = useNavigation();
   const { fromDate, fromMonth, fromYear, toDate, toMonth, toYear } =
     useDayPicker();
@@ -63,28 +67,13 @@ const DateInputCaption = () => {
     goToMonth(newDate);
   };
 
-  return (
-    <div className="flex justify-center space-x-2">
-      <Select
-        value={(currentMonth.getMonth() + 1).toString()}
-        onValueChange={handleMonthChange}
-      >
-        <SelectTrigger className="w-[120px]">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {months.map((month) => (
-            <SelectItem key={month.value} value={month.value}>
-              {month.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+  if (props.name === "years") {
+    return (
       <Select
         value={currentMonth.getFullYear().toString()}
         onValueChange={handleYearChange}
       >
-        <SelectTrigger className="w-[100px]">
+        <SelectTrigger>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
@@ -95,8 +84,30 @@ const DateInputCaption = () => {
           ))}
         </SelectContent>
       </Select>
-    </div>
-  );
+    );
+  }
+
+  if (props.name === "months") {
+    return (
+      <Select
+        value={(currentMonth.getMonth() + 1).toString()}
+        onValueChange={handleMonthChange}
+      >
+        <SelectTrigger className="max-w-[75px] text-ellipsis overflow-hidden">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {months.map((month) => (
+            <SelectItem key={month.value} value={month.value}>
+              {month.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    );
+  }
+
+  return null;
 };
 
 export default DateInputCaption;
