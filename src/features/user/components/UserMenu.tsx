@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/features/auth/utils";
 import type { CtxUserAttributes } from "@/lib/auth";
-import { CANDIDATE_ROUTES, EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
+import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
@@ -31,13 +31,12 @@ const UserMenu = ({ user }: UserMenuProps) => {
   const userMenuProfileLinks = [
     {
       title: "Edit Profile",
-      // TODO: Will be set by the user later on
-      href: `${SHARED_ROUTES.HOME}/users/${user.id}`,
+      href: SHARED_ROUTES.EDIT_PROFILE,
       icon: UserIcon,
     },
     {
       title: "Privacy Settings",
-      href: CANDIDATE_ROUTES.PRIVACY_SETTINGS,
+      href: SHARED_ROUTES.PRIVACY_SETTINGS,
       icon: LockIcon,
     },
   ];
