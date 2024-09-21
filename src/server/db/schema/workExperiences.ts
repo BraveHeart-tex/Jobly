@@ -1,3 +1,4 @@
+import { type InferSelectModel, relations } from "drizzle-orm";
 import {
   date,
   index,
@@ -8,7 +9,6 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
-import type { InferSelectModel } from "drizzle-orm";
 
 const workExperiences = mysqlTable(
   "WorkExperiences",
@@ -45,6 +45,16 @@ const workExperiences = mysqlTable(
       userId: index("userId").on(table.userId),
     };
   },
+);
+
+export const workExperienceRelations = relations(
+  workExperiences,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [workExperiences.userId],
+      references: [users.id],
+    }),
+  }),
 );
 
 export type WorkExperience = InferSelectModel<typeof workExperiences>;

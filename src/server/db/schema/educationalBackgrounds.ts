@@ -1,3 +1,4 @@
+import { type InferSelectModel, relations } from "drizzle-orm";
 import {
   date,
   index,
@@ -8,15 +9,16 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
-import type { InferSelectModel } from "drizzle-orm";
 
 const educationalBackgrounds = mysqlTable(
   "EducationalBackgrounds",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
-    userId: int("userId").references(() => users.id, {
-      onDelete: "cascade",
-    }),
+    userId: int("userId")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     school: varchar("school", {
       length: 255,
     }).notNull(),
@@ -40,6 +42,16 @@ const educationalBackgrounds = mysqlTable(
       userId: index("userId").on(table.userId),
     };
   },
+);
+
+export const educationalBackgroundsRelations = relations(
+  educationalBackgrounds,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [educationalBackgrounds.userId],
+      references: [users.id],
+    }),
+  }),
 );
 
 export type EducationalBackground = InferSelectModel<

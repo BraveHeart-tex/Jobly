@@ -1,16 +1,10 @@
 import PageContainer from "@/components/common/PageContainer";
 import PageTitle from "@/components/common/PageTitle";
-import { authActions } from "@/features/auth/actions/authActions";
 import EditUserProfileForm from "@/features/user/profile/components/EditUserProfileForm";
-import { SHARED_ROUTES } from "@/lib/routes";
-import { redirect } from "next/navigation";
+import { api } from "@/trpc/server";
 
 const EditProfilePage = async () => {
-  const user = await authActions.getCurrentUser();
-
-  if (!user) {
-    redirect(SHARED_ROUTES.LOGIN);
-  }
+  const profileDetails = await api.userProfile.getUserProfileInformation();
 
   return (
     <main>

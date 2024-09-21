@@ -22,7 +22,7 @@ export { default as resumeViews } from "./resumeViews";
 export { default as sessions } from "./sessions";
 export { default as userBookmarksJobPosting } from "./userBookmarksJobPosting";
 export { default as userFollowsCompany } from "./userFollowsCompany";
-export { default as users } from "./users";
+export { default as users, userRelations } from "./users";
 export { default as userViewsJobPosting } from "./userViewsJobPosting";
 export { default as userCompanies } from "./userCompanies";
 export { default as roles } from "./roles";
@@ -35,7 +35,16 @@ export {
   default as jobPostingSkills,
   jobPostingSkillsRelations,
 } from "./jobPostingSkills";
-export { default as educationalBackgrounds } from "./educationalBackgrounds";
-export { default as personalDetails } from "./personalDetails";
-export { default as userSkills } from "./userSkills";
-export { default as workExperiences } from "./workExperiences";
+export {
+  default as educationalBackgrounds,
+  educationalBackgroundsRelations,
+} from "./educationalBackgrounds";
+export {
+  default as personalDetails,
+  personalDetailsRelations,
+} from "./personalDetails";
+export { default as userSkills, userSkillsRelations } from "./userSkills";
+export {
+  default as workExperiences,
+  workExperienceRelations,
+} from "./workExperiences";

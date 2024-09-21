@@ -1,4 +1,14 @@
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import {
+  educationalBackgrounds,
+  personalDetails,
+  userSkills,
+  workExperiences,
+} from "@/server/db/schema";
+import {
+  type InferInsertModel,
+  type InferSelectModel,
+  relations,
+} from "drizzle-orm";
 import {
   index,
   int,
@@ -29,6 +39,16 @@ const users = mysqlTable(
     };
   },
 );
+
+export const userRelations = relations(users, ({ one, many }) => ({
+  personalDetail: one(personalDetails, {
+    fields: [users.id],
+    references: [personalDetails.userId],
+  }),
+  workExperiences: many(workExperiences),
+  educationalBackgrounds: many(educationalBackgrounds),
+  userSkills: many(userSkills),
+}));
 
 export type DBUser = InferSelectModel<typeof users>;
 export type DBUserInsertModel = InferInsertModel<typeof users>;

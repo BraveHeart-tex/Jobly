@@ -1,4 +1,4 @@
-import type { InferSelectModel } from "drizzle-orm";
+import { type InferSelectModel, relations } from "drizzle-orm";
 import {
   date,
   index,
@@ -13,9 +13,11 @@ import users from "./users";
 const personalDetails = mysqlTable(
   "PersonalDetails",
   {
-    userId: int("userId").references(() => users.id, {
-      onDelete: "cascade",
-    }),
+    userId: int("userId")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     phoneNumber: varchar("phoneNumber", { length: 20 }),
     country: varchar("country", { length: 100 }),
     city: varchar("city", { length: 100 }),
@@ -34,6 +36,16 @@ const personalDetails = mysqlTable(
       ),
     };
   },
+);
+
+export const personalDetailsRelations = relations(
+  personalDetails,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [personalDetails.userId],
+      references: [users.id],
+    }),
+  }),
 );
 
 export type PersonalDetail = InferSelectModel<typeof personalDetails>;

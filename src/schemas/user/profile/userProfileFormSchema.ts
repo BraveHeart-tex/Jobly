@@ -1,7 +1,7 @@
 import { z } from "zod";
-import workExperienceSchema from "./workExperienceSchema";
 import educationSchema from "./educationSchema";
 import skillSchema from "./skillSchema";
+import workExperienceSchema from "./workExperienceSchema";
 
 const userProfileFormSchema = z.object({
   // personal details
@@ -22,6 +22,7 @@ const userProfileFormSchema = z.object({
   placeOfBirth: z.string().default(""),
   dateOfBirth: z.string().default(""),
   professionalSummary: z.string().default(""),
+
   workExperiences: z.array(workExperienceSchema),
   educationalBackground: z.array(educationSchema),
   skills: z.array(skillSchema),
