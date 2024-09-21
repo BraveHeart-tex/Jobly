@@ -1,4 +1,7 @@
 import { z } from "zod";
+import workExperienceSchema from "./workExperienceSchema";
+import educationSchema from "./educationSchema";
+import skillSchema from "./skillSchema";
 
 const userProfileFormSchema = z.object({
   // personal details
@@ -18,6 +21,10 @@ const userProfileFormSchema = z.object({
   drivingLicense: z.string().default(""),
   placeOfBirth: z.string().default(""),
   dateOfBirth: z.string().default(""),
+  professionalSummary: z.string().default(""),
+  workExperiences: z.array(workExperienceSchema),
+  educationalBackground: z.array(educationSchema),
+  skills: z.array(skillSchema),
 });
 
 export type UserProfileFormSchema = z.infer<typeof userProfileFormSchema>;

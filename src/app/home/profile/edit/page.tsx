@@ -16,7 +16,7 @@ const EditProfilePage = async () => {
     <main>
       <PageContainer className="grid gap-2">
         <PageTitle>Edit Profile</PageTitle>
-        <EditUserProfileForm user={user} />
+        <EditUserProfileForm />
       </PageContainer>
     </main>
   );

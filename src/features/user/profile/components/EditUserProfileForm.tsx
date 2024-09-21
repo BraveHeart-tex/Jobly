@@ -2,12 +2,11 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import type { CtxUserAttributes } from "@/lib/auth";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import userProfileFormSchema, {
   type UserProfileFormSchema,
-} from "@/schemas/user/userProfileFormSchema";
+} from "@/schemas/user/profile/userProfileFormSchema";
 import ProfileFormSectionHeader from "./ProfileFormSectionHeader";
 import {
   Form,
@@ -15,10 +14,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import DateInput from "@/components/common/dateInput/DateInput";
 import { DateTime } from "luxon";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import ProfileFormSectionContainer from "./ProfileFormSectionContainer";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   {
@@ -35,6 +38,7 @@ const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
       "drivingLicense",
       "placeOfBirth",
       "dateOfBirth",
+      "professionalSummary",
     ],
   },
   {
@@ -51,11 +55,7 @@ const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   },
 ];
 
-interface EditUserProfileFormProps {
-  user: CtxUserAttributes;
-}
-
-const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
+const EditUserProfileForm = () => {
   const form = useExtendedForm<UserProfileFormSchema>(userProfileFormSchema);
 
   const { currentStep, setCurrentStep } =
@@ -103,7 +103,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="w-full overflow-auto p-4 rounded-md border rounded-t-none h-[calc(100vh-13rem)]">
             {currentStep === 1 && (
-              <div className="grid gap-4">
+              <ProfileFormSectionContainer>
                 <ProfileFormSectionHeader
                   title="Personal Information"
                   description="Provide your basic personal details."
@@ -118,6 +118,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -130,6 +131,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -142,6 +144,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="email" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -154,6 +157,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="tel" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -166,6 +170,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -178,6 +183,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -190,6 +196,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -202,6 +209,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -215,6 +223,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                         <FormControl>
                           <Input type="text" {...field} />
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -228,6 +237,7 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                           <FormControl>
                             <Input type="text" {...field} />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -248,20 +258,40 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                               format={DateTime.DATE_SHORT}
                             />
                           </FormControl>
+                          <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
                 </div>
-              </div>
+              </ProfileFormSectionContainer>
             )}
             {currentStep === 2 && (
-              <div>
+              <ProfileFormSectionContainer>
                 <ProfileFormSectionHeader
                   title="Work Experience"
                   description="Add your most recent work experience."
                 />
-              </div>
+                <div className="grid gap-4">
+                  <FormField
+                    control={form.control}
+                    name="professionalSummary"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Professional Summary</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            {...field}
+                            className="resize-none"
+                            rows={5}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </ProfileFormSectionContainer>
             )}
             {currentStep === 3 && (
               <div>
@@ -279,6 +309,9 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
                 />
               </div>
             )}
+            <div className="flex justify-end mt-4">
+              <Button type="submit">Save Changes</Button>
+            </div>
           </div>
         </form>
       </Form>
