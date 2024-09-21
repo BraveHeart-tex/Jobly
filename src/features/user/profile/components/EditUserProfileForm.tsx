@@ -8,6 +8,7 @@ import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import userProfileFormSchema, {
   type UserProfileFormSchema,
 } from "@/schemas/user/userProfileFormSchema";
+import ProfileFormSectionHeader from "./ProfileFormSectionHeader";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   {
@@ -82,50 +83,34 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
       <div className="w-full overflow-auto p-4 rounded-md border rounded-t-none h-[calc(100vh-13rem)]">
         {currentStep === 1 && (
           <div>
-            <div className="grid gap-2">
-              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                Personal Information
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                Provide your basic personal details.
-              </p>
-            </div>
+            <ProfileFormSectionHeader
+              title="Personal Information"
+              description="Provide your basic personal details."
+            />
           </div>
         )}
         {currentStep === 2 && (
           <div>
-            <div className="grid gap-2">
-              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                Work Experience
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                Add your most recent work experience.
-              </p>
-            </div>
+            <ProfileFormSectionHeader
+              title="Work Experience"
+              description="Add your most recent work experience."
+            />
           </div>
         )}
         {currentStep === 3 && (
           <div>
-            <div className="grid gap-2">
-              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                Education
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                Add your educational background.
-              </p>
-            </div>
+            <ProfileFormSectionHeader
+              title="Education"
+              description="Add your educational background."
+            />
           </div>
         )}
         {currentStep === 4 && (
           <div>
-            <div className="grid gap-2">
-              <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                Skills
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                Highlight your skills and proficiency levels.
-              </p>
-            </div>
+            <ProfileFormSectionHeader
+              title="Skills"
+              description="Highlight your skills and proficiency levels."
+            />
           </div>
         )}
       </div>
