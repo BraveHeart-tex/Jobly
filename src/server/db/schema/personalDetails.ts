@@ -5,6 +5,7 @@ import {
   int,
   mysqlTable,
   text,
+  unique,
   varchar,
 } from "drizzle-orm/mysql-core";
 import users from "./users";
@@ -28,6 +29,9 @@ const personalDetails = mysqlTable(
   (table) => {
     return {
       PersonalDetail_User_id: index("PersonalDetail_User_id").on(table.userId),
+      PersonalDetail_User_id_unique: unique("PersonalDetail_User_id_unique").on(
+        table.userId,
+      ),
     };
   },
 );

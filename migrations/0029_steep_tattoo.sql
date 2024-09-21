@@ -1,0 +1,1 @@
+ALTER TABLE `PersonalDetails` ADD CONSTRAINT `PersonalDetail_User_id_unique` UNIQUE(`userId`);

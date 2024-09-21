@@ -5,6 +5,7 @@ import { userJobListingRouter } from "@/features/candidate/jobs/api/jobRouter";
 import { companyRouter } from "@/features/employer/company/api/companyRouter";
 import { jobPostingRouter } from "@/features/employer/jobPosting/api/jobPostingRouter";
 import { skillsRouter } from "@/features/employer/jobPosting/api/skillsRouter";
+import { userProfileRouter } from "@/features/user/profile/api/userProfileRouter";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
 export const appRouter = createTRPCRouter({
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   jobPosting: jobPostingRouter,
   company: companyRouter,
   skill: skillsRouter,
+  userProfile: userProfileRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);
