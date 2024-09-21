@@ -1,7 +1,7 @@
 "use client";
 import ClientOnly from "@/components/common/ClientOnly";
 import CreatableMultiSelect from "@/components/common/CreatableMultiSelect";
-import DateInput from "@/components/common/DateInput";
+import DateInput from "@/components/common/dateInput/DateInput";
 import EditorInput from "@/components/common/EditorInput";
 import SelectInput from "@/components/common/SelectInput";
 import AnimatedFormFieldsContainer from "@/components/multiStepForm/AnimatedFormFieldsContainer";
