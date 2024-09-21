@@ -3,13 +3,11 @@
 import { createHash } from "node:crypto";
 import { lucia } from "@/lib/auth";
 import { validateRequest } from "@/lib/auth/validateRequest";
-import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import zxcvbn from "zxcvbn";
 
 const DEFAULT_HASH_OPTIONS: Options = {
   memoryCost: 19456,
@@ -23,32 +21,48 @@ export async function hashPasswordSHA1(password: string): Promise<string> {
 }
 
 export const checkPasswordStrength = async (password: string) => {
-  const result = zxcvbn(password);
-
+  let score = 0;
   let strengthMessage = "";
 
-  switch (result.score) {
-    case PASSWORD_STRENGTH_LEVELS.VERY_WEAK:
-    case PASSWORD_STRENGTH_LEVELS.WEAK:
+  if (password.length >= 8) score++;
+  if (password.length >= 12) score++;
+
+  const hasLowercase = /[a-z]/.test(password);
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasNumbers = /\d/.test(password);
+  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+  if (hasLowercase) score++;
+  if (hasUppercase) score++;
+  if (hasNumbers) score++;
+  if (hasSpecialChars) score++;
+
+  switch (score) {
+    case 0:
+    case 1:
+    case 2:
       strengthMessage =
-        "Weak password. Consider using a longer password with a mix of letters, numbers, and special characters.";
+        "Very weak password. Consider using a longer password with a mix of letters, numbers, and special characters.";
       break;
-    case PASSWORD_STRENGTH_LEVELS.MODERATE:
+    case 3:
+    case 4:
       strengthMessage =
-        "Moderate password. Consider adding more characters and avoiding common words.";
+        "Weak password. Adding more character types and length can improve it.";
       break;
-    case PASSWORD_STRENGTH_LEVELS.STRONG:
+    case 5:
+      strengthMessage =
+        "Moderate password. Adding more special characters or length will strengthen it.";
+      break;
+    case 6:
       strengthMessage = "Strong password. This should be safe for most uses.";
       break;
-    case PASSWORD_STRENGTH_LEVELS.VERY_STRONG:
+    case 7:
       strengthMessage = "Very strong password. Excellent choice!";
       break;
   }
 
   return {
-    score: result.score,
-    feedback: result.feedback,
-    suggestions: result.feedback.suggestions,
+    score,
     message: strengthMessage,
   };
 };
