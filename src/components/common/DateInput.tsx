@@ -18,7 +18,7 @@ interface DateInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  format?: Intl.DateTimeFormatOptions;
+  format?: Intl.DateTimeFormatOptions | string;
   disabled?: boolean;
   showFutureDates?: boolean;
   showPastDates?: boolean;
@@ -30,9 +30,9 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
     {
       value,
       onChange,
-      placeholder,
-      showFutureDates,
-      showPastDates,
+      placeholder = "Select a date...",
+      showFutureDates = true,
+      showPastDates = true,
       disabled,
       showTimeOptions = false,
       format = DateTime.DATETIME_SHORT,
@@ -86,7 +86,7 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
         <PopoverTrigger
           asChild
           ref={ref}
-          className="focus-within:outline-none focus-within:ring-1 focus-within:ring-ring"
+          className="focus-within:outline-none focus-within:ring-1 focus-within:ring-ring w-full"
         >
           <Button
             variant="outline"
@@ -104,12 +104,16 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
         <PopoverContent>
           <Calendar
             mode="single"
-            selected={new Date(value)}
+            selected={value ? new Date(value) : new Date()}
             onSelect={handleDateSelect}
             disabled={(date) => {
               if (disabled !== undefined) return disabled;
               if (!date) return false;
-              if (!showFutureDates && date > new Date()) return true;
+
+              if (!showFutureDates && date > new Date()) {
+                return true;
+              }
+
               if (!showPastDates && date < new Date()) return true;
               return false;
             }}

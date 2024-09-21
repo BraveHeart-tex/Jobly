@@ -9,11 +9,32 @@ import userProfileFormSchema, {
   type UserProfileFormSchema,
 } from "@/schemas/user/userProfileFormSchema";
 import ProfileFormSectionHeader from "./ProfileFormSectionHeader";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import DateInput from "@/components/common/DateInput";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [
   {
     stepTitle: "Personal Details",
-    fields: [],
+    fields: [
+      "firstName",
+      "lastName",
+      "email",
+      "phoneNumber",
+      "country",
+      "city",
+      "address",
+      "postalCode",
+      "drivingLicense",
+      "placeOfBirth",
+      "dateOfBirth",
+    ],
   },
   {
     stepTitle: "Work Experience",
@@ -34,20 +55,15 @@ interface EditUserProfileFormProps {
 }
 
 const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
-  const form = useExtendedForm(userProfileFormSchema);
+  const form = useExtendedForm<UserProfileFormSchema>(userProfileFormSchema);
 
-  const {
-    currentStep,
-    setCurrentStep,
-    focusOnErroredFieldInStep,
-    goToFirstErroredStep,
-    gotoStep,
-    handleStepChange,
-    goToStepByKey,
-  } = useMultiStepForm({
-    steps: profileFormSteps,
-    form,
-  });
+  const { currentStep, setCurrentStep } =
+    useMultiStepForm<UserProfileFormSchema>({
+      steps: profileFormSteps,
+      form,
+    });
+
+  const onSubmit = (data: UserProfileFormSchema) => {};
 
   return (
     <div>
@@ -80,40 +96,189 @@ const EditUserProfileForm = ({ user }: EditUserProfileFormProps) => {
           );
         })}
       </nav>
-      <div className="w-full overflow-auto p-4 rounded-md border rounded-t-none h-[calc(100vh-13rem)]">
-        {currentStep === 1 && (
-          <div>
-            <ProfileFormSectionHeader
-              title="Personal Information"
-              description="Provide your basic personal details."
-            />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="w-full overflow-auto p-4 rounded-md border rounded-t-none h-[calc(100vh-13rem)]">
+            {currentStep === 1 && (
+              <div className="grid gap-4">
+                <ProfileFormSectionHeader
+                  title="Personal Information"
+                  description="Provide your basic personal details."
+                />
+                <div className="grid lg:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="firstName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>First Name</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Last Name</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Address</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input type="tel" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="country"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Country</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="postalCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postal Code</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="drivingLicense"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Driving License</FormLabel>
+                        <FormControl>
+                          <Input type="text" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <FormField
+                      control={form.control}
+                      name="placeOfBirth"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Place of Birth</FormLabel>
+                          <FormControl>
+                            <Input type="text" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="dateOfBirth"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date of Birth</FormLabel>
+                          <FormControl>
+                            <DateInput
+                              ref={field.ref}
+                              onChange={field.onChange}
+                              value={field.value}
+                              showFutureDates={false}
+                              showTimeOptions={false}
+                              format={"yyyy-MM-dd"}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {currentStep === 2 && (
+              <div>
+                <ProfileFormSectionHeader
+                  title="Work Experience"
+                  description="Add your most recent work experience."
+                />
+              </div>
+            )}
+            {currentStep === 3 && (
+              <div>
+                <ProfileFormSectionHeader
+                  title="Education"
+                  description="Add your educational background."
+                />
+              </div>
+            )}
+            {currentStep === 4 && (
+              <div>
+                <ProfileFormSectionHeader
+                  title="Skills"
+                  description="Highlight your skills and proficiency levels."
+                />
+              </div>
+            )}
           </div>
-        )}
-        {currentStep === 2 && (
-          <div>
-            <ProfileFormSectionHeader
-              title="Work Experience"
-              description="Add your most recent work experience."
-            />
-          </div>
-        )}
-        {currentStep === 3 && (
-          <div>
-            <ProfileFormSectionHeader
-              title="Education"
-              description="Add your educational background."
-            />
-          </div>
-        )}
-        {currentStep === 4 && (
-          <div>
-            <ProfileFormSectionHeader
-              title="Skills"
-              description="Highlight your skills and proficiency levels."
-            />
-          </div>
-        )}
-      </div>
+        </form>
+      </Form>
     </div>
   );
 };
