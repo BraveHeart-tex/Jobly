@@ -1,8 +1,8 @@
 import { workExperiences } from "@/server/db/schema";
-import { createInsertSchema } from "drizzle-zod";
+import { createSelectSchema } from "drizzle-zod";
 import type { z } from "zod";
 
-const workExperienceSchema = createInsertSchema(workExperiences);
+const workExperienceSchema = createSelectSchema(workExperiences);
 
 export type WorkExperienceSchema = z.infer<typeof workExperienceSchema>;
 
