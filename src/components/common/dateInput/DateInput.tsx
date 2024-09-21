@@ -12,7 +12,8 @@ import { CalendarIcon } from "lucide-react";
 import { DateTime } from "luxon";
 import type React from "react";
 import { type PropsWithRef, forwardRef } from "react";
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
+import DateInputCaption from "./DateInputCaption";
 
 interface DateInputProps {
   value: string;
@@ -103,9 +104,15 @@ const DateInput = forwardRef<PropsWithRef<HTMLButtonElement>, DateInputProps>(
         </PopoverTrigger>
         <PopoverContent>
           <Calendar
+            captionLayout="dropdown-buttons"
+            fromYear={1900}
+            toYear={2100}
             mode="single"
             selected={value ? new Date(value) : new Date()}
             onSelect={handleDateSelect}
+            components={{
+              Caption: DateInputCaption,
+            }}
             disabled={(date) => {
               if (disabled !== undefined) return disabled;
               if (!date) return false;

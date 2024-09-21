@@ -17,7 +17,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import DateInput from "@/components/common/DateInput";
+import DateInput from "@/components/common/dateInput/DateInput";
 import { DateTime } from "luxon";
 
 const profileFormSteps: StepItem<UserProfileFormSchema>[] = [

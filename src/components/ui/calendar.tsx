@@ -6,6 +6,7 @@ import { DayPicker } from "react-day-picker";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import DateInputCaption from "../common/dateInput/DateInputCaption";
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -59,11 +60,12 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      {...props}
       components={{
         IconLeft: () => <ChevronLeftIcon className="size-4" />,
         IconRight: () => <ChevronRightIcon className="size-4" />,
+        Caption: DateInputCaption,
       }}
-      {...props}
     />
   );
 }
