@@ -148,3 +148,14 @@ export const LOG_COLORS = {
   CYAN: "\x1b[36m",
   BLUE: "\x1b[34m",
 };
+
+export const EMPLOYMENT_TYPES = [
+  "full-time",
+  "part-time",
+  "contract",
+  "internship",
+  "temporary",
+  "volunteer",
+  "other",
+] as const;
+export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;

@@ -1,0 +1,2 @@
+ALTER TABLE `WorkExperiences` ADD `employmentType` enum('full-time','part-time','contract','internship','temporary','volunteer','other') DEFAULT 'full-time' NOT NULL;
+ALTER TABLE `WorkExperiences` ADD `workType` enum('office','remote','hybrid','other') DEFAULT 'office' NOT NULL;

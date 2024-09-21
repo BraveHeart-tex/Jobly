@@ -232,6 +232,13 @@
       "when": 1726948610213,
       "tag": "0032_acoustic_ultragirl",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1726951497906,
+      "tag": "0033_white_glorian",
+      "breakpoints": true
     }
   ]
 }

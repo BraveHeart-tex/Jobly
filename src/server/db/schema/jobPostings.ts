@@ -1,3 +1,4 @@
+import { EMPLOYMENT_TYPES, WORK_TYPES } from "@/lib/constants";
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
@@ -28,20 +29,10 @@ const jobPostings = mysqlTable(
       }),
     title: varchar("title", { length: 512 }).notNull(),
     location: varchar("location", { length: 255 }).notNull(),
-    workType: mysqlEnum("workType", ["office", "remote", "hybrid", "other"])
-      .default("office")
-      .notNull(),
+    workType: mysqlEnum("workType", WORK_TYPES).default("office").notNull(),
     salaryRange: varchar("salaryRange", { length: 50 }),
     postingContent: text("postingContent").notNull(),
-    employmentType: mysqlEnum("employmentType", [
-      "full-time",
-      "part-time",
-      "contract",
-      "internship",
-      "temporary",
-      "volunteer",
-      "other",
-    ])
+    employmentType: mysqlEnum("employmentType", EMPLOYMENT_TYPES)
       .default("full-time")
       .notNull(),
     status: mysqlEnum("status", ["draft", "published"]).notNull(),

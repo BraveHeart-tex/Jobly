@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import EducationInformationCard from "@/features/user/profile/components/EducationInformationCard";
 import WorkExperienceCard from "@/features/user/profile/components/WorkExperienceCard";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
@@ -77,6 +78,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
   };
 
   const workExperiences = form.getValues("workExperiences");
+  const educationalBackground = form.getValues("educationalBackground");
 
   return (
     <div>
@@ -349,12 +351,35 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
               </ProfileFormSectionContainer>
             )}
             {currentStep === 3 && (
-              <div>
+              <ProfileFormSectionContainer>
                 <ProfileFormSectionHeader
                   title="Education"
                   description="Add your educational background."
                 />
-              </div>
+                {educationalBackground.length > 0 ? (
+                  <div className="grid gap-2">
+                    {educationalBackground.map((educationInformation) => (
+                      <EducationInformationCard
+                        key={educationInformation.id}
+                        educationInformation={educationInformation}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center flex-col">
+                    <Image
+                      src={"/illustrations/empty-list.svg"}
+                      className="dark:invert"
+                      alt="Empty list"
+                      width={300}
+                      height={300}
+                    />
+                    <p className="text-muted-foreground text-base">
+                      You haven't added any educational information yet.
+                    </p>
+                  </div>
+                )}
+              </ProfileFormSectionContainer>
             )}
             {currentStep === 4 && (
               <div>

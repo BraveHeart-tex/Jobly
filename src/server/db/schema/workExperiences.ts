@@ -1,8 +1,10 @@
+import { EMPLOYMENT_TYPES, WORK_TYPES } from "@/lib/constants";
 import { type InferSelectModel, relations } from "drizzle-orm";
 import {
   date,
   index,
   int,
+  mysqlEnum,
   mysqlTable,
   primaryKey,
   text,
@@ -31,6 +33,10 @@ const workExperiences = mysqlTable(
     endDate: date("endDate", {
       mode: "string",
     }),
+    employmentType: mysqlEnum("employmentType", EMPLOYMENT_TYPES)
+      .default("full-time")
+      .notNull(),
+    workType: mysqlEnum("workType", WORK_TYPES).default("office").notNull(),
     location: varchar("location", {
       length: 255,
     }),
