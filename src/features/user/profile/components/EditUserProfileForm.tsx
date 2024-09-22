@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import EducationInformationCard from "@/features/user/profile/components/EducationInformationCard";
-import WorkExperienceCard from "@/features/user/profile/components/WorkExperienceCard";
+import WorkExperienceTimeline from "@/features/user/profile/components/WorkExperienceTimeline";
 import { type StepItem, useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { cn } from "@/lib/utils";
@@ -326,14 +326,7 @@ const EditUserProfileForm = ({ initialData }: EditUserProfileFormProps) => {
                   }
                 />
                 {workExperiences.length > 0 ? (
-                  <div className="grid gap-2">
-                    {workExperiences.map((workExperience) => (
-                      <WorkExperienceCard
-                        key={workExperience.id}
-                        workExperience={workExperience}
-                      />
-                    ))}
-                  </div>
+                  <WorkExperienceTimeline experiences={workExperiences} />
                 ) : (
                   <div className="flex items-center justify-center flex-col">
                     <Image
