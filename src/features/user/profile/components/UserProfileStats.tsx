@@ -11,11 +11,10 @@ const UserProfileStats = () => {
             <EyeIcon className="size-5" />
             <p className="text-sm">Exclusive to you</p>
           </div>
-
           <div className="grid lg:grid-cols-2 gap-4 mt-4">
-            <div className="grid grid-cols-12">
-              <UsersIcon className={"col-span-1"} />
-              <div className="col-span-11">
+            <div className="flex gap-2">
+              <UsersIcon className="mt-[2px]" />
+              <div>
                 <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   10 Profile Views
                 </h4>
@@ -24,9 +23,9 @@ const UserProfileStats = () => {
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-12">
-              <SearchIcon className={"col-span-1"} />
-              <div className="col-span-11">
+            <div className="flex gap-2">
+              <SearchIcon className={"mt-[2px]"} />
+              <div>
                 <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
                   10 Search Views
                 </h4>
