@@ -8,7 +8,7 @@ const UserProfilePersonalInformation = () => {
     <Card className="w-full max-w-4xl mx-auto shadow-md rounded-md">
       <div className="relative">
         <div className="h-[200px] bg-gradient-to-r from-primary/50 to-primary/90 dark:from-primary/80 dark:to-primary/10 rounded-md rounded-b-none" />
-        <Avatar className="absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] border-4 border-white rounded-full">
+        <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] border-4 border-white rounded-full">
           <AvatarImage src="/default-avatar.svg" alt="Profile picture" />
           <AvatarFallback className="text-lg">BK</AvatarFallback>
         </Avatar>
@@ -16,8 +16,8 @@ const UserProfilePersonalInformation = () => {
 
       <CardContent className="pt-1 pb-8 px-4">
         <div className="flex justify-end mb-4 w-full">
-          <Button variant="ghost" size={"icon"} className={"-mr-4 -mt-[3px]"}>
-            <PenSquare className="w-6 h-6" />
+          <Button variant="ghost" size={"icon"}>
+            <PenSquare />
           </Button>
         </div>
 

@@ -1,4 +1,5 @@
 import PageContainer from "@/components/common/PageContainer";
+import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
 import UserProfileStats from "@/features/user/profile/components/UserProfileStats";
 import { SHARED_ROUTES } from "@/lib/routes";
@@ -17,6 +18,7 @@ const EditProfilePage = async () => {
       <PageContainer className="grid gap-2">
         <UserProfilePersonalInformation />
         <UserProfileStats />
+        <UserProfileAboutSection />
       </PageContainer>
     </main>
   );
