@@ -1,17 +1,10 @@
+import type {
+  FormatDateRangeWithDurationParams,
+  FormatDateRangeWithDurationReturn,
+  GroupedExperience,
+} from "@/features/user/profile/types";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
-import { DateTime, type Duration } from "luxon";
-
-interface FormatDateRangeWithDurationParams {
-  startDate: string;
-  endDate?: string | null;
-  localeStringFormat?: Intl.DateTimeFormatOptions;
-}
-
-interface FormatDateRangeWithDurationReturn {
-  formattedStartDate: string;
-  formattedEndDate: string;
-  difference: Duration;
-}
+import { DateTime } from "luxon";
 
 export const formatDateRangeWithDuration = ({
   startDate,
@@ -41,11 +34,6 @@ export const formatDateRangeWithDuration = ({
     difference,
   };
 };
-
-export interface GroupedExperience {
-  employer: string;
-  experiences: WorkExperience[];
-}
 
 const getEndDate = (date: string | null): DateTime => {
   return date ? DateTime.fromISO(date) : DateTime.now();

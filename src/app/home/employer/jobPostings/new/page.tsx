@@ -11,7 +11,7 @@ import Link from "next/link";
 const CreateNewJobPostingPage = async () => {
   await validateRequestByRole(["employer"]);
   return (
-    <div>
+    <div className="pt-10">
       <PageContainer>
         <div className="grid gap-4 mb-4">
           <div className="grid gap-1">

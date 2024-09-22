@@ -111,7 +111,7 @@ const JobsList = () => {
 
     if (hasSearchParams && jobs?.length === 0) {
       return (
-        <div className="flex flex-col justify-center items-center gap-1 h-[calc(100vh-120px)]">
+        <div className="flex flex-col justify-center items-center gap-1 h-[calc(100vh-12rem)]">
           <h2 className="scroll-m-20 text-2xl tracking-tight">
             No results were found for your search
           </h2>
@@ -158,7 +158,7 @@ const JobsList = () => {
       <div
         ref={containerRef}
         className={cn(
-          "lg:col-span-4 grid h-[calc(100vh-110px)] grid-cols-1 gap-1 overflow-auto p-1 pt-0 auto-rows-min",
+          "lg:col-span-4 grid h-[calc(100vh-10rem)] grid-cols-1 gap-1 overflow-auto p-1 pt-0 auto-rows-min",
           view === "jobDetails" && "hidden lg:grid",
         )}
       >
@@ -166,8 +166,8 @@ const JobsList = () => {
       </div>
       <div
         className={cn(
-          "lg:col-span-8 h-[calc(100vh-110px)]",
-          view === "jobDetails" && "h-full w-full lg:h-[calc(100vh-110px)]",
+          "lg:col-span-8",
+          view === "jobDetails" && "w-full h-[calc(100vh-10rem)]",
           view === "list" && "hidden lg:inline-block",
         )}
       >

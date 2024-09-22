@@ -15,7 +15,7 @@ const NavbarContainer = ({ children }: NavbarContainerProps) => {
   return (
     <nav
       className={cn(
-        "sticky top-0 z-50 h-max w-full border-b border-input bg-background/80 py-1 backdrop-blur-lg transition-colors",
+        "fixed top-0 z-50 h-max w-full border-b border-input py-1 transition-colors bg-background",
         shouldMinimize && "hidden",
       )}
     >

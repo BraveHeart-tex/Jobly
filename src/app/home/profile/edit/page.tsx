@@ -2,6 +2,7 @@ import PageContainer from "@/components/common/PageContainer";
 import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
 import UserProfileStats from "@/features/user/profile/components/UserProfileStats";
+import UserProfileStickyHeader from "@/features/user/profile/components/UserProfileStickyHeader";
 import UserProfileWorkExperienceSection from "@/features/user/profile/components/UserProfileWorkExperienceSection";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
@@ -15,14 +16,15 @@ const EditProfilePage = async () => {
   }
 
   return (
-    <main>
-      <PageContainer className="grid gap-2 pb-8">
+    <main className="pt-10">
+      <PageContainer className="grid gap-2 pb-8 relative">
         <UserProfilePersonalInformation />
         <UserProfileStats />
         <UserProfileAboutSection />
         <UserProfileWorkExperienceSection
           workExperiences={profileDetailsData.workExperiences}
         />
+        <UserProfileStickyHeader />
       </PageContainer>
     </main>
   );

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { formatDateRangeWithDuration } from "@/features/user/profile/components/utils";
+import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
 import { EditIcon } from "lucide-react";
 

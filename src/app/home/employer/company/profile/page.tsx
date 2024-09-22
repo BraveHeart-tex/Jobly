@@ -49,7 +49,7 @@ const CompanyProfilePage = async ({
   };
 
   return (
-    <div>
+    <div className="pt-10">
       <PageContainer>{renderContent()}</PageContainer>
     </div>
   );

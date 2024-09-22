@@ -1,7 +1,5 @@
-import {
-  type GroupedExperience,
-  formatDateRangeWithDuration,
-} from "@/features/user/profile/components/utils";
+import type { GroupedExperience } from "@/features/user/profile/types";
+import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
 import { DateTime } from "luxon";
 
