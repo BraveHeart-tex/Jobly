@@ -11,12 +11,7 @@ const UserProfileStickyHeader = () => {
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() || 0;
-    if (latest > previous && latest > STICKY_HEADER_DISPLAY_THRESHOLD) {
-      setHidden(false);
-    } else {
-      setHidden(true);
-    }
+    setHidden(latest < STICKY_HEADER_DISPLAY_THRESHOLD);
   });
 
   const handleHeaderClick = () => {

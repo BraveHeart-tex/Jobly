@@ -38,7 +38,7 @@ const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
     }`.trim();
 
   return (
-    <article className="grid gap-2 p-4 pt-0 bg-card group border-b ">
+    <article className="grid gap-2 p-4 px-0 pt-0 bg-card group border-b ">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="scroll-m-20 text-base font-semibold tracking-tight">

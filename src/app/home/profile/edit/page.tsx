@@ -1,5 +1,6 @@
 import PageContainer from "@/components/common/PageContainer";
 import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
+import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
 import UserProfileStats from "@/features/user/profile/components/UserProfileStats";
 import UserProfileStickyHeader from "@/features/user/profile/components/UserProfileStickyHeader";
@@ -18,13 +19,16 @@ const EditProfilePage = async () => {
   return (
     <main className="pt-10">
       <PageContainer className="grid gap-2 pb-8 relative">
+        <UserProfileStickyHeader />
         <UserProfilePersonalInformation />
         <UserProfileStats />
         <UserProfileAboutSection />
         <UserProfileWorkExperienceSection
           workExperiences={profileDetailsData.workExperiences}
         />
-        <UserProfileStickyHeader />
+        <UserProfileEducationSection
+          educationBackground={profileDetailsData.educationalBackground}
+        />
       </PageContainer>
     </main>
   );

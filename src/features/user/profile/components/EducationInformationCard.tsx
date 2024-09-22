@@ -1,14 +1,15 @@
-import { Button } from "@/components/ui/button";
 import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
+import { cn } from "@/lib/utils";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
-import { EditIcon } from "lucide-react";
 
 interface EducationInformationCardProps {
   educationInformation: EducationalBackground;
+  className?: string;
 }
 
 const EducationInformationCard = ({
   educationInformation,
+  className,
 }: EducationInformationCardProps) => {
   const { formattedStartDate, formattedEndDate } = formatDateRangeWithDuration({
     startDate: educationInformation.startDate,
@@ -19,7 +20,7 @@ const EducationInformationCard = ({
   });
 
   return (
-    <article className="grid gap-2 rounded-md border p-4 bg-card group">
+    <article className={cn("grid gap-2 p-4 px-0 bg-card group", className)}>
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <h3 className="scroll-m-20 text-base font-semibold tracking-tight">
@@ -30,15 +31,6 @@ const EducationInformationCard = ({
             {formattedStartDate} - {formattedEndDate}
           </p>
         </div>
-        <Button
-          variant={"ghost"}
-          size={"icon"}
-          className={
-            "lg:opacity-0 lg:group-hover:opacity-100 transition-all ease-in-out duration-300 text-muted-foreground"
-          }
-        >
-          <EditIcon size={20} />
-        </Button>
       </div>
     </article>
   );
