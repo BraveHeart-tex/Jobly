@@ -1,9 +1,15 @@
-import { DateTime } from "luxon";
+import { DateTime, type Duration } from "luxon";
 
-interface FormatStartAndEndDateProps {
+interface FormatDateRangeWithDurationParams {
   startDate: string;
   endDate?: string | null;
   localeStringFormat?: Intl.DateTimeFormatOptions;
+}
+
+interface FormatDateRangeWithDurationReturn {
+  formattedStartDate: string;
+  formattedEndDate: string;
+  difference: Duration;
 }
 
 export const formatDateRangeWithDuration = ({
@@ -13,7 +19,7 @@ export const formatDateRangeWithDuration = ({
     year: "numeric",
     month: "short",
   },
-}: FormatStartAndEndDateProps) => {
+}: FormatDateRangeWithDurationParams): FormatDateRangeWithDurationReturn => {
   const startDateValue = DateTime.fromISO(startDate);
   const endDateValue = endDate ? DateTime.fromISO(endDate) : undefined;
 
