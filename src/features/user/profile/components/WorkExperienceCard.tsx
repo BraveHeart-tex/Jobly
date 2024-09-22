@@ -1,10 +1,8 @@
-import { Button } from "@/components/ui/button";
 import {
   type GroupedExperience,
   formatDateRangeWithDuration,
 } from "@/features/user/profile/components/utils";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
-import { EditIcon } from "lucide-react";
 import { DateTime } from "luxon";
 
 interface WorkExperienceCardProps {
@@ -42,7 +40,7 @@ const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
     }`.trim();
 
   return (
-    <article className="grid gap-2 rounded-md border p-4 bg-card group">
+    <article className="grid gap-2 p-4 pt-0 bg-card group border-b ">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <h3 className="scroll-m-20 text-base font-semibold tracking-tight">
@@ -53,7 +51,7 @@ const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
           </p>
           {sortedExperiences.map((exp) => (
             <div key={exp.id} className="mt-2">
-              <p className="text-sm font-medium">{exp.jobTitle}</p>
+              <p className="text-base font-medium">{exp.jobTitle}</p>
               <p className="text-sm">
                 {generateReadableEnumLabel(exp.employmentType)}
               </p>
@@ -79,13 +77,6 @@ const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
             </div>
           ))}
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:opacity-0 lg:group-hover:opacity-100 transition-all ease-in-out duration-300 text-muted-foreground"
-        >
-          <EditIcon size={20} />
-        </Button>
       </div>
     </article>
   );

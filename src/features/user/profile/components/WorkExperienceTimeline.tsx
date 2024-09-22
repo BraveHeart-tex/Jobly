@@ -1,4 +1,5 @@
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
+import { MAX_VISIBLE_WORK_EXPERIENCE_COUNT } from "./UserProfileWorkExperienceSection";
 import WorkExperienceCard from "./WorkExperienceCard";
 import { groupExperiences } from "./utils";
 
@@ -13,13 +14,15 @@ const WorkExperienceTimeline = ({
 
   return (
     <div className="space-y-4">
-      {groupedExperiences.map((groupedExperience, index) => (
-        <WorkExperienceCard
-          // biome-ignore lint/suspicious/noArrayIndexKey: This is fine
-          key={groupedExperience.employer + index}
-          groupedExperience={groupedExperience}
-        />
-      ))}
+      {groupedExperiences
+        .slice(0, MAX_VISIBLE_WORK_EXPERIENCE_COUNT)
+        .map((groupedExperience, index) => (
+          <WorkExperienceCard
+            // biome-ignore lint/suspicious/noArrayIndexKey: This is fine
+            key={groupedExperience.employer + index}
+            groupedExperience={groupedExperience}
+          />
+        ))}
     </div>
   );
 };
