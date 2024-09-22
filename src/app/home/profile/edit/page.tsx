@@ -16,7 +16,7 @@ const EditProfilePage = async () => {
 
   return (
     <main>
-      <PageContainer className="grid gap-2 pb-4">
+      <PageContainer className="grid gap-2 pb-8">
         <UserProfilePersonalInformation />
         <UserProfileStats />
         <UserProfileAboutSection />
