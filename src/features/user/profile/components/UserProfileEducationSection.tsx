@@ -16,35 +16,33 @@ const UserProfileEducationSection = ({
 }: UserProfileEducationSectionProps) => {
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
-      <CardContent className="p-4 relative">
-        <div className="mb-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Education</h2>
-            <div className="flex items-center gap-2">
-              <Button size="icon" variant={"ghost"}>
-                <PlusIcon />
-              </Button>
-              <Button size="icon" variant={"ghost"}>
-                <PenSquare />
-              </Button>
-            </div>
-          </div>
-          <div className="py-4">
-            {educationBackground
-              .slice(0, MAX_VISIBLE_EDUCATION_ITEM_COUNT)
-              .map((education) => (
-                <EducationInformationCard
-                  key={education.id}
-                  educationInformation={education}
-                  className={educationBackground.length > 1 ? "border-b" : ""}
-                />
-              ))}
+      <CardContent className="p-0 flex flex-col justify-between">
+        <div className="flex items-center justify-between p-4">
+          <h2 className="text-2xl font-bold">Education</h2>
+          <div className="flex items-center gap-2">
+            <Button size="icon" variant={"ghost"}>
+              <PlusIcon />
+            </Button>
+            <Button size="icon" variant={"ghost"}>
+              <PenSquare />
+            </Button>
           </div>
         </div>
+        <div className="p-4 py-0 pb-2">
+          {educationBackground
+            .slice(0, MAX_VISIBLE_EDUCATION_ITEM_COUNT)
+            .map((education) => (
+              <EducationInformationCard
+                key={education.id}
+                educationInformation={education}
+              />
+            ))}
+        </div>
+
         {educationBackground.length > MAX_VISIBLE_EDUCATION_ITEM_COUNT && (
           <Link
             href={"#"}
-            className="absolute bottom-0 left-0 w-full p-4 z-5 border-t bg-card text-center rounded-md rounded-t-none hover:bg-secondary transition-all"
+            className="w-full p-4 z-5 border-t bg-card text-center rounded-md rounded-t-none hover:bg-secondary transition-all"
           >
             <div className="flex items-center gap-1 justify-center text-base font-semibold">
               <p>Show all {educationBackground.length} education experiences</p>

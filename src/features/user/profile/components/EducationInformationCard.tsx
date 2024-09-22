@@ -1,15 +1,12 @@
 import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
-import { cn } from "@/lib/utils";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
 
 interface EducationInformationCardProps {
   educationInformation: EducationalBackground;
-  className?: string;
 }
 
 const EducationInformationCard = ({
   educationInformation,
-  className,
 }: EducationInformationCardProps) => {
   const { formattedStartDate, formattedEndDate } = formatDateRangeWithDuration({
     startDate: educationInformation.startDate,
@@ -20,7 +17,11 @@ const EducationInformationCard = ({
   });
 
   return (
-    <article className={cn("grid gap-2 p-4 px-0 bg-card group", className)}>
+    <article
+      className={
+        "grid gap-2 p-4 px-0 bg-card border-b last:border-b-0 first:pt-0"
+      }
+    >
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <h3 className="scroll-m-20 text-base font-semibold tracking-tight">
