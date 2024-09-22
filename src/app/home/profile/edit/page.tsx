@@ -1,6 +1,6 @@
 import PageContainer from "@/components/common/PageContainer";
-import PageTitle from "@/components/common/PageTitle";
-import EditUserProfileForm from "@/features/user/profile/components/EditUserProfileForm";
+import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
+import UserProfileStats from "@/features/user/profile/components/UserProfileStats";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
 import { redirect } from "next/navigation";
@@ -15,8 +15,8 @@ const EditProfilePage = async () => {
   return (
     <main>
       <PageContainer className="grid gap-2">
-        <PageTitle>Edit Profile</PageTitle>
-        <EditUserProfileForm initialData={profileDetailsData} />
+        <UserProfilePersonalInformation />
+        <UserProfileStats />
       </PageContainer>
     </main>
   );
