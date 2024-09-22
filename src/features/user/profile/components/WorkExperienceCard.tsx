@@ -5,18 +5,30 @@ import {
 } from "@/features/user/profile/components/utils";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
 import { EditIcon } from "lucide-react";
+import { DateTime } from "luxon";
 
 interface WorkExperienceCardProps {
   groupedExperience: GroupedExperience;
 }
 
 const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
-  const { startDate, endDate, employer, experiences } = groupedExperience;
+  const { employer, experiences } = groupedExperience;
+
+  const sortedExperiences = experiences.sort(
+    (a, b) =>
+      DateTime.fromISO(b.startDate).toMillis() -
+      DateTime.fromISO(a.startDate).toMillis(),
+  );
+
+  const overallStartDate =
+    sortedExperiences[sortedExperiences.length - 1]?.startDate ??
+    DateTime.now().toISODate();
+  const overallEndDate = sortedExperiences[0]?.endDate ?? null;
 
   const { formattedStartDate, formattedEndDate, difference } =
     formatDateRangeWithDuration({
-      startDate,
-      endDate,
+      startDate: overallStartDate,
+      endDate: overallEndDate,
     });
 
   const years = Math.floor(difference.years);
@@ -39,7 +51,7 @@ const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
           <p className="text-sm text-muted-foreground">
             {formattedStartDate} - {formattedEndDate} · {differenceString}
           </p>
-          {experiences.map((exp) => (
+          {sortedExperiences.map((exp) => (
             <div key={exp.id} className="mt-2">
               <p className="text-sm font-medium">{exp.jobTitle}</p>
               <p className="text-sm">
@@ -52,7 +64,7 @@ const WorkExperienceCard = ({ groupedExperience }: WorkExperienceCardProps) => {
                     endDate: exp.endDate,
                   }).formattedStartDate
                 }{" "}
-                -
+                -{" "}
                 {
                   formatDateRangeWithDuration({
                     startDate: exp.startDate,

@@ -13,9 +13,10 @@ const WorkExperienceTimeline = ({
 
   return (
     <div className="space-y-4">
-      {groupedExperiences.map((groupedExperience) => (
+      {groupedExperiences.map((groupedExperience, index) => (
         <WorkExperienceCard
-          key={groupedExperience.id}
+          // biome-ignore lint/suspicious/noArrayIndexKey: This is fine
+          key={groupedExperience.employer + index}
           groupedExperience={groupedExperience}
         />
       ))}
