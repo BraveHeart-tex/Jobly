@@ -30,7 +30,8 @@ const UserMenu = ({ user }: UserMenuProps) => {
 
   const userMenuProfileLinks = [
     {
-      title: "Edit Profile",
+      title: "Profile",
+      // TODO: users will be able set their own profile slugs
       href: SHARED_ROUTES.EDIT_PROFILE,
       icon: UserIcon,
     },
@@ -84,7 +85,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
           {userMenuProfileLinks.map((link) => (
             <DropdownMenuItem
               key={link.title}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1 font-medium"
               asChild
             >
               <Link href={link.href}>
@@ -97,7 +98,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={handleSignOut}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center font-medium"
         >
           Sign Out
         </DropdownMenuItem>
