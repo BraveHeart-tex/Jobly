@@ -81,7 +81,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div>
-          <DropdownMenuLabel>Profile</DropdownMenuLabel>
+          <DropdownMenuLabel>Account</DropdownMenuLabel>
           {userMenuProfileLinks.map((link) => (
             <DropdownMenuItem
               key={link.title}
