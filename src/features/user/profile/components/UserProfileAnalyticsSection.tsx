@@ -1,12 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { EyeIcon, SearchIcon, UsersIcon } from "lucide-react";
+import { ArrowRightIcon, EyeIcon, SearchIcon, UsersIcon } from "lucide-react";
+import Link from "next/link";
 
-const UserProfileStats = () => {
+const UserProfileAnalyticsSection = () => {
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
-      <CardContent className="p-4">
-        <div className="mb-4">
-          <h2 className="text-2xl font-bold">Profile Stats</h2>
+      <CardContent className="p-0 flex flex-col justify-between">
+        <div className="mb-4 p-4">
+          <h2 className="text-2xl font-bold">Analytics</h2>
           <div className="flex items-center gap-1 text-muted-foreground">
             <EyeIcon className="size-5" />
             <p className="text-sm">Exclusive to you</p>
@@ -36,8 +37,18 @@ const UserProfileStats = () => {
             </div>
           </div>
         </div>
+
+        <Link
+          href={"#"}
+          className="w-full px-2 py-[0.625rem] z-5 border-t border-b-0 bg-card text-center rounded-md rounded-t-none hover:bg-secondary transition-all"
+        >
+          <div className="flex items-center gap-1 justify-center text-base font-semibold">
+            <p>Show all analytics</p>
+            <ArrowRightIcon />
+          </div>
+        </Link>
       </CardContent>
     </Card>
   );
 };
-export default UserProfileStats;
+export default UserProfileAnalyticsSection;

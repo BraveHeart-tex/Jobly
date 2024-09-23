@@ -42,7 +42,7 @@ const UserProfileEducationSection = ({
         {educationBackground.length > MAX_VISIBLE_EDUCATION_ITEM_COUNT && (
           <Link
             href={"#"}
-            className="w-full p-4 z-5 border-t bg-card text-center rounded-md rounded-t-none hover:bg-secondary transition-all"
+            className="w-full px-2 py-[0.625rem] z-5 border-t bg-card text-center rounded-md rounded-t-none hover:bg-secondary transition-all"
           >
             <div className="flex items-center gap-1 justify-center text-base font-semibold">
               <p>Show all {educationBackground.length} education experiences</p>

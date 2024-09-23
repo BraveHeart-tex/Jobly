@@ -1,8 +1,8 @@
 import PageContainer from "@/components/common/PageContainer";
 import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
+import UserProfileAnalyticsSection from "@/features/user/profile/components/UserProfileAnalyticsSection";
 import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
-import UserProfileStats from "@/features/user/profile/components/UserProfileStats";
 import UserProfileStickyHeader from "@/features/user/profile/components/UserProfileStickyHeader";
 import UserProfileWorkExperienceSection from "@/features/user/profile/components/UserProfileWorkExperienceSection";
 import { SHARED_ROUTES } from "@/lib/routes";
@@ -21,7 +21,7 @@ const EditProfilePage = async () => {
       <PageContainer className="grid gap-2 pb-8 relative">
         <UserProfileStickyHeader />
         <UserProfilePersonalInformation />
-        <UserProfileStats />
+        <UserProfileAnalyticsSection />
         <UserProfileAboutSection />
         <UserProfileWorkExperienceSection
           workExperiences={profileDetailsData.workExperiences}
