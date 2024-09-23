@@ -22,10 +22,7 @@ const ApplyToJobDialog = ({ jobDetails }: ApplyToJobDialogProps) => {
       <DialogTrigger asChild>
         <Button>Apply Now</Button>
       </DialogTrigger>
-      <DialogContent
-        className="w-full lg:max-w-screen-md p-0"
-        doNotRenderClosePrimitive
-      >
+      <DialogContent className="w-full lg:max-w-screen-md p-0">
         <DialogHeader>
           <DialogTitle className="w-full flex items-center justify-between border-b px-6 py-4">
             Applying to {jobDetails?.title} at {jobDetails?.company?.name}
