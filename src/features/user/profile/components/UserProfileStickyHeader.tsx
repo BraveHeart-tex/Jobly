@@ -7,11 +7,11 @@ import { useState } from "react";
 const STICKY_HEADER_DISPLAY_THRESHOLD = 330 as const;
 
 const UserProfileStickyHeader = () => {
-  const [hidden, setHidden] = useState(true);
+  const [visible, setVisible] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setHidden(latest < STICKY_HEADER_DISPLAY_THRESHOLD);
+    setVisible(latest > STICKY_HEADER_DISPLAY_THRESHOLD);
   });
 
   const handleHeaderClick = () => {
@@ -25,7 +25,7 @@ const UserProfileStickyHeader = () => {
         hidden: { y: "-150%" },
       }}
       initial={"hidden"}
-      animate={hidden ? "hidden" : "visible"}
+      animate={visible ? "visible" : "hidden"}
       transition={{ duration: 0.4, ease: "linear" }}
       className="fixed left-0 top-[3.3rem] w-full bg-background border-t z-10 shadow-xl hidden md:block"
     >
