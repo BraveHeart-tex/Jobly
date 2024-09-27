@@ -158,4 +158,5 @@ export const EMPLOYMENT_TYPES = [
   "volunteer",
   "other",
 ] as const;
+
 export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;

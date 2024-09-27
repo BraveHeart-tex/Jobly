@@ -1,16 +1,25 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { ArrowRightIcon, PenSquare, SparklesIcon } from "lucide-react";
 
 const UserProfileAboutSection = () => {
   const exampleSkills = ["React.js", "Git", "Node.js", "Typescript", "SQL"];
+  const { openModal } = useProfilePageSearchParams();
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
       <CardContent className="p-4">
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">About</h2>
-            <Button size="icon" variant={"ghost"}>
+            <Button
+              size="icon"
+              variant={"ghost"}
+              onClick={() => {
+                openModal("about");
+              }}
+            >
               <PenSquare />
             </Button>
           </div>

@@ -1,4 +1,6 @@
+import ClientOnly from "@/components/common/ClientOnly";
 import PageContainer from "@/components/common/PageContainer";
+import ProfileFormDialogContainer from "@/features/user/profile/components/ProfileFormDialogContainer";
 import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
 import UserProfileAnalyticsSection from "@/features/user/profile/components/UserProfileAnalyticsSection";
 import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
@@ -30,6 +32,9 @@ const EditProfilePage = async () => {
           educationBackground={profileDetailsData.educationalBackground}
         />
       </PageContainer>
+      <ClientOnly>
+        <ProfileFormDialogContainer />
+      </ClientOnly>
     </main>
   );
 };

@@ -1,19 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import WorkExperienceTimeline from "@/features/user/profile/components/WorkExperienceTimeline";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
-import {
-  ArrowRightIcon,
-  BriefcaseBusinessIcon,
-  CalendarIcon,
-  PenSquare,
-  PlusIcon,
-} from "lucide-react";
+import { ArrowRightIcon, PenSquare, PlusIcon } from "lucide-react";
 import Link from "next/link";
 
 interface UserProfileWorkExperienceSectionProps {
@@ -31,29 +20,9 @@ const UserProfileWorkExperienceSection = ({
         <div className="flex items-center justify-between p-4">
           <h2 className="text-2xl font-bold">Experience</h2>
           <div className="flex items-center gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button size="icon" variant={"ghost"}>
-                  <PlusIcon />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="p-0 py-2 w-[12.5rem]">
-                <Link
-                  href={"#"}
-                  className="flex items-center gap-2 hover:bg-muted p-2 text-[0.93rem]"
-                >
-                  <BriefcaseBusinessIcon size={19} />
-                  <span className="font-medium">Add position</span>
-                </Link>
-                <Link
-                  href={"#"}
-                  className="flex items-center gap-2 hover:bg-muted p-2 text-[0.93rem]"
-                >
-                  <CalendarIcon size={19} />
-                  <span className="font-medium">Add career gap</span>
-                </Link>
-              </PopoverContent>
-            </Popover>
+            <Button size="icon" variant={"ghost"}>
+              <PlusIcon />
+            </Button>
             <Button size="icon" variant={"ghost"}>
               <PenSquare />
             </Button>
