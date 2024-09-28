@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
 import type React from "react";
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { type MultiValue, components } from "react-select";
 import AsyncCreatableSelect from "react-select/async-creatable";
 
@@ -25,7 +25,7 @@ interface CreatableSelectProps {
   loadOptions?: (inputValue: string) => Promise<OptionType[]>;
 }
 
-const CreatableMultiSelect = forwardRef(
+const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
   (
     {
       value,
@@ -41,6 +41,10 @@ const CreatableMultiSelect = forwardRef(
     const [menuPortalTarget, setMenuPortalTarget] =
       useState<HTMLElement | null>(null);
 
+    useEffect(() => {
+      setMenuPortalTarget(document.body);
+    }, []);
+
     const handleInputChange = (inputValue: string) => {
       onInputChange?.(inputValue);
     };
@@ -50,10 +54,8 @@ const CreatableMultiSelect = forwardRef(
     };
 
     return (
-      <div ref={(el) => setMenuPortalTarget(el)}>
+      <div ref={ref} className="w-full relative z-[9999]">
         <AsyncCreatableSelect<OptionType, true>
-          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-          ref={ref as any}
           isClearable
           isMulti
           onInputChange={handleInputChange}
@@ -192,10 +194,12 @@ const CreatableMultiSelect = forwardRef(
             menuPortal: (base) => ({
               ...base,
               zIndex: 9999,
+              pointerEvents: "auto",
             }),
           }}
           menuPortalTarget={menuPortalTarget}
           menuPosition="fixed"
+          maxMenuHeight={200}
         />
       </div>
     );

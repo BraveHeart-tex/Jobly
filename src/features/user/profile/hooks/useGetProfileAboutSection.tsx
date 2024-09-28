@@ -1,6 +1,7 @@
 import { api } from "@/trpc/react";
 
 export const useGetProfileAboutSection = () => {
-  const { data, isPending } = api.userProfile.getAboutInformation.useQuery();
-  return { data, isPending };
+  const { data, isPending: isPendingAboutData } =
+    api.userProfile.getAboutInformation.useQuery();
+  return { data, isPendingAboutData };
 };

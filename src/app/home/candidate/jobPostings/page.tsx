@@ -7,7 +7,7 @@ const JobsPage = async () => {
   await validateRequestByRole(["candidate"]);
 
   return (
-    <main className="pt-10 bg-muted h-screen">
+    <main className="bg-muted h-screen">
       <PageContainer>
         <JobListSearchToolbar />
         <JobsList />

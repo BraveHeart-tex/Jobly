@@ -8,7 +8,7 @@ const JobTrackerPage = async () => {
   const data = await api.jobTracker.getJobTrackerApplications();
 
   return (
-    <main className="pt-10">
+    <main>
       <PageContainer>
         <div className="grid gap-1">
           <PageTitle>Job Tracker Board</PageTitle>

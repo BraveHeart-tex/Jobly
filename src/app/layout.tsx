@@ -36,7 +36,7 @@ export default function RootLayout({
               color="hsl(var(--primary))"
               shadow="0 0 10px hsl(var(--primary)), 0 0 5px hsl(var(--primary))"
             />
-            {children}
+            <div className="pt-10">{children}</div>
           </ThemeProvider>
         </TRPCReactProvider>
       </body>

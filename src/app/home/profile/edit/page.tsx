@@ -19,7 +19,7 @@ const EditProfilePage = async () => {
   }
 
   return (
-    <main className="pt-10">
+    <main>
       <PageContainer className="grid gap-2 pb-8 relative">
         <UserProfileStickyHeader />
         <UserProfilePersonalInformation />

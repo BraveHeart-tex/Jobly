@@ -52,7 +52,7 @@ const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
   });
 
   return (
-    <div className="pt-10">
+    <div>
       <PageContainer className="grid gap-2">
         <div className="grid">
           <div className="flex items-center justify-between">
