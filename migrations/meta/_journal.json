@@ -246,6 +246,13 @@
       "when": 1727504511391,
       "tag": "0034_regular_mentallo",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1727504947427,
+      "tag": "0035_fast_maverick",
+      "breakpoints": true
     }
   ]
 }

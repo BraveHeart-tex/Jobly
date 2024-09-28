@@ -44,3 +44,7 @@ export {
   default as workExperiences,
   workExperienceRelations,
 } from "./workExperiences";
+export {
+  default as userBios,
+  userBiosRelations,
+} from "./userBios";
