@@ -12,6 +12,8 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 
+export const MAX_USER_BIO_LENGTH = 2600;
+
 const userBios = mysqlTable(
   "UserBios",
   {
@@ -22,7 +24,7 @@ const userBios = mysqlTable(
       })
       .notNull(),
     bio: varchar("bio", {
-      length: 2600,
+      length: MAX_USER_BIO_LENGTH,
     }).notNull(),
   },
   (table) => {

@@ -55,14 +55,8 @@ const JobListFilters = () => {
     setWorkType,
     employmentType,
     setEmploymentType,
+    clearAllFilters,
   } = useJobsListPageSearchParams();
-
-  const clearAllFilters = () => {
-    setBookmarked("false");
-    setViewed("false");
-    setWorkType(null);
-    setEmploymentType(null);
-  };
 
   return (
     <Popover>
@@ -143,7 +137,11 @@ const JobListFilters = () => {
             />
             <Label htmlFor="userBookmarkedJob">Show Bookmarked Jobs</Label>
           </div>
-          <Button className="mt-1" variant="ghost" onClick={clearAllFilters}>
+          <Button
+            className="mt-1"
+            variant="secondary"
+            onClick={clearAllFilters}
+          >
             Clear
           </Button>
         </div>

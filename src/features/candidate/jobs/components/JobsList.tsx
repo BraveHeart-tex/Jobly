@@ -115,11 +115,7 @@ const JobsList = () => {
           <h2 className="scroll-m-20 text-2xl tracking-tight">
             No results were found for your search
           </h2>
-          <Button
-            onClick={() => {
-              clearAllFilters();
-            }}
-          >
+          <Button type="button" onClick={clearAllFilters}>
             Clear All Filters
           </Button>
         </div>

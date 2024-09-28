@@ -5,7 +5,7 @@ import DocumentTabs from "@/features/candidate/documents/components/DocumentTabs
 const DocumentsPage = async () => {
   await validateRequestByRole(["candidate"]);
   return (
-    <main>
+    <main className="pt-10">
       <PageContainer>
         <DocumentTabs />
       </PageContainer>

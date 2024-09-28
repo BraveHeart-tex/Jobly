@@ -38,11 +38,11 @@ export const useJobsListPageSearchParams = () => {
   );
 
   const clearAllFilters = () => {
-    setBookmarked("false");
-    setViewed("false");
+    setBookmarked(null);
+    setViewed(null);
     setWorkType(null);
     setEmploymentType(null);
-    setView("list");
+    setQuery(null);
   };
 
   return {
