@@ -44,6 +44,7 @@ const jobTrackerApplications = mysqlTable(
   (table) => {
     return {
       userId: index("userId").on(table.userId),
+      status: index("status").on(table.status),
     };
   },
 );

@@ -23,7 +23,6 @@ const companies = mysqlTable(
     }).notNull(),
     companySize: varchar("companySize", { length: 50 }).notNull(),
     logo: varchar("logo", { length: 2048 }),
-    coverImage: varchar("coverImage", { length: 2048 }),
     description: varchar("description", { length: 1024 }),
     areasOfExpertise: varchar("areasOfExpertise", { length: 256 }),
     verifiedAt: customTimestamp("verifiedAt"),

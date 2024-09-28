@@ -4,6 +4,7 @@ import {
   userSkills,
   workExperiences,
 } from "@/server/db/schema";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -31,6 +32,13 @@ const users = mysqlTable(
     lastName: varchar("lastName", { length: 255 }).notNull(),
     hashedPassword: varchar("hashedPassword", { length: 255 }).notNull(),
     role: mysqlEnum("role", ["employer", "candidate"]).notNull(),
+    createdAt: customTimestamp("createdAt").$defaultFn(() =>
+      getCurrentTimestamp(),
+    ),
+    updatedAt: customTimestamp("updatedAt")
+      .$defaultFn(() => getCurrentTimestamp())
+      .notNull()
+      .$onUpdate(() => getCurrentTimestamp()),
   },
   (table) => {
     return {

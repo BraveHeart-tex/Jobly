@@ -4,19 +4,37 @@ import {
   type InferSelectModel,
   relations,
 } from "drizzle-orm";
-import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core";
+import {
+  index,
+  int,
+  mysqlTable,
+  primaryKey,
+  varchar,
+} from "drizzle-orm/mysql-core";
 
-const userBios = mysqlTable("UserBios", {
-  id: int("id").primaryKey().autoincrement().notNull(),
-  userId: int("userId")
-    .references(() => users.id, {
-      onDelete: "cascade",
-    })
-    .notNull(),
-  bio: varchar("bio", {
-    length: 2600,
-  }).notNull(),
-});
+const userBios = mysqlTable(
+  "UserBios",
+  {
+    id: int("id").primaryKey().autoincrement().notNull(),
+    userId: int("userId")
+      .references(() => users.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    bio: varchar("bio", {
+      length: 2600,
+    }).notNull(),
+  },
+  (table) => {
+    return {
+      UserBio_id: primaryKey({
+        columns: [table.id],
+        name: "UserBio_id",
+      }),
+      userId: index("userId").on(table.userId),
+    };
+  },
+);
 
 export const userBiosRelations = relations(userBios, ({ one }) => ({
   user: one(users, {
