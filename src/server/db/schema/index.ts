@@ -48,3 +48,7 @@ export {
   default as userBios,
   userBiosRelations,
 } from "./userBios";
+export {
+  default as userHighlightedSkills,
+  userHighlightedSkillsRelations,
+} from "./userHighlightedSkills";

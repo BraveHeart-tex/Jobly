@@ -7,5 +7,7 @@ export const userProfileService = {
   ): Promise<UserProfileFormSchema | null> => {
     return userProfileRepository.getUserProfileInformation(userId);
   },
-  getAboutInformation: (userId: number) => {},
+  getAboutInformation: (userId: number) => {
+    return userProfileRepository.getAboutInformation(userId);
+  },
 };

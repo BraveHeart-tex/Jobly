@@ -21,6 +21,8 @@ export const userProfileRouter = createTRPCRouter({
     .input(optionalUserIdSchema)
     .query(async ({ ctx, input }) => {
       const userId = input?.userId || ctx.user.id;
+
+      return userProfileService.getAboutInformation(userId);
     }),
   getWorkExperiences: protectedProcedure
     .input(optionalUserIdSchema)
