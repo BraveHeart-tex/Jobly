@@ -15,7 +15,7 @@ import { useState } from "react";
 import type React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { GripIcon, InfoIcon, XIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
 import CreatableMultiSelect, {
   type OptionType,
 } from "@/components/common/CreatableMultiSelect";
@@ -23,6 +23,8 @@ import { useLoadSkillOptions } from "@/features/employer/jobPosting/hooks/useLoa
 import { useCreateSkill } from "@/features/employer/jobPosting/hooks/useCreateSkill";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
 import type { MultiValue } from "react-select";
+import HighlightedSkillsDndContext from "../HighlightedSkillsDndContext";
+import HighlightedSkillItem from "../HighlightedSkillItem";
 
 const MAX_HIGHLIGHTED_SKILLS_COUNT = 5 as const;
 
@@ -131,35 +133,23 @@ const AboutSectionDialog = () => {
             <div className="mt-2">
               {highlightedSkills.length > 0 ? (
                 <div className="flex flex-col gap-2">
-                  {highlightedSkills.map((skill) => (
-                    <div key={skill.id} className="w-full">
-                      <div className="flex items-center gap-2 w-full">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            setHighlightedSkills((prev) =>
-                              prev.filter((item) => item.id !== skill.id),
-                            )
-                          }
-                        >
-                          <XIcon />
-                        </Button>
-                        <p className="text-base font-semibold">{skill.name}</p>
-                        {highlightedSkills.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="ml-auto"
-                          >
-                            <GripIcon />
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                  <HighlightedSkillsDndContext
+                    highlightedSkills={highlightedSkills}
+                    setHighlightedSkills={setHighlightedSkills}
+                  >
+                    {highlightedSkills.map((skill) => (
+                      <HighlightedSkillItem
+                        key={skill.id}
+                        skill={skill}
+                        onRemoveClick={(id) =>
+                          setHighlightedSkills((prev) =>
+                            prev.filter((item) => item.id !== id),
+                          )
+                        }
+                        shouldShowGripIcon={highlightedSkills.length > 1}
+                      />
+                    ))}
+                  </HighlightedSkillsDndContext>
                 </div>
               ) : null}
 
@@ -170,6 +160,7 @@ const AboutSectionDialog = () => {
                       label: item.name,
                       value: item.id,
                     }))}
+                    controlShouldRenderValue={false}
                     loadOptions={fetchSkills}
                     onCreateOption={handleCreateSkill}
                     onChange={handleSkillChange}

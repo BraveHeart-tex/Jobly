@@ -23,6 +23,7 @@ interface CreatableSelectProps {
   onInputChange?: (inputValue: string) => void;
   isLoading?: boolean;
   loadOptions?: (inputValue: string) => Promise<OptionType[]>;
+  controlShouldRenderValue?: boolean;
 }
 
 const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
@@ -35,6 +36,7 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
       onInputChange,
       isLoading,
       loadOptions,
+      controlShouldRenderValue = true,
     }: CreatableSelectProps,
     ref,
   ) => {
@@ -63,6 +65,7 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
           onChange={handleValueChange}
           defaultOptions
           cacheOptions
+          controlShouldRenderValue={controlShouldRenderValue}
           loadOptions={loadOptions}
           isLoading={isLoading}
           onCreateOption={onCreateOption}
