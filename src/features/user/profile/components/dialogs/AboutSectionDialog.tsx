@@ -1,3 +1,4 @@
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,9 @@ import { useProfilePageSearchParams } from "@/features/user/profile/hooks/usePro
 
 const AboutSectionDialog = () => {
   const { closeModal } = useProfilePageSearchParams();
+
+  // You can talk about your length of experience, your industry and your skills. Other people also mention their achievements or previous work experience.
+
   return (
     <Dialog
       defaultOpen={true}
@@ -20,7 +24,7 @@ const AboutSectionDialog = () => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>About Section</DialogTitle>
+          <DialogTitle>Edit About Section</DialogTitle>
           <DialogDescription>
             Use the form below to edit your about section content.
           </DialogDescription>

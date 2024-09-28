@@ -10,7 +10,7 @@ export const useProfilePageSearchParams = () => {
   };
 
   const closeModal = () => {
-    setModalQuery("");
+    setModalQuery(null);
   };
 
   return {

@@ -39,10 +39,6 @@ export {
   default as educationalBackgrounds,
   educationalBackgroundsRelations,
 } from "./educationalBackgrounds";
-export {
-  default as personalDetails,
-  personalDetailsRelations,
-} from "./personalDetails";
 export { default as userSkills, userSkillsRelations } from "./userSkills";
 export {
   default as workExperiences,

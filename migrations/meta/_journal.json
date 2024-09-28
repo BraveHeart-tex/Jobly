@@ -239,6 +239,13 @@
       "when": 1726951497906,
       "tag": "0033_white_glorian",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1727504511391,
+      "tag": "0034_regular_mentallo",
+      "breakpoints": true
     }
   ]
 }

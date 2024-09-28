@@ -1,6 +1,5 @@
 import {
   educationalBackgrounds,
-  personalDetails,
   userSkills,
   workExperiences,
 } from "@/server/db/schema";
@@ -41,10 +40,6 @@ const users = mysqlTable(
 );
 
 export const userRelations = relations(users, ({ one, many }) => ({
-  personalDetail: one(personalDetails, {
-    fields: [users.id],
-    references: [personalDetails.userId],
-  }),
   workExperiences: many(workExperiences),
   educationalBackgrounds: many(educationalBackgrounds),
   userSkills: many(userSkills),
