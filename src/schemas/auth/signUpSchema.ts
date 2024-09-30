@@ -1,12 +1,25 @@
 import { users } from "@/server/db/schema";
-import { z } from "zod";
+import * as v from "valibot";
+import { EmailSchema, PasswordSchema } from "../utils";
 
-export const signUpSchema = z.object({
-  firstName: z.string().min(1).default(""),
-  lastName: z.string().min(1).default(""),
-  email: z.string().email("Please enter a valid email address").default(""),
-  password: z.string().min(8).max(256).default(""),
-  role: z.enum(users.role.enumValues).default("candidate"),
+export const SignUpSchema = v.object({
+  firstName: v.pipe(
+    v.string("Please enter your first name"),
+    v.minLength(1, "First name is required"),
+  ),
+  lastName: v.pipe(
+    v.string("Please enter your last name"),
+    v.minLength(1, "Last name is required"),
+  ),
+  email: EmailSchema,
+  password: PasswordSchema,
+  role: v.optional(
+    v.pipe(
+      v.picklist(users.role.enumValues, "Please select a role"),
+      v.nonEmpty("Role is required"),
+    ),
+    "candidate",
+  ),
 });
 
-export type SignUpSchema = z.infer<typeof signUpSchema>;
+export type SignUpData = v.InferInput<typeof SignUpSchema>;

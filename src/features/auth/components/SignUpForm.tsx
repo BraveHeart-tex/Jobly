@@ -10,14 +10,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import type { RouterOutputs } from "@/lib/types";
-import { type SignUpSchema, signUpSchema } from "@/schemas/auth/signUpSchema";
+import { type SignUpData, SignUpSchema } from "@/schemas/auth/signUpSchema";
+import { valibotResolver } from "@hookform/resolvers/valibot";
 import type { DBUser } from "@/server/db/schema/users";
-import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useSignUp } from "../hooks/useSignUp";
 
 interface SignUpFormProps {
   portalType?: DBUser["role"];
@@ -25,34 +26,16 @@ interface SignUpFormProps {
 
 const SignUpForm = ({ portalType }: SignUpFormProps) => {
   const router = useRouter();
-  const { isPending, mutate: signUpUser } = api.auth.signUp.useMutation();
-  const form = useExtendedForm<SignUpSchema>(signUpSchema);
+  const { isSignUpPending, signUp } = useSignUp();
+  const form = useForm<SignUpData>({
+    resolver: valibotResolver(SignUpSchema),
+  });
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
-
-  const handlePasswordError = (error: string, message: string) => {
-    toast.error(error);
-    form.setError("password", { message }, { shouldFocus: true });
-  };
 
   const onSettled = (data: RouterOutputs["auth"]["signUp"]) => {
     if (!data) return;
 
-    const { error, isPasswordPwned, isWeakPassword, success, message } = data;
-
-    if (error) {
-      if (isPasswordPwned) {
-        handlePasswordError(
-          error,
-          "This password was detected in data breaches. Please use a different password.",
-        );
-        return;
-      }
-
-      if (isWeakPassword) {
-        handlePasswordError(error, error);
-        return;
-      }
-    }
+    const { success, message } = data;
 
     if (success) {
       toast.success(message);
@@ -60,10 +43,10 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
     }
   };
 
-  const onSubmit = (values: SignUpSchema) => {
-    if (isPending) return;
+  const onSubmit = (values: SignUpData) => {
+    if (isSignUpPending) return;
 
-    signUpUser(
+    signUp(
       {
         ...values,
         role: portalType ?? "candidate",
@@ -156,7 +139,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
           )}
         />
         <div className="grid grid-cols-1 gap-4">
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full" disabled={isSignUpPending}>
             Sign Up
           </Button>
           {portalType === "candidate" && (
@@ -164,7 +147,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
               type="button"
               variant="outline"
               className="w-full"
-              disabled={isPending}
+              disabled={isSignUpPending}
             >
               Sign Up with Google
             </Button>

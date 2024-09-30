@@ -58,6 +58,7 @@
     "cmdk",
     "datetime",
     "DTOs",
+    "hookform",
     "Inno",
     "ilike",
     "Jiti",
@@ -68,6 +69,7 @@
     "nums",
     "nuqs",
     "pdfs",
+    "picklist",
     "Pilcrow",
     "runtimes",
     "sonner",
@@ -79,6 +81,7 @@
     "TRPC",
     "Unsave",
     "UPLOADTHING",
+    "valibot",
     "zustand",
     "zxcvbn"
   ]

@@ -10,43 +10,48 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { SHARED_ROUTES } from "@/lib/routes";
-import type { RouterOutputs } from "@/lib/types";
-import { type SignInSchema, signInSchema } from "@/schemas/auth/signInSchema";
+import {
+  type LoginData,
+  LoginSchema,
+  type LoginResponse,
+} from "@/schemas/auth/loginSchema";
 import type { DBUser } from "@/server/db/schema/users";
-import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useLogin } from "../hooks/useLogin";
+import { useForm } from "react-hook-form";
+import { valibotResolver } from "@hookform/resolvers/valibot";
 
-interface SignInFormProps {
+interface LoginFormProps {
   portalType?: DBUser["role"];
 }
 
-const SignInForm = ({ portalType }: SignInFormProps) => {
-  const form = useExtendedForm<SignInSchema>(signInSchema);
+const LoginForm = ({ portalType }: LoginFormProps) => {
+  const form = useForm<LoginData>({
+    resolver: valibotResolver(LoginSchema),
+  });
   const router = useRouter();
-  const { isPending, mutate: signIn } = api.auth.signIn.useMutation();
+  const { isLoggingIn, login } = useLogin();
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
 
-  const onSettled = (data: RouterOutputs["auth"]["signIn"]) => {
-    const { error, success } = data;
-    if (error) {
-      toast.error(error);
+  const onSettled = (data: LoginResponse) => {
+    if ("error" in data) {
+      toast.error(data?.error);
       return;
     }
 
-    if (success) {
+    if ("success" in data) {
       toast.success("You have successfully signed in");
       router.push(SHARED_ROUTES.HOME);
       router.refresh();
     }
   };
 
-  const onSubmit = (values: SignInSchema) => {
-    if (isPending) return;
-    signIn(values, {
+  const onSubmit = (values: LoginData) => {
+    if (isLoggingIn) return;
+    login(values, {
       onSettled: (data) => {
         if (!data) return;
         onSettled(data);
@@ -105,7 +110,7 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
           )}
         />
         <div className="grid grid-cols-1 gap-4">
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full" disabled={isLoggingIn}>
             Sign In
           </Button>
           {portalType === "candidate" && (
@@ -113,7 +118,7 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
               type="button"
               variant="outline"
               className="w-full"
-              disabled={isPending}
+              disabled={isLoggingIn}
             >
               Sign In with Google
             </Button>
@@ -124,4 +129,4 @@ const SignInForm = ({ portalType }: SignInFormProps) => {
   );
 };
 
-export default SignInForm;
+export default LoginForm;
