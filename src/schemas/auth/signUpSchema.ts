@@ -1,6 +1,6 @@
 import { users } from "@/server/db/schema";
 import * as v from "valibot";
-import { EmailSchema, PasswordSchema } from "../utils";
+import { EmailSchema, PasswordSchema } from "../schemaUtils";
 
 export const SignUpSchema = v.object({
   firstName: v.pipe(

@@ -1,25 +1,31 @@
-import * as v from "valibot";
-import { EmailSchema, PasswordSchema } from "../utils";
+import {
+  type InferInput,
+  type InferOutput,
+  boolean,
+  object,
+  string,
+  union,
+} from "valibot";
+import { EmailSchema, PasswordSchema } from "../schemaUtils";
 
-export const LoginSchema = v.object({
+export const LoginSchema = object({
   email: EmailSchema,
   password: PasswordSchema,
 });
 
-const LoginSuccessSchema = v.object({
-  success: v.boolean(),
-  message: v.string(),
+const LoginSuccessSchema = object({
+  success: boolean(),
+  message: string(),
 });
 
-const LoginErrorSchema = v.object({
-  error: v.string(),
+const LoginErrorSchema = object({
+  error: string(),
 });
 
-export const LoginResponseSchema = v.union([
+export const LoginResponseSchema = union([
   LoginSuccessSchema,
   LoginErrorSchema,
 ]);
 
-export type LoginResponse = v.InferOutput<typeof LoginResponseSchema>;
-
-export type LoginData = v.InferInput<typeof LoginSchema>;
+export type LoginResponse = InferOutput<typeof LoginResponseSchema>;
+export type LoginData = InferInput<typeof LoginSchema>;
