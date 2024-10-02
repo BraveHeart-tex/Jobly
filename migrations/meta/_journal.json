@@ -274,6 +274,13 @@
       "when": 1727507183527,
       "tag": "0038_robust_king_bedlam",
       "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "5",
+      "when": 1727889525605,
+      "tag": "0039_omniscient_khan",
+      "breakpoints": true
     }
   ]
 }

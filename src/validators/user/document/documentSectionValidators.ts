@@ -12,6 +12,7 @@ import {
   pipe,
   required,
   string,
+  nullable,
 } from "valibot";
 
 export const DocumentSectionValidator = object({
@@ -39,8 +40,8 @@ export const DocumentSectionValidator = object({
     nonEmpty("Default name is required"),
     maxLength(100, "Default name cannot exceed 100 characters"),
   ),
-  itemCountPerContainer: optional(number()),
-  metadata: optional(string()),
+  itemCountPerContainer: optional(nullable(number())),
+  metadata: optional(nullable(string())),
 });
 
 export const DocumentSectionInsertValidator = partial(

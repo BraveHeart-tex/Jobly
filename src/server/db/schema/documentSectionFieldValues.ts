@@ -19,7 +19,7 @@ const documentSectionFieldValues = mysqlTable(
     fieldId: int("fieldId")
       .references(() => documentSectionFields.id, { onDelete: "cascade" })
       .notNull(),
-    value: text("value"),
+    value: text("value").notNull(),
   },
   (table) => {
     return {
