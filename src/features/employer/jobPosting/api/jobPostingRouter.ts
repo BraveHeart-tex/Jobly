@@ -1,8 +1,8 @@
 import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
-import { updateJobPostingSchema } from "@/schemas/employer/updateJobPostingSchema";
-import employerJobPostingFormSchema from "@/schemas/jobPostingFormSchema";
+import { updateJobPostingSchema } from "@/validators/employer/updateJobPostingSchema";
+import employerJobPostingFormSchema from "@/validators/jobPostingFormSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
 import { TRPCError } from "@trpc/server";

@@ -17,10 +17,13 @@ import {
   SlidersHorizontalIcon,
 } from "lucide-react";
 
-type OtherSectionOption = Omit<
-  DocumentSectionInsertModel,
-  "documentId" | "displayOrder" | "defaultName"
-> & { icon: LucideIcon };
+interface OtherSectionOption
+  extends Omit<
+    DocumentSectionInsertModel,
+    "documentId" | "displayOrder" | "defaultName"
+  > {
+  icon: LucideIcon;
+}
 
 const OTHER_SECTION_OPTIONS: OtherSectionOption[] = [
   {
@@ -110,9 +113,11 @@ const CvBuilderCustomSectionOptions = () => {
       fieldsContainerType,
       itemCountPerContainer,
     } = option;
+
     const finalDisplayOrder =
       Math.max(...sections.map((section) => section.displayOrder)) + 1;
-    const insertDto: DocumentSectionInsertModel = {
+
+    addSectionByInternalTag({
       documentId,
       name,
       internalSectionTag,
@@ -120,9 +125,7 @@ const CvBuilderCustomSectionOptions = () => {
       displayOrder: finalDisplayOrder,
       itemCountPerContainer,
       defaultName: name,
-    };
-
-    addSectionByInternalTag(insertDto);
+    });
   };
 
   return (

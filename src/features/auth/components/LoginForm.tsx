@@ -11,11 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SHARED_ROUTES } from "@/lib/routes";
-import {
-  type LoginData,
-  LoginSchema,
-  type LoginResponse,
-} from "@/schemas/auth/loginSchema";
+
 import type { DBUser } from "@/server/db/schema/users";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
@@ -23,6 +19,11 @@ import { toast } from "sonner";
 import { useLogin } from "../hooks/useLogin";
 import { useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import {
+  type LoginData,
+  type LoginResponse,
+  LoginValidator,
+} from "@/validators/auth/loginValidator";
 
 interface LoginFormProps {
   portalType?: DBUser["role"];
@@ -30,7 +31,7 @@ interface LoginFormProps {
 
 const LoginForm = ({ portalType }: LoginFormProps) => {
   const form = useForm<LoginData>({
-    resolver: valibotResolver(LoginSchema),
+    resolver: valibotResolver(LoginValidator),
   });
   const router = useRouter();
   const { isLoggingIn, login } = useLogin();

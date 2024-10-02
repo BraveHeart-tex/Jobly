@@ -1,5 +1,5 @@
 import type { MakeFieldsRequired } from "@/lib/types";
-import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
+import type { GetJobListingsSchema } from "@/validators/getJobListingsSchema";
 import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 import type { User } from "lucia";
 import { jobRepository } from "../repositories/jobRepository";

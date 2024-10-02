@@ -20,7 +20,7 @@ const DebouncedDocumentSaver = () => {
 
   useEffect(() => {
     if (userLostConnection) {
-      // will write and read from local storage
+      // TODO: will write and read from local storage
       useDocumentBuilderStore.setState({
         saveDocumentDetailsFn: () => {},
       });
@@ -31,6 +31,7 @@ const DebouncedDocumentSaver = () => {
       saveDocumentAndRelatedEntities,
       SAVE_DOCUMENT_DEBOUNCE_DURATION,
     );
+
     useDocumentBuilderStore.setState({
       saveDocumentDetailsFn: debouncedSaveDocumentDetails,
     });

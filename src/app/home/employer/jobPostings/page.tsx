@@ -6,9 +6,9 @@ import { validateRequestByRole } from "@/features/auth/utils";
 import EmployerJobPostingListItem from "@/features/employer/jobPosting/components/EmployerJobPostingListItem";
 import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { parseEnumValue } from "@/schemas/utils";
 import { jobPostings } from "@/server/db/schema";
 import { api } from "@/trpc/server";
+import { parseEnumValue } from "@/validators/schemaUtils";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 

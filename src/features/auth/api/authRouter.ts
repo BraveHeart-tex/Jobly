@@ -1,6 +1,4 @@
 import { userService } from "@/features/user/services/userService";
-import { LoginResponseSchema, LoginSchema } from "@/schemas/auth/loginSchema";
-import { SignUpSchema } from "@/schemas/auth/signUpSchema";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
@@ -9,10 +7,15 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utils";
+import { SignUpValidator } from "@/validators/auth/signUpValidator";
+import {
+  LoginResponseValidator,
+  LoginValidator,
+} from "@/validators/auth/loginValidator";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
-    .input(parser(SignUpSchema))
+    .input(parser(SignUpValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({
@@ -59,8 +62,8 @@ export const authRouter = createTRPCRouter({
       };
     }),
   login: publicProcedure
-    .input(parser(LoginSchema))
-    .output(parser(LoginResponseSchema))
+    .input(parser(LoginValidator))
+    .output(parser(LoginResponseValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({

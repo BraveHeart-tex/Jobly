@@ -1,4 +1,4 @@
-import type { UserProfileFormSchema } from "@/schemas/user/profile/userProfileFormSchema";
+import type { UserProfileFormSchema } from "@/validators/user/profile/userProfileFormSchema";
 import { db } from "@/server/db";
 import {
   educationalBackgrounds,

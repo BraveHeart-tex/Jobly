@@ -1,5 +1,5 @@
 import type { MakeFieldsRequired, Nullable } from "@/lib/types";
-import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
+import type { GetJobListingsSchema } from "@/validators/getJobListingsSchema";
 import { db } from "@/server/db";
 import {
   companies,

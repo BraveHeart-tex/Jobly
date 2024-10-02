@@ -1,4 +1,4 @@
-import type { EmployerJobPostingFormSchema } from "@/schemas/jobPostingFormSchema";
+import type { EmployerJobPostingFormSchema } from "@/validators/jobPostingFormSchema";
 import type {
   CompanyInsertModel,
   CompanySelectModel,

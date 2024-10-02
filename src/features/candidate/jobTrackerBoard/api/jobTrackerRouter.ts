@@ -1,4 +1,4 @@
-import { jobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
+import { jobTrackerApplicationSchema } from "@/validators/jobTrackerApplicationSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobTrackerApplications } from "@/server/db/schema";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";

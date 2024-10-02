@@ -3,6 +3,7 @@ import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSecti
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
+import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -12,15 +13,13 @@ type SetSectionValueParams<K extends keyof DocumentSection> = {
   value: DocumentSection[K];
 };
 
-type SaveDocumentDetailsParams = Partial<DocumentBuilderConfig>;
-
 type DocumentBuilderState = {
   initialized: boolean;
   document: DocumentSelectModel;
   sections: DocumentSection[];
   fields: DocumentSectionField[];
   fieldValues: DocumentSectionFieldValue[];
-  saveDocumentDetailsFn: (documentData: SaveDocumentDetailsParams) => unknown;
+  saveDocumentDetailsFn: (documentData: SaveDocumentDetailsData) => unknown;
   pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
 };
 
@@ -41,7 +40,7 @@ type DocumentBuilderActions = {
     fieldId: DocumentSectionField["id"],
     newValue: string,
   ) => void;
-  callSaveDocumentDetailsFn: (data: SaveDocumentDetailsParams) => void;
+  callSaveDocumentDetailsFn: (data: SaveDocumentDetailsData) => void;
   addSection: (section: DocumentSection) => void;
   addField: (field: DocumentSectionField) => void;
   addFieldValue: (fieldValue: DocumentSectionFieldValue) => void;

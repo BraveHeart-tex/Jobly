@@ -20,7 +20,6 @@ import {
 } from "@/features/candidate/documents/utils";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import type { MakeFieldsRequired, Transaction } from "@/lib/types";
-import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { db } from "@/server/db";
 import {
   documentSectionFields as fieldSchema,
@@ -40,6 +39,7 @@ import type {
   DocumentInsertModel,
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
+import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
 import type { User } from "lucia";
 
@@ -199,7 +199,7 @@ export const getDocumentDetails = async ({
 };
 
 export const saveDocumentAndRelatedEntities = async (
-  input: Partial<SaveDocumentDetailsSchema> & { userId: User["id"] },
+  input: SaveDocumentDetailsData & { userId: User["id"] },
 ) => {
   const { document, sections, fields, fieldValues } = input;
   await db.transaction(async (trx) => {

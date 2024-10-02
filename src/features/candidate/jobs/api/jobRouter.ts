@@ -1,4 +1,4 @@
-import { getJobListingsSchema } from "@/schemas/getJobListingsSchema";
+import { getJobListingsSchema } from "@/validators/getJobListingsSchema";
 import { jobSchema } from "@/schemas/jobSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";

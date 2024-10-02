@@ -1,6 +1,6 @@
 import { companyService } from "@/features/employer/company/services/companyService";
 import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
-import { companyProfileSetupSchema } from "@/schemas/companyProfileSetupSchema";
+import { companyProfileSetupSchema } from "@/validators/companyProfileSetupSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 

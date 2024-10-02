@@ -31,10 +31,10 @@ import {
   capitalizeString,
   generateReadableEnumLabel,
 } from "@/lib/utils/stringUtils";
-import type { UpdateJobPostingSchema } from "@/schemas/employer/updateJobPostingSchema";
+import type { UpdateJobPostingSchema } from "@/validators/employer/updateJobPostingSchema";
 import employerJobPostingFormSchema, {
   type EmployerJobPostingFormSchema,
-} from "@/schemas/jobPostingFormSchema";
+} from "@/validators/jobPostingFormSchema";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";

@@ -1,5 +1,5 @@
 import type { MakeFieldsRequired, Transaction } from "@/lib/types";
-import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
+import type { SaveDocumentDetailsSchema } from "@/validators/saveDocumentDetailsSchema";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   documentSectionFieldValues,

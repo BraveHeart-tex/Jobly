@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import workExperienceSchema, {
   type WorkExperienceSchema,
-} from "@/schemas/user/profile/workExperienceSchema";
+} from "@/validators/user/profile/workExperienceSchema";
 import { DateTime } from "luxon";
 import { useState } from "react";
 

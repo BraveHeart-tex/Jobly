@@ -18,7 +18,7 @@ import { compareMatchingKeys } from "@/lib/utils/objectUtils";
 import {
   type JobTrackerApplicationSchema,
   jobTrackerApplicationSchema,
-} from "@/schemas/jobTrackerApplicationSchema";
+} from "@/validators/jobTrackerApplicationSchema";
 import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 import {

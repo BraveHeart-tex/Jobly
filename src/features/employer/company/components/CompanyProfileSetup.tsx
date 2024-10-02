@@ -26,7 +26,7 @@ import { isObjectEmpty } from "@/lib/utils/objectUtils";
 import {
   type CompanyProfileSetupSchema,
   companyProfileSetupSchema,
-} from "@/schemas/companyProfileSetupSchema";
+} from "@/validators/companyProfileSetupSchema";
 import { api } from "@/trpc/react";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";

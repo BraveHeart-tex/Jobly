@@ -134,6 +134,9 @@ importers:
       drizzle-orm:
         specifier: ^0.32.0
         version: 0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1)
+      drizzle-valibot:
+        specifier: ^0.2.0
+        version: 0.2.0(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(valibot@0.42.1(typescript@5.4.5))
       drizzle-zod:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(zod@3.23.8)
@@ -2777,6 +2780,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-valibot@0.2.0:
+    resolution: {integrity: sha512-+JTZZN52fFv20kGTXI1KGpysdCiedaTDpWQ6lqnxX2DD5U5tJfGPB2ROjHFjbLzK4XiH98MOhKZf174orBQAew==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      valibot: '>=0.20'
 
   drizzle-zod@0.5.1:
     resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
@@ -6668,6 +6677,11 @@ snapshots:
       '@types/react': 18.3.3
       mysql2: 3.10.0
       react: 18.3.1
+
+  drizzle-valibot@0.2.0(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(valibot@0.42.1(typescript@5.4.5)):
+    dependencies:
+      drizzle-orm: 0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1)
+      valibot: 0.42.1(typescript@5.4.5)
 
   drizzle-zod@0.5.1(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(zod@3.23.8):
     dependencies:
