@@ -1,5 +1,4 @@
-import type { MakeFieldsRequired, Transaction } from "@/lib/types";
-import type { SaveDocumentDetailsSchema } from "@/validators/saveDocumentDetailsSchema";
+import type { Transaction } from "@/lib/types";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   documentSectionFieldValues,
@@ -9,12 +8,14 @@ import {
 } from "@/server/db/schema";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
+import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
+import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const upsertDocument = async (
   trx: Transaction,
-  documentValues: SaveDocumentDetailsSchema["document"],
+  documentValues: SaveDocumentDetailsData["document"],
 ) => {
   return trx
     .insert(documents)
@@ -27,7 +28,7 @@ export const upsertDocument = async (
 
 export const upsertSections = (
   trx: Transaction,
-  sectionValues: SaveDocumentDetailsSchema["sections"],
+  sectionValues: SaveDocumentDetailsData["sections"],
 ) => {
   return trx
     .insert(documentSections)
@@ -39,7 +40,7 @@ export const upsertSections = (
 
 export const upsertSectionFields = (
   trx: Transaction,
-  fields: SaveDocumentDetailsSchema["fields"],
+  fields: SaveDocumentDetailsData["fields"],
 ) => {
   return trx
     .insert(documentSectionFields)
@@ -55,7 +56,7 @@ export const upsertSectionFields = (
 
 export const upsertSectionFieldValues = (
   trx: Transaction,
-  fieldValues: SaveDocumentDetailsSchema["fieldValues"],
+  fieldValues: SaveDocumentDetailsData["fieldValues"],
 ) => {
   return trx
     .insert(documentSectionFieldValues)
@@ -118,8 +119,6 @@ export const bulkDeleteFields = (fieldIds: DocumentSectionField["id"][]) => {
     .where(inArray(documentSectionFields.id, fieldIds));
 };
 
-export const updateDocumentById = (
-  input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
-) => {
+export const updateDocumentById = (input: DocumentUpdateData) => {
   return db.update(documents).set(input).where(eq(documents.id, input.id));
 };

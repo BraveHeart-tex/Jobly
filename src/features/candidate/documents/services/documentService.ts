@@ -19,7 +19,7 @@ import {
   normalizeDocumentStructure,
 } from "@/features/candidate/documents/utils";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
-import type { MakeFieldsRequired, Transaction } from "@/lib/types";
+import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import {
   documentSectionFields as fieldSchema,
@@ -39,6 +39,7 @@ import type {
   DocumentInsertModel,
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
+import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
 import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
 import type { User } from "lucia";
@@ -60,9 +61,7 @@ export const deleteDocument = async ({
   });
 };
 
-export const updateDocument = async (
-  input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
-) => {
+export const updateDocument = async (input: DocumentUpdateData) => {
   return updateDocumentById(input);
 };
 

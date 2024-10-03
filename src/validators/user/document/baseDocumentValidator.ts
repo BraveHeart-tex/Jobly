@@ -1,5 +1,6 @@
 import { documents } from "@/server/db/schema";
 import {
+  type InferInput,
   isoDateTime,
   maxLength,
   nonEmpty,
@@ -29,6 +30,12 @@ export const DocumentInsertValidator = partial(DocumentValidator, [
   "id",
   "createdAt",
   "updatedAt",
+  "userId",
 ]);
 
-export const DocumentUpdateValidator = required(DocumentValidator, ["id"]);
+export const DocumentUpdateValidator = required(DocumentValidator, [
+  "id",
+  "title",
+]);
+
+export type DocumentUpdateData = InferInput<typeof DocumentUpdateValidator>;

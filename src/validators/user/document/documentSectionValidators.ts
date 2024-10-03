@@ -40,7 +40,7 @@ export const DocumentSectionValidator = object({
     nonEmpty("Default name is required"),
     maxLength(100, "Default name cannot exceed 100 characters"),
   ),
-  itemCountPerContainer: optional(nullable(number())),
+  itemCountPerContainer: optional(number()),
   metadata: optional(nullable(string())),
 });
 

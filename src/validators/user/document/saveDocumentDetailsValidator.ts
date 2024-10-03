@@ -1,17 +1,15 @@
-import { type InferInput, array, object, partial } from "valibot";
-import { DocumentUpdateValidator } from "./baseDocumentValidator";
-import { DocumentSectionUpdateValidator } from "./documentSectionValidators";
-import { DocumentSectionFieldUpdateValidator } from "./sectionFieldValidators";
-import { documentSectionFieldUpdateValidator } from "./sectionFieldValueValidators";
+import { type InferInput, array, object } from "valibot";
+import { DocumentSectionInsertValidator } from "./documentSectionValidators";
+import { DocumentSectionFieldInsertValidator } from "./sectionFieldValidators";
+import { documentSectionFieldInsertValidator } from "./sectionFieldValueValidators";
+import { DocumentInsertValidator } from "./baseDocumentValidator";
 
-export const SaveDocumentDetailsValidator = partial(
-  object({
-    document: DocumentUpdateValidator,
-    sections: array(DocumentSectionUpdateValidator),
-    fields: array(DocumentSectionFieldUpdateValidator),
-    fieldValues: array(documentSectionFieldUpdateValidator),
-  }),
-);
+export const SaveDocumentDetailsValidator = object({
+  document: DocumentInsertValidator,
+  sections: array(DocumentSectionInsertValidator),
+  fields: array(DocumentSectionFieldInsertValidator),
+  fieldValues: array(documentSectionFieldInsertValidator),
+});
 
 export type SaveDocumentDetailsData = InferInput<
   typeof SaveDocumentDetailsValidator

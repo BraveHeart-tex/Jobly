@@ -19,7 +19,9 @@ type DocumentBuilderState = {
   sections: DocumentSection[];
   fields: DocumentSectionField[];
   fieldValues: DocumentSectionFieldValue[];
-  saveDocumentDetailsFn: (documentData: SaveDocumentDetailsData) => unknown;
+  saveDocumentDetailsFn: (
+    documentData: Partial<SaveDocumentDetailsData>,
+  ) => unknown;
   pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
 };
 
@@ -40,7 +42,7 @@ type DocumentBuilderActions = {
     fieldId: DocumentSectionField["id"],
     newValue: string,
   ) => void;
-  callSaveDocumentDetailsFn: (data: SaveDocumentDetailsData) => void;
+  callSaveDocumentDetailsFn: (data: Partial<SaveDocumentDetailsData>) => void;
   addSection: (section: DocumentSection) => void;
   addField: (field: DocumentSectionField) => void;
   addFieldValue: (fieldValue: DocumentSectionFieldValue) => void;

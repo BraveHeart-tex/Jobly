@@ -10,7 +10,6 @@ export const useCreateDocumentAndRelatedEntities = () => {
   const handleCreateDocument = async (documentType: DocumentType) => {
     return await createDocumentAndRelatedEntities({
       title: "Untitled",
-      language: "EN",
       type: documentType,
       allowedRoles: ["candidate"],
     });
