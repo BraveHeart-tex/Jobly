@@ -1,5 +1,14 @@
-import { z } from "zod";
-import { pipe, string, minLength, maxLength, nonEmpty, email } from "valibot";
+import {
+  pipe,
+  string,
+  minLength,
+  maxLength,
+  nonEmpty,
+  email,
+  picklist,
+  optional,
+  safeParse,
+} from "valibot";
 
 export const parseEnumValue = <T extends string>(
   enumValues: readonly T[],
@@ -8,10 +17,14 @@ export const parseEnumValue = <T extends string>(
 ): T => {
   if (!valueToValidate) return fallbackValue as T;
 
-  const schema = z.enum(enumValues as readonly [T, ...T[]]);
+  const validator = optional(
+    picklist(enumValues as readonly [T, ...T[]]),
+    fallbackValue,
+  );
 
-  const parseResult = schema.safeParse(valueToValidate);
-  return (parseResult.success ? parseResult.data : fallbackValue) as T;
+  const parseResult = safeParse(validator, valueToValidate);
+
+  return (parseResult.success ? parseResult.output : fallbackValue) as T;
 };
 
 export const EmailSchema = pipe(
