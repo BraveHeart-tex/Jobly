@@ -1,45 +1,64 @@
-import { ISO_8601_REGEX } from "@/lib/constants";
 import { jobPostings } from "@/server/db/schema";
-import { createInsertSchema } from "drizzle-zod";
 import { DateTime } from "luxon";
-import { z } from "zod";
+import {
+  type InferInput,
+  type InferOutput,
+  check,
+  isoDateTime,
+  maxLength,
+  minValue,
+  nonEmpty,
+  nullable,
+  number,
+  object,
+  optional,
+  picklist,
+  pipe,
+  string,
+} from "valibot";
 
 const oneWeekFromNow = DateTime.now().plus({ days: 7 }).toISO();
 const POST_EXPIRY_THRESHOLD_DAYS = 60 as const;
 
-export const jobPostingSchema = createInsertSchema(jobPostings, {
-  id: z.number().optional(),
-  companyId: z.number().min(1),
-  title: z.string().min(1).default(""),
-  location: z.string().min(1).default(""),
-  workType: z.enum(jobPostings.workType.enumValues).default("office"),
-  salaryRange: z
-    .string()
-    .default("")
-    .nullable()
-    .transform((val) => (!val ? null : val)),
-  postingContent: z.string().min(1).default(""),
-  employmentType: z
-    .enum(jobPostings.employmentType.enumValues)
-    .default("full-time"),
-  status: z.enum(jobPostings.status.enumValues).default("draft"),
-  postedAt: z.string().optional(),
-  expiresAt: z
-    .string()
-    .regex(ISO_8601_REGEX)
-    .refine(
-      (val) => {
-        const expiresAt = DateTime.fromISO(val);
-        const now = DateTime.now();
-        const diff = expiresAt.diff(now, "days").days;
-        return diff > 0 && diff <= POST_EXPIRY_THRESHOLD_DAYS;
-      },
-      {
-        message: `Job posting expiry date can't exceed ${POST_EXPIRY_THRESHOLD_DAYS} days.`,
-      },
-    )
-    .default(oneWeekFromNow),
-  updatedAt: z.string().optional(),
-});
+// TODO: check iso date time values
+export const JobPostingValidator = pipe(
+  object({
+    id: optional(number()),
+    companyId: pipe(
+      number(),
+      minValue(1, "Company id must be greater than or equal to 1"),
+    ),
+    title: pipe(
+      string(),
+      nonEmpty("Title is required"),
+      maxLength(512, "Title cannot exceed 512 characters"),
+    ),
+    location: pipe(
+      string(),
+      nonEmpty("Location is required"),
+      maxLength(512, "Location cannot exceed 512 characters"),
+    ),
+    workType: optional(picklist(jobPostings.workType.enumValues), "office"),
+    salaryRange: nullable(
+      pipe(string(), maxLength(50, "Salary range cannot exceed 50 characters")),
+    ),
+    postingContent: pipe(string(), nonEmpty("Posting content is required")),
+    employmentType: optional(
+      picklist(jobPostings.employmentType.enumValues),
+      "full-time",
+    ),
+    status: optional(picklist(jobPostings.status.enumValues), "draft"),
+    postedAt: optional(pipe(string(), isoDateTime())),
+    expiresAt: optional(pipe(string(), isoDateTime()), oneWeekFromNow),
+    updatedAt: optional(pipe(string(), isoDateTime())),
+  }),
+  check((input) => {
+    const expiresAt = DateTime.fromISO(input.expiresAt);
+    const now = DateTime.now();
+    const diff = expiresAt.diff(now, "days").days;
+    return diff > 0 && diff <= POST_EXPIRY_THRESHOLD_DAYS;
+  }, `Job posting expiry date can't exceed ${POST_EXPIRY_THRESHOLD_DAYS} days.`),
+);
 
-export type JobPostingSchema = z.infer<typeof jobPostingSchema>;
+export type JobPostingInput = InferInput<typeof JobPostingValidator>;
+export type JobPostingOutput = InferOutput<typeof JobPostingValidator>;

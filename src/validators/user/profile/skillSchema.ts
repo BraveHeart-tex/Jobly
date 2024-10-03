@@ -1,8 +1,10 @@
-import { skills } from "@/server/db/schema";
-import { createSelectSchema } from "drizzle-zod";
-import type { z } from "zod";
+import { maxLength, nonEmpty, number, object, pipe, string } from "valibot";
 
-const skillSchema = createSelectSchema(skills);
-
-export type SkillSchema = z.infer<typeof skillSchema>;
-export default skillSchema;
+export const SkillValidator = object({
+  id: number(),
+  name: pipe(
+    string(),
+    nonEmpty("Skill name is required"),
+    maxLength(256, "Skill name cannot exceed 256 characters"),
+  ),
+});

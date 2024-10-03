@@ -1,16 +1,15 @@
-import { skills } from "@/server/db/schema";
-import { createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
-import { jobPostingSchema } from "./jobPostingSchema";
+import { JobPostingValidator } from "./jobPostingSchema";
+import { type InferInput, type InferOutput, array, object } from "valibot";
+import { SkillValidator } from "./user/profile/skillSchema";
 
-const employerJobPostingFormSchema = jobPostingSchema
-  .omit({ companyId: true, createdUserId: true })
-  .extend({
-    skills: z.array(createSelectSchema(skills)).default([]),
-  });
+export const EmployerJobPostingFormValidator = object({
+  ...JobPostingValidator.entries,
+  skills: array(SkillValidator),
+});
 
-export type EmployerJobPostingFormSchema = z.infer<
-  typeof employerJobPostingFormSchema
+export type EmployerJobPostingFormInput = InferInput<
+  typeof EmployerJobPostingFormValidator
 >;
-
-export default employerJobPostingFormSchema;
+export type EmployerJobPostingFormOutput = InferOutput<
+  typeof EmployerJobPostingFormValidator
+>;
