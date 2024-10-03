@@ -6,16 +6,23 @@ import {
   documentSections,
   documents,
 } from "@/server/db/schema";
-import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSelectModel } from "@/server/db/schema/documents";
+import type { DocumentSectionFieldValueInsertModel } from "@/server/db/schema/documentSectionFieldValues";
+import type {
+  DocumentSectionField,
+  DocumentSectionFieldInsertModel,
+} from "@/server/db/schema/documentSectionFields";
+import type { DocumentSectionInsertModel } from "@/server/db/schema/documentSections";
+import type {
+  DocumentInsertModel,
+  DocumentSelectModel,
+} from "@/server/db/schema/documents";
 import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
-import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { User } from "lucia";
 
 export const upsertDocument = async (
   trx: Transaction,
-  documentValues: SaveDocumentDetailsData["document"],
+  documentValues: DocumentInsertModel,
 ) => {
   return trx
     .insert(documents)
@@ -28,7 +35,7 @@ export const upsertDocument = async (
 
 export const upsertSections = (
   trx: Transaction,
-  sectionValues: SaveDocumentDetailsData["sections"],
+  sectionValues: DocumentSectionInsertModel[],
 ) => {
   return trx
     .insert(documentSections)
@@ -40,7 +47,7 @@ export const upsertSections = (
 
 export const upsertSectionFields = (
   trx: Transaction,
-  fields: SaveDocumentDetailsData["fields"],
+  fields: DocumentSectionFieldInsertModel[],
 ) => {
   return trx
     .insert(documentSectionFields)
@@ -56,7 +63,7 @@ export const upsertSectionFields = (
 
 export const upsertSectionFieldValues = (
   trx: Transaction,
-  fieldValues: SaveDocumentDetailsData["fieldValues"],
+  fieldValues: DocumentSectionFieldValueInsertModel[],
 ) => {
   return trx
     .insert(documentSectionFieldValues)

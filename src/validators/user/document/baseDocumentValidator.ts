@@ -9,7 +9,6 @@ import {
   partial,
   picklist,
   pipe,
-  required,
   string,
 } from "valibot";
 
@@ -30,12 +29,13 @@ export const DocumentInsertValidator = partial(DocumentValidator, [
   "id",
   "createdAt",
   "updatedAt",
-  "userId",
 ]);
 
-export const DocumentUpdateValidator = required(DocumentValidator, [
-  "id",
-  "title",
+export const DocumentUpdateValidator = partial(DocumentValidator, [
+  "userId",
+  "createdAt",
+  "updatedAt",
+  "type",
 ]);
 
 export type DocumentUpdateData = InferInput<typeof DocumentUpdateValidator>;

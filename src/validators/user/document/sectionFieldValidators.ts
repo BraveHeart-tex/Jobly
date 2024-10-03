@@ -1,4 +1,5 @@
 import {
+  type InferInput,
   maxLength,
   minValue,
   nonEmpty,
@@ -33,6 +34,10 @@ export const DocumentSectionFieldInsertValidator = partial(
   DocumentSectionFieldValidator,
   ["id"],
 );
+
+export type DocumentSectionFieldInsertData = InferInput<
+  typeof DocumentSectionFieldInsertValidator
+>;
 
 export const DocumentSectionFieldUpdateValidator = required(
   DocumentSectionFieldValidator,

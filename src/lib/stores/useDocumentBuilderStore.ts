@@ -7,13 +7,13 @@ import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDoc
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-type SetSectionValueParams<K extends keyof DocumentSection> = {
+interface SetSectionValueParams<K extends keyof DocumentSection> {
   sectionId: DocumentSection["id"];
   key: K;
   value: DocumentSection[K];
-};
+}
 
-type DocumentBuilderState = {
+interface DocumentBuilderState {
   initialized: boolean;
   document: DocumentSelectModel;
   sections: DocumentSection[];
@@ -22,10 +22,11 @@ type DocumentBuilderState = {
   saveDocumentDetailsFn: (
     documentData: Partial<SaveDocumentDetailsData>,
   ) => unknown;
-  pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
-};
 
-type DocumentBuilderActions = {
+  pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
+}
+
+interface DocumentBuilderActions {
   initializeState: (initialState: DocumentBuilderConfig) => void;
   setDocumentObject: (document: DocumentSelectModel) => void;
   setDocumentValue: <K extends keyof DocumentSelectModel>(
@@ -51,7 +52,7 @@ type DocumentBuilderActions = {
   callPdfUpdaterCallback: () => void;
   setFields: (fields: DocumentSectionField[]) => void;
   setSections: (sections: DocumentSection[]) => void;
-};
+}
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
 

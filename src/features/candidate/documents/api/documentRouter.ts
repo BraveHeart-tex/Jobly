@@ -7,11 +7,19 @@ import {
 import { DocumentSectionInsertValidator } from "@/validators/user/document/documentSectionValidators";
 import { SaveDocumentDetailsValidator } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { DocumentSectionFieldInsertValidator } from "@/validators/user/document/sectionFieldValidators";
-import { array, minValue, number, object, parser, pipe } from "valibot";
+import {
+  array,
+  minValue,
+  number,
+  object,
+  parser,
+  pipe,
+  partial,
+} from "valibot";
 
 export const documentRouter = createTRPCRouter({
   createDocumentAndRelatedEntities: protectedProcedure
-    .input(parser(DocumentInsertValidator))
+    .input(parser(partial(DocumentInsertValidator, ["userId"])))
     .mutation(async ({ input, ctx }) => {
       return documentService.createDocumentAndRelatedEntities(
         {
@@ -64,12 +72,8 @@ export const documentRouter = createTRPCRouter({
     }),
   saveDocumentAndRelatedEntities: protectedProcedure
     .input(parser(SaveDocumentDetailsValidator))
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.user.id;
-      return documentService.saveDocumentAndRelatedEntities({
-        ...input,
-        userId,
-      });
+    .mutation(async ({ input }) => {
+      return documentService.saveDocumentAndRelatedEntities(input);
     }),
   addFieldsWithValues: protectedProcedure
     .input(

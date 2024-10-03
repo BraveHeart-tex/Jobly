@@ -198,7 +198,7 @@ export const getDocumentDetails = async ({
 };
 
 export const saveDocumentAndRelatedEntities = async (
-  input: SaveDocumentDetailsData & { userId: User["id"] },
+  input: SaveDocumentDetailsData,
 ) => {
   const { document, sections, fields, fieldValues } = input;
   await db.transaction(async (trx) => {
