@@ -1,5 +1,3 @@
-import { zodErrorMap } from "@/lib/zodErrorMap";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type FieldValues,
   type Path,
@@ -7,8 +5,8 @@ import {
   type UseFormReturn,
   useForm,
 } from "react-hook-form";
-import type { ZodObject } from "zod";
-import { getDefaultValuesFromZodSchema } from "./utils";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import type { ObjectSchema } from "valibot";
 
 export type ExtendedUseFormReturn<
   TFieldValues extends FieldValues,
@@ -25,21 +23,12 @@ export const useExtendedForm = <
   TTransformedValues extends FieldValues | undefined = undefined,
 >(
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  schema: ZodObject<any>,
+  validator: ObjectSchema<any, any>,
   props?: UseFormProps<TFieldValues, TContext>,
 ): ExtendedUseFormReturn<TFieldValues, TContext, TTransformedValues> => {
-  const defaultValues =
-    props?.defaultValues ||
-    (getDefaultValuesFromZodSchema(schema) as TFieldValues) ||
-    ({} as TFieldValues);
-
   const form = useForm<TFieldValues, TContext, TTransformedValues>({
     ...props,
-    // @ts-ignore
-    defaultValues,
-    resolver: zodResolver(schema, {
-      errorMap: zodErrorMap,
-    }),
+    resolver: valibotResolver(validator),
   });
 
   const setInitialValues = (values: Record<Path<TFieldValues>, unknown>) => {

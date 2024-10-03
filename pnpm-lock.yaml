@@ -20,6 +20,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.1
         version: 3.2.2(react@18.3.1)
+      '@enalmada/env-valibot':
+        specifier: ^0.0.14
+        version: 0.0.14
       '@hookform/resolvers':
         specifier: ^3.5.0
         version: 3.5.0(react-hook-form@7.51.5(react@18.3.1))
@@ -32,6 +35,9 @@ importers:
       '@node-rs/bcrypt':
         specifier: ^1.10.4
         version: 1.10.4
+      '@nurliman/env-valibot':
+        specifier: npm:@jsr/nurliman__env-valibot@^0.7.1
+        version: '@jsr/nurliman__env-valibot@0.7.1'
       '@radix-ui/react-accordion':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -134,12 +140,6 @@ importers:
       drizzle-orm:
         specifier: ^0.32.0
         version: 0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1)
-      drizzle-valibot:
-        specifier: ^0.2.0
-        version: 0.2.0(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(valibot@0.42.1(typescript@5.4.5))
-      drizzle-zod:
-        specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(zod@3.23.8)
       framer-motion:
         specifier: ^11.2.11
         version: 11.2.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -227,9 +227,6 @@ importers:
       vaul:
         specifier: ^0.9.1
         version: 0.9.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
       zustand:
         specifier: ^4.5.2
         version: 4.5.2(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
@@ -559,6 +556,9 @@ packages:
 
   '@emotion/weak-memoize@0.4.0':
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
+
+  '@enalmada/env-valibot@0.0.14':
+    resolution: {integrity: sha512-21hcNLwnD50ESIoUgjjcLuXol5hLaVyne63z41UHkkvOjIy0NUJaFn8l6CPCNBC2ul9NvInpqjDXdg6oe660Jw==}
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
@@ -1019,6 +1019,12 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jsr/nurliman__env-valibot@0.7.1':
+    resolution: {integrity: sha512-3iXPg4sa9h2kiDZI4XIBJOaaQ9douytnfJ7AUSnY+HVtxlwViWZ1Vdv7wKMW67eLBxc+OctcojX1pBZybnLRkQ==, tarball: https://npm.jsr.io/~/11/@jsr/nurliman__env-valibot/0.7.1.tgz}
+
+  '@jsr/valibot__valibot@0.36.0':
+    resolution: {integrity: sha512-sIOZKRFdFt9hzZGDPArjT5iPGJggqsbXIuo2byPQx03ImBtJJ+HPSVYuAi17ZpIankEh6MdnAI5K0ixAHqKeQw==, tarball: https://npm.jsr.io/~/11/@jsr/valibot__valibot/0.36.0.tgz}
 
   '@lucia-auth/adapter-drizzle@1.0.7':
     resolution: {integrity: sha512-X/V7fLBca8EC/gPXCntwbQpb0+F9oEuRoHElvsi9rCrdnGhCMNxHgwAvgiQ6pes+rIYpyvx4n3hvjqo/fPo03A==}
@@ -2781,18 +2787,6 @@ packages:
       sqlite3:
         optional: true
 
-  drizzle-valibot@0.2.0:
-    resolution: {integrity: sha512-+JTZZN52fFv20kGTXI1KGpysdCiedaTDpWQ6lqnxX2DD5U5tJfGPB2ROjHFjbLzK4XiH98MOhKZf174orBQAew==}
-    peerDependencies:
-      drizzle-orm: '>=0.23.13'
-      valibot: '>=0.20'
-
-  drizzle-zod@0.5.1:
-    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
-    peerDependencies:
-      drizzle-orm: '>=0.23.13'
-      zod: '*'
-
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
@@ -4235,6 +4229,9 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  valibot@0.25.0:
+    resolution: {integrity: sha512-cmD0ca15oyAbT75iYLNW6uU6doAeIwYfOshpXka/E1Bx4frzbkrgb7gvkI7K0YK/DVOksei4FfxWfRoBP3NFTg==}
+
   valibot@0.42.1:
     resolution: {integrity: sha512-3keXV29Ar5b//Hqi4MbSdV7lfVp6zuYLZuA9V1PvQUsXqogr+u5lvLPLk3A4f74VUXDnf/JfWMN6sB+koJ/FFw==}
     peerDependencies:
@@ -4690,6 +4687,10 @@ snapshots:
 
   '@emotion/weak-memoize@0.4.0': {}
 
+  '@enalmada/env-valibot@0.0.14':
+    dependencies:
+      valibot: 0.25.0
+
   '@esbuild-kit/core-utils@3.3.2':
     dependencies:
       esbuild: 0.18.20
@@ -4952,6 +4953,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  '@jsr/nurliman__env-valibot@0.7.1':
+    dependencies:
+      '@jsr/valibot__valibot': 0.36.0
+
+  '@jsr/valibot__valibot@0.36.0': {}
 
   '@lucia-auth/adapter-drizzle@1.0.7(lucia@3.2.0)':
     dependencies:
@@ -6678,16 +6685,6 @@ snapshots:
       mysql2: 3.10.0
       react: 18.3.1
 
-  drizzle-valibot@0.2.0(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(valibot@0.42.1(typescript@5.4.5)):
-    dependencies:
-      drizzle-orm: 0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1)
-      valibot: 0.42.1(typescript@5.4.5)
-
-  drizzle-zod@0.5.1(drizzle-orm@0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1))(zod@3.23.8):
-    dependencies:
-      drizzle-orm: 0.32.0(@types/react@18.3.3)(mysql2@3.10.0)(react@18.3.1)
-      zod: 3.23.8
-
   eastasianwidth@0.2.0: {}
 
   effect@3.4.5: {}
@@ -8181,6 +8178,8 @@ snapshots:
       react: 18.3.1
 
   util-deprecate@1.0.2: {}
+
+  valibot@0.25.0: {}
 
   valibot@0.42.1(typescript@5.4.5):
     optionalDependencies:

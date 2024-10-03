@@ -2,8 +2,16 @@ import { uncachedValidateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/server/db";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
-import { ZodError, z } from "zod";
 import { users } from "../db/schema";
+import {
+  ValiError,
+  array,
+  flatten,
+  object,
+  optional,
+  parser,
+  picklist,
+} from "valibot";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const { session, user } = await uncachedValidateRequest();
@@ -24,7 +32,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       data: {
         ...shape.data,
         zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+          error.cause instanceof ValiError ? flatten(error.cause.issues) : null,
       },
     };
   },
@@ -36,11 +44,13 @@ export const createTRPCRouter = t.router;
 
 export const protectedProcedure = t.procedure
   .input(
-    z
-      .object({
-        allowedRoles: z.array(z.enum(users.role.enumValues)).optional(),
-      })
-      .optional(),
+    parser(
+      optional(
+        object({
+          allowedRoles: array(picklist(users.role.enumValues)),
+        }),
+      ),
+    ),
   )
   .use(({ ctx, next, input }) => {
     const { allowedRoles } = input ?? {};

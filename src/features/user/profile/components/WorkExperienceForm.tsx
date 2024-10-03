@@ -13,24 +13,24 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import workExperienceSchema, {
-  type WorkExperienceSchema,
+import {
+  type WorkExperienceData,
+  WorkExperienceValidator,
 } from "@/validators/user/profile/workExperienceSchema";
 import { DateTime } from "luxon";
 import { useState } from "react";
 
 interface WorkExperienceFormProps {
-  initialData?: WorkExperienceSchema;
+  initialData?: WorkExperienceData;
 }
 
 const WorkExperienceForm = ({ initialData }: WorkExperienceFormProps) => {
   const [isCurrentEmployment, setIsCurrentEmployment] = useState(false);
-  const form = useExtendedForm<WorkExperienceSchema>(workExperienceSchema, {
+  const form = useExtendedForm<WorkExperienceData>(WorkExperienceValidator, {
     defaultValues: initialData,
   });
-  const isEditMode = !!initialData;
 
-  const onSubmit = (values: WorkExperienceSchema) => {
+  const onSubmit = (values: WorkExperienceData) => {
     console.info(values);
   };
 

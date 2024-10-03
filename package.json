@@ -31,6 +31,7 @@
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@node-rs/argon2": "^1.8.3",
     "@node-rs/bcrypt": "^1.10.4",
+    "@nurliman/env-valibot": "npm:@jsr/nurliman__env-valibot@^0.7.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",

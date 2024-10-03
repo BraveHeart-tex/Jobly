@@ -1,35 +1,34 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+// @ts-check
+import { createNextjsEnv } from "@nurliman/env-valibot";
+import { pipe, string, nonEmpty, url, optional, picklist } from "valibot";
 
-export const env = createEnv({
+export const env = createNextjsEnv({
   server: {
-    DATABASE_URL: z.string().url(),
-    NODE_ENV: z
-      .enum(["development", "test", "production"])
-      .default("development"),
-    UPLOADTHING_SECRET: z.string().min(1),
-    UPLOADTHING_APP_ID: z.string().min(1),
+    DATABASE_URL: pipe(
+      string(),
+      nonEmpty("DATABASE_URL is required"),
+      url("DATABASE_URL is not a valid URL"),
+    ),
+    NODE_ENV: optional(
+      picklist(["development", "test", "production"]),
+      "development",
+    ),
+    UPLOADTHING_SECRET: pipe(
+      string(),
+      nonEmpty("UPLOADTHING_SECRET is required"),
+    ),
+    UPLOADTHING_APP_ID: pipe(
+      string(),
+      nonEmpty("UPLOADTHING_APP_ID is required"),
+    ),
   },
 
-  /**
-   * Specify your client-side environment variables schema here. This way you can ensure the home
-   * isn't built with invalid env vars. To expose them to the client, prefix them with
-   * `NEXT_PUBLIC_`.
-   */
-  client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
-  },
-
-  /**
-   * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
-   * middlewares) or client-side, so we need to destruct manually.
-   */
+  client: {},
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

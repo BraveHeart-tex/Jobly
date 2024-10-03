@@ -6,7 +6,7 @@ import { DocumentInsertValidator } from "./baseDocumentValidator";
 
 export const SaveDocumentDetailsValidator = object({
   document: optional(DocumentInsertValidator),
-  sections: optional(array(DocumentSectionInsertValidator)),
+  sections: array(DocumentSectionInsertValidator),
   fields: optional(array(DocumentSectionFieldInsertValidator)),
   fieldValues: optional(array(documentSectionFieldInsertValidator)),
 });
