@@ -1,3 +1,4 @@
+import { ISO_8601_REGEX } from "@/lib/constants";
 import {
   pipe,
   string,
@@ -8,6 +9,7 @@ import {
   picklist,
   optional,
   safeParse,
+  regex,
 } from "valibot";
 
 export const parseEnumValue = <T extends string>(
@@ -37,4 +39,9 @@ export const PasswordValidator = pipe(
   string("Please enter your password"),
   minLength(8, "Password must be at least 8 characters long"),
   maxLength(256, "Password cannot exceed 256 characters"),
+);
+
+export const DateTimeValidator = pipe(
+  string(),
+  regex(ISO_8601_REGEX, "Please enter a valid date-time format."),
 );

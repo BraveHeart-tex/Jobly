@@ -1,6 +1,6 @@
+import { DateTimeValidator } from "@/validators/schemaUtils";
 import {
   type InferInput,
-  isoDateTime,
   maxLength,
   number,
   object,
@@ -17,8 +17,8 @@ export const EducationValidator = object({
     maxLength(255, "School name cannot exceed 255 characters"),
   ),
   degree: pipe(string(), maxLength(255, "Degree cannot exceed 255 characters")),
-  startDate: pipe(string(), isoDateTime()),
-  endDate: optional(pipe(string(), isoDateTime())),
+  startDate: DateTimeValidator,
+  endDate: optional(DateTimeValidator),
   city: optional(
     pipe(string(), maxLength(100, "City cannot exceed 100 characters")),
   ),
