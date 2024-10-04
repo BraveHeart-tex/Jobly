@@ -1,12 +1,13 @@
 import { companyService } from "@/features/employer/company/services/companyService";
 import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
-import { companyProfileSetupSchema } from "@/validators/companyProfileSetupSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { CompanyProfileValidator } from "@/validators/companyProfileSetupValidator";
 import { TRPCError } from "@trpc/server";
+import { parser } from "valibot";
 
 export const companyRouter = createTRPCRouter({
   registerCompanyDetails: protectedProcedure
-    .input(companyProfileSetupSchema)
+    .input(parser(CompanyProfileValidator))
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx;
       if (user.role !== "employer") {

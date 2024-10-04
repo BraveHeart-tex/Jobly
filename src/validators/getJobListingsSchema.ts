@@ -1,16 +1,22 @@
 import { jobPostings } from "@/server/db/schema";
-import { z } from "zod";
+import {
+  boolean,
+  nullish,
+  number,
+  object,
+  optional,
+  picklist,
+  string,
+  type InferOutput,
+} from "valibot";
 
-export const getJobListingsSchema = z.object({
-  query: z.string().optional().default(""),
-  page: z.number().optional().default(1),
-  bookmarked: z.boolean().optional().default(false),
-  viewed: z.boolean().optional().default(false),
-  workType: z.enum(jobPostings.workType.enumValues).optional().nullable(),
-  employmentType: z
-    .enum(jobPostings.employmentType.enumValues)
-    .optional()
-    .nullable(),
+export const GetJobListingsValidator = object({
+  query: optional(string(), ""),
+  page: optional(number(), 1),
+  bookmarked: optional(boolean(), false),
+  viewed: optional(boolean(), false),
+  workType: nullish(picklist(jobPostings.workType.enumValues)),
+  employmentType: nullish(picklist(jobPostings.employmentType.enumValues)),
 });
 
-export type GetJobListingsSchema = z.infer<typeof getJobListingsSchema>;
+export type GetJobListingsOutput = InferOutput<typeof GetJobListingsValidator>;

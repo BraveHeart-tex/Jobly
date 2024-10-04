@@ -1,8 +1,8 @@
 import type { MakeFieldsRequired } from "@/lib/types";
-import type { GetJobListingsSchema } from "@/validators/getJobListingsSchema";
 import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 import type { User } from "lucia";
 import { jobRepository } from "../repositories/jobRepository";
+import type { GetJobListingsOutput } from "@/validators/getJobListingsSchema";
 
 export const jobService = {
   async getJobById({
@@ -64,7 +64,7 @@ export const jobService = {
     viewed = false,
     employmentType,
     workType,
-  }: GetJobListingsSchema & { userId: User["id"] }) {
+  }: GetJobListingsOutput & { userId: User["id"] }) {
     const limit = 12;
     const skipAmount = (page - 1) * limit;
 

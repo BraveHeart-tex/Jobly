@@ -1,12 +1,15 @@
-import { getJobListingsSchema } from "@/validators/getJobListingsSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { z } from "zod";
 import { jobService } from "../services/jobService";
-import { jobSchema } from "@/validators/jobSchema";
+import { number, object, parser } from "valibot";
+import { GetJobListingsValidator } from "@/validators/getJobListingsSchema";
+
+const jobIdValidator = object({
+  id: number(),
+});
 
 export const userJobListingRouter = createTRPCRouter({
   getJobListings: protectedProcedure
-    .input(getJobListingsSchema)
+    .input(parser(GetJobListingsValidator))
     .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return jobService.getJobListings({
@@ -15,11 +18,7 @@ export const userJobListingRouter = createTRPCRouter({
       });
     }),
   getJobById: protectedProcedure
-    .input(
-      z.object({
-        id: z.number(),
-      }),
-    )
+    .input(parser(jobIdValidator))
     .query(async ({ ctx, input }) => {
       const id = input.id;
       return jobService.getJobById({
@@ -27,17 +26,9 @@ export const userJobListingRouter = createTRPCRouter({
         userId: ctx.user.id,
       });
     }),
-  updateJob: protectedProcedure
-    .input(
-      jobSchema.partial().required({
-        id: true,
-      }),
-    )
-    .mutation(async ({ input }) => {
-      return jobService.updateJob(input);
-    }),
+
   markJobAsViewed: protectedProcedure
-    .input(jobSchema.pick({ id: true }))
+    .input(parser(jobIdValidator))
     .mutation(async ({ ctx, input }) => {
       await jobService.markJobAsViewed({
         userId: ctx.user.id,
@@ -46,7 +37,7 @@ export const userJobListingRouter = createTRPCRouter({
       return { success: true };
     }),
   bookmarkJob: protectedProcedure
-    .input(jobSchema.pick({ id: true }))
+    .input(parser(jobIdValidator))
     .mutation(async ({ ctx, input }) => {
       await jobService.bookmarkJob({
         userId: ctx.user.id,
@@ -56,7 +47,7 @@ export const userJobListingRouter = createTRPCRouter({
       return { success: true };
     }),
   deleteJobBookmark: protectedProcedure
-    .input(jobSchema.pick({ id: true }))
+    .input(parser(jobIdValidator))
     .mutation(async ({ ctx, input }) => {
       await jobService.deleteJobBookmark({
         userId: ctx.user.id,

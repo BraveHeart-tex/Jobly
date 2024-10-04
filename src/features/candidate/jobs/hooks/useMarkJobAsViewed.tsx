@@ -23,7 +23,8 @@ export const useMarkJobAsViewed = (currentJobId: number) => {
           },
         );
         queryClientUtils.userJobListing.getJobListings.setData(
-          { query: "" },
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          undefined as any,
           (oldJobListingsData) => {
             if (!oldJobListingsData?.jobListings) return oldJobListingsData;
             return {
@@ -47,7 +48,8 @@ export const useMarkJobAsViewed = (currentJobId: number) => {
           context?.previousJobDetails,
         );
         queryClientUtils.userJobListing.getJobListings.setData(
-          { query: "" },
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          undefined as any,
           context?.previousJobListings,
         );
       },
