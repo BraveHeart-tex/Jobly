@@ -2,9 +2,11 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { userProfileService } from "../services/userProfileService";
 import { number, object, optional, parser } from "valibot";
 
-const optionalUserIdValidator = object({
-  userId: optional(number()),
-});
+const optionalUserIdValidator = optional(
+  object({
+    userId: number(),
+  }),
+);
 
 export const userProfileRouter = createTRPCRouter({
   getUserProfileInformation: protectedProcedure
