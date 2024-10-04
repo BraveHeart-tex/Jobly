@@ -41,6 +41,7 @@ const JobTrackerApplicationForm = ({
   defaultValues,
   onFormSubmit,
 }: JobTrackerApplicationFormProps) => {
+  const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const trackedApplications = useJobTrackerBoardStore(
     (state) => state.trackedApplications,
   );
@@ -101,15 +102,16 @@ const JobTrackerApplicationForm = ({
         setApplications(context?.oldApplications ?? []);
       },
     });
+
   const availableDisplayOrder = trackedApplications.filter(
     (item) => item.status === defaultValues?.status,
   ).length;
-  const userId = useCurrentUserStore((state) => state.user?.id) as number;
+
   const form = useExtendedForm<JobTrackerApplicationInput>(
     JobTrackerApplicationValidator,
     {
       defaultValues: {
-        ...defaultValues,
+        ...(defaultValues || {}),
         userId,
         displayOrder: defaultValues?.displayOrder || availableDisplayOrder + 1,
       },

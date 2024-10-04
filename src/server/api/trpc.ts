@@ -31,7 +31,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
+        validationError:
           error.cause instanceof ValiError ? flatten(error.cause.issues) : null,
       },
     };
