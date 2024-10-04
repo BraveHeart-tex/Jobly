@@ -1,5 +1,5 @@
 import { users } from "@/server/db/schema";
-import { EmailSchema, PasswordSchema } from "../schemaUtils";
+import { EmailValidator, PasswordValidator } from "../schemaUtils";
 import {
   type InferInput,
   minLength,
@@ -20,8 +20,8 @@ export const SignUpValidator = object({
     string("Please enter your last name"),
     minLength(1, "Last name is required"),
   ),
-  email: EmailSchema,
-  password: PasswordSchema,
+  email: EmailValidator,
+  password: PasswordValidator,
   role: optional(
     pipe(
       picklist(users.role.enumValues, "Please select a role"),

@@ -6,11 +6,11 @@ import {
   string,
   union,
 } from "valibot";
-import { EmailSchema, PasswordSchema } from "../schemaUtils";
+import { EmailValidator, PasswordValidator } from "../schemaUtils";
 
 export const LoginValidator = object({
-  email: EmailSchema,
-  password: PasswordSchema,
+  email: EmailValidator,
+  password: PasswordValidator,
 });
 
 const LoginSuccessValidator = object({

@@ -27,13 +27,13 @@ export const parseEnumValue = <T extends string>(
   return (parseResult.success ? parseResult.output : fallbackValue) as T;
 };
 
-export const EmailSchema = pipe(
+export const EmailValidator = pipe(
   string("Please enter a valid email address"),
   nonEmpty("Email is required"),
   email("Please enter a valid email address"),
 );
 
-export const PasswordSchema = pipe(
+export const PasswordValidator = pipe(
   string("Please enter your password"),
   minLength(8, "Password must be at least 8 characters long"),
   maxLength(256, "Password cannot exceed 256 characters"),

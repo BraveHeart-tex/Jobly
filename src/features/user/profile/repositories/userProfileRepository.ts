@@ -1,4 +1,3 @@
-import type { UserProfileFormSchema } from "@/validators/user/profile/userProfileFormSchema";
 import { db } from "@/server/db";
 import {
   educationalBackgrounds,
@@ -7,11 +6,12 @@ import {
   workExperiences,
 } from "@/server/db/schema";
 import { asc, desc, eq } from "drizzle-orm";
+import type { UserProfileInformation } from "../types";
 
 export const userProfileRepository = {
   async getUserProfileInformation(
     userId: number,
-  ): Promise<UserProfileFormSchema | null> {
+  ): Promise<UserProfileInformation | null> {
     const result = await db.query.users.findFirst({
       columns: {
         id: true,

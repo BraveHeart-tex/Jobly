@@ -45,11 +45,9 @@ export const createTRPCRouter = t.router;
 export const protectedProcedure = t.procedure
   .input(
     parser(
-      optional(
-        object({
-          allowedRoles: array(picklist(users.role.enumValues)),
-        }),
-      ),
+      object({
+        allowedRoles: optional(array(picklist(users.role.enumValues))),
+      }),
     ),
   )
   .use(({ ctx, next, input }) => {

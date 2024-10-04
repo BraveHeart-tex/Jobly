@@ -12,7 +12,9 @@ import { api } from "@/trpc/server";
 import { redirect } from "next/navigation";
 
 const EditProfilePage = async () => {
-  const profileDetailsData = await api.userProfile.getUserProfileInformation();
+  const profileDetailsData = await api.userProfile.getUserProfileInformation(
+    {},
+  );
 
   if (!profileDetailsData) {
     redirect(SHARED_ROUTES.LOGIN);
