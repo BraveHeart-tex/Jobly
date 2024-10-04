@@ -18,7 +18,7 @@ import { compareMatchingKeys } from "@/lib/utils/objectUtils";
 import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 import {
-  JobTrackerApplicationValidator,
+  JobTrackerFormValidator,
   type JobTrackerApplicationInput,
   type JobTrackerApplicationOutput,
 } from "@/validators/jobTrackerApplicationValidator";
@@ -108,7 +108,7 @@ const JobTrackerApplicationForm = ({
   ).length;
 
   const form = useExtendedForm<JobTrackerApplicationInput>(
-    JobTrackerApplicationValidator,
+    JobTrackerFormValidator,
     {
       defaultValues: {
         ...(defaultValues || {}),

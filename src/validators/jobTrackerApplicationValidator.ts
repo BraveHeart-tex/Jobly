@@ -11,8 +11,10 @@ import {
   pipe,
   string,
   url,
-  nullable,
   partial,
+  nullish,
+  union,
+  literal,
 } from "valibot";
 
 export const JobTrackerApplicationValidator = object({
@@ -37,15 +39,17 @@ export const JobTrackerApplicationValidator = object({
     nonEmpty("Location is required"),
     maxLength(512, "Location cannot exceed 512 characters"),
   ),
-  url: nullable(pipe(string(), url("Please enter a valid URL"))),
-  salary: nullable(
+  url: nullish(
+    union([pipe(string(), url("Please enter a valid URL")), literal("")]),
+  ),
+  salary: nullish(
     pipe(
       string(),
       decimal("Please enter a valid salary range (example: 30,000 - 40,000)"),
     ),
   ),
-  notes: nullable(string()),
-  jobDescription: nullable(string()),
+  notes: nullish(string()),
+  jobDescription: nullish(string()),
   displayOrder: number(),
 });
 
@@ -53,6 +57,11 @@ export const JobTrackerApplicationInsertValidator = partial(
   JobTrackerApplicationValidator,
   ["id", "userId"],
 );
+
+export const JobTrackerFormValidator = object({
+  ...JobTrackerApplicationInsertValidator.entries,
+  displayOrder: nullish(number()),
+});
 
 export type JobTrackerApplicationInsertInput = InferInput<
   typeof JobTrackerApplicationInsertValidator

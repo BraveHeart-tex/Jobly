@@ -71,7 +71,6 @@ const ConfirmDialog = () => {
                   callPrimaryAction();
                 }}
                 disabled={loading}
-                loading={loading ? true : undefined}
                 tabIndex={0}
                 ref={actionRef}
               >

@@ -4,9 +4,10 @@ import {
   type UseFormProps,
   type UseFormReturn,
   useForm,
+  type DefaultValues,
 } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import type { ObjectSchema } from "valibot";
+import { getDefaults, type ObjectSchema } from "valibot";
 
 export type ExtendedUseFormReturn<
   TFieldValues extends FieldValues,
@@ -26,8 +27,16 @@ export const useExtendedForm = <
   validator: ObjectSchema<any, any>,
   props?: UseFormProps<TFieldValues, TContext>,
 ): ExtendedUseFormReturn<TFieldValues, TContext, TTransformedValues> => {
+  const defaultValuesFromSchema = getDefaults(
+    validator,
+  ) as DefaultValues<TFieldValues>;
+
   const form = useForm<TFieldValues, TContext, TTransformedValues>({
     ...props,
+    defaultValues: {
+      ...defaultValuesFromSchema,
+      ...(props?.defaultValues || {}),
+    },
     resolver: valibotResolver(validator),
   });
 
