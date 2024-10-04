@@ -1,12 +1,13 @@
 import { jobPostingSkillsRepository } from "@/features/employer/jobPosting/repositories/jobPostingSkillsRepository";
 import { db } from "@/server/db";
-import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
+import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
 import { TRPCError } from "@trpc/server";
 import type { CreateJobPostingParams } from "../../company/types";
 import { employerJobPostingRepository } from "../repositories/employerJobPostingRepository";
 import type { GetEmployerJobPostingsParams } from "../types";
 import { insertJobPostingSkills } from "../utils";
+import type { MakeFieldsRequired } from "@/lib/types";
 
 export const employerJobPostingService = {
   async getJobPostings({ companyId, status }: GetEmployerJobPostingsParams) {
@@ -84,7 +85,9 @@ export const employerJobPostingService = {
     };
   },
   async updateJobPosting(
-    data: JobPostingSelectModel & { skills: SkillSelectModel[] },
+    data: MakeFieldsRequired<JobPostingInsertModel, "id"> & {
+      skills: SkillSelectModel[];
+    },
   ) {
     const jobPostingSkills =
       await jobPostingSkillsRepository.getJobPostingSkillsByJobPostingId(

@@ -1,22 +1,23 @@
 import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
 import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
-import { updateJobPostingSchema } from "@/validators/employer/updateJobPostingSchema";
-import employerJobPostingFormSchema from "@/validators/jobPostingFormSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
+import { EmployerJobPostingFormValidator } from "@/validators/jobPostingFormSchema";
 import { TRPCError } from "@trpc/server";
-import { z } from "zod";
+import { number, object, optional, parser, picklist, required } from "valibot";
 
 export const jobPostingRouter = createTRPCRouter({
   getJobPostings: protectedProcedure
     .input(
-      z.object({
-        status: z
-          .enum([...jobPostings.status.enumValues, "expired"])
-          .optional()
-          .default("published"),
-      }),
+      parser(
+        object({
+          status: optional(
+            picklist([...jobPostings.status.enumValues, "expired"]),
+            "published",
+          ),
+        }),
+      ),
     )
     .query(async ({ ctx, input }) => {
       const company = await userCompanyService.getUserCompanyDetailsByUserId(
@@ -29,13 +30,14 @@ export const jobPostingRouter = createTRPCRouter({
             "Company not found. Please setup your company profile first.",
         });
       }
+
       return employerJobPostingService.getJobPostings({
         ...input,
         companyId: company.id,
       });
     }),
   createJobPosting: protectedProcedure
-    .input(employerJobPostingFormSchema)
+    .input(parser(EmployerJobPostingFormValidator))
     .mutation(async ({ ctx, input }) => {
       const user = ctx.user;
       const companyId = await ensureEmployerCompanyLink(user);
@@ -48,9 +50,11 @@ export const jobPostingRouter = createTRPCRouter({
     }),
   getJobPostingById: protectedProcedure
     .input(
-      z.object({
-        id: z.number(),
-      }),
+      parser(
+        object({
+          id: number(),
+        }),
+      ),
     )
     .query(async ({ ctx, input }) => {
       const { id } = input;
@@ -65,7 +69,7 @@ export const jobPostingRouter = createTRPCRouter({
       return employerJobPostingService.getJobPostingById(id);
     }),
   updateJobPosting: protectedProcedure
-    .input(updateJobPostingSchema)
+    .input(parser(required(EmployerJobPostingFormValidator, ["id"])))
     .mutation(async ({ ctx, input }) => {
       const user = ctx.user;
       const companyId = await ensureEmployerCompanyLink(user);

@@ -23,7 +23,7 @@ const POST_EXPIRY_THRESHOLD_DAYS = 60 as const;
 // TODO: check iso date time values
 export const JobPostingValidator = pipe(
   object({
-    id: optional(number()),
+    id: number(),
     companyId: pipe(
       number(),
       minValue(1, "Company id must be greater than or equal to 1"),
