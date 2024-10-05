@@ -8,7 +8,7 @@ const JobsPage = async () => {
 
   return (
     <main className="bg-muted h-screen">
-      <PageContainer>
+      <PageContainer className="mt-0 pt-2">
         <JobListSearchToolbar />
         <JobsList />
       </PageContainer>
