@@ -31,10 +31,20 @@ export const useExtendedForm = <
     validator,
   ) as DefaultValues<TFieldValues>;
 
+  const filteredDefaultValues = Object.keys(defaultValuesFromSchema).reduce(
+    (acc, key) => {
+      if (defaultValuesFromSchema[key] !== undefined) {
+        acc[key] = defaultValuesFromSchema[key];
+      }
+      return acc;
+    },
+    {} as DefaultValues<TFieldValues>,
+  );
+
   const form = useForm<TFieldValues, TContext, TTransformedValues>({
     ...props,
     defaultValues: {
-      ...defaultValuesFromSchema,
+      ...filteredDefaultValues,
       ...(props?.defaultValues || {}),
     },
     resolver: valibotResolver(validator),

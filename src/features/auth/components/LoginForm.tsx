@@ -17,22 +17,19 @@ import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useLogin } from "../hooks/useLogin";
-import { useForm } from "react-hook-form";
-import { valibotResolver } from "@hookform/resolvers/valibot";
 import {
   type LoginData,
   type LoginResponse,
   LoginValidator,
 } from "@/validators/auth/loginValidator";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 
 interface LoginFormProps {
   portalType?: DBUser["role"];
 }
 
 const LoginForm = ({ portalType }: LoginFormProps) => {
-  const form = useForm<LoginData>({
-    resolver: valibotResolver(LoginValidator),
-  });
+  const form = useExtendedForm<LoginData>(LoginValidator);
   const router = useRouter();
   const { isLoggingIn, login } = useLogin();
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);

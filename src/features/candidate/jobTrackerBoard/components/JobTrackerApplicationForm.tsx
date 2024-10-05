@@ -111,7 +111,14 @@ const JobTrackerApplicationForm = ({
     JobTrackerFormValidator,
     {
       defaultValues: {
-        ...(defaultValues || {}),
+        company: "",
+        jobTitle: "",
+        location: "",
+        url: "",
+        salary: "",
+        notes: "",
+        jobDescription: "",
+        ...defaultValues,
         userId,
         displayOrder: defaultValues?.displayOrder || availableDisplayOrder + 1,
       },

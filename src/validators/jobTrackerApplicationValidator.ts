@@ -43,10 +43,13 @@ export const JobTrackerApplicationValidator = object({
     union([pipe(string(), url("Please enter a valid URL")), literal("")]),
   ),
   salary: nullish(
-    pipe(
-      string(),
-      decimal("Please enter a valid salary range (example: 30,000 - 40,000)"),
-    ),
+    union([
+      pipe(
+        string(),
+        decimal("Please enter a valid salary range (example: 30,000 - 40,000)"),
+      ),
+      literal(""),
+    ]),
   ),
   notes: nullish(string()),
   jobDescription: nullish(string()),
