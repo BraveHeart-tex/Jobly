@@ -73,7 +73,19 @@ const companySizeOptions = [
 ];
 
 const CompanyProfileSetup = () => {
-  const form = useExtendedForm<CompanyProfileOutput>(CompanyProfileValidator);
+  const form = useExtendedForm<CompanyProfileOutput>(CompanyProfileValidator, {
+    defaultValues: {
+      name: "",
+      bio: "",
+      website: "",
+      industry: "",
+      address: "",
+      yearOfEstablishment: "",
+      companySize: "",
+      areasOfExpertise: "",
+      description: "",
+    },
+  });
   const router = useRouter();
   const { mutate: registerCompanyDetails, isPending } =
     api.company.registerCompanyDetails.useMutation({
