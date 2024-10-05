@@ -1,6 +1,7 @@
 "use client";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
+import HardBreak from "@tiptap/extension-hard-break";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { type PropsWithRef, forwardRef, useImperativeHandle } from "react";
@@ -32,6 +33,7 @@ const RichTextEditor = forwardRef<
         autolink: true,
         defaultProtocol: "https",
       }),
+      HardBreak,
     ],
     content: initialValue,
     onUpdate: ({ editor }) => {
