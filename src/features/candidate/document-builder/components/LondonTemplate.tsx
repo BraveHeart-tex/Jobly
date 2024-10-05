@@ -777,6 +777,7 @@ const InternshipsSection = ({
           <View
             style={{
               display: "flex",
+              gap: 10,
             }}
           >
             {internshipsSectionItems.map((item) => (
