@@ -1,6 +1,5 @@
 import {
   minValue,
-  nonEmpty,
   number,
   object,
   partial,
@@ -15,7 +14,7 @@ export const documentSectionFieldValueValidator = object({
     number(),
     minValue(1, "Field id must be greater than or equal to 1"),
   ),
-  value: pipe(string(), nonEmpty("Value is required")),
+  value: string(),
 });
 
 export const documentSectionFieldInsertValidator = partial(
