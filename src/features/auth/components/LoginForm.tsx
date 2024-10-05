@@ -29,7 +29,12 @@ interface LoginFormProps {
 }
 
 const LoginForm = ({ portalType }: LoginFormProps) => {
-  const form = useExtendedForm<LoginData>(LoginValidator);
+  const form = useExtendedForm<LoginData>(LoginValidator, {
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const router = useRouter();
   const { isLoggingIn, login } = useLogin();
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
