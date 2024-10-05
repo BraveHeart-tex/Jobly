@@ -566,6 +566,7 @@ const EducationSection = ({
           <View
             style={{
               display: "flex",
+              gap: 10,
             }}
           >
             {educationSectionItems.map((item) => (
