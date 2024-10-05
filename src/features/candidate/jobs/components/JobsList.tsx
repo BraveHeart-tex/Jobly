@@ -154,7 +154,7 @@ const JobsList = () => {
       <div
         ref={containerRef}
         className={cn(
-          "lg:col-span-4 grid h-[calc(100vh-10rem)] grid-cols-1 gap-1 overflow-auto auto-rows-min",
+          "lg:col-span-4 grid h-[calc(100vh-62px)] lg:h-[calc(100vh-106px)] grid-cols-1 gap-1 overflow-auto auto-rows-min",
           view === "jobDetails" && "hidden lg:grid",
         )}
       >
@@ -162,8 +162,9 @@ const JobsList = () => {
       </div>
       <div
         className={cn(
-          "lg:col-span-8",
-          view === "jobDetails" && "w-full h-[calc(100vh-10rem)]",
+          "lg:col-span-8 pb-1",
+          view === "jobDetails" &&
+            "w-full h-[calc(100vh-62px)] lg:h-[calc(100vh-106px)]",
           view === "list" && "hidden lg:inline-block",
         )}
       >

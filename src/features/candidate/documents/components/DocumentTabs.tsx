@@ -70,6 +70,8 @@ const DocumentTabs = () => {
       );
     }
 
+    toast.success("Document created successfully. You are being redirected.");
+
     const route = DOCUMENT_ROUTE_MAP[activeTab];
     router.push(`${route}/${documentInsertId}`);
   };
