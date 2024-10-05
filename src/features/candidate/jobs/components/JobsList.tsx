@@ -150,11 +150,11 @@ const JobsList = () => {
     ));
 
   return (
-    <div className="grid lg:grid-cols-12 gap-4">
+    <div className="grid lg:grid-cols-12 gap-2">
       <div
         ref={containerRef}
         className={cn(
-          "lg:col-span-4 grid h-[calc(100vh-10rem)] grid-cols-1 gap-1 overflow-auto p-1 pt-0 auto-rows-min",
+          "lg:col-span-4 grid h-[calc(100vh-10rem)] grid-cols-1 gap-1 overflow-auto auto-rows-min",
           view === "jobDetails" && "hidden lg:grid",
         )}
       >
