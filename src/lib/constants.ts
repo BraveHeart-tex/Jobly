@@ -138,6 +138,9 @@ export const PORTAL_TYPE_QUERY_KEY = "portalType" as const;
 export const ISO_8601_REGEX =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(?:[+-]\d{2}:\d{2}|Z)$/;
 
+export const URL_REGEX =
+  /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
 export const CONTROL_BUTTON_VARIANT: ButtonVariant = "secondary";
 
 export const LOG_COLORS = {

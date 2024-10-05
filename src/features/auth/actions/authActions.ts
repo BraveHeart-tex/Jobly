@@ -1,4 +1,4 @@
-import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
+import { companyUserService } from "@/features/employer/company/services/userCompanyService";
 import type { CtxUserAttributes } from "@/lib/auth";
 import { validateRequest } from "@/lib/auth/validateRequest";
 
@@ -11,7 +11,7 @@ export const authActions = {
 
     if (ctxUser?.role === "employer") {
       const companyDetails =
-        await userCompanyService.getUserCompanyDetailsByUserId(ctxUser.id);
+        await companyUserService.getCompanyUserDetailsByUserId(ctxUser.id);
       if (!companyDetails) {
         ctxUser.hasToSetupCompanyInformation = true;
       } else {

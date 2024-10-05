@@ -24,7 +24,7 @@ export { default as userBookmarksJobPosting } from "./userBookmarksJobPosting";
 export { default as userFollowsCompany } from "./userFollowsCompany";
 export { default as users, userRelations } from "./users";
 export { default as userViewsJobPosting } from "./userViewsJobPosting";
-export { default as userCompanies } from "./userCompanies";
+export { default as companyUsers } from "./companyUsers";
 export { default as roles } from "./roles";
 export { default as userRoles } from "./userRoles";
 export { default as permissions } from "./permissions";

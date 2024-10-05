@@ -2,7 +2,7 @@ import { db } from "@/server/db";
 import type { CompanySelectModel } from "@/server/db/schema/companies";
 import { TRPCError } from "@trpc/server";
 import { companyRepository } from "../repositories/companyRepository";
-import { userCompanyRepository } from "../repositories/userCompanyRepository";
+import { companyUserRepository } from "../repositories/companyUserRepository";
 import type { CreateCompanyParams } from "../types";
 
 export const companyService = {
@@ -12,7 +12,7 @@ export const companyService = {
         "We encountered a problem while registering the company. Please try again later.";
       try {
         const hasAlreadyCreatedCompany =
-          await userCompanyRepository.checkIfUserHasCompany(
+          await companyUserRepository.checkIfUserHasCompany(
             data.userId,
             transaction,
           );
@@ -39,7 +39,7 @@ export const companyService = {
         }
 
         const userCompanyInsertId =
-          await userCompanyRepository.createUserCompanyRecord(
+          await companyUserRepository.createCompanyUserRecord(
             {
               companyId: insertedCompanyId,
               userId: data.userId,

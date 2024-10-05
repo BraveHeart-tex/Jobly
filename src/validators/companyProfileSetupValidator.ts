@@ -10,8 +10,8 @@ import {
   regex,
   string,
   union,
-  url,
 } from "valibot";
+import { UrlValidator } from "./schemaUtils";
 
 const currentYear = new Date().getFullYear();
 const MIN_YEAR_OF_ESTABLISHMENT = 1800 as const;
@@ -30,10 +30,7 @@ const yearOfEstablishmentSchema = pipe(
 export const CompanyProfileValidator = object({
   name: pipe(string(), nonEmpty("Company name is required")),
   bio: pipe(string(), nonEmpty("Please provide a short bio about the company")),
-  website: union([
-    pipe(string(), url("Please enter a valid URL")),
-    literal(""),
-  ]),
+  website: union([UrlValidator, literal("")]),
   industry: pipe(string(), nonEmpty("Company industry is required")),
   address: optional(string(), ""),
   yearOfEstablishment: yearOfEstablishmentSchema,

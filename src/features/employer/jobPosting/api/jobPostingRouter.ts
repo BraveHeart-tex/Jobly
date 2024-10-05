@@ -1,4 +1,4 @@
-import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
+import { companyUserService } from "@/features/employer/company/services/userCompanyService";
 import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
@@ -20,7 +20,7 @@ export const jobPostingRouter = createTRPCRouter({
       ),
     )
     .query(async ({ ctx, input }) => {
-      const company = await userCompanyService.getUserCompanyDetailsByUserId(
+      const company = await companyUserService.getCompanyUserDetailsByUserId(
         ctx.user.id,
       );
       if (!company) {

@@ -1,5 +1,5 @@
 import { companyService } from "@/features/employer/company/services/companyService";
-import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
+import { companyUserService } from "@/features/employer/company/services/userCompanyService";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { CompanyProfileValidator } from "@/validators/companyProfileSetupValidator";
 import { TRPCError } from "@trpc/server";
@@ -26,8 +26,8 @@ export const companyRouter = createTRPCRouter({
         companyId: createCompanyResult.companyId,
       };
     }),
-  getUserCompanyDetailsByUserId: protectedProcedure.query(async ({ ctx }) => {
+  getCompanyUserDetailsByUserId: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.user.id;
-    return userCompanyService.getUserCompanyDetailsByUserId(userId);
+    return companyUserService.getCompanyUserDetailsByUserId(userId);
   }),
 });

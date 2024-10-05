@@ -12,7 +12,7 @@ export interface CreateCompanySuccess {
   companyId: CompanySelectModel["id"];
 }
 
-export interface VerifyUserCompanyAssociationParams {
+export interface VerifyCompanyUserAssociationParams {
   userId: number;
   companyId: number;
 }

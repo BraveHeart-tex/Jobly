@@ -1,18 +1,18 @@
 import type { DBUser } from "@/server/db/schema/users";
-import { userCompanyRepository } from "../repositories/userCompanyRepository";
+import { companyUserRepository } from "../repositories/companyUserRepository";
 
-export const userCompanyService = {
+export const companyUserService = {
   async checkIfUserHasCompany(userId: DBUser["id"]) {
-    return await userCompanyRepository.checkIfUserHasCompany(userId);
+    return await companyUserRepository.checkIfUserHasCompany(userId);
   },
-  async getUserCompanyDetailsByUserId(userId: DBUser["id"]) {
-    return await userCompanyRepository.getUserCompanyDetailsByUserId(userId);
+  async getCompanyUserDetailsByUserId(userId: DBUser["id"]) {
+    return await companyUserRepository.getCompanyUserDetailsByUserId(userId);
   },
-  async verifyUserCompanyAssociation({
+  async verifyCompanyUserAssociation({
     userId,
     companyId,
   }: { userId: DBUser["id"]; companyId: number }) {
-    return await userCompanyRepository.verifyUserCompanyAssociation({
+    return await companyUserRepository.verifyCompanyUserAssociation({
       userId,
       companyId,
     });

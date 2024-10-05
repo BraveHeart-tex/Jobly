@@ -10,12 +10,12 @@ import {
   picklist,
   pipe,
   string,
-  url,
   partial,
   nullish,
   union,
   literal,
 } from "valibot";
+import { UrlValidator } from "./schemaUtils";
 
 export const JobTrackerApplicationValidator = object({
   id: number(),
@@ -39,9 +39,7 @@ export const JobTrackerApplicationValidator = object({
     nonEmpty("Location is required"),
     maxLength(512, "Location cannot exceed 512 characters"),
   ),
-  url: nullish(
-    union([pipe(string(), url("Please enter a valid URL")), literal("")]),
-  ),
+  url: nullish(union([UrlValidator, literal("")])),
   salary: nullish(
     union([
       pipe(
