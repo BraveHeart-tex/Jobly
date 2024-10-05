@@ -1,17 +1,22 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { skills } from "@/server/db/schema";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
 import { skillsService } from "../services/skillsService";
+import { object, parser, string } from "valibot";
+import { SkillInsertValidator } from "@/validators/skillValidator";
 
 export const skillsRouter = createTRPCRouter({
   getSkillsByName: protectedProcedure
-    .input(z.object({ query: z.string() }))
+    .input(
+      parser(
+        object({
+          query: string(),
+        }),
+      ),
+    )
     .query(async ({ input }) => {
       return await skillsService.getSkillsByName(input.query);
     }),
   createSkill: protectedProcedure
-    .input(createInsertSchema(skills))
+    .input(parser(SkillInsertValidator))
     .mutation(async ({ input }) => {
       return await skillsService.createSkill(input);
     }),

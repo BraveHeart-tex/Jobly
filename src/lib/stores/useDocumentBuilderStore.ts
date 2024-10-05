@@ -3,28 +3,28 @@ import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSecti
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
+import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-type SetSectionValueParams<K extends keyof DocumentSection> = {
+interface SetSectionValueParams<K extends keyof DocumentSection> {
   sectionId: DocumentSection["id"];
   key: K;
   value: DocumentSection[K];
-};
+}
 
-type SaveDocumentDetailsParams = Partial<DocumentBuilderConfig>;
-
-type DocumentBuilderState = {
+interface DocumentBuilderState {
   initialized: boolean;
   document: DocumentSelectModel;
   sections: DocumentSection[];
   fields: DocumentSectionField[];
   fieldValues: DocumentSectionFieldValue[];
-  saveDocumentDetailsFn: (documentData: SaveDocumentDetailsParams) => unknown;
-  pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
-};
+  saveDocumentDetailsFn: (documentData: SaveDocumentDetailsData) => unknown;
 
-type DocumentBuilderActions = {
+  pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
+}
+
+interface DocumentBuilderActions {
   initializeState: (initialState: DocumentBuilderConfig) => void;
   setDocumentObject: (document: DocumentSelectModel) => void;
   setDocumentValue: <K extends keyof DocumentSelectModel>(
@@ -41,7 +41,7 @@ type DocumentBuilderActions = {
     fieldId: DocumentSectionField["id"],
     newValue: string,
   ) => void;
-  callSaveDocumentDetailsFn: (data: SaveDocumentDetailsParams) => void;
+  callSaveDocumentDetailsFn: (data: SaveDocumentDetailsData) => void;
   addSection: (section: DocumentSection) => void;
   addField: (field: DocumentSectionField) => void;
   addFieldValue: (fieldValue: DocumentSectionFieldValue) => void;
@@ -50,7 +50,7 @@ type DocumentBuilderActions = {
   callPdfUpdaterCallback: () => void;
   setFields: (fields: DocumentSectionField[]) => void;
   setSections: (sections: DocumentSection[]) => void;
-};
+}
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
 

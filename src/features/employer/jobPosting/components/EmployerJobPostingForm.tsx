@@ -31,10 +31,6 @@ import {
   capitalizeString,
   generateReadableEnumLabel,
 } from "@/lib/utils/stringUtils";
-import type { UpdateJobPostingSchema } from "@/schemas/employer/updateJobPostingSchema";
-import employerJobPostingFormSchema, {
-  type EmployerJobPostingFormSchema,
-} from "@/schemas/jobPostingFormSchema";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
@@ -43,7 +39,13 @@ import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
 
-const jobPostingFormSteps: StepItem<EmployerJobPostingFormSchema>[] = [
+import { oneWeekFromNow } from "@/validators/jobPostingValidator";
+import {
+  type EmployerJobPostingFormOutput,
+  EmployerJobPostingFormValidator,
+} from "@/validators/jobPostingFormValidator";
+
+const jobPostingFormSteps: StepItem<EmployerJobPostingFormOutput>[] = [
   {
     stepTitle: "Job Basics",
     fields: ["title", "location", "workType", "employmentType"],
@@ -68,17 +70,28 @@ const DESCRIPTION_EXPIRY_STEP = 3;
 const SUMMARY_STEP = 4;
 
 interface EmployerJobPostingFormProps {
-  initialData?: MakeFieldsRequired<EmployerJobPostingFormSchema, "id">;
+  initialData?: MakeFieldsRequired<EmployerJobPostingFormOutput, "id">;
 }
 
 const EmployerJobPostingForm = ({
   initialData,
 }: EmployerJobPostingFormProps) => {
   const router = useRouter();
-  const form = useExtendedForm<EmployerJobPostingFormSchema>(
-    employerJobPostingFormSchema,
+  const form = useExtendedForm<EmployerJobPostingFormOutput>(
+    EmployerJobPostingFormValidator,
     {
-      defaultValues: initialData,
+      defaultValues: {
+        skills: [],
+        title: "",
+        location: "",
+        workType: "office",
+        salaryRange: "",
+        postingContent: "",
+        employmentType: "full-time",
+        expiresAt: oneWeekFromNow,
+        status: "draft",
+        ...initialData,
+      },
     },
   );
   const isEditMode = !!initialData;
@@ -131,11 +144,12 @@ const EmployerJobPostingForm = ({
     form,
   });
 
-  const onSubmit = (
-    values: EmployerJobPostingFormSchema | UpdateJobPostingSchema,
-  ) => {
+  const onSubmit = (values: EmployerJobPostingFormOutput) => {
     if (isEditMode) {
-      updateJobPosting(values as UpdateJobPostingSchema);
+      updateJobPosting({
+        ...values,
+        id: values.id as number,
+      });
       return;
     }
 
@@ -312,7 +326,7 @@ const EmployerJobPostingForm = ({
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <MultiStepFormSummary<EmployerJobPostingFormSchema>
+        <MultiStepFormSummary<EmployerJobPostingFormOutput>
           goToStepByKey={goToStepByKey}
           summarizedSteps={[
             {
@@ -398,9 +412,9 @@ const EmployerJobPostingForm = ({
     );
   };
 
-  const onFormError = (errors: FieldErrors<EmployerJobPostingFormSchema>) => {
+  const onFormError = (errors: FieldErrors<EmployerJobPostingFormOutput>) => {
     goToFirstErroredStep(
-      Object.keys(errors) as (keyof EmployerJobPostingFormSchema)[],
+      Object.keys(errors) as (keyof EmployerJobPostingFormOutput)[],
     );
   };
 

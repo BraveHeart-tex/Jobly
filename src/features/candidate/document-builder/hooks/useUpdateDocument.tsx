@@ -3,6 +3,7 @@ import { toast } from "sonner";
 
 export const useUpdateDocument = () => {
   const queryClientUtils = api.useUtils();
+
   const { mutate: updateDocument, isPending } =
     api.document.updateDocument.useMutation({
       onMutate: async (variables) => {

@@ -1,16 +1,18 @@
-import { jobTrackerApplicationSchema } from "@/schemas/jobTrackerApplicationSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobTrackerApplications } from "@/server/db/schema";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { z } from "zod";
 import { jobTrackerApplicationService } from "../services/jobTrackerApplicationService";
+import { array, number, object, parser, picklist } from "valibot";
+import {
+  JobTrackerApplicationInsertValidator,
+  JobTrackerApplicationValidator,
+} from "@/validators/jobTrackerApplicationValidator";
 
 export const jobTrackerRouter = createTRPCRouter({
   getJobTrackerApplications: protectedProcedure.query(async ({ ctx }) => {
     return jobTrackerApplicationService.getApplications(ctx.user.id);
   }),
   addJobTrackerApplication: protectedProcedure
-    .input(jobTrackerApplicationSchema)
+    .input(parser(JobTrackerApplicationInsertValidator))
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.createApplication({
         ...input,
@@ -18,7 +20,13 @@ export const jobTrackerRouter = createTRPCRouter({
       });
     }),
   deleteById: protectedProcedure
-    .input(createSelectSchema(jobTrackerApplications).pick({ id: true }))
+    .input(
+      parser(
+        object({
+          id: number(),
+        }),
+      ),
+    )
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.deleteApplication({
         id: input.id,
@@ -26,11 +34,7 @@ export const jobTrackerRouter = createTRPCRouter({
       });
     }),
   updateJobTrackerApplication: protectedProcedure
-    .input(
-      createInsertSchema(jobTrackerApplications).required({
-        id: true,
-      }),
-    )
+    .input(parser(JobTrackerApplicationValidator))
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.updateApplication({
         ...input,
@@ -39,9 +43,11 @@ export const jobTrackerRouter = createTRPCRouter({
     }),
   deleteByStatus: protectedProcedure
     .input(
-      createSelectSchema(jobTrackerApplications).pick({
-        status: true,
-      }),
+      parser(
+        object({
+          status: picklist(jobTrackerApplications.status.enumValues),
+        }),
+      ),
     )
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.deleteApplicationsByStatus({
@@ -51,11 +57,14 @@ export const jobTrackerRouter = createTRPCRouter({
     }),
   updateStatusAndOrder: protectedProcedure
     .input(
-      z.object({
-        data: createInsertSchema(jobTrackerApplications).array(),
-      }),
+      parser(
+        object({
+          data: array(JobTrackerApplicationValidator),
+        }),
+      ),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.data.length === 0) return;
       return jobTrackerApplicationService.saveApplicationDetails(
         input.data.map((item) => ({
           ...item,

@@ -4,8 +4,8 @@ import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import companies from "./companies";
 import users from "./users";
 
-const userCompanies = mysqlTable(
-  "UserCompanies",
+const companyUsers = mysqlTable(
+  "CompanyUsers",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
     userId: int("userId")
@@ -22,7 +22,7 @@ const userCompanies = mysqlTable(
     return {
       UserCompany_id: primaryKey({
         columns: [table.id],
-        name: "UserCompany_id",
+        name: "CompanyUser_id",
       }),
       userId: index("userId").on(table.userId),
       companyId: index("companyId").on(table.companyId),
@@ -30,7 +30,7 @@ const userCompanies = mysqlTable(
   },
 );
 
-export type UserCompany = InferSelectModel<typeof userCompanies>;
-export type UserCompanyInsertModel = InferInsertModel<typeof userCompanies>;
+export type CompanyUserSelectModel = InferSelectModel<typeof companyUsers>;
+export type CompanyUserInsertModel = InferInsertModel<typeof companyUsers>;
 
-export default userCompanies;
+export default companyUsers;

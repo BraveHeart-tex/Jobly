@@ -1,14 +1,13 @@
-import { zodErrorMap } from "@/lib/zodErrorMap";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type FieldValues,
   type Path,
   type UseFormProps,
   type UseFormReturn,
   useForm,
+  type DefaultValues,
 } from "react-hook-form";
-import type { ZodObject } from "zod";
-import { getDefaultValuesFromZodSchema } from "./utils";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import { getDefaults, type ObjectSchema } from "valibot";
 
 export type ExtendedUseFormReturn<
   TFieldValues extends FieldValues,
@@ -25,21 +24,30 @@ export const useExtendedForm = <
   TTransformedValues extends FieldValues | undefined = undefined,
 >(
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  schema: ZodObject<any>,
+  validator: ObjectSchema<any, any>,
   props?: UseFormProps<TFieldValues, TContext>,
 ): ExtendedUseFormReturn<TFieldValues, TContext, TTransformedValues> => {
-  const defaultValues =
-    props?.defaultValues ||
-    (getDefaultValuesFromZodSchema(schema) as TFieldValues) ||
-    ({} as TFieldValues);
+  const defaultValuesFromSchema = getDefaults(
+    validator,
+  ) as DefaultValues<TFieldValues>;
+
+  const filteredDefaultValues = Object.keys(defaultValuesFromSchema).reduce(
+    (acc, key) => {
+      if (defaultValuesFromSchema[key] !== undefined) {
+        acc[key] = defaultValuesFromSchema[key];
+      }
+      return acc;
+    },
+    {} as DefaultValues<TFieldValues>,
+  );
 
   const form = useForm<TFieldValues, TContext, TTransformedValues>({
     ...props,
-    // @ts-ignore
-    defaultValues,
-    resolver: zodResolver(schema, {
-      errorMap: zodErrorMap,
-    }),
+    defaultValues: {
+      ...filteredDefaultValues,
+      ...(props?.defaultValues || {}),
+    },
+    resolver: valibotResolver(validator),
   });
 
   const setInitialValues = (values: Record<Path<TFieldValues>, unknown>) => {

@@ -1,7 +1,7 @@
-import type { Transaction } from "@/lib/types";
+import type { MakeFieldsRequired, Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import { jobPostings, users } from "@/server/db/schema";
-import type { JobPostingSelectModel } from "@/server/db/schema/jobPostings";
+import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 import { getCurrentTimestamp } from "@/server/db/utils";
 import { and, desc, eq, gt, lt, sql } from "drizzle-orm";
 import type { CreateJobPostingParams } from "../../company/types";
@@ -76,7 +76,9 @@ export const employerJobPostingRepository = {
       where: () => eq(jobPostings.id, id),
     });
   },
-  async updateJobPosting(data: JobPostingSelectModel) {
+  async updateJobPosting(
+    data: MakeFieldsRequired<JobPostingInsertModel, "id">,
+  ) {
     return db.update(jobPostings).set(data).where(eq(jobPostings.id, data.id));
   },
 };

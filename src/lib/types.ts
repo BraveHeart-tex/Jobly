@@ -50,3 +50,22 @@ export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
 export type Nullable<T> = T | null;
 
 export type ValueOf<T> = T[keyof T];
+
+export interface JobListingItem {
+  id: number;
+  companyId: number;
+  title: string;
+  location: string;
+  workType: string;
+  salaryRange?: string | null;
+  postingContent: string;
+  employmentType: string;
+  status: string;
+  postedAt: string;
+  createdUserId: number;
+  expiresAt: string;
+  updatedAt: string;
+  company: { name: string; logo?: string | null };
+  userViewedJob: number;
+  userBookmarkedJob?: number | null;
+}

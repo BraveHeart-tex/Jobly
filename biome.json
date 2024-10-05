@@ -50,9 +50,7 @@
         "useHookAtTopLevel": "error",
         "noUnusedImports": "warn",
         "noUnusedVariables": "warn",
-        "noUnreachable": "error",
-        "noUndeclaredDependencies": "off",
-        "useImportExtensions": "off"
+        "noUnreachable": "error"
       },
       "recommended": true
     },

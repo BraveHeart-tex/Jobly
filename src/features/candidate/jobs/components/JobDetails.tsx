@@ -110,7 +110,7 @@ const JobDetails = ({ currentJobId }: JobDetailsProps) => {
         >
           <ArrowLeft size={18} />
         </Button>
-        <div className={cn(view === "jobDetails" && "block lg:hidden")}>
+        <div className={cn("lg:hidden", view === "jobDetails" && "block")}>
           {renderActionButtons()}
         </div>
       </div>

@@ -19,8 +19,7 @@ import {
   normalizeDocumentStructure,
 } from "@/features/candidate/documents/utils";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
-import type { MakeFieldsRequired, Transaction } from "@/lib/types";
-import type { SaveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
+import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import {
   documentSectionFields as fieldSchema,
@@ -40,6 +39,8 @@ import type {
   DocumentInsertModel,
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
+import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
+import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
 import type { User } from "lucia";
 
@@ -60,9 +61,7 @@ export const deleteDocument = async ({
   });
 };
 
-export const updateDocument = async (
-  input: MakeFieldsRequired<Partial<DocumentSelectModel>, "id">,
-) => {
+export const updateDocument = async (input: DocumentUpdateData) => {
   return updateDocumentById(input);
 };
 
@@ -71,17 +70,12 @@ export const createDocumentAndRelatedEntities = async (
   user: User,
 ) => {
   return await db.transaction(async (trx) => {
-    const [documentInsertResponse] = await upsertDocument(
-      trx,
-      documentCreateInput,
-    );
+    const documentId = await upsertDocument(trx, documentCreateInput);
 
-    if (!documentInsertResponse) {
+    if (!documentId) {
       trx.rollback();
       return;
     }
-
-    const documentId = documentInsertResponse.id;
 
     const sectionInsertTemplates =
       getPredefinedDocumentSectionsWithDocumentId(documentId);
@@ -199,19 +193,26 @@ export const getDocumentDetails = async ({
 };
 
 export const saveDocumentAndRelatedEntities = async (
-  input: Partial<SaveDocumentDetailsSchema> & { userId: User["id"] },
+  input: SaveDocumentDetailsData,
 ) => {
   const { document, sections, fields, fieldValues } = input;
+
   await db.transaction(async (trx) => {
-    if (document) {
-      await upsertDocument(trx, document);
-    }
+    const documentInsertPromise = document
+      ? upsertDocument(trx, document)
+      : undefined;
     const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
     const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
     const fieldValueInserts = fieldValues
       ? upsertSectionFieldValues(trx, fieldValues)
       : undefined;
-    await Promise.all([sectionInserts, fieldInserts, fieldValueInserts]);
+
+    await Promise.all([
+      documentInsertPromise,
+      sectionInserts,
+      fieldInserts,
+      fieldValueInserts,
+    ]);
   });
 };
 

@@ -1,4 +1,4 @@
-import { userCompanyService } from "@/features/employer/company/services/userCompanyService";
+import { companyUserService } from "@/features/employer/company/services/userCompanyService";
 import type { CtxUserAttributes } from "@/lib/auth";
 import type { Transaction } from "@/lib/types";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
@@ -29,7 +29,7 @@ export const ensureEmployerCompanyLink = async (user: CtxUserAttributes) => {
     });
   }
 
-  const company = await userCompanyService.getUserCompanyDetailsByUserId(
+  const company = await companyUserService.getCompanyUserDetailsByUserId(
     user.id,
   );
 
@@ -41,7 +41,7 @@ export const ensureEmployerCompanyLink = async (user: CtxUserAttributes) => {
   }
 
   const isAssociatedWithCompany =
-    await userCompanyService.verifyUserCompanyAssociation({
+    await companyUserService.verifyCompanyUserAssociation({
       userId: user.id,
       companyId: company.id,
     });

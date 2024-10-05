@@ -1,5 +1,4 @@
 import type { MakeFieldsRequired, Nullable } from "@/lib/types";
-import type { GetJobListingsSchema } from "@/schemas/getJobListingsSchema";
 import { db } from "@/server/db";
 import {
   companies,
@@ -14,6 +13,7 @@ import type {
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import type { User } from "lucia";
 import { withBookmarkJoin, withUserViewsJobJoin } from "../utils";
+import type { GetJobListingsOutput } from "@/validators/getJobListingsValidator";
 
 export const jobRepository = {
   async getJobDetailsList({
@@ -199,7 +199,7 @@ export const jobRepository = {
   },
 };
 
-interface GetJobDetailsListParams extends Omit<GetJobListingsSchema, "page"> {
+interface GetJobDetailsListParams extends Omit<GetJobListingsOutput, "page"> {
   workType?: Nullable<JobPostingSelectModel["workType"]>;
   employmentType?: Nullable<JobPostingSelectModel["employmentType"]>;
   userId: User["id"];

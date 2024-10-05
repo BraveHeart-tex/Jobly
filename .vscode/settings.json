@@ -2,7 +2,6 @@
   "editor.defaultFormatter": "biomejs.biome",
   "biome.enabled": true,
   "eslint.enable": false,
-  "gitlens.currentLine.enabled": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "[postcss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -58,9 +57,11 @@
     "cmdk",
     "datetime",
     "DTOs",
+    "hookform",
     "Inno",
     "ilike",
     "Jiti",
+    "jobly",
     "lucide",
     "luxon",
     "Millis",
@@ -68,6 +69,7 @@
     "nums",
     "nuqs",
     "pdfs",
+    "picklist",
     "Pilcrow",
     "runtimes",
     "sonner",
@@ -79,6 +81,8 @@
     "TRPC",
     "Unsave",
     "UPLOADTHING",
+    "Vali",
+    "valibot",
     "zustand",
     "zxcvbn"
   ]

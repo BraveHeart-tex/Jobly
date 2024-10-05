@@ -15,12 +15,13 @@ import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import { compareMatchingKeys } from "@/lib/utils/objectUtils";
-import {
-  type JobTrackerApplicationSchema,
-  jobTrackerApplicationSchema,
-} from "@/schemas/jobTrackerApplicationSchema";
 import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
+import {
+  JobTrackerFormValidator,
+  type JobTrackerApplicationInput,
+  type JobTrackerApplicationOutput,
+} from "@/validators/jobTrackerApplicationValidator";
 import {
   BanknoteIcon,
   BriefcaseBusinessIcon,
@@ -32,7 +33,7 @@ import {
 import { toast } from "sonner";
 
 interface JobTrackerApplicationFormProps {
-  defaultValues?: Partial<JobTrackerApplicationSchema>;
+  defaultValues?: Partial<JobTrackerApplicationOutput>;
   onFormSubmit?: () => void;
 }
 
@@ -40,6 +41,7 @@ const JobTrackerApplicationForm = ({
   defaultValues,
   onFormSubmit,
 }: JobTrackerApplicationFormProps) => {
+  const userId = useCurrentUserStore((state) => state.user?.id) as number;
   const trackedApplications = useJobTrackerBoardStore(
     (state) => state.trackedApplications,
   );
@@ -100,14 +102,22 @@ const JobTrackerApplicationForm = ({
         setApplications(context?.oldApplications ?? []);
       },
     });
+
   const availableDisplayOrder = trackedApplications.filter(
     (item) => item.status === defaultValues?.status,
   ).length;
-  const userId = useCurrentUserStore((state) => state.user?.id) as number;
-  const form = useExtendedForm<JobTrackerApplicationSchema>(
-    jobTrackerApplicationSchema,
+
+  const form = useExtendedForm<JobTrackerApplicationInput>(
+    JobTrackerFormValidator,
     {
       defaultValues: {
+        company: "",
+        jobTitle: "",
+        location: "",
+        url: "",
+        salary: "",
+        notes: "",
+        jobDescription: "",
         ...defaultValues,
         userId,
         displayOrder: defaultValues?.displayOrder || availableDisplayOrder + 1,
@@ -116,7 +126,7 @@ const JobTrackerApplicationForm = ({
   );
   const mode = form.watch("id") ? ("edit" as const) : ("create" as const);
 
-  const onSubmit = (values: JobTrackerApplicationSchema) => {
+  const onSubmit = (values: JobTrackerApplicationInput) => {
     if (isAdding || isUpdating) return;
 
     if (mode === "create") {
@@ -132,7 +142,7 @@ const JobTrackerApplicationForm = ({
 
       updateJobTrackerApplication({
         ...values,
-        // biome-ignore lint/style/noNonNullAssertion: ID will be here because we are in edit mode
+        // biome-ignore lint/style/noNonNullAssertion: id will be here because we are in edit mode
         id: values.id!,
       });
     }

@@ -23,16 +23,16 @@ import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { cn } from "@/lib/utils";
 import { isObjectEmpty } from "@/lib/utils/objectUtils";
-import {
-  type CompanyProfileSetupSchema,
-  companyProfileSetupSchema,
-} from "@/schemas/companyProfileSetupSchema";
 import { api } from "@/trpc/react";
+import {
+  CompanyProfileValidator,
+  type CompanyProfileOutput,
+} from "@/validators/companyProfileSetupValidator";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 
-const companyProfileSteps: StepItem<CompanyProfileSetupSchema>[] = [
+const companyProfileSteps: StepItem<CompanyProfileOutput>[] = [
   {
     stepTitle: "Basic Information",
     fields: ["name", "industry", "website"],
@@ -73,9 +73,19 @@ const companySizeOptions = [
 ];
 
 const CompanyProfileSetup = () => {
-  const form = useExtendedForm<CompanyProfileSetupSchema>(
-    companyProfileSetupSchema,
-  );
+  const form = useExtendedForm<CompanyProfileOutput>(CompanyProfileValidator, {
+    defaultValues: {
+      name: "",
+      bio: "",
+      website: "",
+      industry: "",
+      address: "",
+      yearOfEstablishment: "",
+      companySize: "",
+      areasOfExpertise: "",
+      description: "",
+    },
+  });
   const router = useRouter();
   const { mutate: registerCompanyDetails, isPending } =
     api.company.registerCompanyDetails.useMutation({
@@ -107,13 +117,13 @@ const CompanyProfileSetup = () => {
     goToFirstErroredStep,
     handleStepChange,
     goToStepByKey,
-  } = useMultiStepForm<CompanyProfileSetupSchema>({
+  } = useMultiStepForm<CompanyProfileOutput>({
     steps: companyProfileSteps,
     form,
     disabledSteps,
   });
 
-  const onSubmit = (values: CompanyProfileSetupSchema) => {
+  const onSubmit = (values: CompanyProfileOutput) => {
     registerCompanyDetails(values);
   };
 
@@ -264,7 +274,7 @@ const CompanyProfileSetup = () => {
 
     if (currentStep === SUMMARY_STEP) {
       return (
-        <MultiStepFormSummary<CompanyProfileSetupSchema>
+        <MultiStepFormSummary<CompanyProfileOutput>
           goToStepByKey={goToStepByKey}
           summarizedSteps={[
             {
@@ -354,10 +364,8 @@ const CompanyProfileSetup = () => {
     );
   };
 
-  const onFormError = (errors: FieldErrors<CompanyProfileSetupSchema>) => {
-    goToFirstErroredStep(
-      Object.keys(errors) as (keyof CompanyProfileSetupSchema)[],
-    );
+  const onFormError = (errors: FieldErrors<CompanyProfileOutput>) => {
+    goToFirstErroredStep(Object.keys(errors) as (keyof CompanyProfileOutput)[]);
   };
 
   return (

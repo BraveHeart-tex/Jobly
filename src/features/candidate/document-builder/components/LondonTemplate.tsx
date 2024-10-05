@@ -471,6 +471,7 @@ const EmploymentHistorySection = ({
           <View
             style={{
               display: "flex",
+              gap: 10,
             }}
           >
             {employmentHistoryItems.map((item) => (
@@ -565,6 +566,7 @@ const EducationSection = ({
           <View
             style={{
               display: "flex",
+              gap: 10,
             }}
           >
             {educationSectionItems.map((item) => (
@@ -775,6 +777,7 @@ const InternshipsSection = ({
           <View
             style={{
               display: "flex",
+              gap: 10,
             }}
           >
             {internshipsSectionItems.map((item) => (

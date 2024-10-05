@@ -1,21 +1,25 @@
 import * as documentService from "@/features/candidate/documents/services/documentService";
-import { saveDocumentDetailsSchema } from "@/schemas/saveDocumentDetailsSchema";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
-  documentSectionFields,
-  documentSections,
-  documents,
-} from "@/server/db/schema";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
+  DocumentInsertValidator,
+  DocumentUpdateValidator,
+} from "@/validators/user/document/baseDocumentValidator";
+import { DocumentSectionInsertValidator } from "@/validators/user/document/documentSectionValidators";
+import { SaveDocumentDetailsValidator } from "@/validators/user/document/saveDocumentDetailsValidator";
+import { DocumentSectionFieldInsertValidator } from "@/validators/user/document/sectionFieldValidators";
+import {
+  array,
+  minValue,
+  number,
+  object,
+  parser,
+  pipe,
+  partial,
+} from "valibot";
 
 export const documentRouter = createTRPCRouter({
   createDocumentAndRelatedEntities: protectedProcedure
-    .input(
-      createInsertSchema(documents).omit({
-        userId: true,
-      }),
-    )
+    .input(parser(partial(DocumentInsertValidator, ["userId"])))
     .mutation(async ({ input, ctx }) => {
       return documentService.createDocumentAndRelatedEntities(
         {
@@ -26,7 +30,13 @@ export const documentRouter = createTRPCRouter({
       );
     }),
   getDocumentDetails: protectedProcedure
-    .input(createInsertSchema(documents).required().pick({ id: true }))
+    .input(
+      parser(
+        object({
+          id: pipe(number(), minValue(1, "Please provide valid document id.")),
+        }),
+      ),
+    )
     .query(async ({ input, ctx }) => {
       return documentService.getDocumentDetails({
         id: input.id,
@@ -38,16 +48,21 @@ export const documentRouter = createTRPCRouter({
     return documentService.getUserDocuments(userId);
   }),
   updateDocument: protectedProcedure
-    .input(
-      createInsertSchema(documents)
-        .partial()
-        .extend({ id: z.number().min(1) }),
-    )
+    .input(parser(DocumentUpdateValidator))
     .mutation(async ({ input }) => {
       return documentService.updateDocument(input);
     }),
   deleteDocument: protectedProcedure
-    .input(z.object({ documentId: z.number() }))
+    .input(
+      parser(
+        object({
+          documentId: pipe(
+            number(),
+            minValue(1, "Please provide valid document id."),
+          ),
+        }),
+      ),
+    )
     .mutation(async ({ ctx, input: { documentId } }) => {
       const userId = ctx.user.id;
       return documentService.deleteDocument({
@@ -56,39 +71,48 @@ export const documentRouter = createTRPCRouter({
       });
     }),
   saveDocumentAndRelatedEntities: protectedProcedure
-    .input(saveDocumentDetailsSchema.partial())
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.user.id;
-      return documentService.saveDocumentAndRelatedEntities({
-        ...input,
-        userId,
-      });
+    .input(parser(SaveDocumentDetailsValidator))
+    .mutation(async ({ input }) => {
+      return documentService.saveDocumentAndRelatedEntities(input);
     }),
   addFieldsWithValues: protectedProcedure
     .input(
-      z.object({
-        fields: z.array(createInsertSchema(documentSectionFields)),
-      }),
+      parser(
+        object({
+          fields: array(DocumentSectionFieldInsertValidator),
+        }),
+      ),
     )
     .mutation(async ({ input }) => {
       return documentService.addFieldsWithValues(input.fields);
     }),
   removeFields: protectedProcedure
     .input(
-      z.object({
-        fieldIds: z.array(z.number().min(1)),
-      }),
+      parser(
+        object({
+          fieldIds: array(number()),
+        }),
+      ),
     )
     .mutation(async ({ input }) => {
       return documentService.removeFields(input.fieldIds);
     }),
   addSectionByInternalTag: protectedProcedure
-    .input(createInsertSchema(documentSections))
+    .input(parser(DocumentSectionInsertValidator))
     .mutation(async ({ input }) => {
       return documentService.addSectionByInternalTag(input);
     }),
   deleteSection: protectedProcedure
-    .input(z.object({ sectionId: z.number() }))
+    .input(
+      parser(
+        object({
+          sectionId: pipe(
+            number(),
+            minValue(1, "Please provide a valid section id"),
+          ),
+        }),
+      ),
+    )
     .mutation(async ({ input: { sectionId } }) => {
       return documentService.deleteSection(sectionId);
     }),

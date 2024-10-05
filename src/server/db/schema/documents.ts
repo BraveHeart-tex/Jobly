@@ -24,7 +24,6 @@ const documents = mysqlTable(
       .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
-    language: varchar("language", { length: 100 }).notNull(),
     createdAt: customTimestamp("createdAt")
       .$defaultFn(() => getCurrentTimestamp())
       .notNull(),

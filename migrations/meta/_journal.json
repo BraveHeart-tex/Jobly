@@ -274,6 +274,27 @@
       "when": 1727507183527,
       "tag": "0038_robust_king_bedlam",
       "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "5",
+      "when": 1727889525605,
+      "tag": "0039_omniscient_khan",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "5",
+      "when": 1728132104670,
+      "tag": "0040_woozy_morgan_stark",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "5",
+      "when": 1728132144625,
+      "tag": "0041_steady_omega_red",
+      "breakpoints": true
     }
   ]
 }

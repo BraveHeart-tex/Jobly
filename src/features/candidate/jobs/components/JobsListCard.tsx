@@ -1,15 +1,13 @@
 "use client";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
-import type { ArrayElement, RouterOutputs } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
 import { forwardRef } from "react";
 import CompanyLogo from "./CompanyLogo";
+import type { JobListingItem } from "@/lib/types";
 
 interface JobsListCardProps {
-  job: ArrayElement<
-    RouterOutputs["userJobListing"]["getJobListings"]["jobListings"]
-  >;
+  job: JobListingItem;
 }
 
 const JobsListCard = forwardRef<HTMLDivElement, JobsListCardProps>(

@@ -1,20 +1,21 @@
 import { userService } from "@/features/user/services/userService";
-import { PASSWORD_STRENGTH_LEVELS } from "@/lib/constants";
-import { signInSchema } from "@/schemas/auth/signInSchema";
-import { signUpSchema } from "@/schemas/auth/signUpSchema";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { authActions } from "../actions/authActions";
+import { parser } from "valibot";
 import {
-  checkPasswordStrength,
   createSessionWithUserId,
   hashPassword,
   verifyPassword,
 } from "../utils";
+import { SignUpValidator } from "@/validators/auth/signUpValidator";
+import {
+  LoginResponseValidator,
+  LoginValidator,
+} from "@/validators/auth/loginValidator";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
-    .input(signUpSchema)
+    .input(parser(SignUpValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({
@@ -33,29 +34,6 @@ export const authRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message: "The provided email is already in use.",
         });
-      }
-
-      const isPasswordPwned = await authActions.checkPasswordPwned(password);
-
-      if (isPasswordPwned) {
-        return {
-          isPasswordPwned,
-          error:
-            "This password seems to be compromised. Please use a different and stronger password.",
-        };
-      }
-
-      const { score, message: passwordStrengthScoreMessage } =
-        await checkPasswordStrength(password);
-
-      if (
-        score === PASSWORD_STRENGTH_LEVELS.VERY_WEAK ||
-        score === PASSWORD_STRENGTH_LEVELS.WEAK
-      ) {
-        return {
-          isWeakPassword: true,
-          error: passwordStrengthScoreMessage,
-        };
       }
 
       const hashedPassword = await hashPassword(password);
@@ -83,8 +61,9 @@ export const authRouter = createTRPCRouter({
         message: "Account created successfully.",
       };
     }),
-  signIn: publicProcedure
-    .input(signInSchema)
+  login: publicProcedure
+    .input(parser(LoginValidator))
+    .output(parser(LoginResponseValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({

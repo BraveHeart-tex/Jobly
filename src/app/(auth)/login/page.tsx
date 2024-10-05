@@ -1,5 +1,5 @@
 import AuthPageContainer from "@/features/auth/components/AuthPageContainer";
-import SignInForm from "@/features/auth/components/SignInForm";
+import LoginForm from "@/features/auth/components/LoginForm";
 import { validateRequest } from "@/lib/auth/validateRequest";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
@@ -24,7 +24,7 @@ const LoginPage = async ({ searchParams }: LoginPageProps) => {
 
   return (
     <AuthPageContainer portalType={portalType}>
-      <SignInForm portalType={portalType} />
+      <LoginForm portalType={portalType} />
       <div className="mt-1 text-center text-sm">
         Don&apos;t have an account?{" "}
         <Link

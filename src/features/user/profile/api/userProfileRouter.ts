@@ -1,33 +1,32 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { z } from "zod";
 import { userProfileService } from "../services/userProfileService";
+import { number, object, optional, parser } from "valibot";
 
-const optionalUserIdSchema = z
-  .object({
-    userId: z.number().optional().nullable(),
-  })
-  .optional()
-  .default({});
+const optionalUserIdValidator = optional(
+  object({
+    userId: number(),
+  }),
+);
 
 export const userProfileRouter = createTRPCRouter({
   getUserProfileInformation: protectedProcedure
-    .input(optionalUserIdSchema)
+    .input(parser(optionalUserIdValidator))
     .query(async ({ ctx, input }) => {
       const userId = input?.userId || ctx.user.id;
 
       return userProfileService.getUserProfileInformation(userId);
     }),
   getAboutInformation: protectedProcedure
-    .input(optionalUserIdSchema)
+    .input(parser(optionalUserIdValidator))
     .query(async ({ ctx, input }) => {
       const userId = input?.userId || ctx.user.id;
 
       return userProfileService.getAboutInformation(userId);
     }),
   getWorkExperiences: protectedProcedure
-    .input(optionalUserIdSchema)
-    .query(async ({ ctx }) => {}),
+    .input(parser(optionalUserIdValidator))
+    .query(async () => {}),
   getEducationalBackground: protectedProcedure
-    .input(optionalUserIdSchema)
-    .query(async ({ ctx }) => {}),
+    .input(parser(optionalUserIdValidator))
+    .query(async () => {}),
 });

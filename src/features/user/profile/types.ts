@@ -1,3 +1,5 @@
+import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
+import type { SkillSelectModel } from "@/server/db/schema/skills";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
 import type { Duration } from "luxon";
 
@@ -16,4 +18,12 @@ export interface FormatDateRangeWithDurationReturn {
 export interface GroupedExperience {
   employer: string;
   experiences: WorkExperience[];
+}
+
+export interface UserProfileInformation {
+  firstName: string;
+  lastName: string;
+  educationalBackground: EducationalBackground[];
+  skills: (SkillSelectModel & { level: string | null })[];
+  workExperiences: WorkExperience[];
 }
