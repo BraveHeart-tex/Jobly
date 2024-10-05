@@ -64,6 +64,7 @@ export const jobTrackerRouter = createTRPCRouter({
       ),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.data.length === 0) return;
       return jobTrackerApplicationService.saveApplicationDetails(
         input.data.map((item) => ({
           ...item,
