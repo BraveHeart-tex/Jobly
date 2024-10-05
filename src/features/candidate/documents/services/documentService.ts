@@ -70,17 +70,12 @@ export const createDocumentAndRelatedEntities = async (
   user: User,
 ) => {
   return await db.transaction(async (trx) => {
-    const [documentInsertResponse] = await upsertDocument(
-      trx,
-      documentCreateInput,
-    );
+    const documentId = await upsertDocument(trx, documentCreateInput);
 
-    if (!documentInsertResponse) {
+    if (!documentId) {
       trx.rollback();
       return;
     }
-
-    const documentId = documentInsertResponse.id;
 
     const sectionInsertTemplates =
       getPredefinedDocumentSectionsWithDocumentId(documentId);
@@ -201,16 +196,23 @@ export const saveDocumentAndRelatedEntities = async (
   input: SaveDocumentDetailsData,
 ) => {
   const { document, sections, fields, fieldValues } = input;
+
   await db.transaction(async (trx) => {
-    if (document) {
-      await upsertDocument(trx, document);
-    }
+    const documentInsertPromise = document
+      ? upsertDocument(trx, document)
+      : undefined;
     const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
     const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
     const fieldValueInserts = fieldValues
       ? upsertSectionFieldValues(trx, fieldValues)
       : undefined;
-    await Promise.all([sectionInserts, fieldInserts, fieldValueInserts]);
+
+    await Promise.all([
+      documentInsertPromise,
+      sectionInserts,
+      fieldInserts,
+      fieldValueInserts,
+    ]);
   });
 };
 

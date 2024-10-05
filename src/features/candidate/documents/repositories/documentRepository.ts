@@ -24,13 +24,14 @@ export const upsertDocument = async (
   trx: Transaction,
   documentValues: DocumentInsertModel,
 ) => {
-  return trx
+  const [result] = await trx
     .insert(documents)
     .values(documentValues)
     .onDuplicateKeyUpdate({
       set: documentValues,
-    })
-    .$returningId();
+    });
+
+  return result?.insertId;
 };
 
 export const upsertSections = (
