@@ -11,17 +11,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { RouterOutputs } from "@/lib/types";
-import { valibotResolver } from "@hookform/resolvers/valibot";
 import type { DBUser } from "@/server/db/schema/users";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useSignUp } from "../hooks/useSignUp";
 import {
   type SignUpData,
   SignUpValidator,
 } from "@/validators/auth/signUpValidator";
+import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 
 interface SignUpFormProps {
   portalType?: DBUser["role"];
@@ -30,8 +29,13 @@ interface SignUpFormProps {
 const SignUpForm = ({ portalType }: SignUpFormProps) => {
   const router = useRouter();
   const { isSignUpPending, signUp } = useSignUp();
-  const form = useForm<SignUpData>({
-    resolver: valibotResolver(SignUpValidator),
+  const form = useExtendedForm(SignUpValidator, {
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
   });
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState(false);
 
