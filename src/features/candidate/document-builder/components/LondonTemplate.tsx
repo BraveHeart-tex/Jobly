@@ -471,6 +471,7 @@ const EmploymentHistorySection = ({
           <View
             style={{
               display: "flex",
+              gap: 10,
             }}
           >
             {employmentHistoryItems.map((item) => (
