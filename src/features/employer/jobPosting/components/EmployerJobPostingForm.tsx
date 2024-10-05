@@ -38,10 +38,12 @@ import { toast } from "sonner";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
+
+import { oneWeekFromNow } from "@/validators/jobPostingValidator";
 import {
   type EmployerJobPostingFormOutput,
   EmployerJobPostingFormValidator,
-} from "@/validators/jobPostingFormSchema";
+} from "@/validators/jobPostingFormValidator";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormOutput>[] = [
   {
@@ -78,7 +80,18 @@ const EmployerJobPostingForm = ({
   const form = useExtendedForm<EmployerJobPostingFormOutput>(
     EmployerJobPostingFormValidator,
     {
-      defaultValues: initialData,
+      defaultValues: {
+        skills: [],
+        title: "",
+        location: "",
+        workType: "office",
+        salaryRange: "",
+        postingContent: "",
+        employmentType: "full-time",
+        expiresAt: oneWeekFromNow,
+        status: "draft",
+        ...initialData,
+      },
     },
   );
   const isEditMode = !!initialData;
@@ -133,7 +146,10 @@ const EmployerJobPostingForm = ({
 
   const onSubmit = (values: EmployerJobPostingFormOutput) => {
     if (isEditMode) {
-      updateJobPosting(values);
+      updateJobPosting({
+        ...values,
+        id: values.id as number,
+      });
       return;
     }
 

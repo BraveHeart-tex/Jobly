@@ -2,7 +2,7 @@ import type { MakeFieldsRequired } from "@/lib/types";
 import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
 import type { User } from "lucia";
 import { jobRepository } from "../repositories/jobRepository";
-import type { GetJobListingsOutput } from "@/validators/getJobListingsSchema";
+import type { GetJobListingsOutput } from "@/validators/getJobListingsValidator";
 
 export const jobService = {
   async getJobById({

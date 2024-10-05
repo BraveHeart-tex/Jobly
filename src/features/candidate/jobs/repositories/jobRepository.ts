@@ -13,7 +13,7 @@ import type {
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
 import type { User } from "lucia";
 import { withBookmarkJoin, withUserViewsJobJoin } from "../utils";
-import type { GetJobListingsOutput } from "@/validators/getJobListingsSchema";
+import type { GetJobListingsOutput } from "@/validators/getJobListingsValidator";
 
 export const jobRepository = {
   async getJobDetailsList({

@@ -3,7 +3,7 @@ import { employerJobPostingService } from "@/features/employer/jobPosting/servic
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
-import { EmployerJobPostingFormValidator } from "@/validators/jobPostingFormSchema";
+import { EmployerJobPostingFormValidator } from "@/validators/jobPostingFormValidator";
 import { TRPCError } from "@trpc/server";
 import { number, object, optional, parser, picklist, required } from "valibot";
 

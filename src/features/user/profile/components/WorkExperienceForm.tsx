@@ -16,7 +16,7 @@ import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   type WorkExperienceData,
   WorkExperienceValidator,
-} from "@/validators/user/profile/workExperienceSchema";
+} from "@/validators/user/profile/workExperienceValidator";
 import { DateTime } from "luxon";
 import { useState } from "react";
 

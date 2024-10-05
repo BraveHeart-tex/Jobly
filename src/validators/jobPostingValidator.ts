@@ -5,7 +5,6 @@ import {
   type InferOutput,
   check,
   maxLength,
-  minValue,
   nonEmpty,
   nullable,
   number,
@@ -17,17 +16,13 @@ import {
 } from "valibot";
 import { DateTimeValidator } from "./schemaUtils";
 
-const oneWeekFromNow = DateTime.now().plus({ days: 7 }).toISO();
+export const oneWeekFromNow = DateTime.now().plus({ days: 7 }).toISO();
 const POST_EXPIRY_THRESHOLD_DAYS = 60 as const;
 
 // TODO: check iso date time values
 export const JobPostingValidator = pipe(
   object({
-    id: number(),
-    companyId: pipe(
-      number(),
-      minValue(1, "Company id must be greater than or equal to 1"),
-    ),
+    id: optional(number()),
     title: pipe(
       string(),
       nonEmpty("Title is required"),
@@ -48,9 +43,7 @@ export const JobPostingValidator = pipe(
       "full-time",
     ),
     status: optional(picklist(jobPostings.status.enumValues), "draft"),
-    postedAt: optional(DateTimeValidator),
     expiresAt: optional(DateTimeValidator, oneWeekFromNow),
-    updatedAt: optional(DateTimeValidator),
   }),
   check((input) => {
     const expiresAt = DateTime.fromISO(input.expiresAt);
