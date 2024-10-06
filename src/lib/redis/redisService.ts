@@ -50,9 +50,13 @@ export const getFromCache = async (key: string): Promise<string | null> => {
   }
 };
 
-export const saveToCache = async (key: string, value: string) => {
+export const saveToCache = async (
+  key: string,
+  value: string,
+  ttl?: string | number,
+) => {
   try {
-    await client.set(key, value);
+    await client.set(key, value, "EX", ttl || 0);
   } catch (error) {
     console.error(error);
   }

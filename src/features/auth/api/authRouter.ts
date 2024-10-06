@@ -6,13 +6,13 @@ import {
   createSessionWithUserId,
   hashPassword,
   verifyPassword,
+  writeUserToCache,
 } from "../utils";
 import { SignUpValidator } from "@/validators/auth/signUpValidator";
 import {
   LoginResponseValidator,
   LoginValidator,
 } from "@/validators/auth/loginValidator";
-import { getUserKey, saveToCache } from "@/lib/redis/redisService";
 import type { DBUser } from "@/server/db/schema/users";
 import { getCurrentTimestamp } from "@/server/db/utils";
 
@@ -70,7 +70,7 @@ export const authRouter = createTRPCRouter({
 
       await Promise.all([
         createSessionWithUserId(userId),
-        saveToCache(getUserKey(userId), JSON.stringify(createdUser)),
+        writeUserToCache(createdUser),
       ]);
 
       return {
@@ -111,7 +111,7 @@ export const authRouter = createTRPCRouter({
 
       await Promise.all([
         createSessionWithUserId(existingUser.id),
-        saveToCache(getUserKey(existingUser.id), JSON.stringify(existingUser)),
+        writeUserToCache(existingUser),
       ]);
 
       return {
