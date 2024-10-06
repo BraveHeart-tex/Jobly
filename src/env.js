@@ -25,6 +25,7 @@ export const env = createNextjsEnv({
       string(),
       nonEmpty("REDIS_CONNECTION_STRING is required"),
     ),
+    SECRET_CRON_KEY: pipe(string(), nonEmpty("SECRET_CRON_KEY is required")),
   },
 
   client: {},
@@ -34,6 +35,7 @@ export const env = createNextjsEnv({
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     REDIS_CONNECTION_STRING: process.env.REDIS_CONNECTION_STRING,
+    SECRET_CRON_KEY: process.env.SECRET_CRON_KEY,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

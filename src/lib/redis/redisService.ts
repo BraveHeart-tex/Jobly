@@ -80,3 +80,16 @@ export const deleteMultipleKeysFromCache = async (
     throw error;
   }
 };
+
+export const getMatchingKeys = async (pattern: string): Promise<string[]> => {
+  const matchingKeys: string[] = [];
+  let cursor = "0";
+
+  do {
+    const result = await client.scan(cursor, "MATCH", pattern, "COUNT", 100);
+    cursor = result[0];
+    matchingKeys.push(...result[1]);
+  } while (cursor !== "0");
+
+  return matchingKeys;
+};
