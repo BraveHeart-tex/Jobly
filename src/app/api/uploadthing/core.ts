@@ -1,4 +1,4 @@
-import { uncachedValidateRequest } from "@/lib/auth/validateRequest";
+import { validateRequest } from "@/lib/auth/validateRequest";
 import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
@@ -9,7 +9,7 @@ export const fileRouter = {
     image: { maxFileSize: "4MB" },
   })
     .middleware(async () => {
-      const { user } = await uncachedValidateRequest();
+      const { user } = await validateRequest();
 
       if (!user) throw new UploadThingError("Unauthorized");
 

@@ -1,7 +1,6 @@
 import { lucia } from "@/lib/auth/index";
 import type { Session, User } from "lucia";
 import { cookies } from "next/headers";
-import { cache } from "react";
 import {
   deleteFromCache,
   getFromCache,
@@ -13,24 +12,23 @@ type SessionValidationResult =
   | { user: User; session: Session }
   | { user: null; session: null };
 
-export const uncachedValidateRequest =
-  async (): Promise<SessionValidationResult> => {
-    const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-    if (!sessionId) {
-      return { user: null, session: null };
-    }
+export const validateRequest = async (): Promise<SessionValidationResult> => {
+  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  if (!sessionId) {
+    return { user: null, session: null };
+  }
 
-    const sessionResultFromCache = await getSessionFromCache(sessionId);
-    if (sessionResultFromCache) {
-      const { session } = sessionResultFromCache;
-      await handleSessionCookie(session, sessionId);
-      return sessionResultFromCache;
-    }
+  const sessionResultFromCache = await getSessionFromCache(sessionId);
+  if (sessionResultFromCache) {
+    const { session } = sessionResultFromCache;
+    await handleSessionCookie(session, sessionId);
+    return sessionResultFromCache;
+  }
 
-    const result = await lucia.validateSession(sessionId);
-    await handleSessionCookie(result?.session, sessionId);
-    return result;
-  };
+  const result = await lucia.validateSession(sessionId);
+  await handleSessionCookie(result?.session, sessionId);
+  return result;
+};
 
 const handleSessionCookie = async (
   session: Session | null,
@@ -90,5 +88,3 @@ const getSessionFromCache = async (
     session: parsedSession,
   };
 };
-
-export const validateRequest = cache(uncachedValidateRequest);
