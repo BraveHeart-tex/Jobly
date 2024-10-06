@@ -21,6 +21,10 @@ export const env = createNextjsEnv({
       string(),
       nonEmpty("UPLOADTHING_APP_ID is required"),
     ),
+    REDIS_CONNECTION_STRING: pipe(
+      string(),
+      nonEmpty("REDIS_CONNECTION_STRING is required"),
+    ),
   },
 
   client: {},
@@ -29,6 +33,7 @@ export const env = createNextjsEnv({
     NODE_ENV: process.env.NODE_ENV,
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+    REDIS_CONNECTION_STRING: process.env.REDIS_CONNECTION_STRING,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

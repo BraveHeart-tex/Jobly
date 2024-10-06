@@ -163,3 +163,5 @@ export const EMPLOYMENT_TYPES = [
 ] as const;
 
 export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;
+
+export const SESSION_CACHE_TTL_SECONDS = 30 * 60 * 24 * 1000; // 30 days
