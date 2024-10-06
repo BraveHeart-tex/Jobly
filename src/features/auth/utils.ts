@@ -1,6 +1,12 @@
 "use server";
 import { lucia } from "@/lib/auth";
 import { validateRequest } from "@/lib/auth/validateRequest";
+import {
+  deleteFromCache,
+  getSessionKey,
+  getUserKey,
+  saveToCache,
+} from "@/lib/redis/redisService";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
@@ -27,15 +33,21 @@ export const verifyPassword = async (
 
 export const createSessionWithUserId = async (userId: DBUser["id"]) => {
   const session = await lucia.createSession(userId, {});
+
   const sessionCookie = lucia.createSessionCookie(session.id);
   cookies().set(
     sessionCookie.name,
     sessionCookie.value,
     sessionCookie.attributes,
   );
+
+  await saveToCache(getSessionKey(session.id), JSON.stringify(session));
 };
 
-export const signOut = async (role: DBUser["role"]) => {
+export const signOut = async ({
+  userId,
+  role,
+}: { userId: number; role: "candidate" | "employer" }) => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) return;
 
@@ -46,8 +58,22 @@ export const signOut = async (role: DBUser["role"]) => {
     sessionCookie.attributes,
   );
 
-  await lucia.invalidateSession(sessionId);
+  await Promise.all([
+    lucia.invalidateSession(sessionId),
+    deleteUserSessionFromCache({ userId, sessionId }),
+  ]);
+
   return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
+};
+
+export const deleteUserSessionFromCache = async ({
+  userId,
+  sessionId,
+}: { userId: number; sessionId: string }) => {
+  await Promise.all([
+    deleteFromCache(getSessionKey(sessionId)),
+    deleteFromCache(getUserKey(userId)),
+  ]);
 };
 
 export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {

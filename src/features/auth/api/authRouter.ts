@@ -12,6 +12,9 @@ import {
   LoginResponseValidator,
   LoginValidator,
 } from "@/validators/auth/loginValidator";
+import { getUserKey, saveToCache } from "@/lib/redis/redisService";
+import type { DBUser } from "@/server/db/schema/users";
+import { getCurrentTimestamp } from "@/server/db/utils";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -54,7 +57,21 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      await createSessionWithUserId(userId);
+      const createdUser: DBUser = {
+        id: userId,
+        createdAt: getCurrentTimestamp(),
+        updatedAt: getCurrentTimestamp(),
+        email,
+        firstName,
+        lastName,
+        hashedPassword,
+        role,
+      };
+
+      await Promise.all([
+        createSessionWithUserId(userId),
+        saveToCache(getUserKey(userId), JSON.stringify(createdUser)),
+      ]);
 
       return {
         success: true,
@@ -74,6 +91,7 @@ export const authRouter = createTRPCRouter({
       }
 
       const { email, password } = input;
+
       const existingUser = await userService.getUserByEmail(email);
       if (!existingUser) {
         return {
@@ -85,14 +103,16 @@ export const authRouter = createTRPCRouter({
         existingUser.hashedPassword,
         password,
       );
-
       if (!isValidPassword) {
         return {
           error: "Incorrect username or password.",
         };
       }
 
-      await createSessionWithUserId(existingUser.id);
+      await Promise.all([
+        createSessionWithUserId(existingUser.id),
+        saveToCache(getUserKey(existingUser.id), JSON.stringify(existingUser)),
+      ]);
 
       return {
         success: true,
