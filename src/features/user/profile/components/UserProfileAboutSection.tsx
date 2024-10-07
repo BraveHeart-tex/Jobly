@@ -6,7 +6,9 @@ import { ArrowRightIcon, PenSquare, SparklesIcon } from "lucide-react";
 
 const UserProfileAboutSection = () => {
   const exampleSkills = ["React.js", "Git", "Node.js", "Typescript", "SQL"];
+
   const { openModal } = useProfilePageSearchParams();
+
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
       <CardContent className="p-4">

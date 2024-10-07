@@ -1,12 +1,18 @@
 import { db } from "@/server/db";
 import {
   educationalBackgrounds,
+  userBios,
   userHighlightedSkills,
   users,
   workExperiences,
 } from "@/server/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
-import type { UserProfileInformation } from "../types";
+import { and, asc, desc, eq } from "drizzle-orm";
+import type {
+  GetAboutInformationReturnType,
+  UserProfileInformation,
+} from "../types";
+import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
+import { mapHighlightedSkills } from "../utils";
 
 export const userProfileRepository = {
   async getUserProfileInformation(
@@ -48,7 +54,9 @@ export const userProfileRepository = {
       workExperiences: result.workExperiences,
     };
   },
-  async getAboutInformation(userId: number) {
+  async getAboutInformation(
+    userId: number,
+  ): Promise<GetAboutInformationReturnType | null> {
     const result = await db.query.users.findFirst({
       columns: {
         id: true,
@@ -57,6 +65,7 @@ export const userProfileRepository = {
       with: {
         userBio: {
           columns: {
+            id: true,
             bio: true,
           },
         },
@@ -72,13 +81,48 @@ export const userProfileRepository = {
     if (!result) return null;
 
     return {
-      bio: result.userBio?.bio || "",
-      highlightedSkills: result.userHighlightedSkills.map((item) => ({
-        name: item.skill.name,
-        userId: item.userId,
-        skillId: item.skillId,
-        order: item.order,
-      })),
+      bio: {
+        id: result.userBio?.id,
+        content: result.userBio?.bio || "",
+      },
+      highlightedSkills: mapHighlightedSkills(result.userHighlightedSkills),
     };
+  },
+  async saveAboutInformation(
+    userId: number,
+    input: SaveAboutInformationInput,
+  ): Promise<void> {
+    const { bio, highlightedSkills } = input;
+
+    await db.transaction(async (trx) => {
+      if (bio?.id) {
+        // update
+        await trx
+          .update(userBios)
+          .set({
+            bio: bio?.content || "",
+          })
+          .where(and(eq(userBios.userId, userId), eq(userBios.id, bio.id)));
+      } else {
+        // insert
+        await trx.insert(userBios).values({
+          userId,
+          bio: bio?.content || "",
+        });
+      }
+
+      if (highlightedSkills) {
+        await trx
+          .delete(userHighlightedSkills)
+          .where(eq(userHighlightedSkills.userId, userId));
+        await trx.insert(userHighlightedSkills).values(
+          highlightedSkills.map((item) => ({
+            userId,
+            skillId: item.id,
+            order: item.order,
+          })),
+        );
+      }
+    });
   },
 };

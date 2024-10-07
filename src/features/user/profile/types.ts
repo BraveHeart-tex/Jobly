@@ -27,3 +27,13 @@ export interface UserProfileInformation {
   skills: (SkillSelectModel & { level: string | null })[];
   workExperiences: WorkExperience[];
 }
+
+export interface GetAboutInformationReturnType {
+  bio: { id: number | null; content: string };
+  highlightedSkills: {
+    name: string;
+    userId: number;
+    skillId: number;
+    order: number;
+  }[];
+}

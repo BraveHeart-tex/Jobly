@@ -67,3 +67,21 @@ export const groupExperiences = (
 
   return groupedExperiences;
 };
+
+export const mapHighlightedSkills = (
+  userHighlightedSkills: {
+    userId: number;
+    skillId: number;
+    order: number;
+    skill: {
+      name: string;
+    };
+  }[],
+) => {
+  return userHighlightedSkills.map((item) => ({
+    name: item.skill.name,
+    userId: item.userId,
+    skillId: item.skillId,
+    order: item.order,
+  }));
+};
