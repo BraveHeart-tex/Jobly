@@ -4,9 +4,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { ArrowRightIcon, PenSquare, SparklesIcon } from "lucide-react";
 
-const UserProfileAboutSection = () => {
-  const exampleSkills = ["React.js", "Git", "Node.js", "Typescript", "SQL"];
+interface UserProfileAboutSectionProps {
+  bio: string;
+  highlightedSkills: string[];
+}
 
+const UserProfileAboutSection = ({
+  bio,
+  highlightedSkills,
+}: UserProfileAboutSectionProps) => {
   const { openModal } = useProfilePageSearchParams();
 
   return (
@@ -25,26 +31,26 @@ const UserProfileAboutSection = () => {
               <PenSquare />
             </Button>
           </div>
-          <p className="py-4 text-[0.93rem]">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque
-            eligendi neque reprehenderit. Alias commodi earum nihil numquam odit
-            rerum veniam!
-          </p>
+          <p className="py-4 text-[0.93rem]">{bio}</p>
 
-          <div className="rounded-md border p-3 flex items-center justify-between">
-            <div className="flex gap-2">
-              <SparklesIcon className="mt-[2px]" />
-              <div>
-                <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
-                  Most Important Skills
-                </h4>
-                <p>{exampleSkills.join(" • ")}</p>
+          {highlightedSkills.length > 0 ? (
+            <div className="rounded-md border p-3 flex items-center justify-between">
+              <div className="flex gap-2">
+                <SparklesIcon className="mt-[2px]" />
+                <div>
+                  <>
+                    <h4 className="scroll-m-20 text-lg font-semibold tracking-tight">
+                      Most Important Skills
+                    </h4>
+                    <p>{highlightedSkills.join(" • ")}</p>
+                  </>
+                </div>
               </div>
+              <Button size={"icon"} variant={"ghost"}>
+                <ArrowRightIcon />
+              </Button>
             </div>
-            <Button size={"icon"} variant={"ghost"}>
-              <ArrowRightIcon />
-            </Button>
-          </div>
+          ) : null}
         </div>
       </CardContent>
     </Card>

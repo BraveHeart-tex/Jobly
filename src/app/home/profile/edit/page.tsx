@@ -24,7 +24,10 @@ const EditProfilePage = async () => {
         <UserProfileStickyHeader />
         <UserProfilePersonalInformation />
         <UserProfileAnalyticsSection />
-        <UserProfileAboutSection />
+        <UserProfileAboutSection
+          bio={profileDetailsData.bio}
+          highlightedSkills={profileDetailsData.highlightedSkills}
+        />
         <UserProfileWorkExperienceSection
           workExperiences={profileDetailsData.workExperiences}
         />

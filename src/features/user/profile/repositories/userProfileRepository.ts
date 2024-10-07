@@ -27,11 +27,21 @@ export const userProfileRepository = {
       },
       where: () => eq(users.id, userId),
       with: {
+        userBio: {
+          columns: {
+            bio: true,
+          },
+        },
         workExperiences: {
           orderBy: () => desc(workExperiences.startDate),
         },
         educationalBackgrounds: {
           orderBy: () => desc(educationalBackgrounds.startDate),
+        },
+        userHighlightedSkills: {
+          columns: {
+            skillId: true,
+          },
         },
         userSkills: {
           with: {
@@ -43,6 +53,15 @@ export const userProfileRepository = {
 
     if (!result) return null;
 
+    const highlightedSkills = result.userHighlightedSkills
+      .map(
+        (item) =>
+          result?.userSkills.find(
+            (skillItem) => skillItem.skillId === item.skillId,
+          )?.skill.name || "",
+      )
+      .filter(Boolean) as string[];
+
     return {
       firstName: result.firstName,
       lastName: result.lastName,
@@ -51,6 +70,8 @@ export const userProfileRepository = {
         ...item.skill,
         level: item.level,
       })),
+      bio: result.userBio?.bio || "",
+      highlightedSkills,
       workExperiences: result.workExperiences,
     };
   },

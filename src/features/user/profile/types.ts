@@ -26,6 +26,8 @@ export interface UserProfileInformation {
   educationalBackground: EducationalBackground[];
   skills: (SkillSelectModel & { level: string | null })[];
   workExperiences: WorkExperience[];
+  bio: string;
+  highlightedSkills: string[];
 }
 
 export interface GetAboutInformationReturnType {
