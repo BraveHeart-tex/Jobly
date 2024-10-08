@@ -2,7 +2,16 @@ import Redis from "ioredis";
 import { env } from "@/env.js";
 import { DateTime } from "luxon";
 
-const client = new Redis(env.REDIS_CONNECTION_STRING);
+const client = new Redis(env.REDIS_CONNECTION_STRING, {
+  lazyConnect: true,
+  enableAutoPipelining: true,
+  retryStrategy(times) {
+    if (times > 20) {
+      return null;
+    }
+    return Math.min(times * 500, 2000);
+  },
+});
 
 const getLogTimestamp = () =>
   DateTime.now().toUTC().toFormat("yyyy-MM-dd HH:mm:ss");
@@ -77,19 +86,23 @@ export const deleteMultipleKeysFromCache = async (
     await client.del(...keys);
   } catch (error) {
     console.error(`Error deleting keys: ${keys.join(", ")}`, error);
-    throw error;
   }
 };
 
 export const getMatchingKeys = async (pattern: string): Promise<string[]> => {
-  const matchingKeys: string[] = [];
-  let cursor = "0";
+  try {
+    const matchingKeys: string[] = [];
+    let cursor = "0";
 
-  do {
-    const result = await client.scan(cursor, "MATCH", pattern, "COUNT", 100);
-    cursor = result[0];
-    matchingKeys.push(...result[1]);
-  } while (cursor !== "0");
+    do {
+      const result = await client.scan(cursor, "MATCH", pattern, "COUNT", 100);
+      cursor = result[0];
+      matchingKeys.push(...result[1]);
+    } while (cursor !== "0");
 
-  return matchingKeys;
+    return matchingKeys;
+  } catch (error) {
+    console.error("getMatchingKeys error", error);
+    return [];
+  }
 };
