@@ -2,18 +2,37 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
-import { ArrowRightIcon, PenSquare, SparklesIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  ChevronDown,
+  ChevronUp,
+  PenSquare,
+  SparklesIcon,
+} from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface UserProfileAboutSectionProps {
   bio: string;
   highlightedSkills: string[];
 }
 
+const MAX_VISIBLE_CHARACTERS = 300;
+
 const UserProfileAboutSection = ({
   bio,
   highlightedSkills,
 }: UserProfileAboutSectionProps) => {
   const { openModal } = useProfilePageSearchParams();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [shouldShowButton, setShouldShowButton] = useState(false);
+
+  const truncatedBio =
+    bio.slice(0, MAX_VISIBLE_CHARACTERS) +
+    (bio.length > MAX_VISIBLE_CHARACTERS ? "..." : "");
+
+  useEffect(() => {
+    setShouldShowButton(bio.length > MAX_VISIBLE_CHARACTERS);
+  }, [bio]);
 
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
@@ -31,7 +50,32 @@ const UserProfileAboutSection = ({
               <PenSquare />
             </Button>
           </div>
-          <p className="py-4 text-[0.93rem]">{bio}</p>
+
+          <div className="relative">
+            <p className="py-4 text-[0.93rem] whitespace-pre">
+              {isExpanded ? bio : truncatedBio}
+            </p>
+
+            {shouldShowButton && (
+              <div className="flex justify-end">
+                <Button
+                  variant="ghost"
+                  className="mt-1 h-8 text-sm font-medium"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? (
+                    <div className="flex items-center gap-1">
+                      Show Less <ChevronUp className="h-4 w-4" />
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      Show More <ChevronDown className="h-4 w-4" />
+                    </div>
+                  )}
+                </Button>
+              </div>
+            )}
+          </div>
 
           {highlightedSkills.length > 0 ? (
             <div className="rounded-md border p-3 flex items-center justify-between">
