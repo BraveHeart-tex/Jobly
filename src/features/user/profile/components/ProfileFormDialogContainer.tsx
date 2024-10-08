@@ -1,13 +1,13 @@
 "use client";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import AboutSectionDialog from "./dialogs/AboutSectionDialog";
-import type { ReactElement } from "react";
 
-const modalDialogMap: {
-  [key: string]: () => ReactElement;
-} = {
+export const modalDialogMap = {
   about: AboutSectionDialog,
-};
+  "workExperience/new": AboutSectionDialog,
+} as const;
+
+export type ModalDialogMapKey = keyof typeof modalDialogMap;
 
 const ProfileFormDialogContainer = () => {
   const { modalQuery } = useProfilePageSearchParams();

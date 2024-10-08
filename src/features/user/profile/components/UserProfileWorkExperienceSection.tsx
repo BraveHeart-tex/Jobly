@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import WorkExperienceTimeline from "@/features/user/profile/components/WorkExperienceTimeline";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
-import { ArrowRightIcon, PenSquare, PlusIcon } from "lucide-react";
+import { ArrowRightIcon, PenSquare } from "lucide-react";
 import Link from "next/link";
+import AddNewExperienceButton from "./AddNewExperienceButton";
 
 interface UserProfileWorkExperienceSectionProps {
   workExperiences: WorkExperience[];
@@ -20,9 +21,7 @@ const UserProfileWorkExperienceSection = ({
         <div className="flex items-center justify-between p-4">
           <h2 className="text-2xl font-bold">Experience</h2>
           <div className="flex items-center gap-2">
-            <Button size="icon" variant={"ghost"}>
-              <PlusIcon />
-            </Button>
+            <AddNewExperienceButton />
             <Button size="icon" variant={"ghost"}>
               <PenSquare />
             </Button>
