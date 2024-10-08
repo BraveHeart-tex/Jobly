@@ -1,11 +1,5 @@
 import { type InferSelectModel, relations } from "drizzle-orm";
-import {
-  index,
-  int,
-  mysqlTable,
-  primaryKey,
-  varchar,
-} from "drizzle-orm/mysql-core";
+import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import skills from "./skills";
 import users from "./users";
 
@@ -22,7 +16,6 @@ const userSkills = mysqlTable(
         onDelete: "cascade",
       })
       .notNull(),
-    level: varchar("level", { length: 50 }),
   },
   (table) => {
     return {

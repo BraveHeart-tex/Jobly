@@ -82,7 +82,6 @@ const AboutSectionDialog = () => {
 
   const handleCreateSkill = (name: string) => {
     if (isLoadingOperation) return;
-    // TODO: also create user skill in db
     createSkill({ name });
   };
 
