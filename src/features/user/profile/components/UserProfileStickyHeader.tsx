@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useState } from "react";
 
-const STICKY_HEADER_DISPLAY_THRESHOLD = 330 as const;
+const STICKY_HEADER_DISPLAY_THRESHOLD = 450 as const;
 
 const UserProfileStickyHeader = () => {
   const [visible, setVisible] = useState(false);
