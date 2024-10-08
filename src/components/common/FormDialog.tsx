@@ -16,7 +16,7 @@ interface FormDialogProps {
   isSaveDisabled?: boolean;
   isLoadingInitialData?: boolean;
   onSave: () => void;
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
 }
 
@@ -26,7 +26,7 @@ const FormDialog = ({
   isSaveDisabled,
   isLoadingInitialData = false,
   onSave,
-  onClose,
+  onClose = () => {},
   children,
 }: FormDialogProps) => {
   return (

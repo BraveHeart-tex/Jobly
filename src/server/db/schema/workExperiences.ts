@@ -1,5 +1,9 @@
 import { EMPLOYMENT_TYPES, WORK_TYPES } from "@/lib/constants";
-import { type InferSelectModel, relations } from "drizzle-orm";
+import {
+  type InferSelectModel,
+  relations,
+  type InferInsertModel,
+} from "drizzle-orm";
 import {
   date,
   index,
@@ -64,5 +68,8 @@ export const workExperienceRelations = relations(
 );
 
 export type WorkExperience = InferSelectModel<typeof workExperiences>;
+export type WorkExperienceInsertModel = InferInsertModel<
+  typeof workExperiences
+>;
 
 export default workExperiences;
