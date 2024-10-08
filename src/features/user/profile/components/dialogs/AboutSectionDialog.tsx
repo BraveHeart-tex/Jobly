@@ -24,6 +24,7 @@ const MAX_HIGHLIGHTED_SKILLS_COUNT = 5 as const;
 
 const AboutSectionDialog = () => {
   const { closeModal } = useProfilePageSearchParams();
+
   const {
     bio,
     highlightedSkills,
@@ -31,8 +32,10 @@ const AboutSectionDialog = () => {
     setHighlightedSkills,
     isPendingAboutData,
   } = useGetProfileAboutSection();
+
   const { saveAboutInformation, isSavingAboutInformation } =
     useSaveAboutSectionData();
+
   const fetchSkills = useLoadSkillOptions();
 
   const { createSkill, isCreatingSkill } = useCreateSkill({

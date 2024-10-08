@@ -3,10 +3,11 @@ import {
   educationalBackgrounds,
   userBios,
   userHighlightedSkills,
+  userSkills,
   users,
   workExperiences,
 } from "@/server/db/schema";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type {
   GetAboutInformationReturnType,
   UserProfileInformation,
@@ -39,6 +40,7 @@ export const userProfileRepository = {
           orderBy: () => desc(educationalBackgrounds.startDate),
         },
         userHighlightedSkills: {
+          orderBy: () => asc(userHighlightedSkills.order),
           columns: {
             skillId: true,
           },
@@ -66,10 +68,7 @@ export const userProfileRepository = {
       firstName: result.firstName,
       lastName: result.lastName,
       educationalBackground: result.educationalBackgrounds,
-      skills: result.userSkills.map((item) => ({
-        ...item.skill,
-        level: item.level,
-      })),
+      skills: result.userSkills.map((item) => item.skill),
       bio: result.userBio?.bio || "",
       highlightedSkills,
       workExperiences: result.workExperiences,
@@ -133,16 +132,36 @@ export const userProfileRepository = {
       }
 
       if (highlightedSkills) {
-        await trx
-          .delete(userHighlightedSkills)
-          .where(eq(userHighlightedSkills.userId, userId));
-        await trx.insert(userHighlightedSkills).values(
-          highlightedSkills.map((item) => ({
-            userId,
-            skillId: item.id,
-            order: item.order,
-          })),
-        );
+        await Promise.all([
+          trx.delete(userSkills).where(
+            and(
+              eq(userSkills.userId, userId),
+              inArray(
+                userSkills.skillId,
+                highlightedSkills.map((item) => item.id),
+              ),
+            ),
+          ),
+          trx
+            .delete(userHighlightedSkills)
+            .where(eq(userHighlightedSkills.userId, userId)),
+        ]);
+
+        await Promise.all([
+          trx.insert(userSkills).values(
+            highlightedSkills.map((item) => ({
+              userId,
+              skillId: item.id,
+            })),
+          ),
+          trx.insert(userHighlightedSkills).values(
+            highlightedSkills.map((item) => ({
+              userId,
+              skillId: item.id,
+              order: item.order,
+            })),
+          ),
+        ]);
       }
     });
   },

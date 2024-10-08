@@ -1,0 +1,1 @@
+ALTER TABLE `UserSkills` DROP COLUMN `level`;

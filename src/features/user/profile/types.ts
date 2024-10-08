@@ -24,7 +24,7 @@ export interface UserProfileInformation {
   firstName: string;
   lastName: string;
   educationalBackground: EducationalBackground[];
-  skills: (SkillSelectModel & { level: string | null })[];
+  skills: SkillSelectModel[];
   workExperiences: WorkExperience[];
   bio: string;
   highlightedSkills: string[];
