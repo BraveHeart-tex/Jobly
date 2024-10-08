@@ -59,7 +59,7 @@ const UserProfileAboutSection = ({
             {shouldShowButton && (
               <div className="flex justify-end">
                 <Button
-                  variant="ghost"
+                  variant="link"
                   className="mt-1 h-8 text-sm font-medium"
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
