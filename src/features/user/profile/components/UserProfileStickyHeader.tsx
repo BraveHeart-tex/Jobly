@@ -29,7 +29,7 @@ const UserProfileStickyHeader = () => {
       transition={{ duration: 0.4, ease: "linear" }}
       className="fixed left-0 top-[3.3rem] w-full bg-background border-t z-10 shadow-xl hidden md:block"
     >
-      <div className="max-w-4xl mx-auto flex items-center justify-between py-2">
+      <div className="max-w-5xl mx-auto flex items-center justify-between py-2">
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={handleHeaderClick}
@@ -51,7 +51,8 @@ const UserProfileStickyHeader = () => {
             </p>
           </div>
         </div>
-        <div>
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="outline">Add Profile Section</Button>
           <Button variant={"secondary"}>About this profile</Button>
         </div>
       </div>

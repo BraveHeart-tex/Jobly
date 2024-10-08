@@ -14,7 +14,7 @@ const UserProfilePersonalInformation = () => {
         </Avatar>
       </div>
 
-      <CardContent className="pt-1 pb-8 px-4">
+      <CardContent className="pt-1 pb-6 px-4">
         <div className="flex justify-end mb-4 w-full">
           <Button variant="ghost" size={"icon"}>
             <PenSquare />
@@ -44,6 +44,9 @@ const UserProfilePersonalInformation = () => {
             Mims Yazılım A.Ş.
           </div>
         </div>
+        <Button variant="outline" className="mt-4">
+          Add Profile Section
+        </Button>
       </CardContent>
     </Card>
   );

@@ -1,11 +1,12 @@
 import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
 
 export const useSaveAboutSectionData = () => {
-  const utils = api.useUtils();
+  const router = useRouter();
   const { mutate: saveAboutInformation, isPending: isSavingAboutInformation } =
     api.userProfile.saveAboutInformation.useMutation({
       onSuccess: () => {
-        utils.userProfile.getAboutInformation.invalidate();
+        router.refresh();
       },
     });
 
