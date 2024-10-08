@@ -2,13 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
-import {
-  ArrowRightIcon,
-  ChevronDown,
-  ChevronUp,
-  PenSquare,
-  SparklesIcon,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, PenSquare, SparklesIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface UserProfileAboutSectionProps {
@@ -78,7 +72,7 @@ const UserProfileAboutSection = ({
           </div>
 
           {highlightedSkills.length > 0 ? (
-            <div className="rounded-md border p-3 flex items-center justify-between">
+            <div className="rounded-md border p-3">
               <div className="flex gap-2">
                 <SparklesIcon className="mt-[2px]" />
                 <div>
@@ -90,9 +84,6 @@ const UserProfileAboutSection = ({
                   </>
                 </div>
               </div>
-              <Button size={"icon"} variant={"ghost"}>
-                <ArrowRightIcon />
-              </Button>
             </div>
           ) : null}
         </div>

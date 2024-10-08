@@ -115,54 +115,58 @@ export const userProfileRepository = {
     const { bio, highlightedSkills } = input;
 
     await db.transaction(async (trx) => {
-      if (bio?.id) {
-        // update
+      if (!bio?.id) {
+        await trx.insert(userBios).values({
+          userId,
+          bio: bio?.content || "",
+        });
+      } else {
         await trx
           .update(userBios)
           .set({
             bio: bio?.content || "",
           })
           .where(and(eq(userBios.userId, userId), eq(userBios.id, bio.id)));
-      } else {
-        // insert
-        await trx.insert(userBios).values({
-          userId,
-          bio: bio?.content || "",
-        });
       }
 
-      if (highlightedSkills) {
-        await Promise.all([
-          trx.delete(userSkills).where(
-            and(
-              eq(userSkills.userId, userId),
-              inArray(
-                userSkills.skillId,
-                highlightedSkills.map((item) => item.id),
+      if (!highlightedSkills) return;
+
+      const hasHighlightedSkills = highlightedSkills.length > 0;
+
+      await Promise.all([
+        hasHighlightedSkills
+          ? trx.delete(userSkills).where(
+              and(
+                eq(userSkills.userId, userId),
+                inArray(
+                  userSkills.skillId,
+                  highlightedSkills.map((item) => item.id),
+                ),
               ),
-            ),
-          ),
-          trx
-            .delete(userHighlightedSkills)
-            .where(eq(userHighlightedSkills.userId, userId)),
-        ]);
+            )
+          : undefined,
+        trx
+          .delete(userHighlightedSkills)
+          .where(eq(userHighlightedSkills.userId, userId)),
+      ]);
 
-        await Promise.all([
-          trx.insert(userSkills).values(
-            highlightedSkills.map((item) => ({
-              userId,
-              skillId: item.id,
-            })),
-          ),
-          trx.insert(userHighlightedSkills).values(
-            highlightedSkills.map((item) => ({
-              userId,
-              skillId: item.id,
-              order: item.order,
-            })),
-          ),
-        ]);
-      }
+      if (!hasHighlightedSkills) return;
+
+      await Promise.all([
+        trx.insert(userSkills).values(
+          highlightedSkills.map((item) => ({
+            userId,
+            skillId: item.id,
+          })),
+        ),
+        trx.insert(userHighlightedSkills).values(
+          highlightedSkills.map((item) => ({
+            userId,
+            skillId: item.id,
+            order: item.order,
+          })),
+        ),
+      ]);
     });
   },
 };
