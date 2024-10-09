@@ -1,6 +1,6 @@
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
-import { groupExperiences } from "../utils";
-import { MAX_VISIBLE_WORK_EXPERIENCE_COUNT } from "./UserProfileWorkExperienceSection";
+import { groupExperiences } from "../../utils";
+import { MAX_VISIBLE_WORK_EXPERIENCE_COUNT } from "../../components/UserProfileWorkExperienceSection";
 import WorkExperienceCard from "./WorkExperienceCard";
 
 interface WorkExperienceTimelineProps {

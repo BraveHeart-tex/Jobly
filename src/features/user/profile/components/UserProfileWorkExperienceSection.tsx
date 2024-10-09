@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import WorkExperienceTimeline from "@/features/user/profile/components/WorkExperienceTimeline";
+import WorkExperienceTimeline from "@/features/user/profile/workExperience/components/WorkExperienceTimeline";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
