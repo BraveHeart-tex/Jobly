@@ -13,7 +13,7 @@ import {
   pipe,
   string,
   regex,
-  check,
+  rawCheck,
 } from "valibot";
 
 export const WorkExperienceValidator = pipe(
@@ -42,13 +42,29 @@ export const WorkExperienceValidator = pipe(
     ),
     description: optional(string()),
   }),
-  check(
-    (input) =>
-      input?.endDate
-        ? DateTime.fromISO(input?.endDate) > DateTime.fromISO(input?.startDate)
-        : true,
-    "End date must be after start date",
-  ),
+  rawCheck(({ dataset, addIssue }) => {
+    if (!dataset.typed) return;
+    if (!dataset.value.endDate) return;
+    if (!dataset.value.startDate) return;
+
+    const startDate = DateTime.fromISO(dataset.value.startDate).startOf("day");
+    const endDate = DateTime.fromISO(dataset.value.endDate).startOf("day");
+
+    if (endDate < startDate) {
+      addIssue({
+        path: [
+          {
+            key: "endDate",
+            value: dataset.value.endDate,
+            origin: "value",
+            type: "object",
+            input: dataset.value,
+          },
+        ],
+        message: "End date cannot be before start date.",
+      });
+    }
+  }),
 );
 
 export type WorkExperienceData = InferOutput<typeof WorkExperienceValidator>;
