@@ -28,6 +28,8 @@ const UserProfileAboutSection = ({
     setShouldShowButton(bio.length > MAX_VISIBLE_CHARACTERS);
   }, [bio]);
 
+  if (!bio && highlightedSkills.length === 0) return null;
+
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
       <CardContent className="p-4">
