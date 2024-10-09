@@ -7,12 +7,12 @@ import {
 const MODAL_QUERY_KEY = "modal" as const;
 
 export const useProfilePageSearchParams = () => {
-  const [modalQuery, setModalQuery] = useQueryState(MODAL_QUERY_KEY, {
-    shallow: true,
-    ...parseAsStringLiteral<ModalDialogMapKey>(
+  const [modalQuery, setModalQuery] = useQueryState(
+    MODAL_QUERY_KEY,
+    parseAsStringLiteral<ModalDialogMapKey>(
       Object.keys(modalDialogMap) as ModalDialogMapKey[],
     ),
-  });
+  );
 
   const openModal = (modalLink: ModalDialogMapKey) => {
     setModalQuery(modalLink);
