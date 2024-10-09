@@ -28,10 +28,4 @@ export const userProfileRouter = createTRPCRouter({
       const userId = ctx.user.id;
       return userProfileService.saveAboutInformation(userId, input);
     }),
-  getWorkExperiences: protectedProcedure
-    .input(parser(optionalUserIdValidator))
-    .query(async () => {}),
-  getEducationalBackground: protectedProcedure
-    .input(parser(optionalUserIdValidator))
-    .query(async () => {}),
 });

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import EducationInformationCard from "@/features/user/profile/components/EducationInformationCard";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
-import { ArrowRightIcon, PenSquare, PlusIcon } from "lucide-react";
+import { ArrowRightIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 
 interface UserProfileEducationSectionProps {
@@ -19,14 +19,9 @@ const UserProfileEducationSection = ({
       <CardContent className="p-0 flex flex-col justify-between">
         <div className="flex items-center justify-between p-4">
           <h2 className="text-2xl font-bold">Education</h2>
-          <div className="flex items-center gap-2">
-            <Button size="icon" variant={"ghost"}>
-              <PlusIcon />
-            </Button>
-            <Button size="icon" variant={"ghost"}>
-              <PenSquare />
-            </Button>
-          </div>
+          <Button size="icon" variant={"ghost"}>
+            <PlusIcon />
+          </Button>
         </div>
         <div className="p-4 py-0 pb-2">
           {educationBackground
