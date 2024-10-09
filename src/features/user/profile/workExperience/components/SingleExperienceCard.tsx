@@ -25,7 +25,7 @@ const SingleExperienceCard = ({ experience }: SingleExperienceCardProps) => {
     (description.length > MAX_VISIBLE_DESCRIPTION_CHARACTERS ? "..." : "");
 
   return (
-    <article className="shadow-sm">
+    <article>
       <div className="flex-grow">
         <div>
           <h3 className="text-xl font-semibold text-foreground">
