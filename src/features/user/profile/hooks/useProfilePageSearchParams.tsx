@@ -7,19 +7,19 @@ import {
 const MODAL_QUERY_KEY = "modal" as const;
 
 export const useProfilePageSearchParams = () => {
-  const [modalQuery, setModalQuery] = useQueryState(
-    MODAL_QUERY_KEY,
-    parseAsStringLiteral<ModalDialogMapKey>(
+  const [modalQuery, setModalQuery] = useQueryState(MODAL_QUERY_KEY, {
+    shallow: true,
+    ...parseAsStringLiteral<ModalDialogMapKey>(
       Object.keys(modalDialogMap) as ModalDialogMapKey[],
     ),
-  );
+  });
 
   const openModal = (modalLink: ModalDialogMapKey) => {
     setModalQuery(modalLink);
   };
 
-  const closeModal = () => {
-    setModalQuery(null);
+  const closeModal = async () => {
+    await setModalQuery(null);
   };
 
   return {
@@ -29,6 +29,3 @@ export const useProfilePageSearchParams = () => {
     closeModal,
   };
 };
-
-export const getAboutQueryKey = () => "about";
-export const getCreateWorkExperienceKey = () => "workExperience&intent=new";

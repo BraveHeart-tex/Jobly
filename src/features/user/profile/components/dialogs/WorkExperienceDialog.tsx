@@ -47,10 +47,10 @@ const WorkExperienceDialog = () => {
 
   const { createWorkExperience, isCreatingWorkExperience } =
     useCreateWorkExperience({
-      onSuccess: () => {
+      onSuccess: async () => {
+        await closeModal();
         toast.success("Work experience added successfully.");
         router.refresh();
-        closeModal();
       },
     });
 

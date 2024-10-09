@@ -16,7 +16,7 @@ interface FormDialogProps {
   isSaveDisabled?: boolean;
   isLoadingInitialData?: boolean;
   onSave: () => void;
-  onClose?: () => void;
+  onClose?: () => void | Promise<void>;
   children: React.ReactNode;
 }
 
@@ -32,9 +32,9 @@ const FormDialog = ({
   return (
     <Dialog
       defaultOpen={true}
-      onOpenChange={(isOpen) => {
+      onOpenChange={async (isOpen) => {
         if (!isOpen) {
-          onClose();
+          await onClose();
         }
       }}
     >

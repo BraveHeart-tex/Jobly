@@ -1,14 +1,11 @@
+import type { ReactQueryOptions } from "@/lib/types";
 import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
 
-export const useSaveAboutSectionData = () => {
-  const router = useRouter();
+export const useSaveAboutSectionData = (
+  options: ReactQueryOptions["userProfile"]["saveAboutInformation"] = {},
+) => {
   const { mutate: saveAboutInformation, isPending: isSavingAboutInformation } =
-    api.userProfile.saveAboutInformation.useMutation({
-      onSuccess: () => {
-        router.refresh();
-      },
-    });
+    api.userProfile.saveAboutInformation.useMutation(options);
 
   return { saveAboutInformation, isSavingAboutInformation };
 };

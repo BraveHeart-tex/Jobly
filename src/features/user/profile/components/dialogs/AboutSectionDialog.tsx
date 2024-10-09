@@ -19,10 +19,12 @@ import HighlightedSkillItem from "../HighlightedSkillItem";
 import { useSaveAboutSectionData } from "../../hooks/useSaveAboutSectionData";
 import { toast } from "sonner";
 import FormDialog from "@/components/common/FormDialog";
+import { useRouter } from "next/navigation";
 
 const MAX_HIGHLIGHTED_SKILLS_COUNT = 5 as const;
 
 const AboutSectionDialog = () => {
+  const router = useRouter();
   const { closeModal } = useProfilePageSearchParams();
 
   const {
@@ -34,7 +36,13 @@ const AboutSectionDialog = () => {
   } = useGetProfileAboutSection();
 
   const { saveAboutInformation, isSavingAboutInformation } =
-    useSaveAboutSectionData();
+    useSaveAboutSectionData({
+      onSuccess: async () => {
+        await closeModal();
+        router.refresh();
+        toast.success("About section updated successfully.");
+      },
+    });
 
   const fetchSkills = useLoadSkillOptions();
 
@@ -66,7 +74,7 @@ const AboutSectionDialog = () => {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     saveAboutInformation({
       bio: {
         id: bio?.id,
@@ -78,9 +86,6 @@ const AboutSectionDialog = () => {
         order: index + 1,
       })),
     });
-
-    toast.success("About section updated successfully.");
-    closeModal();
   };
 
   const handleCreateSkill = (name: string) => {
