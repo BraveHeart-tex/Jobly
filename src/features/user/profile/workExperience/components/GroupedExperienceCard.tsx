@@ -1,4 +1,3 @@
-"use client";
 import { CalendarDays, MapPin } from "lucide-react";
 import {
   calculateDuration,
@@ -8,6 +7,7 @@ import {
 import { DateTime } from "luxon";
 import type { ExperienceGroup } from "../types";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
+import ExperienceDescription from "./ExperienceDescription";
 
 interface GroupedExperienceCardProps {
   group: ExperienceGroup;
@@ -56,9 +56,7 @@ const GroupedExperienceCard = ({ group }: GroupedExperienceCardProps) => (
               <span>{generateReadableEnumLabel(experience.workType)}</span>
             </div>
 
-            <p className="py-4 text-[0.93rem] whitespace-pre">
-              {experience.description}
-            </p>
+            <ExperienceDescription description={experience.description} />
           </div>
         ))}
       </div>

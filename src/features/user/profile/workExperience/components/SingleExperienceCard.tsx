@@ -4,25 +4,25 @@ import { calculateDuration, formatExperienceDate } from "../utils";
 import { DateTime } from "luxon";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTruncatedText } from "@/hooks/useTruncatedText";
+import { MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS } from "@/lib/constants";
 
 interface SingleExperienceCardProps {
   experience: WorkExperience;
 }
 
-const MAX_VISIBLE_DESCRIPTION_CHARACTERS = 120 as const;
-
 const SingleExperienceCard = ({ experience }: SingleExperienceCardProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
   const description = experience.description || "";
-
-  const shouldShowToggleButton =
-    description.length > MAX_VISIBLE_DESCRIPTION_CHARACTERS;
-
-  const truncatedDescription =
-    description.slice(0, MAX_VISIBLE_DESCRIPTION_CHARACTERS) +
-    (description.length > MAX_VISIBLE_DESCRIPTION_CHARACTERS ? "..." : "");
+  const {
+    isExpanded,
+    setIsExpanded,
+    shouldShowToggleButton,
+    truncatedText: truncatedDescription,
+  } = useTruncatedText(
+    description,
+    MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS,
+  );
 
   return (
     <article>
