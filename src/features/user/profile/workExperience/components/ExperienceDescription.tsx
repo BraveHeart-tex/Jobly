@@ -20,7 +20,7 @@ const ExperienceDescription = ({ description }: ExperienceDescriptionProps) => {
 
   return (
     <>
-      <p className="py-4 text-[0.93rem] whitespace-pre">
+      <p className="py-4 text-[0.93rem] whitespace-pre-wrap">
         {isExpanded ? description : truncatedText}
       </p>
       {shouldShowToggleButton && (

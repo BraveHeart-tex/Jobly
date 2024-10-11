@@ -1,12 +1,10 @@
 "use client";
-import { CalendarDays, ChevronDown, ChevronUp, MapPin } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import { calculateDuration, formatExperienceDate } from "../utils";
 import { DateTime } from "luxon";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
-import { Button } from "@/components/ui/button";
-import { useTruncatedText } from "@/hooks/useTruncatedText";
-import { MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS } from "@/lib/constants";
+import ExperienceDescription from "./ExperienceDescription";
 
 interface SingleExperienceCardProps {
   experience: WorkExperience;
@@ -14,15 +12,6 @@ interface SingleExperienceCardProps {
 
 const SingleExperienceCard = ({ experience }: SingleExperienceCardProps) => {
   const description = experience.description || "";
-  const {
-    isExpanded,
-    setIsExpanded,
-    shouldShowToggleButton,
-    truncatedText: truncatedDescription,
-  } = useTruncatedText(
-    description,
-    MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS,
-  );
 
   return (
     <article>
@@ -63,29 +52,7 @@ const SingleExperienceCard = ({ experience }: SingleExperienceCardProps) => {
           </div>
         </div>
 
-        <p className="py-4 text-[0.93rem] whitespace-pre">
-          {isExpanded ? description : truncatedDescription}
-        </p>
-
-        {shouldShowToggleButton && (
-          <div className="flex justify-end">
-            <Button
-              variant="link"
-              className="mt-1 h-8 text-sm font-medium"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? (
-                <div className="flex items-center gap-1">
-                  Show Less <ChevronUp className="h-4 w-4" />
-                </div>
-              ) : (
-                <div className="flex items-center gap-1">
-                  Show More <ChevronDown className="h-4 w-4" />
-                </div>
-              )}
-            </Button>
-          </div>
-        )}
+        <ExperienceDescription description={description} />
       </div>
     </article>
   );
