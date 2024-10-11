@@ -6,7 +6,8 @@ import UserProfileAnalyticsSection from "@/features/user/profile/components/User
 import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
 import UserProfileStickyHeader from "@/features/user/profile/components/UserProfileStickyHeader";
-import ProfileWorkExperienceList from "@/features/user/profile/workExperience/components/ProfileWorkExperiences";
+import UserProfileWorkExperiences from "@/features/user/profile/workExperience/components/UserProfileWorkExperiences";
+
 import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
 import { redirect } from "next/navigation";
@@ -28,7 +29,7 @@ const EditProfilePage = async () => {
           bio={profileDetailsData.bio}
           highlightedSkills={profileDetailsData.highlightedSkills}
         />
-        <ProfileWorkExperienceList
+        <UserProfileWorkExperiences
           experiences={profileDetailsData.workExperiences}
         />
         <UserProfileEducationSection

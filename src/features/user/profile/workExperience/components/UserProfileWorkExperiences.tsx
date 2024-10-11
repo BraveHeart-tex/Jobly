@@ -9,15 +9,15 @@ import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import ClientOnly from "@/components/common/ClientOnly";
 
-interface ProfileWorkExperienceListProps {
+interface UserProfileWorkExperiences {
   experiences: WorkExperience[];
 }
 
 export const MAX_VISIBLE_WORK_EXPERIENCE_COUNT = 5 as const;
 
-const ProfileWorkExperienceList = ({
+const UserProfileWorkExperiences = ({
   experiences,
-}: ProfileWorkExperienceListProps) => {
+}: UserProfileWorkExperiences) => {
   const shouldGroupExperiences = (
     current: WorkExperience,
     nextIndex: number,
@@ -116,4 +116,4 @@ const ProfileWorkExperienceList = ({
   );
 };
 
-export default ProfileWorkExperienceList;
+export default UserProfileWorkExperiences;
