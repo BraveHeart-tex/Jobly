@@ -26,22 +26,22 @@ const GroupedExperienceCard = ({ group }: GroupedExperienceCardProps) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (timelineRef.current) {
-      const dots = timelineRef.current.querySelectorAll(".timeline-dot");
-      if (dots.length > 1) {
-        const firstDot = dots[0] as HTMLElement;
-        const lastDot = dots[dots.length - 1] as HTMLElement;
+    if (!timelineRef.current) return;
 
-        const distance = getDistanceBetweenElements(firstDot, lastDot);
-        const TOP_BORDER_OVERFLOW_PX = 2;
+    const dots = timelineRef.current.querySelectorAll(".timeline-dot");
+    if (dots.length < 1) return;
 
-        const top = firstDot.offsetTop + TOP_BORDER_OVERFLOW_PX;
-        const bottom = lastDot.offsetTop + distance;
+    const firstDot = dots[0] as HTMLElement;
+    const lastDot = dots[dots.length - 1] as HTMLElement;
 
-        setDotOffsets({ top, bottom });
-        setLineHeight(bottom - top);
-      }
-    }
+    const distance = getDistanceBetweenElements(firstDot, lastDot);
+    const TOP_BORDER_OVERFLOW_PX = 2;
+
+    const top = firstDot.offsetTop + TOP_BORDER_OVERFLOW_PX;
+    const bottom = lastDot.offsetTop + distance;
+
+    setDotOffsets({ top, bottom });
+    setLineHeight(bottom - top);
   }, [group.experiences]);
 
   return (
