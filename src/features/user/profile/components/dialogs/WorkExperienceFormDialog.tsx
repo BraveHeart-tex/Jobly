@@ -19,7 +19,6 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import DateInput from "@/components/common/dateInput/DateInput";
 import { DateTime } from "luxon";
 import { useCreateWorkExperience } from "../../hooks/useCreateWorkExperience";
 import SelectInput from "@/components/common/SelectInput";
@@ -29,6 +28,7 @@ import {
 } from "@/features/candidate/jobs/components/JobListFilters";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import MonthYearInput from "@/components/common/MonthYearInput";
 
 const WorkExperienceDialog = () => {
   const router = useRouter();
@@ -77,18 +77,6 @@ const WorkExperienceDialog = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex items-center gap-2 mb-4">
-            <Switch
-              checked={isCurrentEmployment}
-              onCheckedChange={(checked) => {
-                setIsCurrentEmployment(checked);
-                if (checked) {
-                  form.setValue("endDate", undefined);
-                }
-              }}
-            />
-            <Label>Current Employment</Label>
-          </div>
           <div className="space-y-6">
             <FormField
               control={form.control}
@@ -116,48 +104,51 @@ const WorkExperienceDialog = () => {
                 </FormItem>
               )}
             />
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-2">
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Date</FormLabel>
-                    <FormControl>
-                      <DateInput
-                        ref={field.ref}
-                        onChange={field.onChange}
-                        value={field.value}
-                        format={DateTime.DATE_MED}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Start Date</FormLabel>
+                  <FormControl>
+                    <MonthYearInput
+                      onChange={field.onChange}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={isCurrentEmployment}
+                onCheckedChange={(checked) => {
+                  setIsCurrentEmployment(checked);
+                  if (checked) {
+                    form.setValue("endDate", undefined);
+                  }
+                }}
               />
-              <FormField
-                control={form.control}
-                name="endDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>End Date</FormLabel>
-                    <FormControl>
-                      <DateInput
-                        ref={field.ref}
-                        onChange={field.onChange}
-                        value={field.value || ""}
-                        format={DateTime.DATE_MED}
-                        placeholder={
-                          isCurrentEmployment ? "Present" : undefined
-                        }
-                        disabled={isCurrentEmployment}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <Label>Currently working here</Label>
             </div>
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>End Date</FormLabel>
+                  <FormControl>
+                    <MonthYearInput
+                      onChange={field.onChange}
+                      disabled={isCurrentEmployment}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-2">
               <FormField
@@ -165,12 +156,12 @@ const WorkExperienceDialog = () => {
                 name="workType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Work Type</FormLabel>
+                    <FormLabel>Location Type</FormLabel>
                     <FormControl>
                       <SelectInput
                         options={workTypeOptions}
                         {...field}
-                        placeholder="Select Work Type"
+                        placeholder="Select location type"
                       />
                     </FormControl>
                     <FormMessage />

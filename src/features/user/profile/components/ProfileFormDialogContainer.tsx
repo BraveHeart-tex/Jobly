@@ -1,7 +1,7 @@
 "use client";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
-import AboutSectionDialog from "./dialogs/AboutSectionDialog";
-import WorkExperienceDialog from "./dialogs/WorkExperienceDialog";
+import AboutSectionDialog from "./dialogs/AboutSectionFormDialog";
+import WorkExperienceDialog from "./dialogs/WorkExperienceFormDialog";
 
 export const modalDialogMap = {
   about: AboutSectionDialog,

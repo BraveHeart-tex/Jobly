@@ -58,7 +58,7 @@ const GroupedExperienceCard = ({ group }: GroupedExperienceCardProps) => {
           {/* Timeline */}
           {dotOffsets && (
             <div
-              className="absolute left-[0.98rem] w-px bg-muted-foreground/20 z-0"
+              className="absolute left-[0.98rem] w-px bg-muted-foreground/20"
               style={{ top: `${dotOffsets.top}px`, height: `${lineHeight}px` }}
             />
           )}
@@ -70,7 +70,7 @@ const GroupedExperienceCard = ({ group }: GroupedExperienceCardProps) => {
               {/* Timeline Dot */}
               <div
                 className={
-                  "timeline-dot absolute left-[-1.25rem] flex items-center justify-center w-4 h-4  border rounded-full shadow-sm z-10 bg-background"
+                  "timeline-dot absolute left-[-1.25rem] flex items-center justify-center w-4 h-4  border rounded-full shadow-sm bg-background"
                 }
                 style={{
                   top: index === 0 ? "0.4rem" : "1.4rem",
