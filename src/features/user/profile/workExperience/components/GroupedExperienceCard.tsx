@@ -8,6 +8,7 @@ import { DateTime } from "luxon";
 import type { ExperienceGroup } from "../types";
 import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
 import ExperienceDescription from "./ExperienceDescription";
+import { cn } from "@/lib/utils";
 
 interface GroupedExperienceCardProps {
   group: ExperienceGroup;
@@ -23,15 +24,18 @@ const GroupedExperienceCard = ({ group }: GroupedExperienceCardProps) => (
         </span>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 pl-4">
         {group.experiences.map((experience, index) => (
           <div
             key={experience.id}
-            className={index !== 0 ? "mt-4 pt-4 border-t" : "mt-2"}
+            className={cn("mt-2", index !== 0 && "pt-4 border-t")}
           >
-            <h4 className="text-lg font-medium text-foreground">
-              {experience.jobTitle}
-            </h4>
+            <div className="w-full flex items-center gap-2">
+              <div className="w-2 h-2 bg-foreground rounded-full" />
+              <h4 className="text-lg font-medium text-foreground">
+                {experience.jobTitle}
+              </h4>
+            </div>
             <div className="flex flex-wrap gap-x-4 gap-y-2 mt-1 text-sm text-foreground/60">
               <div className="flex items-center gap-1">
                 <CalendarDays className="w-4 h-4 mr-1" />
