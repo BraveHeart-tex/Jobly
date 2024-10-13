@@ -32,6 +32,7 @@ import MonthYearInput from "@/components/common/MonthYearInput";
 import { useGetWorkExperience } from "../../hooks/useGetWorkExperience";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDeleteWorkExperience } from "../../hooks/useDeleteWorkExperience";
+import { useUpdateWorkExperience } from "../../hooks/useUpdateWorkExperience";
 
 const WorkExperienceDialog = () => {
   const router = useRouter();
@@ -52,21 +53,30 @@ const WorkExperienceDialog = () => {
     },
   });
 
+  const handleMutationSuccess = async (message: string) => {
+    await closeModal();
+    router.refresh();
+    toast.success(message);
+  };
+
   const { createWorkExperience, isCreatingWorkExperience } =
     useCreateWorkExperience({
       onSuccess: async () => {
-        await closeModal();
-        toast.success("Work experience added successfully.");
-        router.refresh();
+        await handleMutationSuccess("Work experience added successfully.");
       },
     });
 
   const { deleteWorkExperience, isDeletingWorkExperience } =
     useDeleteWorkExperience({
       onSuccess: async () => {
-        await closeModal();
-        router.refresh();
-        toast.success("Work experience deleted successfully.");
+        await handleMutationSuccess("Work experience deleted successfully.");
+      },
+    });
+
+  const { updateWorkExperience, isUpdatingWorkExperience } =
+    useUpdateWorkExperience({
+      onSuccess: async () => {
+        await handleMutationSuccess("Work experience updated successfully.");
       },
     });
 
@@ -83,7 +93,7 @@ const WorkExperienceDialog = () => {
       const data = await fetchWorkExperience(idQuery);
       if (!data) {
         toast.error("Work experience was not found.");
-        closeModal();
+        await closeModal();
         return;
       }
 
@@ -96,10 +106,17 @@ const WorkExperienceDialog = () => {
   }, [idQuery]);
 
   const onSubmit = (values: WorkExperienceData) => {
-    if (!values?.id) {
-      createWorkExperience(values);
-    } else {
+    if (isMutating) return;
+
+    if (values?.id) {
+      updateWorkExperience({
+        ...values,
+        id: values.id as number,
+      });
+      return;
     }
+
+    createWorkExperience(values);
   };
 
   const handleSave = () => {
@@ -120,12 +137,12 @@ const WorkExperienceDialog = () => {
     });
   };
 
-  const isSaveDisabled =
-    isFetchingWorkExperience ||
+  const isMutating =
     isCreatingWorkExperience ||
-    isDeletingWorkExperience;
+    isDeletingWorkExperience ||
+    isUpdatingWorkExperience;
 
-  const isCloseDisabled = isCreatingWorkExperience || isDeletingWorkExperience;
+  const isSaveDisabled = isFetchingWorkExperience || isMutating;
 
   return (
     <FormDialog
@@ -134,7 +151,7 @@ const WorkExperienceDialog = () => {
       onClose={closeModal}
       onSave={handleSave}
       isLoadingInitialData={isEditMode ? isFetchingWorkExperience : false}
-      isCloseDisabled={isCloseDisabled}
+      isCloseDisabled={isMutating}
       isSaveDisabled={isSaveDisabled}
     >
       <Form {...form}>

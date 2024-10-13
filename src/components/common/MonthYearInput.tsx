@@ -38,16 +38,20 @@ const MonthYearInput = ({
     const newDate = DateTime.fromObject({
       year,
       month: Number.parseInt(monthValue),
-    }).toJSDate();
-    onChange(newDate.toISOString());
+      day: 1,
+    }).toISODate();
+    if (!newDate) return;
+    onChange(newDate);
   };
 
   const handleYearChange = (yearValue: string) => {
     const newDate = DateTime.fromObject({
       year: Number.parseInt(yearValue),
       month,
-    }).toJSDate();
-    onChange(newDate.toISOString());
+      day: 1,
+    }).toISODate();
+    if (!newDate) return;
+    onChange(newDate);
   };
 
   return (

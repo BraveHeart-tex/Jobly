@@ -1,6 +1,6 @@
-import { ISO_8601_REGEX } from "@/lib/constants";
+import { ISO_DATE_FORMAT_REGEX } from "@/lib/constants";
 import { workExperiences } from "@/server/db/schema";
-import { DateTimeValidator } from "@/validators/schemaUtils";
+import { DateValidator } from "@/validators/schemaUtils";
 import { DateTime } from "luxon";
 import {
   type InferOutput,
@@ -15,6 +15,7 @@ import {
   rawCheck,
   nullable,
   optional,
+  minValue,
 } from "valibot";
 
 export const WorkExperienceValidator = pipe(
@@ -33,9 +34,9 @@ export const WorkExperienceValidator = pipe(
     startDate: pipe(
       string(),
       nonEmpty("Start date is required"),
-      regex(ISO_8601_REGEX, "Please enter a valid date-time format."),
+      regex(ISO_DATE_FORMAT_REGEX, "Please enter a valid date format."),
     ),
-    endDate: nullable(DateTimeValidator),
+    endDate: nullable(DateValidator),
     employmentType: picklist(workExperiences.employmentType.enumValues),
     workType: picklist(workExperiences.workType.enumValues),
     location: nullable(
@@ -67,5 +68,10 @@ export const WorkExperienceValidator = pipe(
     }
   }),
 );
+
+export const UpdateWorkExperienceValidator = object({
+  ...WorkExperienceValidator.entries,
+  id: pipe(number(), minValue(1, "Please provide valid work experience id.")),
+});
 
 export type WorkExperienceData = InferOutput<typeof WorkExperienceValidator>;

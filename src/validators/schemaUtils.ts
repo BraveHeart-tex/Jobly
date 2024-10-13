@@ -1,4 +1,8 @@
-import { ISO_8601_REGEX, URL_REGEX } from "@/lib/constants";
+import {
+  ISO_8601_DATE_TIME_REGEX,
+  ISO_DATE_FORMAT_REGEX,
+  URL_REGEX,
+} from "@/lib/constants";
 import {
   pipe,
   string,
@@ -43,7 +47,12 @@ export const PasswordValidator = pipe(
 
 export const DateTimeValidator = pipe(
   string(),
-  regex(ISO_8601_REGEX, "Please enter a valid date-time format."),
+  regex(ISO_8601_DATE_TIME_REGEX, "Please enter a valid date-time format."),
+);
+
+export const DateValidator = pipe(
+  string(),
+  regex(ISO_DATE_FORMAT_REGEX, "Please enter a valid date format."),
 );
 
 export const UrlValidator = pipe(

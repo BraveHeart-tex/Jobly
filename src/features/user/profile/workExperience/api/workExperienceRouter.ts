@@ -1,5 +1,8 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { WorkExperienceValidator } from "@/validators/user/profile/workExperienceValidator";
+import {
+  UpdateWorkExperienceValidator,
+  WorkExperienceValidator,
+} from "@/validators/user/profile/workExperienceValidator";
 import { minValue, number, object, parser, pipe } from "valibot";
 import { workExperienceService } from "../services/workExperienceService";
 
@@ -32,7 +35,7 @@ export const workExperienceRouter = createTRPCRouter({
       });
     }),
   updateWorkExperience: protectedProcedure
-    .input(parser(WorkExperienceValidator))
+    .input(parser(UpdateWorkExperienceValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return workExperienceService.updateWorkExperience({

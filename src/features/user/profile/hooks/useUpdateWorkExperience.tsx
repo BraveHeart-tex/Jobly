@@ -1,6 +1,15 @@
 import { api } from "@/trpc/react";
 
-export const useUpdateWorkExperience = () => {
-  const { mutate, isPending } =
-    api.workExperience.updateWorkExperience.useMutation();
+export const useUpdateWorkExperience = (
+  options: {
+    onSuccess?: () => void;
+  } = {},
+) => {
+  const { mutate: updateWorkExperience, isPending: isUpdatingWorkExperience } =
+    api.workExperience.updateWorkExperience.useMutation(options);
+
+  return {
+    updateWorkExperience,
+    isUpdatingWorkExperience,
+  };
 };

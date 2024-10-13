@@ -135,11 +135,14 @@ export const AUTH_COOKIE_NAME = "auth-session" as const;
 
 export const PORTAL_TYPE_QUERY_KEY = "portalType" as const;
 
-export const ISO_8601_REGEX =
+export const ISO_8601_DATE_TIME_REGEX =
   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(?:[+-]\d{2}:\d{2}|Z)$/;
 
 export const URL_REGEX =
   /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+
+export const ISO_DATE_FORMAT_REGEX =
+  /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
 
 export const CONTROL_BUTTON_VARIANT: ButtonVariant = "secondary";
 
