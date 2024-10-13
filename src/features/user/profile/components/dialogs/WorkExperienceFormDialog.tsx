@@ -104,6 +104,18 @@ const WorkExperienceDialog = () => {
                 </FormItem>
               )}
             />
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={isCurrentEmployment}
+                onCheckedChange={(checked) => {
+                  setIsCurrentEmployment(checked);
+                  if (checked) {
+                    form.setValue("endDate", undefined);
+                  }
+                }}
+              />
+              <Label>Currently working here</Label>
+            </div>
             <FormField
               control={form.control}
               name="startDate"
@@ -120,18 +132,6 @@ const WorkExperienceDialog = () => {
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-2">
-              <Switch
-                checked={isCurrentEmployment}
-                onCheckedChange={(checked) => {
-                  setIsCurrentEmployment(checked);
-                  if (checked) {
-                    form.setValue("endDate", undefined);
-                  }
-                }}
-              />
-              <Label>Currently working here</Label>
-            </div>
             <FormField
               control={form.control}
               name="endDate"
