@@ -9,6 +9,8 @@ import {
 import { Button } from "../ui/button";
 import type React from "react";
 import { Loader2 } from "lucide-react";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
+import { useState } from "react";
 
 interface FormDialogProps {
   title: string;
@@ -20,6 +22,7 @@ interface FormDialogProps {
   onDeleteClick?: () => void;
   deleteLabel?: string;
   children: React.ReactNode;
+  isDirty?: boolean;
 }
 
 const FormDialog = ({
@@ -32,16 +35,37 @@ const FormDialog = ({
   onDeleteClick,
   deleteLabel,
   children,
+  isDirty,
 }: FormDialogProps) => {
+  const [open, setOpen] = useState(true);
+
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+  const handleDialogClose = async () => {
+    await onClose();
+    setOpen(false);
+  };
+
+  const handleOpenChange = async (isOpen: boolean) => {
+    if (!isOpen) {
+      if (isDirty) {
+        return showConfirmDialog({
+          title: "Discard changes?",
+          message: "Are you sure you want to discard your changes?",
+          primaryActionLabel: "Discard",
+          secondaryActionLabel: "Cancel",
+          onDeny: () => {},
+          onConfirm: async () => {
+            await handleDialogClose();
+          },
+        });
+      }
+
+      await handleDialogClose();
+    }
+  };
+
   return (
-    <Dialog
-      defaultOpen={true}
-      onOpenChange={async (isOpen) => {
-        if (!isOpen) {
-          await onClose();
-        }
-      }}
-    >
+    <Dialog defaultOpen={true} open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-h-[98%] overflow-hidden px-0 w-full lg:min-w-[42.5rem]">
         <DialogHeader className="px-6">
           <DialogTitle>{title}</DialogTitle>

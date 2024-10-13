@@ -1,6 +1,5 @@
 import {
   type FieldValues,
-  type Path,
   type UseFormProps,
   type UseFormReturn,
   useForm,
@@ -14,7 +13,6 @@ export type ExtendedUseFormReturn<
   TContext,
   TTransformedValues extends FieldValues | undefined,
 > = UseFormReturn<TFieldValues, TContext, TTransformedValues> & {
-  setInitialValues: (values: Record<keyof TFieldValues, unknown>) => void;
   getErroredKeys: () => Array<keyof TFieldValues>;
 };
 
@@ -50,20 +48,12 @@ export const useExtendedForm = <
     resolver: valibotResolver(validator),
   });
 
-  const setInitialValues = (values: Record<Path<TFieldValues>, unknown>) => {
-    const keys = Object.keys(values) as Array<Path<TFieldValues>>;
-    for (const key of keys) {
-      form.setValue(key, values[key] as never);
-    }
-  };
-
   const getErroredKeys = () => {
     return Object.keys(form.formState.errors) as Array<keyof TFieldValues>;
   };
 
   return {
     ...form,
-    setInitialValues,
     getErroredKeys,
   };
 };

@@ -45,7 +45,8 @@ const WorkExperienceDialog = () => {
       id: isEditMode ? idQuery : undefined,
       jobTitle: "",
       employer: "",
-      startDate: DateTime.now().toISO(),
+      startDate: DateTime.now().toISODate(),
+      endDate: null,
       employmentType: "full-time",
       workType: "office",
       location: "",
@@ -101,7 +102,7 @@ const WorkExperienceDialog = () => {
         setIsCurrentEmployment(true);
       }
 
-      form.setInitialValues(data);
+      form.reset(data);
     });
   }, [idQuery]);
 
@@ -153,6 +154,7 @@ const WorkExperienceDialog = () => {
       isLoadingInitialData={isEditMode ? isFetchingWorkExperience : false}
       isCloseDisabled={isMutating}
       isSaveDisabled={isSaveDisabled}
+      isDirty={form.formState.isDirty}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
