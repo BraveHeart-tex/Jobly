@@ -21,8 +21,8 @@ const UserProfileStickyHeader = () => {
   return (
     <motion.div
       variants={{
-        visible: { y: 0 },
-        hidden: { y: "-150%" },
+        visible: { y: 0, opacity: 1 },
+        hidden: { y: "-150%", opacity: 0 },
       }}
       initial={"hidden"}
       animate={visible ? "visible" : "hidden"}
