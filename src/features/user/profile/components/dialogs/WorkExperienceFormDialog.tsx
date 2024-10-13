@@ -30,11 +30,14 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { useGetWorkExperience } from "../../hooks/useGetWorkExperience";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
+import { useDeleteWorkExperience } from "../../hooks/useDeleteWorkExperience";
 
 const WorkExperienceDialog = () => {
   const router = useRouter();
   const { idQuery, closeModal } = useProfilePageSearchParams();
   const isEditMode = !!idQuery;
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
 
   const form = useExtendedForm<WorkExperienceData>(WorkExperienceValidator, {
     defaultValues: {
@@ -58,12 +61,21 @@ const WorkExperienceDialog = () => {
       },
     });
 
+  const { deleteWorkExperience, isDeletingWorkExperience } =
+    useDeleteWorkExperience({
+      onSuccess: async () => {
+        await closeModal();
+        router.refresh();
+        toast.success("Work experience deleted successfully.");
+      },
+    });
+
   const { fetchWorkExperience } = useGetWorkExperience();
 
   const [isCurrentEmployment, setIsCurrentEmployment] = useState(false);
   const [isFetchingWorkExperience, startTransition] = useTransition();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     if (!idQuery) return;
 
@@ -96,8 +108,24 @@ const WorkExperienceDialog = () => {
 
   const handleDelete = () => {
     if (!idQuery) return;
-    // TODO: handle delete
+    showConfirmDialog({
+      title: "Are you sure you want to delete this work experience?",
+      message: "This action cannot be undone.",
+      primaryActionLabel: "Delete",
+      onConfirm: async () => {
+        deleteWorkExperience({
+          id: idQuery,
+        });
+      },
+    });
   };
+
+  const isSaveDisabled =
+    isFetchingWorkExperience ||
+    isCreatingWorkExperience ||
+    isDeletingWorkExperience;
+
+  const isCloseDisabled = isCreatingWorkExperience || isDeletingWorkExperience;
 
   return (
     <FormDialog
@@ -106,8 +134,8 @@ const WorkExperienceDialog = () => {
       onClose={closeModal}
       onSave={handleSave}
       isLoadingInitialData={isEditMode ? isFetchingWorkExperience : false}
-      isCloseDisabled={isCreatingWorkExperience}
-      isSaveDisabled={isCreatingWorkExperience || isFetchingWorkExperience}
+      isCloseDisabled={isCloseDisabled}
+      isSaveDisabled={isSaveDisabled}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

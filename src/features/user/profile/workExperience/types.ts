@@ -10,3 +10,8 @@ export interface GetWorkExperienceParams {
   userId: number;
   experienceId: number;
 }
+
+export interface DeleteWorkExperienceParams {
+  userId: number;
+  experienceId: number;
+}

@@ -3,7 +3,10 @@ import type {
   WorkExperienceInsertModel,
 } from "@/server/db/schema/workExperiences";
 import { workExperienceRepository } from "../repository/workExperienceRepository";
-import type { GetWorkExperienceParams } from "../types";
+import type {
+  DeleteWorkExperienceParams,
+  GetWorkExperienceParams,
+} from "../types";
 import type { MakeFieldsRequired } from "@/lib/types";
 
 export const workExperienceService = {
@@ -15,5 +18,14 @@ export const workExperienceService = {
   },
   async updateWorkExperience(data: MakeFieldsRequired<WorkExperience, "id">) {
     return workExperienceRepository.updateWorkExperience(data);
+  },
+  async deleteWorkExperience({
+    userId,
+    experienceId,
+  }: DeleteWorkExperienceParams) {
+    return workExperienceRepository.deleteWorkExperience({
+      userId,
+      experienceId,
+    });
   },
 };

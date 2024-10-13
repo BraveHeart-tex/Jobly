@@ -40,4 +40,22 @@ export const workExperienceRouter = createTRPCRouter({
         userId,
       });
     }),
+  deleteWorkExperience: protectedProcedure
+    .input(
+      parser(
+        object({
+          id: pipe(
+            number(),
+            minValue(1, "Please provide valid work experience id."),
+          ),
+        }),
+      ),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      return workExperienceService.deleteWorkExperience({
+        userId,
+        experienceId: input.id,
+      });
+    }),
 });

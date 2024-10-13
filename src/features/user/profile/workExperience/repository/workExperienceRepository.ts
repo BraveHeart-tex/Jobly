@@ -3,7 +3,10 @@ import workExperiences, {
   type WorkExperience,
   type WorkExperienceInsertModel,
 } from "@/server/db/schema/workExperiences";
-import type { GetWorkExperienceParams } from "../types";
+import type {
+  DeleteWorkExperienceParams,
+  GetWorkExperienceParams,
+} from "../types";
 import { and, eq } from "drizzle-orm";
 import type { MakeFieldsRequired } from "@/lib/types";
 
@@ -33,6 +36,19 @@ export const workExperienceRepository = {
         and(
           eq(workExperiences.id, data.id),
           eq(workExperiences.userId, data.userId),
+        ),
+      );
+  },
+  async deleteWorkExperience({
+    userId,
+    experienceId,
+  }: DeleteWorkExperienceParams) {
+    return db
+      .delete(workExperiences)
+      .where(
+        and(
+          eq(workExperiences.userId, userId),
+          eq(workExperiences.id, experienceId),
         ),
       );
   },
