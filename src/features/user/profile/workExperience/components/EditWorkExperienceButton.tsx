@@ -21,7 +21,9 @@ const EditWorkExperienceButton = ({
 }: EditWorkExperienceButtonProps) => {
   const { openModal } = useProfilePageSearchParams();
 
-  const handleEditExperienceClick = () => {};
+  const handleEditExperienceClick = () => {
+    openModal("workExperience/edit", experienceId);
+  };
 
   return (
     <TooltipProvider>

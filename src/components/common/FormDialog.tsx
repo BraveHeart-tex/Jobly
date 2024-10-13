@@ -17,6 +17,8 @@ interface FormDialogProps {
   isLoadingInitialData?: boolean;
   onSave: () => void;
   onClose?: () => void | Promise<void>;
+  onDeleteClick?: () => void;
+  deleteLabel?: string;
   children: React.ReactNode;
 }
 
@@ -27,6 +29,8 @@ const FormDialog = ({
   isLoadingInitialData = false,
   onSave,
   onClose = () => {},
+  onDeleteClick,
+  deleteLabel,
   children,
 }: FormDialogProps) => {
   return (
@@ -55,6 +59,16 @@ const FormDialog = ({
           )}
         </div>
         <DialogFooter className="px-6 gap-1 lg:gap-0">
+          {onDeleteClick && (
+            <Button
+              variant="destructive"
+              onClick={onDeleteClick}
+              disabled={isSaveDisabled}
+              className="w-max mr-auto"
+            >
+              {deleteLabel || "Delete"}
+            </Button>
+          )}
           <DialogClose asChild>
             <Button variant="secondary" disabled={isCloseDisabled}>
               Close

@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { DateTime } from "luxon";
 import { useCreateWorkExperience } from "../../hooks/useCreateWorkExperience";
 import SelectInput from "@/components/common/SelectInput";
@@ -29,12 +29,16 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import MonthYearInput from "@/components/common/MonthYearInput";
+import { useGetWorkExperience } from "../../hooks/useGetWorkExperience";
 
 const WorkExperienceDialog = () => {
   const router = useRouter();
-  const { closeModal } = useProfilePageSearchParams();
+  const { idQuery, closeModal } = useProfilePageSearchParams();
+  const isEditMode = !!idQuery;
+
   const form = useExtendedForm<WorkExperienceData>(WorkExperienceValidator, {
     defaultValues: {
+      id: isEditMode ? idQuery : undefined,
       jobTitle: "",
       employer: "",
       startDate: DateTime.now().toISO(),
@@ -54,7 +58,30 @@ const WorkExperienceDialog = () => {
       },
     });
 
+  const { fetchWorkExperience } = useGetWorkExperience();
+
   const [isCurrentEmployment, setIsCurrentEmployment] = useState(false);
+  const [isFetchingWorkExperience, startTransition] = useTransition();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (!idQuery) return;
+
+    startTransition(async () => {
+      const data = await fetchWorkExperience(idQuery);
+      if (!data) {
+        toast.error("Work experience was not found.");
+        closeModal();
+        return;
+      }
+
+      if (!data.endDate) {
+        setIsCurrentEmployment(true);
+      }
+
+      form.setInitialValues(data);
+    });
+  }, [idQuery]);
 
   const onSubmit = (values: WorkExperienceData) => {
     if (!values?.id) {
@@ -67,13 +94,20 @@ const WorkExperienceDialog = () => {
     form.handleSubmit(onSubmit)();
   };
 
+  const handleDelete = () => {
+    if (!idQuery) return;
+    // TODO: handle delete
+  };
+
   return (
     <FormDialog
-      title="Add Work Experience"
+      title={`${isEditMode ? "Edit" : "Add"} Work Experience`}
+      onDeleteClick={isEditMode ? handleDelete : undefined}
       onClose={closeModal}
       onSave={handleSave}
+      isLoadingInitialData={isEditMode ? isFetchingWorkExperience : false}
       isCloseDisabled={isCreatingWorkExperience}
-      isSaveDisabled={isCreatingWorkExperience}
+      isSaveDisabled={isCreatingWorkExperience || isFetchingWorkExperience}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -110,7 +144,7 @@ const WorkExperienceDialog = () => {
                 onCheckedChange={(checked) => {
                   setIsCurrentEmployment(checked);
                   if (checked) {
-                    form.setValue("endDate", undefined);
+                    form.setValue("endDate", null);
                   }
                 }}
               />

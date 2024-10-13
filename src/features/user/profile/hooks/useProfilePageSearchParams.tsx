@@ -5,6 +5,7 @@ import {
 } from "../components/ProfileFormDialogContainer";
 
 const MODAL_QUERY_KEY = "modal" as const;
+const ENTITY_ID_QUERY_KEY = "id" as const;
 
 export const useProfilePageSearchParams = () => {
   const [modalQuery, setModalQuery] = useQueryState(
@@ -13,13 +14,20 @@ export const useProfilePageSearchParams = () => {
       Object.keys(modalDialogMap) as ModalDialogMapKey[],
     ),
   );
+  const [idQuery, setIdQuery] = useQueryState(ENTITY_ID_QUERY_KEY, {
+    parse(value) {
+      if (!value) return null;
+      return Number(value);
+    },
+  });
 
-  const openModal = (modalLink: ModalDialogMapKey) => {
+  const openModal = (modalLink: ModalDialogMapKey, id?: number) => {
     setModalQuery(modalLink);
+    if (id) setIdQuery(id);
   };
 
   const closeModal = async () => {
-    await setModalQuery(null);
+    await Promise.all([setModalQuery(null), setIdQuery(null)]);
   };
 
   return {
@@ -27,5 +35,6 @@ export const useProfilePageSearchParams = () => {
     setModalQuery,
     openModal,
     closeModal,
+    idQuery,
   };
 };

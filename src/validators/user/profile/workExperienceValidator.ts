@@ -8,12 +8,13 @@ import {
   nonEmpty,
   number,
   object,
-  optional,
   picklist,
   pipe,
   string,
   regex,
   rawCheck,
+  nullable,
+  optional,
 } from "valibot";
 
 export const WorkExperienceValidator = pipe(
@@ -34,13 +35,13 @@ export const WorkExperienceValidator = pipe(
       nonEmpty("Start date is required"),
       regex(ISO_8601_REGEX, "Please enter a valid date-time format."),
     ),
-    endDate: optional(DateTimeValidator),
+    endDate: nullable(DateTimeValidator),
     employmentType: picklist(workExperiences.employmentType.enumValues),
     workType: picklist(workExperiences.workType.enumValues),
-    location: optional(
+    location: nullable(
       pipe(string(), maxLength(255, "Location cannot exceed 255 characters")),
     ),
-    description: optional(string()),
+    description: nullable(string()),
   }),
   rawCheck(({ dataset, addIssue }) => {
     if (!dataset.typed) return;

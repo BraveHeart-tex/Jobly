@@ -6,6 +6,7 @@ import WorkExperienceDialog from "./dialogs/WorkExperienceFormDialog";
 export const modalDialogMap = {
   about: AboutSectionDialog,
   "workExperience/new": WorkExperienceDialog,
+  "workExperience/edit": WorkExperienceDialog,
 } as const;
 
 export type ModalDialogMapKey = keyof typeof modalDialogMap;

@@ -5,3 +5,8 @@ export interface ExperienceGroup {
   experiences: WorkExperience[];
   canBeGrouped: boolean;
 }
+
+export interface GetWorkExperienceParams {
+  userId: number;
+  experienceId: number;
+}
