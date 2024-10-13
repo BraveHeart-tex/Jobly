@@ -1,6 +1,5 @@
 import type { appRouter } from "@/server/api/root";
 import type * as schema from "@/server/db/schema";
-import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import type { ExtractTablesWithRelations } from "drizzle-orm";
 import type { MySqlTransaction } from "drizzle-orm/mysql-core";
@@ -45,7 +44,6 @@ export type PartialRecord<K extends keyof any, T> = {
 export type AppRouter = typeof appRouter;
 export type RouterInputs = inferRouterInputs<AppRouter>;
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
-export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
 
 export type Nullable<T> = T | null;
 

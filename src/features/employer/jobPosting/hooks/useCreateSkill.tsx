@@ -1,8 +1,10 @@
-import type { ReactQueryOptions } from "@/lib/types";
+import type { SkillInsertModel } from "@/server/db/schema/skills";
 import { api } from "@/trpc/react";
 
 export const useCreateSkill = (
-  options: ReactQueryOptions["skill"]["createSkill"] = {},
+  options: {
+    onSuccess?: (data: { id: number }[], variables: SkillInsertModel) => void;
+  } = {},
 ) => {
   const { mutate: createSkill, isPending: isCreatingSkill } =
     api.skill.createSkill.useMutation(options);
