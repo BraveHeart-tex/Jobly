@@ -68,7 +68,7 @@ export const workExperienceRelations = relations(
 );
 
 export type WorkExperience = InferSelectModel<typeof workExperiences>;
-export type WorkExperienceInsertModel = InferInsertModel<
+export type InsertWorkExperienceModel = InferInsertModel<
   typeof workExperiences
 >;
 

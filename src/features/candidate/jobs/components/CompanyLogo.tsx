@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getAvatarPlaceholder } from "@/lib/utils/stringUtils";
+import { getAvatarPlaceholder } from "@/lib/utils/string";
 import Image from "next/image";
 
 interface CompanyLogoProps {

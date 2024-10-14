@@ -1,6 +1,6 @@
 "use client";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
-import { groupBy } from "@/lib/utils/objectUtils";
+import { groupBy } from "@/lib/utils/object";
 import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 

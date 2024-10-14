@@ -6,7 +6,7 @@ import {
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
-import { removeHTMLTags } from "@/lib/utils/stringUtils";
+import { removeHTMLTags } from "@/lib/utils/string";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
 

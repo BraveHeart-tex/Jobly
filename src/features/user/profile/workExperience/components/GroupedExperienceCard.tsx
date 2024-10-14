@@ -7,7 +7,7 @@ import {
 } from "../utils";
 import { DateTime } from "luxon";
 import type { ExperienceGroup } from "../types";
-import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
+import { generateReadableEnumLabel } from "@/lib/utils/string";
 import ExperienceDescription from "./ExperienceDescription";
 import { useEffect, useRef, useState } from "react";
 import { getDistanceBetweenElements } from "@/lib/utils";

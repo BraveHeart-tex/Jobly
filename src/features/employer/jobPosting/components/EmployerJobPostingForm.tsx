@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils";
 import {
   capitalizeString,
   generateReadableEnumLabel,
-} from "@/lib/utils/stringUtils";
+} from "@/lib/utils/string";
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";

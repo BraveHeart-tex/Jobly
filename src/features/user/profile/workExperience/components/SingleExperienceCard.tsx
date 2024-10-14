@@ -3,7 +3,7 @@ import { CalendarDays, MapPin } from "lucide-react";
 import { calculateDuration, formatExperienceDate } from "../utils";
 import { DateTime } from "luxon";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
-import { generateReadableEnumLabel } from "@/lib/utils/stringUtils";
+import { generateReadableEnumLabel } from "@/lib/utils/string";
 import ExperienceDescription from "./ExperienceDescription";
 import EditWorkExperienceButton from "./EditWorkExperienceButton";
 

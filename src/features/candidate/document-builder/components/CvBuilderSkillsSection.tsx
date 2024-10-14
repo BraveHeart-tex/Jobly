@@ -12,7 +12,7 @@ import {
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import { groupEveryN } from "@/lib/utils/objectUtils";
+import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { useRemoveFields } from "../hooks/useRemoveFields";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";

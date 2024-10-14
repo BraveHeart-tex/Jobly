@@ -17,7 +17,7 @@ import { useUpdateDocument } from "@/features/candidate/document-builder/hooks/u
 import { isErrorObject } from "@/lib/guards";
 import { CANDIDATE_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/dateUtils";
+import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/date";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
 import { pdf } from "@react-pdf/renderer";

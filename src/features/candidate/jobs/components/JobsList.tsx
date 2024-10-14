@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import { cn } from "@/lib/utils";
-import { exclude } from "@/lib/utils/objectUtils";
+import { exclude } from "@/lib/utils/object";
 import { api } from "@/trpc/react";
 import React, {
   type LegacyRef,

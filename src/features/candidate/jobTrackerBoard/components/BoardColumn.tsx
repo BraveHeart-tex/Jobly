@@ -24,7 +24,7 @@ import { JOB_TRACKER_COLUMN_TO_ICON_MAP } from "@/lib/constants";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useJobTrackerBoardStore } from "@/lib/stores/useJobTrackerBoardStore";
 import { cn } from "@/lib/utils";
-import { capitalizeString } from "@/lib/utils/stringUtils";
+import { capitalizeString } from "@/lib/utils/string";
 import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 import { type UniqueIdentifier, useDndContext } from "@dnd-kit/core";

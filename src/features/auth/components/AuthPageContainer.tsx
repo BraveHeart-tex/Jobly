@@ -1,5 +1,5 @@
 import { APP_NAME } from "@/lib/constants";
-import { capitalizeWord } from "@/lib/utils/stringUtils";
+import { capitalizeWord } from "@/lib/utils/string";
 import Image from "next/image";
 import type React from "react";
 

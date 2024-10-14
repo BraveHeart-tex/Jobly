@@ -1,7 +1,7 @@
 "use client";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
-import { exclude, parseSectionMetadata } from "@/lib/utils/objectUtils";
-import { removeHTMLTags } from "@/lib/utils/stringUtils";
+import { exclude, parseSectionMetadata } from "@/lib/utils/object";
+import { removeHTMLTags } from "@/lib/utils/string";
 import {
   Document,
   Font,

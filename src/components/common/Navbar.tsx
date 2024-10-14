@@ -1,8 +1,8 @@
+import { getCurrentUser } from "@/actions/auth";
 import ColorModeToggle from "@/components/common/ColorModeToggle";
 import DesktopNavigationLinks from "@/components/common/DesktopNavigationLinks";
 import MobileNavigationLinks from "@/components/common/MobileNavigationLinks";
 import NavbarContainer from "@/components/common/NavbarContainer";
-import { authActions } from "@/features/auth/actions/authActions";
 import GuestAuthPopover from "@/features/user/components/GuestAuthPopover";
 import UserMenu from "@/features/user/components/UserMenu";
 import { APP_NAME } from "@/lib/constants";
@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Navbar = async () => {
-  const currentUser = await authActions.getCurrentUser();
+  const currentUser = await getCurrentUser();
 
   return (
     <NavbarContainer>

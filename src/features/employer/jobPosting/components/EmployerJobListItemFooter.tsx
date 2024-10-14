@@ -1,5 +1,5 @@
 "use client";
-import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/dateUtils";
+import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/date";
 
 interface EmployerJobListItemFooterProps {
   postedAt: string;

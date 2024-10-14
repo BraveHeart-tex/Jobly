@@ -1,6 +1,11 @@
-import { type InferSelectModel, relations } from "drizzle-orm";
+import {
+  type InferSelectModel,
+  relations,
+  type InferInsertModel,
+} from "drizzle-orm";
 import {
   date,
+  decimal,
   index,
   int,
   mysqlTable,
@@ -22,17 +27,18 @@ const educationalBackgrounds = mysqlTable(
     school: varchar("school", {
       length: 255,
     }).notNull(),
-    degree: varchar("degree", {
+    fieldOfStudy: varchar("fieldOfStudy", {
       length: 255,
     }).notNull(),
+    gpa: decimal("gpa", {
+      precision: 10,
+      scale: 2,
+    }),
     startDate: date("startDate", {
       mode: "string",
     }).notNull(),
     endDate: date("endDate", {
       mode: "string",
-    }),
-    city: varchar("city", {
-      length: 100,
     }),
     description: text("description"),
   },
@@ -55,6 +61,10 @@ export const educationalBackgroundsRelations = relations(
 );
 
 export type EducationalBackground = InferSelectModel<
+  typeof educationalBackgrounds
+>;
+
+export type InsertEducationalBackgroundModel = InferInsertModel<
   typeof educationalBackgrounds
 >;
 

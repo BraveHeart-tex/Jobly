@@ -22,7 +22,7 @@ import { CONTROL_BUTTON_VARIANT } from "@/lib/constants";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { cn } from "@/lib/utils";
-import { isObjectEmpty } from "@/lib/utils/objectUtils";
+import { isObjectEmpty } from "@/lib/utils/object";
 import { api } from "@/trpc/react";
 import {
   CompanyProfileValidator,

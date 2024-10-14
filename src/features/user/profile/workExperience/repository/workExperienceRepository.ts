@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import workExperiences, {
   type WorkExperience,
-  type WorkExperienceInsertModel,
+  type InsertWorkExperienceModel,
 } from "@/server/db/schema/workExperiences";
 import type {
   DeleteWorkExperienceParams,
@@ -12,7 +12,7 @@ import type { MakeFieldsRequired } from "@/lib/types";
 
 export const workExperienceRepository = {
   async createWorkExperience(
-    data: WorkExperienceInsertModel,
+    data: InsertWorkExperienceModel,
   ): Promise<{ id: number }[]> {
     return db.insert(workExperiences).values(data).$returningId();
   },

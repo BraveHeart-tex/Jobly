@@ -1,3 +1,4 @@
+import { educationalBackgroundsRouter } from "@/api/educationalBackgrounds";
 import { authRouter } from "@/features/auth/api/authRouter";
 import { documentRouter } from "@/features/candidate/documents/api/documentRouter";
 import { jobTrackerRouter } from "@/features/candidate/jobTrackerBoard/api/jobTrackerRouter";
@@ -21,6 +22,7 @@ export const appRouter = createTRPCRouter({
   userProfile: userProfileRouter,
   userSkill: userSkillRouter,
   workExperience: workExperienceRouter,
+  educationalBackgrounds: educationalBackgroundsRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);

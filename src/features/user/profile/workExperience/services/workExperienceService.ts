@@ -1,6 +1,6 @@
 import type {
   WorkExperience,
-  WorkExperienceInsertModel,
+  InsertWorkExperienceModel,
 } from "@/server/db/schema/workExperiences";
 import { workExperienceRepository } from "../repository/workExperienceRepository";
 import type {
@@ -10,7 +10,7 @@ import type {
 import type { MakeFieldsRequired } from "@/lib/types";
 
 export const workExperienceService = {
-  async createWorkExperience(data: WorkExperienceInsertModel) {
+  async createWorkExperience(data: InsertWorkExperienceModel) {
     return workExperienceRepository.createWorkExperience(data);
   },
   async getWorkExperience({ userId, experienceId }: GetWorkExperienceParams) {

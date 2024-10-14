@@ -1,6 +1,6 @@
+import { getCurrentUser } from "@/actions/auth";
 import PageContainer from "@/components/common/PageContainer";
 import PageTitle from "@/components/common/PageTitle";
-import { authActions } from "@/features/auth/actions/authActions";
 import CompanyProfileDetails from "@/features/employer/company/components/CompanyProfileDetails";
 import CompanyProfileSetup from "@/features/employer/company/components/CompanyProfileSetup";
 import { SHARED_ROUTES } from "@/lib/routes";
@@ -18,7 +18,7 @@ const CompanyProfilePage = async ({
   searchParams,
 }: CompanyProfilePageProps) => {
   const { hasToSetupCompanyInformation } = searchParams;
-  const currentUser = await authActions.getCurrentUser();
+  const currentUser = await getCurrentUser();
 
   if (!currentUser) {
     redirect(SHARED_ROUTES.LOGIN);
