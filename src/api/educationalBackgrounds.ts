@@ -9,7 +9,7 @@ import { GenericIdValidator } from "@/validators/schemaUtils";
 import {
   InsertEducationValidator,
   UpdateEducationValidator,
-} from "@/validators/user/profile/educationValidator";
+} from "@/validators/user/profile/educationalBackgroundValidator";
 import { parser } from "valibot";
 
 export const educationalBackgroundsRouter = createTRPCRouter({

@@ -13,7 +13,7 @@ import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   type EducationalBackgroundData,
   EducationalBackgroundValidator,
-} from "@/validators/user/profile/educationValidator";
+} from "@/validators/user/profile/educationalBackgroundValidator";
 import { DateTime } from "luxon";
 import { useProfilePageSearchParams } from "../../profile/hooks/useProfilePageSearchParams";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
