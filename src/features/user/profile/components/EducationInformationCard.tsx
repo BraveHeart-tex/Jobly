@@ -21,7 +21,7 @@ const EducationInformationCard = ({
   return (
     <article className="grid gap-2 p-4 px-0 bg-card border-b last:border-b-0 first:pt-0">
       <div className="flex items-center justify-between">
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
           <div className="flex items-center justify-between gap-4">
             <h3 className="scroll-m-20 text-base font-semibold tracking-tight">
               {educationInformation.fieldOfStudy}
