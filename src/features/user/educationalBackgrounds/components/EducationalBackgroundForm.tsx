@@ -22,13 +22,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCreateEducationalBackground } from "../hooks/useCreateEducationalBackground";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useDeleteEducationalBackground } from "../hooks/useDeleteEducationalBackground";
 
 const EducationalBackgroundForm = () => {
-  const isEditMode = false;
-
   const router = useRouter();
   const { idQuery, closeModal } = useProfilePageSearchParams();
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+
+  const isEditMode = !!idQuery;
 
   const form = useExtendedForm<EducationalBackgroundData>(
     EducationalBackgroundValidator,
@@ -36,7 +37,7 @@ const EducationalBackgroundForm = () => {
       defaultValues: {
         school: "",
         fieldOfStudy: "",
-        gpa: "",
+        gpa: null,
         startDate: DateTime.now().toISODate(),
         endDate: null,
         description: "",
@@ -53,6 +54,15 @@ const EducationalBackgroundForm = () => {
       },
     });
 
+  const { deleteEducationalBackground, isDeletingEducationalBackground } =
+    useDeleteEducationalBackground({
+      onSuccess: async () => {
+        await closeModal();
+        router.refresh();
+        toast.success("Educational background deleted successfully.");
+      },
+    });
+
   const onSubmit = (data: EducationalBackgroundData) => {
     if (isEditMode) {
     } else {
@@ -64,10 +74,21 @@ const EducationalBackgroundForm = () => {
     form.handleSubmit(onSubmit)();
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    showConfirmDialog({
+      title: "Are you sure you want to delete this educational background?",
+      message: "This action cannot be undone.",
+      primaryActionLabel: "Delete",
+      onConfirm: () => {
+        if (!idQuery) return;
+        deleteEducationalBackground({
+          id: idQuery,
+        });
+      },
+    });
+  };
 
   // TODO: remove later
-  const isDeletingEducationalBackground = false;
   const isUpdatingEducationalBackground = false;
   const isFetchingEducationalBackground = false;
 
@@ -159,7 +180,12 @@ const EducationalBackgroundForm = () => {
                 <FormItem>
                   <FormLabel>GPA</FormLabel>
                   <FormControl>
-                    <Input {...field} type="number" step="0.01" />
+                    <Input
+                      {...field}
+                      type="number"
+                      step="0.01"
+                      value={field.value || ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

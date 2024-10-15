@@ -9,6 +9,7 @@ import {
   type InferOutput,
   nullable,
   decimal,
+  nonEmpty,
 } from "valibot";
 
 export const EducationalBackgroundValidator = object({
@@ -16,13 +17,15 @@ export const EducationalBackgroundValidator = object({
   userId: optional(number()),
   school: pipe(
     string(),
+    nonEmpty("School name is required"),
     maxLength(255, "School name cannot exceed 255 characters"),
   ),
   fieldOfStudy: pipe(
     string(),
+    nonEmpty("Field of study is required"),
     maxLength(255, "Field of study cannot exceed 255 characters"),
   ),
-  gpa: optional(
+  gpa: nullable(
     pipe(string(), decimal("Please enter a valid decimal number (e.g. 3.5)")),
   ),
   startDate: DateValidator,

@@ -9,6 +9,7 @@ export const modalDialogMap = {
   "workExperience/new": WorkExperienceDialog,
   "workExperience/edit": WorkExperienceDialog,
   "educationalBackground/new": EducationalBackgroundForm,
+  "educationalBackground/edit": EducationalBackgroundForm,
 } as const;
 
 export type ModalDialogMapKey = keyof typeof modalDialogMap;
