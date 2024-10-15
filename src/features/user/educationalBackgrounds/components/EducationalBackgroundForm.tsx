@@ -23,11 +23,14 @@ import { useCreateEducationalBackground } from "../hooks/useCreateEducationalBac
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useDeleteEducationalBackground } from "../hooks/useDeleteEducationalBackground";
+import { useEffect, useTransition } from "react";
+import { useGetEducationalBackground } from "../hooks/useGetEducationalBackground";
 
 const EducationalBackgroundForm = () => {
   const router = useRouter();
   const { idQuery, closeModal } = useProfilePageSearchParams();
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+  const [isFetchingEducationalBackground, startTransition] = useTransition();
 
   const isEditMode = !!idQuery;
 
@@ -45,23 +48,47 @@ const EducationalBackgroundForm = () => {
     },
   );
 
+  const handleMutationSuccess = async (message: string) => {
+    await closeModal();
+    router.refresh();
+    toast.success(message);
+  };
+
   const { createEducationalBackground, isCreatingEducationalBackground } =
     useCreateEducationalBackground({
       onSuccess: async () => {
-        await closeModal();
-        router.refresh();
-        toast.success("Educational background added successfully.");
+        await handleMutationSuccess(
+          "Educational background added successfully.",
+        );
       },
     });
 
   const { deleteEducationalBackground, isDeletingEducationalBackground } =
     useDeleteEducationalBackground({
       onSuccess: async () => {
-        await closeModal();
-        router.refresh();
-        toast.success("Educational background deleted successfully.");
+        await handleMutationSuccess(
+          "Educational background deleted successfully.",
+        );
       },
     });
+
+  const { fetchEducationalBackground } = useGetEducationalBackground();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (!idQuery) return;
+
+    startTransition(async () => {
+      const data = await fetchEducationalBackground(idQuery);
+      if (!data) {
+        toast.error("Educational background not found");
+        await closeModal();
+        return;
+      }
+
+      form.reset(data);
+    });
+  }, [idQuery]);
 
   const onSubmit = (data: EducationalBackgroundData) => {
     if (isEditMode) {
@@ -90,7 +117,6 @@ const EducationalBackgroundForm = () => {
 
   // TODO: remove later
   const isUpdatingEducationalBackground = false;
-  const isFetchingEducationalBackground = false;
 
   const isMutating =
     isCreatingEducationalBackground ||
@@ -198,7 +224,12 @@ const EducationalBackgroundForm = () => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} cols={30} rows={10} />
+                    <Textarea
+                      {...field}
+                      cols={30}
+                      rows={10}
+                      value={field.value || ""}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,5 +1,8 @@
 import { db } from "@/server/db";
-import type { InsertEducationalBackgroundModel } from "@/server/db/schema/educationalBackgrounds";
+import type {
+  EducationalBackground,
+  InsertEducationalBackgroundModel,
+} from "@/server/db/schema/educationalBackgrounds";
 import educationalBackgrounds from "@/server/db/schema/educationalBackgrounds";
 import { and, eq } from "drizzle-orm";
 
@@ -25,4 +28,17 @@ export const deleteEducationalBackground = async (
         eq(educationalBackgrounds.id, educationalBackgroundId),
       ),
     );
+};
+
+export const getEducationalBackground = async (
+  userId: number,
+  educationalBackgroundId: number,
+): Promise<EducationalBackground | undefined> => {
+  return await db.query.educationalBackgrounds.findFirst({
+    where: () =>
+      and(
+        eq(educationalBackgrounds.userId, userId),
+        eq(educationalBackgrounds.id, educationalBackgroundId),
+      ),
+  });
 };

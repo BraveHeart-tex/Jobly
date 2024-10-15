@@ -14,6 +14,9 @@ import {
   optional,
   safeParse,
   regex,
+  object,
+  number,
+  minValue,
 } from "valibot";
 
 export const parseEnumValue = <T extends string>(
@@ -59,3 +62,7 @@ export const UrlValidator = pipe(
   string(),
   regex(URL_REGEX, "Please enter a valid URL."),
 );
+
+export const GenericIdValidator = object({
+  id: pipe(number(), minValue(1, "Please provide valid id.")),
+});

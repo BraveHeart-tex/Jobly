@@ -2,9 +2,11 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   createEducationalBackgroundUseCase,
   deleteEducationalBackgroundUseCase,
+  getEducationalBackgroundUseCase,
 } from "@/use-cases/educationalBackgrounds";
+import { GenericIdValidator } from "@/validators/schemaUtils";
 import { InsertEducationValidator } from "@/validators/user/profile/educationValidator";
-import { minValue, number, object, parser, pipe } from "valibot";
+import { parser } from "valibot";
 
 export const educationalBackgroundsRouter = createTRPCRouter({
   createEducationalBackground: protectedProcedure
@@ -17,18 +19,15 @@ export const educationalBackgroundsRouter = createTRPCRouter({
       });
     }),
   deleteEducationalBackground: protectedProcedure
-    .input(
-      parser(
-        object({
-          id: pipe(
-            number(),
-            minValue(1, "Please provide valid educational background id."),
-          ),
-        }),
-      ),
-    )
+    .input(parser(GenericIdValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return deleteEducationalBackgroundUseCase(userId, input.id);
+    }),
+  getEducationalBackground: protectedProcedure
+    .input(parser(GenericIdValidator))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      return getEducationalBackgroundUseCase(userId, input.id);
     }),
 });

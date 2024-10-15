@@ -1,6 +1,7 @@
 import {
   createEducationalBackground,
   deleteEducationalBackground,
+  getEducationalBackground,
 } from "@/data-access/educationalBackgrounds";
 import type { InsertEducationalBackgroundModel } from "@/server/db/schema/educationalBackgrounds";
 
@@ -15,4 +16,11 @@ export const deleteEducationalBackgroundUseCase = async (
   educationalBackgroundId: number,
 ) => {
   return await deleteEducationalBackground(userId, educationalBackgroundId);
+};
+
+export const getEducationalBackgroundUseCase = async (
+  userId: number,
+  educationalBackgroundId: number,
+) => {
+  return await getEducationalBackground(userId, educationalBackgroundId);
 };

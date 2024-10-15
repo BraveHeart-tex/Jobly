@@ -92,6 +92,7 @@ const WorkExperienceDialog = () => {
 
     startTransition(async () => {
       const data = await fetchWorkExperience(idQuery);
+
       if (!data) {
         toast.error("Work experience was not found.");
         await closeModal();

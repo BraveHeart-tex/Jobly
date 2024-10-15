@@ -10,6 +10,7 @@ import {
   nullable,
   decimal,
   nonEmpty,
+  nullish,
 } from "valibot";
 
 export const EducationalBackgroundValidator = object({
@@ -30,7 +31,7 @@ export const EducationalBackgroundValidator = object({
   ),
   startDate: DateValidator,
   endDate: nullable(DateValidator),
-  description: optional(string()),
+  description: nullish(string()),
 });
 
 export const InsertEducationValidator = object({
