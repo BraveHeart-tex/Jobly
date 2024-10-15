@@ -14,6 +14,8 @@ export const MAX_VISIBLE_EDUCATION_ITEM_COUNT = 5 as const;
 const UserProfileEducationSection = ({
   educationBackground,
 }: UserProfileEducationSectionProps) => {
+  if (educationBackground.length === 0) return null;
+
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
       <CardContent className="p-0 flex flex-col justify-between">

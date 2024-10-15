@@ -9,15 +9,15 @@ import Link from "next/link";
 import ClientOnly from "@/components/common/ClientOnly";
 import AddProfileRecordButton from "../../components/AddProfileRecordButton";
 
-interface UserProfileWorkExperiences {
+interface UserProfileWorkExperienceSectionProps {
   experiences: WorkExperience[];
 }
 
 export const MAX_VISIBLE_WORK_EXPERIENCE_COUNT = 5 as const;
 
-const UserProfileWorkExperiences = ({
+const UserProfileWorkExperienceSection = ({
   experiences,
-}: UserProfileWorkExperiences) => {
+}: UserProfileWorkExperienceSectionProps) => {
   const shouldGroupExperiences = (
     current: WorkExperience,
     nextIndex: number,
@@ -74,6 +74,8 @@ const UserProfileWorkExperiences = ({
     [],
   );
 
+  if (experiences.length === 0) return null;
+
   return (
     <Card className="w-full max-w-4xl mx-auto rounded-md">
       <CardContent className="p-0 flex flex-col justify-between">
@@ -116,4 +118,4 @@ const UserProfileWorkExperiences = ({
   );
 };
 
-export default UserProfileWorkExperiences;
+export default UserProfileWorkExperienceSection;
