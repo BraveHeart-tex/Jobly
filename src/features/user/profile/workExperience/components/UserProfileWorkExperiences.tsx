@@ -4,10 +4,10 @@ import SingleExperienceCard from "./SingleExperienceCard";
 import type { ExperienceGroup } from "../types";
 import GroupedExperienceCard from "./GroupedExperienceCard";
 import { Card, CardContent } from "@/components/ui/card";
-import AddNewExperienceButton from "../../components/AddNewExperienceButton";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import ClientOnly from "@/components/common/ClientOnly";
+import AddProfileRecordButton from "../../components/AddProfileRecordButton";
 
 interface UserProfileWorkExperiences {
   experiences: WorkExperience[];
@@ -79,7 +79,7 @@ const UserProfileWorkExperiences = ({
       <CardContent className="p-0 flex flex-col justify-between">
         <div className="flex items-center justify-between p-4">
           <h2 className="text-2xl font-bold">Experience</h2>
-          <AddNewExperienceButton />
+          <AddProfileRecordButton modalLink="workExperience/new" />
         </div>
       </CardContent>
 

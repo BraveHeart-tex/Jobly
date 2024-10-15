@@ -11,7 +11,7 @@ import { generateReadableEnumLabel } from "@/lib/utils/string";
 import ExperienceDescription from "./ExperienceDescription";
 import { useEffect, useRef, useState } from "react";
 import { getDistanceBetweenElements } from "@/lib/utils";
-import EditWorkExperienceButton from "./EditWorkExperienceButton";
+import EditProfileRecordButton from "../../components/EditProfileRecordButton";
 
 interface GroupedExperienceCardProps {
   group: ExperienceGroup;
@@ -84,9 +84,9 @@ const GroupedExperienceCard = ({ group }: GroupedExperienceCardProps) => {
                 <h4 className="text-lg font-medium text-foreground">
                   {experience.jobTitle}
                 </h4>
-                <EditWorkExperienceButton
-                  experienceId={experience.id}
-                  className=""
+                <EditProfileRecordButton
+                  modalLink="workExperience/edit"
+                  recordId={experience.id}
                 />
               </div>
               <div className="flex flex-wrap gap-x-4 gap-y-2 mt-1 text-sm text-foreground/60">

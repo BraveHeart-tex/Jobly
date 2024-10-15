@@ -3,7 +3,7 @@ import EducationInformationCard from "@/features/user/profile/components/Educati
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
-import AddEducationalBackgroundButton from "../../educationalBackgrounds/components/AddEducationalBackgroundButton";
+import AddProfileRecordButton from "./AddProfileRecordButton";
 
 interface UserProfileEducationSectionProps {
   educationBackground: EducationalBackground[];
@@ -19,7 +19,7 @@ const UserProfileEducationSection = ({
       <CardContent className="p-0 flex flex-col justify-between">
         <div className="flex items-center justify-between p-4">
           <h2 className="text-2xl font-bold">Education</h2>
-          <AddEducationalBackgroundButton />
+          <AddProfileRecordButton modalLink="educationalBackground/new" />
         </div>
         <div className="p-4 py-0 pb-2">
           {educationBackground

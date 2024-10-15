@@ -2,12 +2,17 @@
 import { Button } from "@/components/ui/button";
 import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
 import { PlusIcon } from "lucide-react";
+import type { ModalDialogMapKey } from "./ProfileFormDialogContainer";
 
-const AddNewExperienceButton = () => {
+interface AddProfileRecordButtonProps {
+  modalLink: ModalDialogMapKey;
+}
+
+const AddProfileRecordButton = ({ modalLink }: AddProfileRecordButtonProps) => {
   const { openModal } = useProfilePageSearchParams();
 
   const handleNewExperienceClick = () => {
-    openModal("workExperience/new");
+    openModal(modalLink);
   };
 
   return (
@@ -16,5 +21,4 @@ const AddNewExperienceButton = () => {
     </Button>
   );
 };
-
-export default AddNewExperienceButton;
+export default AddProfileRecordButton;

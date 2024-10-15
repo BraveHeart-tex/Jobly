@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
 import { generateReadableEnumLabel } from "@/lib/utils/string";
 import ExperienceDescription from "./ExperienceDescription";
-import EditWorkExperienceButton from "./EditWorkExperienceButton";
+import EditProfileRecordButton from "../../components/EditProfileRecordButton";
 
 interface SingleExperienceCardProps {
   experience: WorkExperience;
@@ -22,7 +22,10 @@ const SingleExperienceCard = ({ experience }: SingleExperienceCardProps) => {
             <h3 className="text-xl font-semibold text-foreground">
               {experience.jobTitle}
             </h3>
-            <EditWorkExperienceButton experienceId={experience.id} />
+            <EditProfileRecordButton
+              modalLink="workExperience/edit"
+              recordId={experience.id}
+            />
           </div>
           <div className="flex items-center gap-1 mt-1 text-foreground/70 text-sm">
             <h4>{experience.employer}</h4>

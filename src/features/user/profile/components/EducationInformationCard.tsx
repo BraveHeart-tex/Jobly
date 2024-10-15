@@ -1,7 +1,7 @@
 import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
 import ExperienceDescription from "../workExperience/components/ExperienceDescription";
-import EditEducationalBackgroundButton from "../../educationalBackgrounds/components/EditEducationalBackgroundButton";
+import EditProfileRecordButton from "./EditProfileRecordButton";
 
 interface EducationInformationCardProps {
   educationInformation: EducationalBackground;
@@ -26,8 +26,9 @@ const EducationInformationCard = ({
             <h3 className="scroll-m-20 text-base font-semibold tracking-tight">
               {educationInformation.fieldOfStudy}
             </h3>
-            <EditEducationalBackgroundButton
-              educationalBackgroundId={educationInformation.id}
+            <EditProfileRecordButton
+              recordId={educationInformation.id}
+              modalLink="educationalBackground/edit"
             />
           </div>
           <p className="text-sm text-muted-foreground">
