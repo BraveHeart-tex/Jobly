@@ -1,3 +1,4 @@
+import type { MakeFieldsRequired } from "@/lib/types";
 import { db } from "@/server/db";
 import type {
   EducationalBackground,
@@ -41,4 +42,13 @@ export const getEducationalBackground = async (
         eq(educationalBackgrounds.id, educationalBackgroundId),
       ),
   });
+};
+
+export const updateEducationalBackground = async (
+  data: MakeFieldsRequired<Partial<EducationalBackground>, "id">,
+) => {
+  return await db
+    .update(educationalBackgrounds)
+    .set(data)
+    .where(eq(educationalBackgrounds.id, data.id));
 };

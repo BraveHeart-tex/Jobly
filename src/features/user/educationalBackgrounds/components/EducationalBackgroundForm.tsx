@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useDeleteEducationalBackground } from "../hooks/useDeleteEducationalBackground";
 import { useEffect, useTransition } from "react";
 import { useGetEducationalBackground } from "../hooks/useGetEducationalBackground";
+import { useUpdateEducationalBackground } from "../hooks/useUpdateEducationalBackground";
 
 const EducationalBackgroundForm = () => {
   const router = useRouter();
@@ -72,6 +73,15 @@ const EducationalBackgroundForm = () => {
       },
     });
 
+  const { updateEducationalBackground, isUpdatingEducationalBackground } =
+    useUpdateEducationalBackground({
+      onSuccess: async () => {
+        await handleMutationSuccess(
+          "Educational background updated successfully.",
+        );
+      },
+    });
+
   const { fetchEducationalBackground } = useGetEducationalBackground();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -92,6 +102,10 @@ const EducationalBackgroundForm = () => {
 
   const onSubmit = (data: EducationalBackgroundData) => {
     if (isEditMode) {
+      updateEducationalBackground({
+        ...data,
+        id: idQuery as number,
+      });
     } else {
       createEducationalBackground(data);
     }
@@ -114,9 +128,6 @@ const EducationalBackgroundForm = () => {
       },
     });
   };
-
-  // TODO: remove later
-  const isUpdatingEducationalBackground = false;
 
   const isMutating =
     isCreatingEducationalBackground ||

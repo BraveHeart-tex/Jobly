@@ -10,7 +10,7 @@ import {
   nullable,
   decimal,
   nonEmpty,
-  nullish,
+  minValue,
 } from "valibot";
 
 export const EducationalBackgroundValidator = object({
@@ -31,12 +31,17 @@ export const EducationalBackgroundValidator = object({
   ),
   startDate: DateValidator,
   endDate: nullable(DateValidator),
-  description: nullish(string()),
+  description: nullable(string()),
 });
 
 export const InsertEducationValidator = object({
   ...EducationalBackgroundValidator.entries,
   id: optional(number()),
+});
+
+export const UpdateEducationValidator = object({
+  ...EducationalBackgroundValidator.entries,
+  id: pipe(number(), minValue(1, "Please provide valid education id.")),
 });
 
 export type EducationalBackgroundData = InferOutput<
