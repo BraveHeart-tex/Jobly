@@ -11,32 +11,36 @@ import type React from "react";
 import { Loader2 } from "lucide-react";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useState } from "react";
+import type { ExtendedUseFormReturn } from "@/lib/hook-form/useExtendedForm";
+import type { FieldValues } from "react-hook-form";
 
-interface FormDialogProps {
+interface FormDialogProps<T extends FieldValues = FieldValues> {
   title: string;
   isCloseDisabled?: boolean;
   isSaveDisabled?: boolean;
   isLoadingInitialData?: boolean;
-  onSave: () => void;
+  onSubmit: (values: T, ...args: unknown[]) => void;
   onClose?: () => void | Promise<void>;
   onDeleteClick?: () => void;
   deleteLabel?: string;
   children: React.ReactNode;
   isDirty?: boolean;
+  form: ExtendedUseFormReturn<T, undefined, undefined>;
 }
 
-const FormDialog = ({
+const FormDialog = <T extends FieldValues = FieldValues>({
   title,
   isCloseDisabled,
   isSaveDisabled,
   isLoadingInitialData = false,
-  onSave,
+  onSubmit,
   onClose = () => {},
   onDeleteClick,
   deleteLabel,
   children,
+  form,
   isDirty,
-}: FormDialogProps) => {
+}: FormDialogProps<T>) => {
   const [open, setOpen] = useState(true);
 
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
@@ -45,9 +49,11 @@ const FormDialog = ({
     setOpen(false);
   };
 
+  const isFormDirty = isDirty === undefined ? form.formState.isDirty : isDirty;
+
   const handleOpenChange = async (isOpen: boolean) => {
     if (!isOpen) {
-      if (isDirty) {
+      if (isFormDirty) {
         return showConfirmDialog({
           title: "Discard changes?",
           message: "Are you sure you want to discard your changes?",
@@ -62,6 +68,10 @@ const FormDialog = ({
 
       await handleDialogClose();
     }
+  };
+
+  const handleSave = () => {
+    form.handleSubmit(onSubmit)();
   };
 
   return (
@@ -98,7 +108,7 @@ const FormDialog = ({
               Close
             </Button>
           </DialogClose>
-          <Button onClick={onSave} disabled={isSaveDisabled}>
+          <Button onClick={handleSave} disabled={isSaveDisabled}>
             Save
           </Button>
         </DialogFooter>

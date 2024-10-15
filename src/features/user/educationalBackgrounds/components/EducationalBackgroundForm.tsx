@@ -111,10 +111,6 @@ const EducationalBackgroundForm = () => {
     }
   };
 
-  const handleSave = () => {
-    form.handleSubmit(onSubmit)();
-  };
-
   const handleDelete = () => {
     showConfirmDialog({
       title: "Are you sure you want to delete this educational background?",
@@ -137,17 +133,17 @@ const EducationalBackgroundForm = () => {
   const isSaveDisabled = isFetchingEducationalBackground || isMutating;
 
   return (
-    <FormDialog
+    <FormDialog<EducationalBackgroundData>
       title={`${isEditMode ? "Edit" : "Add"} Educational Background`}
       onDeleteClick={isEditMode ? handleDelete : undefined}
       onClose={closeModal}
-      onSave={handleSave}
+      onSubmit={onSubmit}
       isLoadingInitialData={
         isEditMode ? isFetchingEducationalBackground : false
       }
+      form={form}
       isCloseDisabled={isMutating}
       isSaveDisabled={isSaveDisabled}
-      isDirty={form.formState.isDirty}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

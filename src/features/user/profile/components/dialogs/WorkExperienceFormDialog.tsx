@@ -121,10 +121,6 @@ const WorkExperienceDialog = () => {
     createWorkExperience(values);
   };
 
-  const handleSave = () => {
-    form.handleSubmit(onSubmit)();
-  };
-
   const handleDelete = () => {
     if (!idQuery) return;
     showConfirmDialog({
@@ -147,15 +143,15 @@ const WorkExperienceDialog = () => {
   const isSaveDisabled = isFetchingWorkExperience || isMutating;
 
   return (
-    <FormDialog
+    <FormDialog<WorkExperienceData>
       title={`${isEditMode ? "Edit" : "Add"} Work Experience`}
       onDeleteClick={isEditMode ? handleDelete : undefined}
       onClose={closeModal}
-      onSave={handleSave}
+      onSubmit={onSubmit}
       isLoadingInitialData={isEditMode ? isFetchingWorkExperience : false}
       isCloseDisabled={isMutating}
       isSaveDisabled={isSaveDisabled}
-      isDirty={form.formState.isDirty}
+      form={form}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
