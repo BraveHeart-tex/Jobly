@@ -1,5 +1,6 @@
 import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
+import ExperienceDescription from "../workExperience/components/ExperienceDescription";
 
 interface EducationInformationCardProps {
   educationInformation: EducationalBackground;
@@ -17,23 +18,30 @@ const EducationInformationCard = ({
   });
 
   return (
-    <article
-      className={
-        "grid gap-2 p-4 px-0 bg-card border-b last:border-b-0 first:pt-0"
-      }
-    >
+    <article className="grid gap-2 p-4 px-0 bg-card border-b last:border-b-0 first:pt-0">
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <h3 className="scroll-m-20 text-base font-semibold tracking-tight">
-            {educationInformation.degree}
+            {educationInformation.fieldOfStudy}
           </h3>
-          <p className="text-sm">{educationInformation.school}</p>
+          <p className="text-sm text-muted-foreground">
+            {educationInformation.school}
+          </p>
           <p className="text-sm text-muted-foreground">
             {formattedStartDate} - {formattedEndDate}
           </p>
+          {educationInformation.gpa && (
+            <p className="text-sm text-muted-foreground mt-1">
+              GPA: {educationInformation.gpa}
+            </p>
+          )}
         </div>
       </div>
+      {educationInformation.description && (
+        <ExperienceDescription description={educationInformation.description} />
+      )}
     </article>
   );
 };
+
 export default EducationInformationCard;

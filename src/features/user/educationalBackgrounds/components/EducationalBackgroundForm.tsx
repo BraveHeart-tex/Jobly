@@ -66,15 +66,29 @@ const EducationalBackgroundForm = () => {
 
   const handleDelete = () => {};
 
+  // TODO: remove later
+  const isDeletingEducationalBackground = false;
+  const isUpdatingEducationalBackground = false;
+  const isFetchingEducationalBackground = false;
+
+  const isMutating =
+    isCreatingEducationalBackground ||
+    isDeletingEducationalBackground ||
+    isUpdatingEducationalBackground;
+
+  const isSaveDisabled = isFetchingEducationalBackground || isMutating;
+
   return (
     <FormDialog
       title={`${isEditMode ? "Edit" : "Add"} Educational Background`}
       onDeleteClick={isEditMode ? handleDelete : undefined}
       onClose={closeModal}
       onSave={handleSave}
-      //   isLoadingInitialData={isEditMode ? isFetchingWorkExperience : false}
-      //   isCloseDisabled={isMutating}
-      //   isSaveDisabled={isSaveDisabled}
+      isLoadingInitialData={
+        isEditMode ? isFetchingEducationalBackground : false
+      }
+      isCloseDisabled={isMutating}
+      isSaveDisabled={isSaveDisabled}
       isDirty={form.formState.isDirty}
     >
       <Form {...form}>
