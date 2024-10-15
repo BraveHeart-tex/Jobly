@@ -115,7 +115,7 @@ const AboutSectionDialog = () => {
       title="Edit About Section"
       onClose={closeModal}
       isLoadingInitialData={isPendingAboutData}
-      onSave={handleSave}
+      onSubmit={handleSave}
       isCloseDisabled={isLoadingOperation}
       isSaveDisabled={
         isPendingAboutData || isCreatingSkill || isSavingAboutInformation

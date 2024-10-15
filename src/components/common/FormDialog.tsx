@@ -25,7 +25,7 @@ interface FormDialogProps<T extends FieldValues = FieldValues> {
   deleteLabel?: string;
   children: React.ReactNode;
   isDirty?: boolean;
-  form: ExtendedUseFormReturn<T, undefined, undefined>;
+  form?: ExtendedUseFormReturn<T, undefined, undefined>;
 }
 
 const FormDialog = <T extends FieldValues = FieldValues>({
@@ -49,7 +49,8 @@ const FormDialog = <T extends FieldValues = FieldValues>({
     setOpen(false);
   };
 
-  const isFormDirty = isDirty === undefined ? form.formState.isDirty : isDirty;
+  const isFormDirty =
+    isDirty === undefined ? form?.formState?.isDirty : isDirty;
 
   const handleOpenChange = async (isOpen: boolean) => {
     if (!isOpen) {
@@ -71,7 +72,10 @@ const FormDialog = <T extends FieldValues = FieldValues>({
   };
 
   const handleSave = () => {
-    form.handleSubmit(onSubmit)();
+    if (!form) {
+      return onSubmit({} as T);
+    }
+    form?.handleSubmit(onSubmit)();
   };
 
   return (

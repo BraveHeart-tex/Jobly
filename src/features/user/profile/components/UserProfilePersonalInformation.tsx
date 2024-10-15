@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, MapPin, PenSquare } from "lucide-react";
+import AddProfileSectionDialog from "./AddProfileSectionDialog";
 
 const UserProfilePersonalInformation = () => {
   return (
@@ -44,9 +45,8 @@ const UserProfilePersonalInformation = () => {
             Mims Yazılım A.Ş.
           </div>
         </div>
-        <Button variant="outline" className="mt-4">
-          Add Profile Section
-        </Button>
+
+        <AddProfileSectionDialog className="mt-4" />
       </CardContent>
     </Card>
   );
