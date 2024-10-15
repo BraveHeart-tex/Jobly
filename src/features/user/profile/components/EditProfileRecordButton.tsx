@@ -9,7 +9,7 @@ import { PenSquare } from "lucide-react";
 interface EditProfileRecordButtonProps
   extends HTMLAttributes<HTMLButtonElement> {
   modalLink: ModalDialogMapKey;
-  recordId: number;
+  recordId?: number;
 }
 
 const EditProfileRecordButton = ({

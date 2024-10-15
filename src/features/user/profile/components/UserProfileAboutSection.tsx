@@ -2,8 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
-import { ChevronDown, ChevronUp, PenSquare, SparklesIcon } from "lucide-react";
+import { ChevronDown, ChevronUp, SparklesIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import EditProfileRecordButton from "./EditProfileRecordButton";
 
 interface UserProfileAboutSectionProps {
   bio: string;
@@ -36,15 +37,7 @@ const UserProfileAboutSection = ({
         <div className="mb-4">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">About</h2>
-            <Button
-              size="icon"
-              variant={"ghost"}
-              onClick={() => {
-                openModal("about");
-              }}
-            >
-              <PenSquare />
-            </Button>
+            <EditProfileRecordButton modalLink="about" />
           </div>
 
           <div className="relative">

@@ -2,6 +2,7 @@ import {
   educationalBackgrounds,
   userBios,
   userHighlightedSkills,
+  userProfiles,
   userSkills,
   workExperiences,
 } from "@/server/db/schema";
@@ -59,6 +60,10 @@ export const userRelations = relations(users, ({ one, many }) => ({
     references: [userBios.userId],
   }),
   userHighlightedSkills: many(userHighlightedSkills),
+  userProfile: one(userProfiles, {
+    fields: [users.id],
+    references: [userProfiles.userId],
+  }),
 }));
 
 export type DBUser = InferSelectModel<typeof users>;

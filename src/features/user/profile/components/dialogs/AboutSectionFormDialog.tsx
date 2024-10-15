@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 
 const MAX_HIGHLIGHTED_SKILLS_COUNT = 5 as const;
 
-const AboutSectionDialog = () => {
+const AboutSectionFormDialog = () => {
   const router = useRouter();
   const { closeModal } = useProfilePageSearchParams();
 
@@ -212,4 +212,4 @@ const AboutSectionDialog = () => {
   );
 };
 
-export default AboutSectionDialog;
+export default AboutSectionFormDialog;

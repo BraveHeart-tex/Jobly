@@ -52,7 +52,7 @@ export {
   default as userHighlightedSkills,
   userHighlightedSkillsRelations,
 } from "./userHighlightedSkills";
-export { default as userProfiles } from "./userProfiles";
+export { default as userProfiles, userProfileRelations } from "./userProfiles";
 export { default as schools } from "./schools";
 export { default as countries } from "./countries";
 export { default as cities } from "./cities";

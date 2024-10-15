@@ -9,9 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import type { ModalDialogMapKey } from "./ProfileFormDialogContainer";
-import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
-import { useState } from "react";
+import type { ModalDialogMapKey } from "../ProfileFormDialogContainer";
+import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 
 interface AddProfileSectionDialogProps {
   className?: string;
@@ -47,11 +46,10 @@ const profileSectionOptions: ProfileSectionOption[] = [
 const AddProfileSectionDialog = ({
   className,
 }: AddProfileSectionDialogProps) => {
-  const [open, setOpen] = useState(false);
   const { openModal } = useProfilePageSearchParams();
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className={cn(className)}>
           Add Profile Section
@@ -71,7 +69,6 @@ const AddProfileSectionDialog = ({
               variant="outline"
               className="w-full p-6 h-full flex flex-col items-start whitespace-normal"
               onClick={() => {
-                setOpen(false);
                 openModal(option.modalLink);
               }}
             >

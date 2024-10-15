@@ -34,7 +34,7 @@ import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDeleteWorkExperience } from "../../hooks/useDeleteWorkExperience";
 import { useUpdateWorkExperience } from "../../hooks/useUpdateWorkExperience";
 
-const WorkExperienceDialog = () => {
+const WorkExperienceFormDialog = () => {
   const router = useRouter();
   const { idQuery, closeModal } = useProfilePageSearchParams();
   const isEditMode = !!idQuery;
@@ -303,4 +303,4 @@ const WorkExperienceDialog = () => {
   );
 };
 
-export default WorkExperienceDialog;
+export default WorkExperienceFormDialog;

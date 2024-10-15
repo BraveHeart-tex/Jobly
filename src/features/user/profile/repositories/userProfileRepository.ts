@@ -16,7 +16,7 @@ import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAb
 import { mapHighlightedSkills } from "../utils";
 
 export const userProfileRepository = {
-  async getUserProfileInformation(
+  async fetchUserProfileDetails(
     userId: number,
   ): Promise<UserProfileInformation | null> {
     const result = await db.query.users.findFirst({

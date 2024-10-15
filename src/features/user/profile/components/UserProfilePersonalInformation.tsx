@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Briefcase, MapPin, PenSquare } from "lucide-react";
-import AddProfileSectionDialog from "./AddProfileSectionDialog";
+import { Briefcase, MapPin } from "lucide-react";
+import AddProfileSectionDialog from "./dialogs/AddProfileSectionDialog";
+import EditProfileRecordButton from "./EditProfileRecordButton";
 
 const UserProfilePersonalInformation = () => {
   return (
@@ -17,9 +18,7 @@ const UserProfilePersonalInformation = () => {
 
       <CardContent className="pt-1 pb-6 px-4">
         <div className="flex justify-end mb-4 w-full">
-          <Button variant="ghost" size={"icon"}>
-            <PenSquare />
-          </Button>
+          <EditProfileRecordButton modalLink="personalDetails" />
         </div>
 
         <div className="mb-4">

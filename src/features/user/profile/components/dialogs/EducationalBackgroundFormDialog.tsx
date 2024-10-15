@@ -15,19 +15,19 @@ import {
   EducationalBackgroundValidator,
 } from "@/validators/user/profile/educationalBackgroundValidator";
 import { DateTime } from "luxon";
-import { useProfilePageSearchParams } from "../../profile/hooks/useProfilePageSearchParams";
+import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateEducationalBackground } from "../hooks/useCreateEducationalBackground";
+import { useCreateEducationalBackground } from "../../../educationalBackgrounds/hooks/useCreateEducationalBackground";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useDeleteEducationalBackground } from "../hooks/useDeleteEducationalBackground";
+import { useDeleteEducationalBackground } from "../../../educationalBackgrounds/hooks/useDeleteEducationalBackground";
 import { useEffect, useTransition } from "react";
-import { useGetEducationalBackground } from "../hooks/useGetEducationalBackground";
-import { useUpdateEducationalBackground } from "../hooks/useUpdateEducationalBackground";
+import { useGetEducationalBackground } from "../../../educationalBackgrounds/hooks/useGetEducationalBackground";
+import { useUpdateEducationalBackground } from "../../../educationalBackgrounds/hooks/useUpdateEducationalBackground";
 
-const EducationalBackgroundForm = () => {
+const EducationalBackgroundFormDialog = () => {
   const router = useRouter();
   const { idQuery, closeModal } = useProfilePageSearchParams();
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
@@ -249,4 +249,4 @@ const EducationalBackgroundForm = () => {
   );
 };
 
-export default EducationalBackgroundForm;
+export default EducationalBackgroundFormDialog;

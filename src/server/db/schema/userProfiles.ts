@@ -7,6 +7,10 @@ import {
 } from "drizzle-orm/mysql-core";
 import users from "./users";
 import countries from "./countries";
+import { type InferSelectModel, relations } from "drizzle-orm";
+import schools from "./schools";
+import workExperiences from "./workExperiences";
+import cities from "./cities";
 
 const userProfiles = mysqlTable(
   "UserProfiles",
@@ -17,11 +21,21 @@ const userProfiles = mysqlTable(
     }),
     title: varchar("title", { length: 255 }),
     sector: varchar("sector", { length: 255 }),
-    presentedSchoolId: int("presentedSchoolId"),
-    countryId: int("countryId").references(() => countries.id, {
-      onDelete: "cascade",
+    presentedSchoolId: int("presentedSchoolId").references(() => schools.id, {
+      onDelete: "set null",
     }),
-    cityId: int("cityId"),
+    presentedWorkExperienceId: int("presentedWorkExperienceId").references(
+      () => workExperiences.id,
+      {
+        onDelete: "set null",
+      },
+    ),
+    countryId: int("countryId").references(() => countries.id, {
+      onDelete: "set null",
+    }),
+    cityId: int("cityId").references(() => cities.id, {
+      onDelete: "set null",
+    }),
     websiteLink: varchar("websiteLink", { length: 255 }),
     websiteLinkText: varchar("websiteLinkText", { length: 255 }),
   },
@@ -37,5 +51,14 @@ const userProfiles = mysqlTable(
     };
   },
 );
+
+export type UserProfile = InferSelectModel<typeof userProfiles>;
+
+export const userProfileRelations = relations(userProfiles, ({ one }) => ({
+  user: one(users, {
+    fields: [userProfiles.userId],
+    references: [users.id],
+  }),
+}));
 
 export default userProfiles;
