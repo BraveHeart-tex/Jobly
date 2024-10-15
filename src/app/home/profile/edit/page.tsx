@@ -2,7 +2,6 @@ import ClientOnly from "@/components/common/ClientOnly";
 import PageContainer from "@/components/common/PageContainer";
 import ProfileFormDialogContainer from "@/features/user/profile/components/ProfileFormDialogContainer";
 import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
-import UserProfileAnalyticsSection from "@/features/user/profile/components/UserProfileAnalyticsSection";
 import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
 import UserProfileStickyHeader from "@/features/user/profile/components/UserProfileStickyHeader";
@@ -23,7 +22,6 @@ const EditProfilePage = async () => {
       <PageContainer className="grid gap-2 pb-8 relative">
         <UserProfileStickyHeader />
         <UserProfilePersonalInformation />
-        <UserProfileAnalyticsSection />
         <UserProfileAboutSection
           bio={profileDetailsData.bio}
           highlightedSkills={profileDetailsData.highlightedSkills}
