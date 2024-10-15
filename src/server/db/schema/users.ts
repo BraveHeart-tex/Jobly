@@ -33,6 +33,7 @@ const users = mysqlTable(
     lastName: varchar("lastName", { length: 255 }).notNull(),
     hashedPassword: varchar("hashedPassword", { length: 255 }).notNull(),
     role: mysqlEnum("role", ["employer", "candidate"]).notNull(),
+    avatarUrl: varchar("avatarUrl", { length: 2048 }),
     createdAt: customTimestamp("createdAt").$defaultFn(() =>
       getCurrentTimestamp(),
     ),
