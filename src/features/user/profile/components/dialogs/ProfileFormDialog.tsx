@@ -67,26 +67,26 @@ const ProfileFormDialog = () => {
         websiteLinkText,
         sector,
         title,
-        cityId,
-        countryId,
-        presentedSchoolId,
-        presentedWorkExperienceId,
+        cityId = null,
+        countryId = null,
+        presentedSchoolId = null,
+        presentedWorkExperienceId = null,
       } = profileDetails;
 
       form.reset({
         firstName,
         lastName,
-        websiteLink,
-        websiteLinkText,
+        websiteLink: websiteLink || "",
+        websiteLinkText: websiteLinkText || "",
         sector: sector || "",
         title: title || "",
-        cityId: cityId || undefined,
-        countryId: countryId || undefined,
-        presentedSchoolId: presentedSchoolId || undefined,
+        cityId,
+        countryId,
+        presentedSchoolId,
         presentedWorkExperienceId:
           presentedWorkExperienceId ||
           profileDetails.workExperiences[0]?.id ||
-          undefined,
+          null,
       });
     });
   }, []);
@@ -149,7 +149,7 @@ const ProfileFormDialog = () => {
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value || ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -237,7 +237,7 @@ const ProfileFormDialog = () => {
                       Country <RequiredIndicator />
                     </FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} value={field.value || ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -250,7 +250,7 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>City</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} value={field.value || ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

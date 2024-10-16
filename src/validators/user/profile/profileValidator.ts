@@ -1,12 +1,15 @@
 import { UrlValidator } from "@/validators/schemaUtils";
 import {
+  literal,
   nonEmpty,
   nullable,
+  nullish,
   number,
   object,
   pipe,
   rawCheck,
   string,
+  union,
   type InferOutput,
 } from "valibot";
 
@@ -14,13 +17,13 @@ export const ProfileValidator = pipe(
   object({
     firstName: pipe(string(), nonEmpty("First Name is required")),
     lastName: pipe(string(), nonEmpty("Last name is required")),
-    title: pipe(string(), nonEmpty("Title is required")),
-    sector: pipe(string(), nonEmpty("Sector is required")),
-    presentedSchoolId: nullable(number()),
-    presentedWorkExperienceId: nullable(number()),
-    countryId: number(),
-    cityId: nullable(number()),
-    websiteLink: nullable(UrlValidator),
+    title: nullable(string()),
+    sector: nullable(string()),
+    presentedSchoolId: nullish(number()),
+    presentedWorkExperienceId: nullish(number()),
+    countryId: nullish(number()),
+    cityId: nullish(number()),
+    websiteLink: union([nullable(UrlValidator), literal("")]),
     websiteLinkText: nullable(string()),
   }),
   rawCheck(({ dataset, addIssue }) => {

@@ -21,7 +21,7 @@ interface Option {
 interface AutoCompleteProps {
   options: Option[];
   emptyMessage?: string;
-  value?: string;
+  value?: string | null;
   disabled?: boolean;
   placeholder?: string;
   onChange?: (value: string) => void;
