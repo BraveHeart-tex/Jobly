@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import type { HTMLAttributes } from "react";
 import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
-import type { ModalDialogMapKey } from "./ProfileFormDialogContainer";
+import type { ModalDialogMapKey } from "./FormDialogContainer";
 import { cn } from "@/lib/utils";
 import { PenSquare } from "lucide-react";
 

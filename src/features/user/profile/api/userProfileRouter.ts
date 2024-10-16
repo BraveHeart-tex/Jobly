@@ -11,10 +11,12 @@ const optionalUserIdValidator = optional(
 );
 
 export const userProfileRouter = createTRPCRouter({
-  fetchUserProfile: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.user.id;
-    return await fetchUserProfileUseCase(userId);
-  }),
+  fetchUserProfile: protectedProcedure
+    .input(parser(optionalUserIdValidator))
+    .query(async ({ ctx, input }) => {
+      const userId = input?.userId || ctx.user.id;
+      return await fetchUserProfileUseCase(userId);
+    }),
   fetchUserProfileDetails: protectedProcedure
     .input(parser(optionalUserIdValidator))
     .query(async ({ ctx, input }) => {

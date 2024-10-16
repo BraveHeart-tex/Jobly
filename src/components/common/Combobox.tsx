@@ -19,9 +19,14 @@ import {
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 
-interface ComboboxProps {
-  options: { label: string; value: string }[];
+export interface ComboboxOption {
+  label: string;
   value: string;
+}
+
+interface ComboboxProps {
+  options: ComboboxOption[];
+  value: string | number | undefined | null;
   label?: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -37,7 +42,9 @@ const Combobox = ({
   const [open, setOpen] = useState(false);
 
   const renderValue = () => {
-    const foundOption = options.find((option) => option.value === value);
+    const foundOption = options.find(
+      (option) => option.value.toString() === value?.toString(),
+    );
     if (foundOption) {
       return <span>{foundOption.label}</span>;
     }
@@ -63,7 +70,7 @@ const Combobox = ({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
+        <PopoverContent className="w-full p-0" align="start">
           <Command>
             <CommandInput placeholder="Search..." />
             <CommandList>
@@ -81,7 +88,9 @@ const Combobox = ({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === option.value ? "opacity-100" : "opacity-0",
+                        value?.toString() === option.value.toString()
+                          ? "opacity-100"
+                          : "opacity-0",
                       )}
                     />
                     {option.label}

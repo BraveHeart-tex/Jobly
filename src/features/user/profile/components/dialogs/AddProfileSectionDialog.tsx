@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import type { ModalDialogMapKey } from "../ProfileFormDialogContainer";
+import type { ModalDialogMapKey } from "../FormDialogContainer";
 import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 
 interface AddProfileSectionDialogProps {

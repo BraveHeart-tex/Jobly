@@ -1,6 +1,6 @@
 import ClientOnly from "@/components/common/ClientOnly";
 import PageContainer from "@/components/common/PageContainer";
-import ProfileFormDialogContainer from "@/features/user/profile/components/ProfileFormDialogContainer";
+import FormDialogContainer from "@/features/user/profile/components/FormDialogContainer";
 import UserProfileAboutSection from "@/features/user/profile/components/UserProfileAboutSection";
 import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
@@ -34,7 +34,7 @@ const EditProfilePage = async () => {
         />
       </PageContainer>
       <ClientOnly>
-        <ProfileFormDialogContainer />
+        <FormDialogContainer />
       </ClientOnly>
     </main>
   );

@@ -2,7 +2,7 @@ import { parseAsStringLiteral, useQueryState } from "nuqs";
 import {
   modalDialogMap,
   type ModalDialogMapKey,
-} from "../components/ProfileFormDialogContainer";
+} from "../components/FormDialogContainer";
 
 const MODAL_QUERY_KEY = "modal" as const;
 const ENTITY_ID_QUERY_KEY = "id" as const;

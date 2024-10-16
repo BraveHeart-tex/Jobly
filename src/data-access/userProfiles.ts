@@ -23,5 +23,7 @@ export const getUserProfile = async (userId: number) => {
     userId,
     firstName: result.firstName,
     lastName: result.lastName,
+    workExperiences: result.workExperiences,
+    educationalBackgrounds: result.educationalBackgrounds,
   };
 };

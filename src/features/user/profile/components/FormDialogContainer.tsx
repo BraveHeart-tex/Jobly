@@ -3,7 +3,7 @@ import { useProfilePageSearchParams } from "@/features/user/profile/hooks/usePro
 import AboutSectionFormDialog from "./dialogs/AboutSectionFormDialog";
 import WorkExperienceFormDialog from "./dialogs/WorkExperienceFormDialog";
 import EducationalBackgroundFormDialog from "./dialogs/EducationalBackgroundFormDialog";
-import ProfileFormDialog from "./dialogs/PersonalDetailsFormDialog";
+import ProfileFormDialog from "./dialogs/ProfileFormDialog";
 
 export const modalDialogMap = {
   about: AboutSectionFormDialog,
@@ -16,7 +16,7 @@ export const modalDialogMap = {
 
 export type ModalDialogMapKey = keyof typeof modalDialogMap;
 
-const ProfileFormDialogContainer = () => {
+const FormDialogContainer = () => {
   const { modalQuery } = useProfilePageSearchParams();
   if (!modalQuery) return null;
 
@@ -26,4 +26,4 @@ const ProfileFormDialogContainer = () => {
   return <DialogComponent />;
 };
 
-export default ProfileFormDialogContainer;
+export default FormDialogContainer;

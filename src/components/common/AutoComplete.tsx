@@ -183,7 +183,7 @@ const AutoComplete = forwardRef<HTMLInputElement, AutoCompleteProps>(
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.15, ease: "easeInOut" }}
               className="absolute w-max border-primary max-h-64 overflow-y-auto z-50 border bg-popover p-2 text-popover-foreground shadow-md outline-none -ml-[1px] min-w-[200px]"
               onKeyDown={handleKeyDown}
             >

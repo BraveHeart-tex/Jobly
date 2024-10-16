@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
 import { PlusIcon } from "lucide-react";
-import type { ModalDialogMapKey } from "./ProfileFormDialogContainer";
+import type { ModalDialogMapKey } from "./FormDialogContainer";
 
 interface AddProfileRecordButtonProps {
   modalLink: ModalDialogMapKey;

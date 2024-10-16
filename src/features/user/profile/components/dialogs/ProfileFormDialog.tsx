@@ -15,11 +15,14 @@ import {
 } from "@/validators/user/profile/profileValidator";
 import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 import { Input } from "@/components/ui/input";
-import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import RequiredIndicator from "@/components/common/RequiredIndicator";
+import { useEffect, useState, useTransition } from "react";
+import { useGetUserProfile } from "../../hooks/useGetUserProfile";
+import Combobox, { type ComboboxOption } from "@/components/common/Combobox";
+import AutoComplete from "@/components/common/AutoComplete";
+import { INDUSTRIES_DATASET } from "@/lib/datasets";
 
 const ProfileFormDialog = () => {
-  const user = useCurrentUserStore((state) => state.user);
   const { closeModal } = useProfilePageSearchParams();
   const form = useExtendedForm<ProfileData>(ProfileValidator, {
     defaultValues: {
@@ -32,7 +35,65 @@ const ProfileFormDialog = () => {
     },
   });
 
-  const onSubmit = async (data: ProfileData) => {};
+  const { getUserProfile } = useGetUserProfile();
+  const [isPending, startTransition] = useTransition();
+  const [schoolDataset, setSchoolDataset] = useState<ComboboxOption[]>([]);
+  const [workExperienceDataset, setWorkExperienceDataset] = useState<
+    ComboboxOption[]
+  >([]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    startTransition(async () => {
+      const profileDetails = await getUserProfile();
+
+      if (!profileDetails) return;
+
+      if (profileDetails.workExperiences.length > 0) {
+        const mappedExperienceOptions = profileDetails.workExperiences.map(
+          (experience) => ({
+            value: experience.id.toString(),
+            label: `${experience.jobTitle} - ${experience.employer}`,
+          }),
+        );
+        setWorkExperienceDataset(mappedExperienceOptions);
+      }
+
+      // TODO: handle school dataset and other form values as well
+      const {
+        firstName,
+        lastName,
+        websiteLink,
+        websiteLinkText,
+        sector,
+        title,
+        cityId,
+        countryId,
+        presentedSchoolId,
+        presentedWorkExperienceId,
+      } = profileDetails;
+
+      form.reset({
+        firstName,
+        lastName,
+        websiteLink,
+        websiteLinkText,
+        sector: sector || "",
+        title: title || "",
+        cityId: cityId || undefined,
+        countryId: countryId || undefined,
+        presentedSchoolId: presentedSchoolId || undefined,
+        presentedWorkExperienceId:
+          presentedWorkExperienceId ||
+          profileDetails.workExperiences[0]?.id ||
+          undefined,
+      });
+    });
+  }, []);
+
+  const onSubmit = async (data: ProfileData) => {
+    console.info(data);
+  };
 
   const defaultSpaceYClassName = "space-y-4";
   const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold";
@@ -42,6 +103,8 @@ const ProfileFormDialog = () => {
       title="Edit Personal Details"
       onClose={closeModal}
       onSubmit={onSubmit}
+      isSaveDisabled={isPending}
+      isLoadingInitialData={isPending}
       form={form}
     >
       <Form {...form}>
@@ -104,7 +167,11 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>Position</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Combobox
+                        options={workExperienceDataset}
+                        value={field.value}
+                        onChange={(value) => field.onChange(+value)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,7 +184,13 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>Sector</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <AutoComplete
+                        options={INDUSTRIES_DATASET.map((item) => ({
+                          label: item,
+                          value: item,
+                        }))}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -137,7 +210,15 @@ const ProfileFormDialog = () => {
                     School <RequiredIndicator />
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Combobox
+                      options={schoolDataset}
+                      value={
+                        field?.value?.toString() ||
+                        schoolDataset[0]?.value ||
+                        ""
+                      }
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,7 +268,7 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>Website link</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} value={field.value || ""} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
