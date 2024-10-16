@@ -231,9 +231,7 @@ const ProfileFormDialog = () => {
                 name="countryId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      Country <RequiredIndicator />
-                    </FormLabel>
+                    <FormLabel>Country</FormLabel>
                     <FormControl>
                       <Input {...field} value={field.value || ""} />
                     </FormControl>
