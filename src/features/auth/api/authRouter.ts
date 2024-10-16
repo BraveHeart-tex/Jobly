@@ -66,6 +66,7 @@ export const authRouter = createTRPCRouter({
         lastName,
         hashedPassword,
         role,
+        avatarUrl: null,
       };
 
       await Promise.all([

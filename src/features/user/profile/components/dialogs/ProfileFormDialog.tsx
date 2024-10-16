@@ -206,9 +206,7 @@ const ProfileFormDialog = () => {
               name="presentedSchoolId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    School <RequiredIndicator />
-                  </FormLabel>
+                  <FormLabel>School</FormLabel>
                   <FormControl>
                     <Combobox
                       options={schoolDataset}
