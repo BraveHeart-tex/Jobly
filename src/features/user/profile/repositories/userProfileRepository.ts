@@ -68,6 +68,7 @@ export const userProfileRepository = {
     return {
       firstName: result.firstName,
       lastName: result.lastName,
+      ...result.userProfile,
       educationalBackground: result.educationalBackgrounds,
       skills: result.userSkills.map((item) => item.skill),
       bio: result.userBio?.bio || "",

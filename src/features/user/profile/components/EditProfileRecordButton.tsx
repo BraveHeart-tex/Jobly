@@ -4,7 +4,7 @@ import type { HTMLAttributes } from "react";
 import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
 import type { ModalDialogMapKey } from "./FormDialogContainer";
 import { cn } from "@/lib/utils";
-import { PenSquare } from "lucide-react";
+import { PencilIcon } from "lucide-react";
 
 interface EditProfileRecordButtonProps
   extends HTMLAttributes<HTMLButtonElement> {
@@ -32,7 +32,7 @@ const EditProfileRecordButton = ({
       className={cn("w-8 h-8", className)}
       {...props}
     >
-      <PenSquare size={22} />
+      <PencilIcon size={22} />
     </Button>
   );
 };

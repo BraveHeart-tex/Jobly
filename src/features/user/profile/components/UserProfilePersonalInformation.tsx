@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, MapPin } from "lucide-react";
 import AddProfileSectionDialog from "./dialogs/AddProfileSectionDialog";
 import EditProfileRecordButton from "./EditProfileRecordButton";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 interface UserProfilePersonalInformationProps {
   firstName: string;
@@ -11,6 +13,8 @@ interface UserProfilePersonalInformationProps {
   city?: string;
   country?: string;
   employer?: string;
+  websiteLink?: string;
+  websiteLinkText?: string;
 }
 
 const UserProfilePersonalInformation = ({
@@ -20,6 +24,8 @@ const UserProfilePersonalInformation = ({
   city,
   country,
   employer,
+  websiteLink,
+  websiteLinkText,
 }: UserProfilePersonalInformationProps) => {
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md rounded-md">
@@ -57,6 +63,23 @@ const UserProfilePersonalInformation = ({
               <Briefcase className="w-4 h-4 mr-2" />
               {employer}
             </div>
+          )}
+        </div>
+        <div>
+          {websiteLink && (
+            <a
+              href={websiteLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                buttonVariants({
+                  variant: "link",
+                  className: "p-0",
+                }),
+              )}
+            >
+              {websiteLinkText || websiteLink}
+            </a>
           )}
         </div>
 
