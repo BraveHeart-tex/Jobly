@@ -19,7 +19,6 @@ export const ProfileValidator = pipe(
     lastName: pipe(string(), nonEmpty("Last name is required")),
     title: nullable(string()),
     sector: nullable(string()),
-    presentedSchoolId: nullish(number()),
     presentedWorkExperienceId: nullish(number()),
     countryId: nullish(number()),
     cityId: nullish(number()),

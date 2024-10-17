@@ -37,7 +37,6 @@ const ProfileFormDialog = () => {
 
   const { getUserProfile } = useGetUserProfile();
   const [isPending, startTransition] = useTransition();
-  const [schoolDataset, setSchoolDataset] = useState<ComboboxOption[]>([]);
   const [workExperienceDataset, setWorkExperienceDataset] = useState<
     ComboboxOption[]
   >([]);
@@ -69,7 +68,6 @@ const ProfileFormDialog = () => {
         title,
         cityId = null,
         countryId = null,
-        presentedSchoolId = null,
         presentedWorkExperienceId = null,
       } = profileDetails;
 
@@ -82,7 +80,6 @@ const ProfileFormDialog = () => {
         title: title || "",
         cityId,
         countryId,
-        presentedSchoolId,
         presentedWorkExperienceId:
           presentedWorkExperienceId ||
           profileDetails.workExperiences[0]?.id ||
@@ -197,31 +194,6 @@ const ProfileFormDialog = () => {
                 )}
               />
             </div>
-          </div>
-
-          <div>
-            <h3 className={subSectionHeadingClassNames}>Education</h3>
-            <FormField
-              control={form.control}
-              name="presentedSchoolId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>School</FormLabel>
-                  <FormControl>
-                    <Combobox
-                      options={schoolDataset}
-                      value={
-                        field?.value?.toString() ||
-                        schoolDataset[0]?.value ||
-                        ""
-                      }
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
           <div>
             <h3 className={subSectionHeadingClassNames}>Location</h3>

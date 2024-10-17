@@ -8,7 +8,6 @@ import {
 import users from "./users";
 import countries from "./countries";
 import { type InferSelectModel, relations } from "drizzle-orm";
-import schools from "./schools";
 import workExperiences from "./workExperiences";
 import cities from "./cities";
 
@@ -21,9 +20,6 @@ const userProfiles = mysqlTable(
     }),
     title: varchar("title", { length: 255 }),
     sector: varchar("sector", { length: 255 }),
-    presentedSchoolId: int("presentedSchoolId").references(() => schools.id, {
-      onDelete: "set null",
-    }),
     presentedWorkExperienceId: int("presentedWorkExperienceId").references(
       () => workExperiences.id,
       {
