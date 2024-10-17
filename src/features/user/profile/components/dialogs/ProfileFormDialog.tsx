@@ -21,9 +21,15 @@ import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import Combobox, { type ComboboxOption } from "@/components/common/Combobox";
 import AutoComplete from "@/components/common/AutoComplete";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
+import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 
 const ProfileFormDialog = () => {
+  const router = useRouter();
   const { closeModal } = useProfilePageSearchParams();
+  const updateName = useCurrentUserStore((state) => state.updateName);
   const form = useExtendedForm<ProfileData>(ProfileValidator, {
     defaultValues: {
       firstName: "",
@@ -36,6 +42,16 @@ const ProfileFormDialog = () => {
   });
 
   const { getUserProfile } = useGetUserProfile();
+  const { updateUserProfile, isUpdatingUserProfile } = useUpdateUserProfile({
+    onSuccess: async (_data, variables) => {
+      await closeModal();
+      router.refresh();
+      toast.success("Profile updated successfully.");
+      const { firstName, lastName } = variables;
+      updateName(firstName, lastName);
+    },
+  });
+
   const [isPending, startTransition] = useTransition();
   const [workExperienceDataset, setWorkExperienceDataset] = useState<
     ComboboxOption[]
@@ -58,8 +74,8 @@ const ProfileFormDialog = () => {
         setWorkExperienceDataset(mappedExperienceOptions);
       }
 
-      // TODO: handle school dataset and other form values as well
       const {
+        id,
         firstName,
         lastName,
         websiteLink,
@@ -72,6 +88,7 @@ const ProfileFormDialog = () => {
       } = profileDetails;
 
       form.reset({
+        id,
         firstName,
         lastName,
         websiteLink: websiteLink || "",
@@ -89,7 +106,7 @@ const ProfileFormDialog = () => {
   }, []);
 
   const onSubmit = async (data: ProfileData) => {
-    console.info(data);
+    updateUserProfile(data);
   };
 
   const defaultSpaceYClassName = "space-y-4";
@@ -100,7 +117,8 @@ const ProfileFormDialog = () => {
       title="Edit Personal Details"
       onClose={closeModal}
       onSubmit={onSubmit}
-      isSaveDisabled={isPending}
+      isSaveDisabled={isPending || isUpdatingUserProfile}
+      isCloseDisabled={isUpdatingUserProfile}
       isLoadingInitialData={isPending}
       form={form}
     >

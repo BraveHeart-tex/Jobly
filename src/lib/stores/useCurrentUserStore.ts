@@ -5,6 +5,7 @@ import type { CtxUserAttributes } from "../auth";
 interface CurrentUserStore {
   user: CtxUserAttributes | null;
   setUser: (user: CtxUserAttributes | null) => void;
+  updateName: (firstName: string, lastName: string) => void;
 }
 
 export const useCurrentUserStore = create<
@@ -12,9 +13,20 @@ export const useCurrentUserStore = create<
   [["zustand/devtools", never]]
 >(
   devtools(
-    (set) => ({
+    (set, get) => ({
       user: null,
       setUser: (user) => set({ user }),
+      updateName: (firstName: string, lastName: string) => {
+        const prevUser = get().user;
+        if (!prevUser) return;
+        set({
+          user: {
+            ...prevUser,
+            firstName,
+            lastName,
+          },
+        });
+      },
     }),
     {
       name: "CurrentUserStore",

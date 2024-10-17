@@ -6,6 +6,7 @@ import {
   nullish,
   number,
   object,
+  optional,
   pipe,
   rawCheck,
   string,
@@ -15,6 +16,7 @@ import {
 
 export const ProfileValidator = pipe(
   object({
+    id: optional(number()),
     firstName: pipe(string(), nonEmpty("First Name is required")),
     lastName: pipe(string(), nonEmpty("Last name is required")),
     title: nullable(string()),

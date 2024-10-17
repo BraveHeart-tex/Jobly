@@ -6,15 +6,12 @@ import {
   createSessionWithUserId,
   hashPassword,
   verifyPassword,
-  writeUserToCache,
 } from "../utils";
 import { SignUpValidator } from "@/validators/auth/signUpValidator";
 import {
   LoginResponseValidator,
   LoginValidator,
 } from "@/validators/auth/loginValidator";
-import type { DBUser } from "@/server/db/schema/users";
-import { getCurrentTimestamp } from "@/server/db/utils";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -57,22 +54,7 @@ export const authRouter = createTRPCRouter({
         });
       }
 
-      const createdUser: DBUser = {
-        id: userId,
-        createdAt: getCurrentTimestamp(),
-        updatedAt: getCurrentTimestamp(),
-        email,
-        firstName,
-        lastName,
-        hashedPassword,
-        role,
-        avatarUrl: null,
-      };
-
-      await Promise.all([
-        createSessionWithUserId(userId),
-        writeUserToCache(createdUser),
-      ]);
+      await createSessionWithUserId(userId);
 
       return {
         success: true,
@@ -110,10 +92,7 @@ export const authRouter = createTRPCRouter({
         };
       }
 
-      await Promise.all([
-        createSessionWithUserId(existingUser.id),
-        writeUserToCache(existingUser),
-      ]);
+      await createSessionWithUserId(existingUser.id);
 
       return {
         success: true,

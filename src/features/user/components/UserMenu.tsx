@@ -57,7 +57,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
   }, [pathname, user, router]);
 
   const handleSignOut = () => {
-    signOut({ role: user.role, userId: user.id });
+    signOut(user.role);
     setUser(null);
   };
 
