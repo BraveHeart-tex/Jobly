@@ -5,12 +5,28 @@ import { Briefcase, MapPin } from "lucide-react";
 import AddProfileSectionDialog from "./dialogs/AddProfileSectionDialog";
 import EditProfileRecordButton from "./EditProfileRecordButton";
 
-const UserProfilePersonalInformation = () => {
+interface UserProfilePersonalInformationProps {
+  firstName: string;
+  lastName: string;
+  title?: string;
+  city?: string;
+  country?: string;
+  employer?: string;
+}
+
+const UserProfilePersonalInformation = ({
+  firstName,
+  lastName,
+  title,
+  city,
+  country,
+  employer,
+}: UserProfilePersonalInformationProps) => {
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md rounded-md">
       <div className="relative">
         <div className="h-[200px] bg-gradient-to-r from-primary/50 to-primary/90 dark:from-primary/80 dark:to-primary/10 rounded-md rounded-b-none" />
-        <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] border-4 border-white rounded-full">
+        <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] rounded-full">
           <AvatarImage src="/default-avatar.svg" alt="Profile picture" />
           <AvatarFallback className="text-lg">BK</AvatarFallback>
         </Avatar>
@@ -22,16 +38,18 @@ const UserProfilePersonalInformation = () => {
         </div>
 
         <div className="mb-4">
-          <h1 className="text-2xl font-bold">Bora Karaca</h1>
-          <p className="text-lg">
-            Senior Software Engineer | React | Node.js | TypeScript
-          </p>
+          <h1 className="text-2xl font-bold">
+            {firstName} {lastName}
+          </h1>
+          {title && <p className="text-lg">{title}</p>}
         </div>
 
         <div className="text-sm text-muted-foreground space-y-1">
           <div className="flex items-center">
             <MapPin className="w-4 h-4 mr-2" />
-            <p>Istanbul, Turkey</p>
+            <p>
+              {city && `${city}, `} {country}
+            </p>
             <Button
               variant={"link"}
               className="p-0 ml-2 h-max text-[14px] underline-offset-1"
@@ -39,10 +57,12 @@ const UserProfilePersonalInformation = () => {
               Contact Information
             </Button>
           </div>
-          <div className="flex items-center">
-            <Briefcase className="w-4 h-4 mr-2" />
-            Mims Yazılım A.Ş.
-          </div>
+          {employer && (
+            <div className="flex items-center">
+              <Briefcase className="w-4 h-4 mr-2" />
+              {employer}
+            </div>
+          )}
         </div>
 
         <AddProfileSectionDialog className="mt-4" />

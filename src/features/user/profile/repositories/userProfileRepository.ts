@@ -33,6 +33,7 @@ export const userProfileRepository = {
             bio: true,
           },
         },
+        userProfile: true,
         workExperiences: {
           orderBy: () => desc(workExperiences.startDate),
         },

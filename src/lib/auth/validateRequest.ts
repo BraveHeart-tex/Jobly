@@ -1,27 +1,26 @@
 import { lucia } from "@/lib/auth/index";
-import type { Session, User } from "lucia";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
-type SessionValidationResult =
-  | { user: User; session: Session }
-  | { user: null; session: null };
-
-export const validateRequest = async (): Promise<SessionValidationResult> => {
+export const validateRequest = cache(async () => {
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
-  if (!sessionId) {
-    return { user: null, session: null };
-  }
+  if (!sessionId)
+    return {
+      user: null,
+      session: null,
+    };
 
-  const result = await lucia.validateSession(sessionId);
+  const { user, session } = await lucia.validateSession(sessionId);
   try {
-    if (result.session?.fresh) {
-      const sessionCookie = lucia.createSessionCookie(sessionId);
+    if (session?.fresh) {
+      const sessionCookie = lucia.createSessionCookie(session.id);
       cookies().set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes,
       );
-    } else {
+    }
+    if (!session) {
       const sessionCookie = lucia.createBlankSessionCookie();
       cookies().set(
         sessionCookie.name,
@@ -30,7 +29,8 @@ export const validateRequest = async (): Promise<SessionValidationResult> => {
       );
     }
   } catch {
-    // next.js throws when you attempt to set cookie when rendering page
+    // Next.js throws error when attempting to set cookies when rendering page
   }
-  return result;
-};
+
+  return { user, session };
+});

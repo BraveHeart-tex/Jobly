@@ -21,7 +21,7 @@ const EditProfilePage = async () => {
     <main>
       <PageContainer className="grid gap-2 pb-8 relative">
         <UserProfileStickyHeader />
-        <UserProfilePersonalInformation />
+        <UserProfilePersonalInformation {...profileDetailsData} />
         <UserProfileAboutSection
           bio={profileDetailsData.bio}
           highlightedSkills={profileDetailsData.highlightedSkills}
