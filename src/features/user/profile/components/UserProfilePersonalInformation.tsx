@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, MapPin } from "lucide-react";
 import AddProfileSectionDialog from "./dialogs/AddProfileSectionDialog";
@@ -45,18 +44,14 @@ const UserProfilePersonalInformation = ({
         </div>
 
         <div className="text-sm text-muted-foreground space-y-1">
-          <div className="flex items-center">
-            <MapPin className="w-4 h-4 mr-2" />
-            <p>
-              {city && `${city}, `} {country}
-            </p>
-            <Button
-              variant={"link"}
-              className="p-0 ml-2 h-max text-[14px] underline-offset-1"
-            >
-              Contact Information
-            </Button>
-          </div>
+          {country && (
+            <div className="flex items-center">
+              <MapPin className="w-4 h-4 mr-2" />
+              <p>
+                {city && `${city}, `} {country}
+              </p>
+            </div>
+          )}
           {employer && (
             <div className="flex items-center">
               <Briefcase className="w-4 h-4 mr-2" />
