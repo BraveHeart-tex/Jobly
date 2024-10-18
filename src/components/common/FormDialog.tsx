@@ -54,7 +54,7 @@ const FormDialog = <T extends FieldValues = FieldValues>({
 
   const handleOpenChange = async (isOpen: boolean) => {
     if (!isOpen) {
-      if (isFormDirty) {
+      if (isFormDirty && !isLoadingInitialData) {
         return showConfirmDialog({
           title: "Discard changes?",
           message: "Are you sure you want to discard your changes?",
