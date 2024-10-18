@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { type InferSelectModel, relations } from "drizzle-orm";
 import {
   index,
   int,
@@ -25,5 +25,7 @@ const countries = mysqlTable(
 export const countryRelations = relations(countries, ({ many }) => ({
   cities: many(cities),
 }));
+
+export type Country = InferSelectModel<typeof countries>;
 
 export default countries;

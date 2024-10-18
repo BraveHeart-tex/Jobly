@@ -6,7 +6,7 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import countries from "./countries";
-import { relations } from "drizzle-orm";
+import { type InferSelectModel, relations } from "drizzle-orm";
 
 const cities = mysqlTable(
   "Cities",
@@ -34,5 +34,7 @@ export const cityRelations = relations(cities, ({ one }) => ({
     references: [countries.id],
   }),
 }));
+
+export type City = InferSelectModel<typeof cities>;
 
 export default cities;

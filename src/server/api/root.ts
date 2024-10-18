@@ -1,3 +1,4 @@
+import { countryRouter } from "@/api/countries";
 import { educationalBackgroundsRouter } from "@/api/educationalBackgrounds";
 import { authRouter } from "@/features/auth/api/authRouter";
 import { documentRouter } from "@/features/candidate/documents/api/documentRouter";
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   userSkill: userSkillRouter,
   workExperience: workExperienceRouter,
   educationalBackgrounds: educationalBackgroundsRouter,
+  countries: countryRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);

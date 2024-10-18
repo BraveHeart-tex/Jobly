@@ -25,6 +25,7 @@ import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import { useLoadCountryOptions } from "../../hooks/useLoadCountryOptions";
 
 const ProfileFormDialog = () => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const ProfileFormDialog = () => {
   });
 
   const { getUserProfile } = useGetUserProfile();
+  const loadCountryOptions = useLoadCountryOptions();
   const { updateUserProfile, isUpdatingUserProfile } = useUpdateUserProfile({
     onSuccess: async (_data, variables) => {
       await closeModal();
