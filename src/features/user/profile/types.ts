@@ -28,6 +28,8 @@ export interface UserProfileInformation {
   workExperiences: WorkExperience[];
   bio: string;
   highlightedSkills: string[];
+  country: string;
+  city: string;
 }
 
 export interface GetAboutInformationReturnType {

@@ -6,6 +6,7 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import countries from "./countries";
+import { relations } from "drizzle-orm";
 
 const cities = mysqlTable(
   "Cities",
@@ -26,5 +27,12 @@ const cities = mysqlTable(
     };
   },
 );
+
+export const cityRelations = relations(cities, ({ one }) => ({
+  country: one(countries, {
+    fields: [cities.countryId],
+    references: [countries.id],
+  }),
+}));
 
 export default cities;

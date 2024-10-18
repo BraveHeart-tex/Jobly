@@ -53,5 +53,5 @@ export {
   userHighlightedSkillsRelations,
 } from "./userHighlightedSkills";
 export { default as userProfiles, userProfileRelations } from "./userProfiles";
-export { default as countries } from "./countries";
-export { default as cities } from "./cities";
+export { default as countries, countryRelations } from "./countries";
+export { default as cities, cityRelations } from "./cities";

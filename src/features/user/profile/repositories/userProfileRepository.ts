@@ -1,5 +1,7 @@
 import { db } from "@/server/db";
 import {
+  cities,
+  countries,
   educationalBackgrounds,
   userBios,
   userHighlightedSkills,
@@ -65,6 +67,40 @@ export const userProfileRepository = {
       )
       .filter(Boolean) as string[];
 
+    const { cityId, countryId } = result.userProfile;
+
+    let country = "";
+    let city = "";
+
+    if (countryId) {
+      const countryResult = await db.query.countries.findFirst({
+        columns: {
+          name: true,
+        },
+        where: () => eq(countries.id, countryId),
+        with: {
+          ...(cityId
+            ? {
+                cities: {
+                  where: () => eq(cities.id, cityId),
+                  limit: 1,
+                },
+              }
+            : {}),
+        },
+      });
+
+      if (countryResult) {
+        country = countryResult.name;
+
+        const cityResult = countryResult.cities?.[0];
+
+        if (cityResult) {
+          city = cityResult.name;
+        }
+      }
+    }
+
     return {
       firstName: result.firstName,
       lastName: result.lastName,
@@ -74,6 +110,8 @@ export const userProfileRepository = {
       bio: result.userBio?.bio || "",
       highlightedSkills,
       workExperiences: result.workExperiences,
+      country,
+      city,
     };
   },
   async getAboutInformation(

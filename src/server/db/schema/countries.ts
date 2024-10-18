@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   index,
   int,
@@ -5,6 +6,7 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
+import cities from "./cities";
 
 const countries = mysqlTable(
   "Countries",
@@ -19,5 +21,9 @@ const countries = mysqlTable(
     };
   },
 );
+
+export const countryRelations = relations(countries, ({ many }) => ({
+  cities: many(cities),
+}));
 
 export default countries;
