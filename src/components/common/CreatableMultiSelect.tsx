@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, ChevronDownIcon, Loader2Icon, XIcon } from "lucide-react";
 import type React from "react";
 import { forwardRef, useEffect, useState } from "react";
-import { type MultiValue, components } from "react-select";
+import { type MultiValue, components, type SingleValue } from "react-select";
 import AsyncCreatableSelect from "react-select/async-creatable";
 
 export interface OptionType {
@@ -15,15 +15,19 @@ export interface OptionType {
 }
 
 interface CreatableSelectProps {
-  value: OptionType[];
+  value: OptionType[] | OptionType | null;
   placeholder?: string;
   className?: string;
   onCreateOption?: (value: string) => void;
-  onChange?: (newValues: MultiValue<OptionType>) => void;
+  onChange?: (
+    newValue: SingleValue<OptionType> | MultiValue<OptionType>,
+  ) => void;
   onInputChange?: (inputValue: string) => void;
   isLoading?: boolean;
   loadOptions?: (inputValue: string) => Promise<OptionType[]>;
   controlShouldRenderValue?: boolean;
+  isMulti?: boolean;
+  showCreateLabel?: boolean;
 }
 
 const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
@@ -37,6 +41,8 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
       isLoading,
       loadOptions,
       controlShouldRenderValue = true,
+      isMulti = true,
+      showCreateLabel = false,
     }: CreatableSelectProps,
     ref,
   ) => {
@@ -51,15 +57,17 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
       onInputChange?.(inputValue);
     };
 
-    const handleValueChange = (newValue: MultiValue<OptionType>) => {
+    const handleValueChange = (
+      newValue: SingleValue<OptionType> | MultiValue<OptionType>,
+    ) => {
       onChange?.(newValue);
     };
 
     return (
       <div ref={ref} className="w-full relative z-[9999]">
-        <AsyncCreatableSelect<OptionType, true>
+        <AsyncCreatableSelect<OptionType, typeof isMulti>
           isClearable
-          isMulti
+          isMulti={isMulti}
           onInputChange={handleInputChange}
           allowCreateWhileLoading={false}
           onChange={handleValueChange}
@@ -104,9 +112,11 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
               </div>
             ),
             Option: (props) => {
-              const isSelected = value.find(
-                (item) => item.label === props.label,
-              );
+              const isSelected = isMulti
+                ? (value as OptionType[])?.find(
+                    (item) => item.label === props.label,
+                  )
+                : (value as OptionType)?.label === props.label;
 
               return (
                 <components.Option
@@ -203,6 +213,9 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
           menuPortalTarget={menuPortalTarget}
           menuPosition="fixed"
           maxMenuHeight={200}
+          formatCreateLabel={(value) =>
+            showCreateLabel ? `Create ${value}` : false
+          }
         />
       </div>
     );

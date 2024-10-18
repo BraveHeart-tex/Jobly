@@ -26,6 +26,12 @@ export const ProfileValidator = pipe(
     cityId: nullish(number()),
     websiteLink: union([nullable(UrlValidator), literal("")]),
     websiteLinkText: nullable(string()),
+    selectedCountry: nullable(
+      object({
+        label: string(),
+        value: number(),
+      }),
+    ),
   }),
   rawCheck(({ dataset, addIssue }) => {
     if (!dataset.typed) return;

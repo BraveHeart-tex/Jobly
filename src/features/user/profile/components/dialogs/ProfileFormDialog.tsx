@@ -26,6 +26,14 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useLoadCountryOptions } from "../../hooks/useLoadCountryOptions";
+import CreatableMultiSelect, {
+  type OptionType,
+} from "@/components/common/CreatableMultiSelect";
+import type { SingleValue } from "react-select";
+import type { ControllerRenderProps } from "react-hook-form";
+
+const defaultSpaceYClassName = "space-y-4";
+const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold mb-2";
 
 const ProfileFormDialog = () => {
   const router = useRouter();
@@ -80,9 +88,10 @@ const ProfileFormDialog = () => {
       websiteLinkText,
       sector,
       title,
-      cityId = null,
-      countryId = null,
+      cityId,
+      countryId,
       presentedWorkExperienceId = null,
+      selectedCountry,
     } = userProfile;
 
     form.reset({
@@ -93,10 +102,11 @@ const ProfileFormDialog = () => {
       websiteLinkText: websiteLinkText || "",
       sector: sector || "",
       title: title || "",
-      cityId,
-      countryId,
+      cityId: cityId || null,
+      countryId: countryId || null,
       presentedWorkExperienceId:
         presentedWorkExperienceId || userProfile.workExperiences[0]?.id || null,
+      selectedCountry,
     });
   }, [userProfile]);
 
@@ -104,8 +114,24 @@ const ProfileFormDialog = () => {
     updateUserProfile(data);
   };
 
-  const defaultSpaceYClassName = "space-y-4";
-  const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold";
+  const handleCountryChange = (
+    newSelectValue: SingleValue<OptionType>,
+    field: ControllerRenderProps<ProfileData, "selectedCountry">,
+  ) => {
+    if (!newSelectValue) {
+      form.setValue("cityId", null);
+      form.setValue("countryId", null);
+      field.onChange(null);
+      return;
+    }
+
+    form.setValue("countryId", Number.parseInt(newSelectValue.value as string));
+
+    field.onChange({
+      label: newSelectValue?.label,
+      value: Number.parseInt(newSelectValue.value as string),
+    });
+  };
 
   return (
     <FormDialog
@@ -210,21 +236,34 @@ const ProfileFormDialog = () => {
           </div>
           <div>
             <h3 className={subSectionHeadingClassNames}>Location</h3>
+
             <div className={defaultSpaceYClassName}>
               <FormField
                 control={form.control}
-                name="countryId"
+                name="selectedCountry"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Country</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value || ""} />
+                      <CreatableMultiSelect
+                        isMulti={false}
+                        placeholder="Select country"
+                        loadOptions={loadCountryOptions}
+                        value={field.value || null}
+                        onChange={(newSelectValue) => {
+                          handleCountryChange(
+                            newSelectValue as SingleValue<OptionType>,
+                            field,
+                          );
+                        }}
+                        showCreateLabel={false}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="cityId"
                 render={({ field }) => (
@@ -236,7 +275,7 @@ const ProfileFormDialog = () => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </div>
           </div>
           <div>

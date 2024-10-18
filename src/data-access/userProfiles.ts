@@ -1,10 +1,13 @@
 import type { Transaction } from "@/lib/types";
 import { buildConflictUpdateColumns, db } from "@/server/db";
-import { userProfiles, users } from "@/server/db/schema";
+import { cities, countries, userProfiles, users } from "@/server/db/schema";
 import type { ProfileData } from "@/validators/user/profile/profileValidator";
 import { eq } from "drizzle-orm";
+import type { GetUserProfileReturn } from "./types";
 
-export const getUserProfile = async (userId: number) => {
+export const getUserProfile = async (
+  userId: number,
+): Promise<GetUserProfileReturn | null> => {
   const result = await db.query.users.findFirst({
     where: () => eq(users.id, userId),
     columns: {
@@ -19,6 +22,32 @@ export const getUserProfile = async (userId: number) => {
   });
 
   if (!result) return null;
+  const { countryId, cityId } = result.userProfile;
+
+  let selectedCountry = null;
+
+  if (countryId) {
+    const countryResult = await db.query.countries.findFirst({
+      where: () => eq(countries.id, countryId),
+      with: {
+        ...(cityId
+          ? {
+              cities: {
+                where: () => eq(cities.id, cityId),
+                limit: 1,
+              },
+            }
+          : {}),
+      },
+    });
+
+    selectedCountry = countryResult?.id
+      ? {
+          label: countryResult.name,
+          value: countryResult.id,
+        }
+      : null;
+  }
 
   return {
     ...result.userProfile,
@@ -27,6 +56,7 @@ export const getUserProfile = async (userId: number) => {
     lastName: result.lastName,
     workExperiences: result.workExperiences,
     educationalBackgrounds: result.educationalBackgrounds,
+    selectedCountry,
   };
 };
 

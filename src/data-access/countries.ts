@@ -7,5 +7,6 @@ export const getCountriesByName = async (query: string): Promise<Country[]> => {
   return await db
     .select()
     .from(countries)
-    .where(like(countries.name, `%${query}%`));
+    .where(like(countries.name, `%${query}%`))
+    .limit(10);
 };

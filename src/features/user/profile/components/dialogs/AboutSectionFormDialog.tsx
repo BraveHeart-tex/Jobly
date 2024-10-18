@@ -182,7 +182,9 @@ const AboutSectionFormDialog = () => {
                 controlShouldRenderValue={false}
                 loadOptions={fetchSkills}
                 onCreateOption={handleCreateSkill}
-                onChange={handleSkillChange}
+                onChange={(newValues) =>
+                  handleSkillChange(newValues as MultiValue<OptionType>)
+                }
               />
             </div>
           ) : (

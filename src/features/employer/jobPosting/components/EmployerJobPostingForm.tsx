@@ -1,5 +1,7 @@
 "use client";
-import CreatableMultiSelect from "@/components/common/CreatableMultiSelect";
+import CreatableMultiSelect, {
+  type OptionType,
+} from "@/components/common/CreatableMultiSelect";
 import EditorInput from "@/components/common/EditorInput";
 import SelectInput from "@/components/common/SelectInput";
 import DateInput from "@/components/common/dateInput/DateInput";
@@ -44,6 +46,7 @@ import {
   type EmployerJobPostingFormOutput,
   EmployerJobPostingFormValidator,
 } from "@/validators/jobPostingFormValidator";
+import type { MultiValue } from "react-select";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormOutput>[] = [
   {
@@ -249,10 +252,18 @@ const EmployerJobPostingForm = ({
                       value: skill?.id,
                     }))}
                     onChange={(newValues) => {
-                      const mappedValues = newValues.map((item) => ({
+                      if (!newValues) {
+                        field.onChange([]);
+                        return;
+                      }
+
+                      const mappedValues = (
+                        newValues as MultiValue<OptionType>
+                      ).map((item) => ({
                         id: Number(item.value as string),
                         name: item.label,
                       }));
+
                       field.onChange(mappedValues);
                     }}
                     onCreateOption={handleCreateSkill}
