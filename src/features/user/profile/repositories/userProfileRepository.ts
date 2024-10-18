@@ -90,15 +90,8 @@ export const userProfileRepository = {
         },
       });
 
-      if (countryResult) {
-        country = countryResult.name;
-
-        const cityResult = countryResult.cities?.[0];
-
-        if (cityResult) {
-          city = cityResult.name;
-        }
-      }
+      country = countryResult?.name || "";
+      city = countryResult?.cities?.[0]?.name || "";
     }
 
     return {
