@@ -1,15 +1,8 @@
 import { api } from "@/trpc/react";
 
-export const useGetUserProfile = () => {
-  const utils = api.useUtils();
+export const useGetUserProfile = (userId?: number) => {
+  const { data: userProfile, isPending: isFetchingUserProfile } =
+    api.userProfile.fetchUserProfile.useQuery(userId ? { userId } : undefined);
 
-  const getUserProfile = async (userId?: number) => {
-    return utils.userProfile.fetchUserProfile.fetch(
-      userId ? { userId } : undefined,
-    );
-  };
-
-  return {
-    getUserProfile,
-  };
+  return { userProfile, isFetchingUserProfile };
 };

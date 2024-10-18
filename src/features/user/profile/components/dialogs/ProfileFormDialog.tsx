@@ -16,7 +16,7 @@ import {
 import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 import { Input } from "@/components/ui/input";
 import RequiredIndicator from "@/components/common/RequiredIndicator";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import Combobox, { type ComboboxOption } from "@/components/common/Combobox";
 import AutoComplete from "@/components/common/AutoComplete";
@@ -42,7 +42,7 @@ const ProfileFormDialog = () => {
     },
   });
 
-  const { getUserProfile } = useGetUserProfile();
+  const { userProfile, isFetchingUserProfile } = useGetUserProfile();
   const loadCountryOptions = useLoadCountryOptions();
   const { updateUserProfile, isUpdatingUserProfile } = useUpdateUserProfile({
     onSuccess: async (_data, variables) => {
@@ -54,58 +54,51 @@ const ProfileFormDialog = () => {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
   const [workExperienceDataset, setWorkExperienceDataset] = useState<
     ComboboxOption[]
   >([]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    startTransition(async () => {
-      const profileDetails = await getUserProfile();
+    if (!userProfile) return;
 
-      if (!profileDetails) return;
+    if (userProfile.workExperiences.length > 0) {
+      const mappedExperienceOptions = userProfile.workExperiences.map(
+        (experience) => ({
+          value: experience.id.toString(),
+          label: `${experience.jobTitle} - ${experience.employer}`,
+        }),
+      );
+      setWorkExperienceDataset(mappedExperienceOptions);
+    }
 
-      if (profileDetails.workExperiences.length > 0) {
-        const mappedExperienceOptions = profileDetails.workExperiences.map(
-          (experience) => ({
-            value: experience.id.toString(),
-            label: `${experience.jobTitle} - ${experience.employer}`,
-          }),
-        );
-        setWorkExperienceDataset(mappedExperienceOptions);
-      }
+    const {
+      id,
+      firstName,
+      lastName,
+      websiteLink,
+      websiteLinkText,
+      sector,
+      title,
+      cityId = null,
+      countryId = null,
+      presentedWorkExperienceId = null,
+    } = userProfile;
 
-      const {
-        id,
-        firstName,
-        lastName,
-        websiteLink,
-        websiteLinkText,
-        sector,
-        title,
-        cityId = null,
-        countryId = null,
-        presentedWorkExperienceId = null,
-      } = profileDetails;
-
-      form.reset({
-        id,
-        firstName,
-        lastName,
-        websiteLink: websiteLink || "",
-        websiteLinkText: websiteLinkText || "",
-        sector: sector || "",
-        title: title || "",
-        cityId,
-        countryId,
-        presentedWorkExperienceId:
-          presentedWorkExperienceId ||
-          profileDetails.workExperiences[0]?.id ||
-          null,
-      });
+    form.reset({
+      id,
+      firstName,
+      lastName,
+      websiteLink: websiteLink || "",
+      websiteLinkText: websiteLinkText || "",
+      sector: sector || "",
+      title: title || "",
+      cityId,
+      countryId,
+      presentedWorkExperienceId:
+        presentedWorkExperienceId || userProfile.workExperiences[0]?.id || null,
     });
-  }, []);
+  }, [userProfile]);
 
   const onSubmit = async (data: ProfileData) => {
     updateUserProfile(data);
@@ -119,9 +112,9 @@ const ProfileFormDialog = () => {
       title="Edit Personal Details"
       onClose={closeModal}
       onSubmit={onSubmit}
-      isSaveDisabled={isPending || isUpdatingUserProfile}
+      isSaveDisabled={isFetchingUserProfile || isUpdatingUserProfile}
       isCloseDisabled={isUpdatingUserProfile}
-      isLoadingInitialData={isPending}
+      isLoadingInitialData={isFetchingUserProfile}
       form={form}
     >
       <Form {...form}>
