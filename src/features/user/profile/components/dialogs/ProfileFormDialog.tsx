@@ -128,6 +128,7 @@ const ProfileFormDialog = () => {
       form.setValue(`${locationType}Id`, null);
       if (locationType === "country") {
         form.setValue("cityId", null);
+        form.setValue("selectedCity", null);
       }
       field.onChange(null);
       return;
@@ -291,7 +292,11 @@ const ProfileFormDialog = () => {
                       <CreatableMultiSelect
                         disabled={!form.watch("countryId")}
                         isMulti={false}
-                        placeholder="Select city"
+                        placeholder={
+                          form.watch("countryId")
+                            ? "Select city"
+                            : "Please select a country first"
+                        }
                         loadOptions={loadCityOptions}
                         value={field.value || null}
                         onChange={(newSelectValue) => {
