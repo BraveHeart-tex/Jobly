@@ -31,6 +31,7 @@ import CreatableMultiSelect, {
 } from "@/components/common/CreatableMultiSelect";
 import type { SingleValue } from "react-select";
 import type { ControllerRenderProps } from "react-hook-form";
+import { useLoadCityOptions } from "../../hooks/useLoadCityOptions";
 
 const defaultSpaceYClassName = "space-y-4";
 const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold mb-2";
@@ -51,7 +52,10 @@ const ProfileFormDialog = () => {
   });
 
   const { userProfile, isFetchingUserProfile } = useGetUserProfile();
+
   const loadCountryOptions = useLoadCountryOptions();
+  const loadCityOptions = useLoadCityOptions(form.watch("countryId"));
+
   const { updateUserProfile, isUpdatingUserProfile } = useUpdateUserProfile({
     onSuccess: async (_data, variables) => {
       await closeModal();
@@ -66,7 +70,6 @@ const ProfileFormDialog = () => {
     ComboboxOption[]
   >([]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!userProfile) return;
 
@@ -92,6 +95,7 @@ const ProfileFormDialog = () => {
       countryId,
       presentedWorkExperienceId = null,
       selectedCountry,
+      selectedCity,
     } = userProfile;
 
     form.reset({
@@ -107,31 +111,45 @@ const ProfileFormDialog = () => {
       presentedWorkExperienceId:
         presentedWorkExperienceId || userProfile.workExperiences[0]?.id || null,
       selectedCountry,
+      selectedCity,
     });
-  }, [userProfile]);
+  }, [userProfile, form.reset]);
 
   const onSubmit = async (data: ProfileData) => {
     updateUserProfile(data);
   };
 
-  const handleCountryChange = (
+  const handleLocationChange = <T extends "selectedCountry" | "selectedCity">(
     newSelectValue: SingleValue<OptionType>,
-    field: ControllerRenderProps<ProfileData, "selectedCountry">,
+    field: ControllerRenderProps<ProfileData, T>,
+    locationType: "country" | "city",
   ) => {
     if (!newSelectValue) {
-      form.setValue("cityId", null);
-      form.setValue("countryId", null);
+      form.setValue(`${locationType}Id`, null);
+      if (locationType === "country") {
+        form.setValue("cityId", null);
+      }
       field.onChange(null);
       return;
     }
 
-    form.setValue("countryId", Number.parseInt(newSelectValue.value as string));
-
+    const parsedValue = Number.parseInt(newSelectValue.value as string);
+    form.setValue(`${locationType}Id`, parsedValue);
     field.onChange({
-      label: newSelectValue?.label,
-      value: Number.parseInt(newSelectValue.value as string),
+      label: newSelectValue.label,
+      value: parsedValue,
     });
   };
+
+  const handleCountryChange = (
+    newSelectValue: SingleValue<OptionType>,
+    field: ControllerRenderProps<ProfileData, "selectedCountry">,
+  ) => handleLocationChange(newSelectValue, field, "country");
+
+  const handleCityChange = (
+    newSelectValue: SingleValue<OptionType>,
+    field: ControllerRenderProps<ProfileData, "selectedCity">,
+  ) => handleLocationChange(newSelectValue, field, "city");
 
   return (
     <FormDialog
@@ -263,19 +281,32 @@ const ProfileFormDialog = () => {
                   </FormItem>
                 )}
               />
-              {/* <FormField
+              <FormField
                 control={form.control}
-                name="cityId"
+                name="selectedCity"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>City</FormLabel>
                     <FormControl>
-                      <Input {...field} value={field.value || ""} />
+                      <CreatableMultiSelect
+                        disabled={!form.watch("countryId")}
+                        isMulti={false}
+                        placeholder="Select city"
+                        loadOptions={loadCityOptions}
+                        value={field.value || null}
+                        onChange={(newSelectValue) => {
+                          handleCityChange(
+                            newSelectValue as SingleValue<OptionType>,
+                            field,
+                          );
+                        }}
+                        showCreateLabel={false}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
             </div>
           </div>
           <div>

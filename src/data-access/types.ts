@@ -22,4 +22,5 @@ export interface GetUserProfileReturn {
   workExperiences: WorkExperience[];
   educationalBackgrounds: EducationalBackground[];
   selectedCountry: { label: string; value: number } | null;
+  selectedCity: { label: string; value: number } | null;
 }

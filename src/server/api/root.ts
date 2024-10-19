@@ -11,6 +11,7 @@ import { workExperienceRouter } from "@/features/user/profile/workExperience/api
 import { userSkillRouter } from "@/features/user/skills/api/userSkillRouter";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { educationalBackgroundsRouter } from "@/features/user/profile/api/educationalBackgrounds";
+import { cityRouter } from "@/features/user/profile/api/cities";
 
 export const appRouter = createTRPCRouter({
   auth: authRouter,
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
   workExperience: workExperienceRouter,
   educationalBackgrounds: educationalBackgroundsRouter,
   countries: countryRouter,
+  cities: cityRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);

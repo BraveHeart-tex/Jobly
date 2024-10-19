@@ -1,3 +1,4 @@
+import { ASYNC_SELECT_OPTIONS_LIMIT } from "@/lib/constants";
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import type { SkillInsertModel } from "@/server/db/schema/skills";
@@ -14,6 +15,6 @@ export const skillsRepository = {
       .select()
       .from(skills)
       .where(like(skills.name, `%${query}%`))
-      .limit(10);
+      .limit(ASYNC_SELECT_OPTIONS_LIMIT);
   },
 };

@@ -32,6 +32,12 @@ export const ProfileValidator = pipe(
         value: number(),
       }),
     ),
+    selectedCity: nullable(
+      object({
+        label: string(),
+        value: number(),
+      }),
+    ),
   }),
   rawCheck(({ dataset, addIssue }) => {
     if (!dataset.typed) return;

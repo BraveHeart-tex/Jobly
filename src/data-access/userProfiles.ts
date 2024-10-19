@@ -25,6 +25,7 @@ export const getUserProfile = async (
   const { countryId, cityId } = result.userProfile;
 
   let selectedCountry = null;
+  let selectedCity = null;
 
   if (countryId) {
     const countryResult = await db.query.countries.findFirst({
@@ -47,6 +48,14 @@ export const getUserProfile = async (
           value: countryResult.id,
         }
       : null;
+
+    selectedCity =
+      cityId && countryResult?.cities[0]
+        ? {
+            label: countryResult.cities[0].name,
+            value: countryResult.cities[0].id,
+          }
+        : null;
   }
 
   return {
@@ -57,6 +66,7 @@ export const getUserProfile = async (
     workExperiences: result.workExperiences,
     educationalBackgrounds: result.educationalBackgrounds,
     selectedCountry,
+    selectedCity,
   };
 };
 

@@ -28,6 +28,7 @@ interface CreatableSelectProps {
   controlShouldRenderValue?: boolean;
   isMulti?: boolean;
   showCreateLabel?: boolean;
+  disabled?: boolean;
 }
 
 const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
@@ -43,6 +44,7 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
       controlShouldRenderValue = true,
       isMulti = true,
       showCreateLabel = false,
+      disabled = false,
     }: CreatableSelectProps,
     ref,
   ) => {
@@ -71,6 +73,7 @@ const CreatableMultiSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
           onInputChange={handleInputChange}
           allowCreateWhileLoading={false}
           onChange={handleValueChange}
+          isDisabled={disabled}
           defaultOptions
           cacheOptions
           controlShouldRenderValue={controlShouldRenderValue}

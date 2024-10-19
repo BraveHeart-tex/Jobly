@@ -1,3 +1,4 @@
+import { ASYNC_SELECT_OPTIONS_LIMIT } from "@/lib/constants";
 import { db } from "@/server/db";
 import type { Country } from "@/server/db/schema/countries";
 import countries from "@/server/db/schema/countries";
@@ -8,5 +9,5 @@ export const getCountriesByName = async (query: string): Promise<Country[]> => {
     .select()
     .from(countries)
     .where(like(countries.name, `%${query}%`))
-    .limit(10);
+    .limit(ASYNC_SELECT_OPTIONS_LIMIT);
 };

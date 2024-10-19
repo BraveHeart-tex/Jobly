@@ -3,13 +3,15 @@ import debounce from "lodash.debounce";
 
 const DEFAULT_DEBOUNCED_FETCH_DURATION_MS = 500 as const;
 
-export const useDebouncedOptionLoader = <T,>(
-  fetchFn: (query: string) => Promise<T[]>,
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const useDebouncedOptionLoader = <T, P extends any[] = []>(
+  fetchFn: (query: string, ...params: P) => Promise<T[]>,
   mapFn: (item: T) => OptionType,
+  ...defaultParams: P
 ) => {
   const debouncedFetch = debounce(
     async (query: string, resolve: (options: OptionType[]) => void) => {
-      const items = await fetchFn(query);
+      const items = await fetchFn(query, ...defaultParams);
       const mappedItems = items.map(mapFn);
       resolve(mappedItems);
     },

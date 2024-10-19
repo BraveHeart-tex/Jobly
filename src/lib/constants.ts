@@ -170,3 +170,5 @@ export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;
 export const SESSION_CACHE_TTL_SECONDS = 30 * 60 * 24 * 1000; // 30 days
 
 export const MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS = 120 as const;
+
+export const ASYNC_SELECT_OPTIONS_LIMIT = 10 as const;
