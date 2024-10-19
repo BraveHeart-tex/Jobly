@@ -134,6 +134,14 @@ const ProfileFormDialog = () => {
       return;
     }
 
+    if (locationType === "country") {
+      const prevCountry = form.watch("selectedCountry");
+      if (prevCountry && newSelectValue?.value !== prevCountry?.value) {
+        form.setValue("cityId", null);
+        form.setValue("selectedCity", null);
+      }
+    }
+
     const parsedValue = Number.parseInt(newSelectValue.value as string);
     form.setValue(`${locationType}Id`, parsedValue);
     field.onChange({
