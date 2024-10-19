@@ -1,4 +1,4 @@
-import type { OptionType } from "@/components/common/CreatableMultiSelect";
+import type { OptionType } from "@/components/common/select/types";
 import { useDebouncedOptionLoader } from "@/hooks/useDebouncedOptionLoader";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
 import { api } from "@/trpc/react";

@@ -1,4 +1,4 @@
-import type { OptionType } from "@/components/common/CreatableMultiSelect";
+import type { OptionType } from "@/components/common/select/types";
 import { useDebouncedOptionLoader } from "@/hooks/useDebouncedOptionLoader";
 import type { Country } from "@/server/db/schema/countries";
 import { api } from "@/trpc/react";

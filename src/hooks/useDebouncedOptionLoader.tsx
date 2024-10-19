@@ -1,4 +1,4 @@
-import type { OptionType } from "@/components/common/CreatableMultiSelect";
+import type { OptionType } from "@/components/common/select/types";
 import debounce from "lodash.debounce";
 
 const DEFAULT_DEBOUNCED_FETCH_DURATION_MS = 500 as const;

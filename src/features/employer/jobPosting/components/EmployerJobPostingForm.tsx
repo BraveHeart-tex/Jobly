@@ -1,7 +1,5 @@
 "use client";
-import CreatableMultiSelect, {
-  type OptionType,
-} from "@/components/common/CreatableMultiSelect";
+
 import EditorInput from "@/components/common/EditorInput";
 import SelectInput from "@/components/common/SelectInput";
 import DateInput from "@/components/common/dateInput/DateInput";
@@ -47,6 +45,8 @@ import {
   EmployerJobPostingFormValidator,
 } from "@/validators/jobPostingFormValidator";
 import type { MultiValue } from "react-select";
+import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import type { OptionType } from "@/components/common/select/types";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormOutput>[] = [
   {
