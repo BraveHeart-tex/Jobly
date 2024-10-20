@@ -53,7 +53,8 @@
         "useHookAtTopLevel": "error",
         "noUnusedImports": "warn",
         "noUnusedVariables": "warn",
-        "noUnreachable": "error"
+        "noUnreachable": "error",
+        "noNodejsModules": "off"
       },
       "recommended": true
     },
