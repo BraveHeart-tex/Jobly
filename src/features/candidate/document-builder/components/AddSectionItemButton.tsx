@@ -4,9 +4,9 @@ import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { api } from "@/trpc/react";
-import { PlusIcon } from "lucide-react";
+import { Loader2, PlusIcon } from "lucide-react";
 import { getFieldInsertTemplateBySectionTag } from "../../documents/utils";
+import { useAddFieldsWithValues } from "../hooks/useAddFieldsWithValues";
 
 interface AddSectionItemButtonProps {
   sectionId: DocumentSection["id"];
@@ -25,28 +25,27 @@ const AddSectionItemButton = ({
   const addField = useDocumentBuilderStore((state) => state.addField);
   const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
 
-  const { mutate: addFields, isPending } =
-    api.document.addFieldsWithValues.useMutation({
-      onSuccess({ fieldInsertIds, fieldValueInsertIds }, { fields }) {
-        const mappedFields = fields.map((item, index) => ({
-          ...item,
-          id: fieldInsertIds[index] as DocumentSectionFieldValue["id"],
-        }));
+  const { addFields, isPending } = useAddFieldsWithValues({
+    onSuccess({ fieldInsertIds, fieldValueInsertIds }, { fields }) {
+      const mappedFields = fields.map((item, index) => ({
+        ...item,
+        id: fieldInsertIds[index] as DocumentSectionFieldValue["id"],
+      }));
 
-        const fieldValues = mappedFields.map((field, index) => ({
-          id: fieldValueInsertIds[index] as DocumentSectionFieldValue["id"],
-          fieldId: field.id,
-          value: "",
-        }));
+      const fieldValues = mappedFields.map((field, index) => ({
+        id: fieldValueInsertIds[index] as DocumentSectionFieldValue["id"],
+        fieldId: field.id,
+        value: "",
+      }));
 
-        for (const field of mappedFields) {
-          addField(field);
-        }
-        for (const fieldValue of fieldValues) {
-          addFieldValue(fieldValue);
-        }
-      },
-    });
+      for (const field of mappedFields) {
+        addField(field);
+      }
+      for (const fieldValue of fieldValues) {
+        addFieldValue(fieldValue);
+      }
+    },
+  });
 
   const getFinalDisplayOrder = () => {
     return sectionFields.reduce(
@@ -79,7 +78,15 @@ const AddSectionItemButton = ({
       disabled={isPending}
       onClick={handleAddItem}
     >
-      <PlusIcon /> {label}
+      {!isPending ? (
+        <>
+          <PlusIcon /> {label}
+        </>
+      ) : (
+        <>
+          <Loader2 className="animate-spin" /> <p>Adding...</p>
+        </>
+      )}
     </Button>
   );
 };
