@@ -70,7 +70,7 @@ const CvBuilderSkillsSection = () => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={skillField} />
+              <DocumentBuilderInput autoFocus field={skillField} />
               <CvBuilderSkillLevelSelector
                 field={levelField}
                 disabled={!showExperienceLevel}

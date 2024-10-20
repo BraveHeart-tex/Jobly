@@ -68,7 +68,7 @@ const CvBuilderLanguagesSection = ({
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={languageField} />
+              <DocumentBuilderInput autoFocus field={languageField} />
               <DocumentBuilderSelect
                 field={levelField}
                 options={LANGUAGE_LEVELS.map((level) => ({

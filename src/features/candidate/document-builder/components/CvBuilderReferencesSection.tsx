@@ -66,7 +66,7 @@ const CvBuilderReferencesSection = ({
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={referentFullNameField} />
+              <DocumentBuilderInput autoFocus field={referentFullNameField} />
               <DocumentBuilderInput field={companyField} />
             </div>
             <div className="grid lg:grid-cols-2 gap-8">

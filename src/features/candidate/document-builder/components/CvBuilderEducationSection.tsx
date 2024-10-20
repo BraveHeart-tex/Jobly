@@ -79,7 +79,7 @@ const CvBuilderEducationSection = () => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={schoolField} />
+              <DocumentBuilderInput autoFocus field={schoolField} />
               <DocumentBuilderInput field={degreeField} />
             </div>
 

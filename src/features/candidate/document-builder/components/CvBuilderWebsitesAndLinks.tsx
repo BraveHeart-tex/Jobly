@@ -63,7 +63,7 @@ const CvBuilderWebsitesAndLinks = () => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={labelField} />
+              <DocumentBuilderInput autoFocus field={labelField} />
               <DocumentBuilderInput field={linkField} />
             </div>
           </div>

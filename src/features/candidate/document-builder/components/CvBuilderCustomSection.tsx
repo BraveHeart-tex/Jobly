@@ -74,7 +74,7 @@ const CvBuilderCustomSection = ({ section }: CvBuilderCustomSectionProps) => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={nameField} />
+              <DocumentBuilderInput autoFocus field={nameField} />
               <DocumentBuilderInput field={cityField} />
             </div>
 

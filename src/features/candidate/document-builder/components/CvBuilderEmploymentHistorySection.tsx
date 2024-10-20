@@ -77,7 +77,7 @@ const CvBuilderEmploymentHistorySection = () => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={jobTitleField} />
+              <DocumentBuilderInput autoFocus field={jobTitleField} />
               <DocumentBuilderInput field={employerField} />
             </div>
 

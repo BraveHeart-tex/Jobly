@@ -73,7 +73,7 @@ const CvBuilderCoursesSection = ({ section }: CvBuilderCoursesSectionProps) => {
         >
           <div className="grid gap-6">
             <div className="grid lg:grid-cols-2 gap-8">
-              <DocumentBuilderInput field={courseField} />
+              <DocumentBuilderInput autoFocus field={courseField} />
               <DocumentBuilderInput field={institutionField} />
             </div>
 
