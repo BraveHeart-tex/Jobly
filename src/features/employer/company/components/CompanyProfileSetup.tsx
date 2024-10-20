@@ -1,7 +1,6 @@
 "use client";
-
-import AutoComplete from "@/components/common/AutoComplete";
 import SelectInput from "@/components/common/SelectInput";
+import CreatableSelect from "@/components/common/select/CreatableSelect";
 import AnimatedFormFieldsContainer from "@/components/multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
 import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
@@ -151,12 +150,22 @@ const CompanyProfileSetup = () => {
               <FormItem>
                 <FormLabel>Industry</FormLabel>
                 <FormControl>
-                  <AutoComplete
-                    options={INDUSTRIES_DATASET.map((d) => ({
-                      label: d,
-                      value: d,
+                  <CreatableSelect
+                    value={{
+                      label: field.value || "",
+                      value: field.value || "",
+                    }}
+                    options={INDUSTRIES_DATASET.map((item) => ({
+                      label: item,
+                      value: item,
                     }))}
-                    {...field}
+                    isMulti={false}
+                    placeholder="Select industry"
+                    formatCreateLabel={(label) => `Add "${label}"`}
+                    ref={field.ref}
+                    onChange={(value) => {
+                      field.onChange(value?.value);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />

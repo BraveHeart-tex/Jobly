@@ -1,16 +1,16 @@
 "use client";
 
 import { forwardRef } from "react";
+import CreatableReactSelect from "react-select/creatable";
+import type { MultiValue, SingleValue } from "react-select";
+import type { OptionType } from "@/components/common/select/types";
 import {
   getSelectClassNames,
   getSelectComponents,
   getSelectStyles,
   selectContainerClassNames,
   useMenuPortalTarget,
-} from "./utils";
-import CreatableReactSelect from "react-select/creatable";
-import type { OptionType } from "./types";
-import CreatableMultiSelect from "./CreatableMultiSelect";
+} from "@/components/common/select/utils";
 
 interface CreatableSelectProps {
   isMulti?: boolean;
@@ -19,6 +19,12 @@ interface CreatableSelectProps {
   value: OptionType[] | OptionType | null;
   placeholder?: string;
   formatCreateLabel?: (label: string) => string | false;
+  options: OptionType[];
+  onChange?: (
+    newValue: CreatableSelectProps["isMulti"] extends true
+      ? MultiValue<OptionType>
+      : SingleValue<OptionType>,
+  ) => void;
 }
 
 const CreatableSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
@@ -30,6 +36,8 @@ const CreatableSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
       value,
       placeholder,
       formatCreateLabel,
+      options,
+      onChange,
     },
     ref,
   ) => {
@@ -45,6 +53,8 @@ const CreatableSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
           onCreateOption={onCreateOption}
           menuPosition="fixed"
           maxMenuHeight={200}
+          // @ts-ignore
+          onChange={onChange}
           menuPortalTarget={menuPortalTarget}
           components={getSelectComponents(value, isMulti)}
           classNames={getSelectClassNames(isMulti)}
@@ -53,12 +63,13 @@ const CreatableSelect = forwardRef<HTMLDivElement, CreatableSelectProps>(
           placeholder={placeholder}
           unstyled
           formatCreateLabel={formatCreateLabel}
+          options={options}
         />
       </div>
     );
   },
 );
 
-CreatableMultiSelect.displayName = "CreatableSelect";
+CreatableSelect.displayName = "CreatableSelect";
 
 export default CreatableSelect;

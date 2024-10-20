@@ -19,7 +19,6 @@ import RequiredIndicator from "@/components/common/RequiredIndicator";
 import { useEffect, useState } from "react";
 import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import Combobox, { type ComboboxOption } from "@/components/common/Combobox";
-import AutoComplete from "@/components/common/AutoComplete";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile";
 import { useRouter } from "next/navigation";
@@ -31,6 +30,7 @@ import { useLoadCityOptions } from "../../hooks/useLoadCityOptions";
 import type { OptionType } from "@/components/common/select/types";
 import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import { showSuccessToast } from "@/components/toastUtils";
+import CreatableSelect from "@/components/common/select/CreatableSelect";
 
 const defaultSpaceYClassName = "space-y-4";
 const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold mb-2";
@@ -246,12 +246,22 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>Sector</FormLabel>
                     <FormControl>
-                      <AutoComplete
+                      <CreatableSelect
+                        value={{
+                          label: field.value || "",
+                          value: field.value || "",
+                        }}
                         options={INDUSTRIES_DATASET.map((item) => ({
                           label: item,
                           value: item,
                         }))}
-                        {...field}
+                        isMulti={false}
+                        placeholder="Select industry"
+                        formatCreateLabel={(label) => `Add "${label}"`}
+                        ref={field.ref}
+                        onChange={(value) => {
+                          field.onChange(value?.value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
