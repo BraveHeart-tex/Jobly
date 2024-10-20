@@ -1,3 +1,5 @@
+import { env } from "@/env";
+import { decrypt, encrypt } from "@/lib/utils/encryption";
 import { customType } from "drizzle-orm/mysql-core";
 import { DateTime } from "luxon";
 
@@ -28,6 +30,28 @@ export const customTimestamp = customType<{
     return DateTime.fromSQL(sqlDateTimeString, {
       zone: "utc",
     }).toISO() as string;
+  },
+});
+
+export const encryptedText = customType<{
+  data: string;
+  driverData: string;
+}>({
+  dataType() {
+    return "text";
+  },
+  fromDriver: (fromDriverValue) => {
+    if (!fromDriverValue) return "";
+    const { iv, salt, encryptedData } = JSON.parse(fromDriverValue);
+    const decryptedValue = decrypt(encryptedData, env.ENCRYPTION_KEY, iv, salt);
+    return decryptedValue;
+  },
+  toDriver: (toDriverValue) => {
+    const { iv, salt, encryptedData } = encrypt(
+      toDriverValue,
+      env.ENCRYPTION_KEY,
+    );
+    return JSON.stringify({ iv, salt, encryptedData });
   },
 });
 

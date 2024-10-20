@@ -3,14 +3,9 @@ import {
   type InferSelectModel,
   relations,
 } from "drizzle-orm";
-import {
-  index,
-  int,
-  mysqlTable,
-  primaryKey,
-  text,
-} from "drizzle-orm/mysql-core";
+import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 import documentSectionFields from "./documentSectionFields";
+import { encryptedText } from "../utils";
 
 const documentSectionFieldValues = mysqlTable(
   "DocumentSectionFieldValues",
@@ -19,7 +14,7 @@ const documentSectionFieldValues = mysqlTable(
     fieldId: int("fieldId")
       .references(() => documentSectionFields.id, { onDelete: "cascade" })
       .notNull(),
-    value: text("value").notNull(),
+    value: encryptedText("value").notNull(),
   },
   (table) => {
     return {

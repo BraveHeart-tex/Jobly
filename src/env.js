@@ -22,6 +22,7 @@ export const env = createNextjsEnv({
       nonEmpty("UPLOADTHING_APP_ID is required"),
     ),
     SECRET_CRON_KEY: pipe(string(), nonEmpty("SECRET_CRON_KEY is required")),
+    ENCRYPTION_KEY: pipe(string(), nonEmpty("ENCRYPTION_KEY is required")),
   },
 
   client: {},
@@ -31,6 +32,7 @@ export const env = createNextjsEnv({
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     SECRET_CRON_KEY: process.env.SECRET_CRON_KEY,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

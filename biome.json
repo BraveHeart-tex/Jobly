@@ -45,6 +45,9 @@
       "suspicious": {
         "noConsoleLog": "error"
       },
+      "style": {
+        "useNodejsImportProtocol": "off"
+      },
       "correctness": {
         "all": true,
         "useHookAtTopLevel": "error",
