@@ -14,7 +14,7 @@ const AuthPageContainer = ({
   authType = "Login",
 }: AuthPageContainerProps) => {
   return (
-    <div className="grid h-screen w-full bg-muted/10 dark:bg-background lg:min-h-[600px] xl:min-h-[800px]">
+    <div className="grid h-[90vh] w-full bg-muted/10 dark:bg-background lg:min-h-[600px] xl:min-h-[800px] overflow-hidden">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[90%] max-w-[450px] gap-6">
           <div className="grid gap-2 text-center">
