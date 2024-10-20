@@ -1,4 +1,5 @@
 "use client";
+import { showErrorToast, showInfoToast } from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +13,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import LondonTemplate from "@/features/candidate/document-builder/components/LondonTemplate";
+import { preparePdfData } from "@/features/candidate/document-builder/components/utils";
 import { useDeleteDocument } from "@/features/candidate/document-builder/hooks/useDeleteDocument";
 import { useUpdateDocument } from "@/features/candidate/document-builder/hooks/useUpdateDocument";
 import { isErrorObject } from "@/lib/guards";
@@ -21,12 +24,16 @@ import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/date";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
 import { pdf } from "@react-pdf/renderer";
-import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
+import {
+  Ellipsis,
+  FileDown,
+  FilePen,
+  Loader2,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { useRef, useState } from "react";
-import LondonTemplate from "../../document-builder/components/LondonTemplate";
-import { preparePdfData } from "../../document-builder/components/utils";
-import { showErrorToast, showInfoToast } from "@/components/toastUtils";
 
 interface DocumentListItemProps {
   item: DocumentSelectModel;
@@ -34,6 +41,7 @@ interface DocumentListItemProps {
 
 const DocumentListItem = ({ item }: DocumentListItemProps) => {
   const [isRenaming, setIsRenaming] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const renameInputRef = useRef<HTMLInputElement>(null);
   const { handleDeleteDocument, isDeletingDocument } = useDeleteDocument();
   const { updateDocument } = useUpdateDocument();
@@ -51,6 +59,8 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
         "You can download only resumes as PDF at the moment.",
       );
     }
+
+    setIsDownloading(true);
 
     const documentDataResponse = await utils.document.getDocumentDetails.fetch({
       id: item.id,
@@ -70,13 +80,20 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
     link.click();
 
     URL.revokeObjectURL(url);
+
+    setIsDownloading(false);
   };
 
   const documentActions = [
     {
-      label: "Download PDF",
-      icon: <FileDown size={18} />,
+      label: !isDownloading ? "Download PDF" : "Downloading PDF...",
+      icon: !isDownloading ? (
+        <FileDown size={18} />
+      ) : (
+        <Loader2 size={18} className="animate-spin" />
+      ),
       onClick: handleDownloadPDF,
+      disabled: isDownloading,
     },
     {
       label: "Edit Document",

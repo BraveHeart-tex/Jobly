@@ -91,16 +91,22 @@ export const useConfirmStore = create<
         set((state) => ({
           ...state,
           visible: false,
-          title: "",
-          message: "",
-          primaryActionLabel: "",
-          secondaryActionLabel: "",
           onConfirm: () => {},
           onDeny: () => {},
           onConfirmResult: null,
           onDenyResult: null,
           loading: false,
         }));
+
+        setTimeout(() => {
+          set((state) => ({
+            ...state,
+            title: "",
+            message: "",
+            primaryActionLabel: "",
+            secondaryActionLabel: "",
+          }));
+        }, 50);
       },
     }),
     {
