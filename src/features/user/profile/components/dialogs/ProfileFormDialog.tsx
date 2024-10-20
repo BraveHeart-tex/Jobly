@@ -23,7 +23,6 @@ import AutoComplete from "@/components/common/AutoComplete";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
 import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useLoadCountryOptions } from "../../hooks/useLoadCountryOptions";
 import type { SingleValue } from "react-select";
@@ -31,6 +30,7 @@ import type { ControllerRenderProps } from "react-hook-form";
 import { useLoadCityOptions } from "../../hooks/useLoadCityOptions";
 import type { OptionType } from "@/components/common/select/types";
 import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import { showSuccessToast } from "@/components/toastUtils";
 
 const defaultSpaceYClassName = "space-y-4";
 const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold mb-2";
@@ -59,7 +59,7 @@ const ProfileFormDialog = () => {
     onSuccess: async (_data, variables) => {
       await closeModal();
       router.refresh();
-      toast.success("Profile updated successfully.");
+      showSuccessToast("Profile updated successfully.");
       const { firstName, lastName } = variables;
       updateName(firstName, lastName);
     },

@@ -24,9 +24,9 @@ import { pdf } from "@react-pdf/renderer";
 import { Ellipsis, FileDown, FilePen, Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { useRef, useState } from "react";
-import { toast } from "sonner";
 import LondonTemplate from "../../document-builder/components/LondonTemplate";
 import { preparePdfData } from "../../document-builder/components/utils";
+import { showErrorToast, showInfoToast } from "@/components/toastUtils";
 
 interface DocumentListItemProps {
   item: DocumentSelectModel;
@@ -47,7 +47,9 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
 
   const handleDownloadPDF = async () => {
     if (item.type === "cover_letter") {
-      return toast.info("You can download only resumes as PDF at the moment.");
+      return showInfoToast(
+        "You can download only resumes as PDF at the moment.",
+      );
     }
 
     const documentDataResponse = await utils.document.getDocumentDetails.fetch({
@@ -55,7 +57,7 @@ const DocumentListItem = ({ item }: DocumentListItemProps) => {
     });
 
     if (isErrorObject(documentDataResponse)) {
-      return toast.error(documentDataResponse.error);
+      return showErrorToast(documentDataResponse.error);
     }
 
     const blob = await pdf(

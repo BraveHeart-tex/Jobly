@@ -34,7 +34,6 @@ import {
 import { DateTime } from "luxon";
 import { useRouter } from "next/navigation";
 import type { FieldErrors } from "react-hook-form";
-import { toast } from "sonner";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";
 import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
@@ -47,6 +46,7 @@ import {
 import type { MultiValue } from "react-select";
 import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import type { OptionType } from "@/components/common/select/types";
+import { showSuccessToast } from "@/components/toastUtils";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormOutput>[] = [
   {
@@ -106,14 +106,14 @@ const EmployerJobPostingForm = ({
 
   const { createJobPosting, isCreatingJobPosting } = useCreateJobPosting({
     onSuccess: () => {
-      toast.success("Job posting created successfully.");
+      showSuccessToast("Job posting created successfully.");
       goToPath(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
     },
   });
 
   const { updateJobPosting, isUpdatingJobPosting } = useUpdateJobPosting({
     onSuccess: () => {
-      toast.success("Job posting updated successfully.");
+      showSuccessToast("Job posting updated successfully.");
       goToPath(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);
     },
   });

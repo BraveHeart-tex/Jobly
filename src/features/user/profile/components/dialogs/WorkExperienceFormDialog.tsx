@@ -27,12 +27,12 @@ import {
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { useGetWorkExperience } from "../../hooks/useGetWorkExperience";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDeleteWorkExperience } from "../../hooks/useDeleteWorkExperience";
 import { useUpdateWorkExperience } from "../../hooks/useUpdateWorkExperience";
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 
 const WorkExperienceFormDialog = () => {
   const router = useRouter();
@@ -57,7 +57,7 @@ const WorkExperienceFormDialog = () => {
   const handleMutationSuccess = async (message: string) => {
     await closeModal();
     router.refresh();
-    toast.success(message);
+    showSuccessToast(message);
   };
 
   const { createWorkExperience, isCreatingWorkExperience } =
@@ -94,7 +94,7 @@ const WorkExperienceFormDialog = () => {
       const data = await fetchWorkExperience(idQuery);
 
       if (!data) {
-        toast.error("Work experience was not found.");
+        showErrorToast("Work experience was not found.");
         await closeModal();
         return;
       }

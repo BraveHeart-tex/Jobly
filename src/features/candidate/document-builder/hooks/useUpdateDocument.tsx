@@ -1,5 +1,5 @@
+import { showErrorToast } from "@/components/toastUtils";
 import { api } from "@/trpc/react";
-import { toast } from "sonner";
 
 export const useUpdateDocument = () => {
   const queryClientUtils = api.useUtils();
@@ -32,7 +32,7 @@ export const useUpdateDocument = () => {
         return { previousUserDocuments };
       },
       onError: (_err, _newJob, context) => {
-        toast.error("Something went wrong, please try again later");
+        showErrorToast("Something went wrong, please try again later");
         queryClientUtils.document.getUserDocuments.setData(
           undefined,
           context?.previousUserDocuments,

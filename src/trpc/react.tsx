@@ -1,5 +1,6 @@
 "use client";
 
+import { showErrorToast } from "@/components/toastUtils";
 import type { AppRouter } from "@/lib/types";
 import {
   MutationCache,
@@ -11,7 +12,6 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import type React from "react";
-import { toast } from "sonner";
 import SuperJSON from "superjson";
 
 function getBaseUrl() {
@@ -25,12 +25,12 @@ const createQueryClient = () =>
   new QueryClient({
     queryCache: new QueryCache({
       onError: (error) => {
-        toast.error(error.message);
+        showErrorToast(error.message);
       },
     }),
     mutationCache: new MutationCache({
       onError: (error) => {
-        toast.error(error.message);
+        showErrorToast(error.message);
       },
     }),
   });

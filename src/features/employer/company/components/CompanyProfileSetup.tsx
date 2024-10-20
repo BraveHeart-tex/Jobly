@@ -5,6 +5,7 @@ import SelectInput from "@/components/common/SelectInput";
 import AnimatedFormFieldsContainer from "@/components/multiStepForm/AnimatedFormFieldsContainer";
 import MultiFormStepsPanel from "@/components/multiStepForm/MultiFormStepsPanel";
 import MultiStepFormSummary from "@/components/multiStepForm/MultiStepFormSummary";
+import { showSuccessToast } from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -30,7 +31,6 @@ import {
 } from "@/validators/companyProfileSetupValidator";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
-import { toast } from "sonner";
 
 const companyProfileSteps: StepItem<CompanyProfileOutput>[] = [
   {
@@ -90,7 +90,7 @@ const CompanyProfileSetup = () => {
   const { mutate: registerCompanyDetails, isPending } =
     api.company.registerCompanyDetails.useMutation({
       onSuccess: () => {
-        toast.success("Company details registered successfully.");
+        showSuccessToast("Company details registered successfully.");
         router.refresh();
       },
     });

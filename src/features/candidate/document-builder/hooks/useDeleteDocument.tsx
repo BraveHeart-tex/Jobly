@@ -1,9 +1,9 @@
 "use client";
 
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
-import { toast } from "sonner";
 
 export const useDeleteDocument = () => {
   const queryClientUtils = api.useUtils();
@@ -25,11 +25,11 @@ export const useDeleteDocument = () => {
           },
         );
 
-        toast.success("Document deleted successfully");
+        showSuccessToast("Document deleted successfully");
         return { previousUserDocuments };
       },
       onError: (_err, _newJob, context) => {
-        toast.error("Something went wrong, please try again later");
+        showErrorToast("Something went wrong, please try again later");
         queryClientUtils.document.getUserDocuments.setData(
           undefined,
           context?.previousUserDocuments,

@@ -19,13 +19,13 @@ import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchPara
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateEducationalBackground } from "../../../educationalBackgrounds/hooks/useCreateEducationalBackground";
-import { toast } from "sonner";
+import { useCreateEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useCreateEducationalBackground";
 import { useRouter } from "next/navigation";
-import { useDeleteEducationalBackground } from "../../../educationalBackgrounds/hooks/useDeleteEducationalBackground";
+import { useDeleteEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useDeleteEducationalBackground";
 import { useEffect, useTransition } from "react";
-import { useGetEducationalBackground } from "../../../educationalBackgrounds/hooks/useGetEducationalBackground";
-import { useUpdateEducationalBackground } from "../../../educationalBackgrounds/hooks/useUpdateEducationalBackground";
+import { useGetEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useGetEducationalBackground";
+import { useUpdateEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useUpdateEducationalBackground";
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 
 const EducationalBackgroundFormDialog = () => {
   const router = useRouter();
@@ -52,7 +52,7 @@ const EducationalBackgroundFormDialog = () => {
   const handleMutationSuccess = async (message: string) => {
     await closeModal();
     router.refresh();
-    toast.success(message);
+    showSuccessToast(message);
   };
 
   const { createEducationalBackground, isCreatingEducationalBackground } =
@@ -91,7 +91,7 @@ const EducationalBackgroundFormDialog = () => {
     startTransition(async () => {
       const data = await fetchEducationalBackground(idQuery);
       if (!data) {
-        toast.error("Educational background not found");
+        showErrorToast("Educational background not found");
         await closeModal();
         return;
       }

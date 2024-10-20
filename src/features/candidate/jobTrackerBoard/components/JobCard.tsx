@@ -25,10 +25,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
 import { GripVertical, TrashIcon } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
 import type { TaskDragData } from "../types";
 import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 
 interface JobCardProps {
   job: JobTrackerApplication;
@@ -58,11 +58,11 @@ export function JobCard({ job, isOverlay }: JobCardProps) {
           ),
         );
 
-        toast.success("Job application removed successfully.");
+        showSuccessToast("Job application removed successfully.");
         return { previousTrackedApplications };
       },
       onError: (_err, _newJob, context) => {
-        toast.error("Something went wrong, please try again later");
+        showErrorToast("Something went wrong, please try again later");
         setTrackedApplications(context?.previousTrackedApplications || []);
       },
       onSettled: () => {

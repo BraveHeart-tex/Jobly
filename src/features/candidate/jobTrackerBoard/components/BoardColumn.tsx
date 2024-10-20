@@ -33,10 +33,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
 import { ListXIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
-import { toast } from "sonner";
 import type { Column } from "../types";
 import { JobCard } from "./JobCard";
 import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 
 export type ColumnType = "Column";
 
@@ -72,11 +72,11 @@ export function BoardColumn({ column, jobs, isOverlay }: BoardColumnProps) {
         return { oldApplications };
       },
       onError: (_error, _variables, context) => {
-        toast.error("Something went wrong, please try again later.");
+        showErrorToast("Something went wrong, please try again later.");
         setTrackedApplications(context?.oldApplications ?? []);
       },
       onSuccess: () => {
-        toast.success("Applications deleted successfully.");
+        showSuccessToast("Applications deleted successfully.");
       },
     });
 

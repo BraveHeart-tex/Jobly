@@ -14,13 +14,13 @@ import type { RouterOutputs } from "@/lib/types";
 import type { DBUser } from "@/server/db/schema/users";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
-import { toast } from "sonner";
 import { useSignUp } from "../hooks/useSignUp";
 import {
   type SignUpData,
   SignUpValidator,
 } from "@/validators/auth/signUpValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { showSuccessToast } from "@/components/toastUtils";
 
 interface SignUpFormProps {
   portalType?: DBUser["role"];
@@ -45,7 +45,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
     const { success, message } = data;
 
     if (success) {
-      toast.success(message);
+      showSuccessToast(message);
       router.refresh();
     }
   };

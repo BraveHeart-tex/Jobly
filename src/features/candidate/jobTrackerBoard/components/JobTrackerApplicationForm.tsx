@@ -1,4 +1,9 @@
 "use client";
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import {
@@ -30,7 +35,6 @@ import {
   MapPinIcon,
   PencilIcon,
 } from "lucide-react";
-import { toast } from "sonner";
 
 interface JobTrackerApplicationFormProps {
   defaultValues?: Partial<JobTrackerApplicationOutput>;
@@ -63,7 +67,7 @@ const JobTrackerApplicationForm = ({
         return { oldApplications };
       },
       onError: (_error, _variables, context) => {
-        toast.error("Something went wrong, please try again later");
+        showErrorToast("Something went wrong, please try again later");
         setApplications(context?.oldApplications ?? []);
       },
       onSuccess(insertId) {
@@ -81,7 +85,7 @@ const JobTrackerApplicationForm = ({
     api.jobTracker.updateJobTrackerApplication.useMutation({
       onMutate: (variables) => {
         onFormSubmit?.();
-        toast.success("Application updated successfully.");
+        showSuccessToast("Application updated successfully.");
         const oldApplications = trackedApplications;
         setApplications((prev) =>
           prev.map((application) => {
@@ -98,7 +102,7 @@ const JobTrackerApplicationForm = ({
         return { oldApplications };
       },
       onError: (_error, _variables, context) => {
-        toast.error("Something went wrong, please try again later.");
+        showErrorToast("Something went wrong, please try again later.");
         setApplications(context?.oldApplications ?? []);
       },
     });
@@ -136,7 +140,7 @@ const JobTrackerApplicationForm = ({
     if (mode === "edit") {
       const hasMadeNoChanges = compareMatchingKeys(defaultValues, values);
       if (hasMadeNoChanges) {
-        toast.info("You didn't make any changes.");
+        showInfoToast("You didn't make any changes.");
         return;
       }
 

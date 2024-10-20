@@ -11,11 +11,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { SHARED_ROUTES } from "@/lib/routes";
-
 import type { DBUser } from "@/server/db/schema/users";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
-import { toast } from "sonner";
 import { useLogin } from "../hooks/useLogin";
 import {
   type LoginData,
@@ -23,6 +21,7 @@ import {
   LoginValidator,
 } from "@/validators/auth/loginValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 
 interface LoginFormProps {
   portalType?: DBUser["role"];
@@ -41,12 +40,12 @@ const LoginForm = ({ portalType }: LoginFormProps) => {
 
   const onSettled = (data: LoginResponse) => {
     if ("error" in data) {
-      toast.error(data?.error);
+      showErrorToast(data?.error);
       return;
     }
 
     if ("success" in data) {
-      toast.success("You have successfully signed in");
+      showSuccessToast("You have successfully signed in");
       router.push(SHARED_ROUTES.HOME);
       router.refresh();
     }

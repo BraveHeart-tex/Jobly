@@ -8,18 +8,17 @@ import type React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { InfoIcon } from "lucide-react";
-
 import { useLoadSkillOptions } from "@/features/employer/jobPosting/hooks/useLoadSkillOptions";
 import { useCreateSkill } from "@/features/employer/jobPosting/hooks/useCreateSkill";
 import type { MultiValue } from "react-select";
 import HighlightedSkillsDndContext from "../HighlightedSkillsDndContext";
 import HighlightedSkillItem from "../HighlightedSkillItem";
 import { useSaveAboutSectionData } from "../../hooks/useSaveAboutSectionData";
-import { toast } from "sonner";
 import FormDialog from "@/components/common/FormDialog";
 import { useRouter } from "next/navigation";
 import type { OptionType } from "@/components/common/select/types";
 import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import { showSuccessToast } from "@/components/toastUtils";
 
 const MAX_HIGHLIGHTED_SKILLS_COUNT = 5 as const;
 
@@ -40,7 +39,7 @@ const AboutSectionFormDialog = () => {
       onSuccess: async () => {
         await closeModal();
         router.refresh();
-        toast.success("About section updated successfully.");
+        showSuccessToast("About section updated successfully.");
       },
     });
 
