@@ -22,7 +22,9 @@ export const getUserProfile = async (
   });
 
   if (!result) return null;
-  const { countryId, cityId } = result.userProfile;
+
+  const countryId = result.userProfile?.countryId;
+  const cityId = result.userProfile?.cityId;
 
   let selectedCountry = null;
   let selectedCity = null;

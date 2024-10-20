@@ -67,7 +67,8 @@ export const userProfileRepository = {
       )
       .filter(Boolean) as string[];
 
-    const { cityId, countryId } = result.userProfile;
+    const cityId = result.userProfile?.cityId;
+    const countryId = result.userProfile?.countryId;
 
     let country = "";
     let city = "";

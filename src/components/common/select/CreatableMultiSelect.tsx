@@ -44,7 +44,7 @@ const CreatableMultiSelect = forwardRef<
       loadOptions,
       controlShouldRenderValue = true,
       isMulti = true,
-      showCreateLabel = false,
+      showCreateLabel = true,
       disabled = false,
     }: CreatableMultiSelectProps,
     ref,
@@ -76,6 +76,7 @@ const CreatableMultiSelect = forwardRef<
           loadOptions={loadOptions}
           isLoading={isLoading}
           onCreateOption={onCreateOption}
+          backspaceRemovesValue={controlShouldRenderValue}
           value={value}
           placeholder={placeholder}
           classNames={getSelectClassNames(isMulti)}
@@ -86,7 +87,7 @@ const CreatableMultiSelect = forwardRef<
           menuPosition="fixed"
           maxMenuHeight={200}
           formatCreateLabel={(value) =>
-            showCreateLabel ? `Create ${value}` : false
+            showCreateLabel ? `Create "${value}"` : false
           }
         />
       </div>
