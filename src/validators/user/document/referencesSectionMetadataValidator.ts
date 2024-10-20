@@ -1,6 +1,6 @@
 import { boolean, object, optional, parse } from "valibot";
 
-export const referencesSectionMetadataValidator = object({
+const referencesSectionMetadataValidator = object({
   hideReferences: optional(boolean(), false),
 });
 

@@ -16,6 +16,10 @@ import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { useRemoveFields } from "../hooks/useRemoveFields";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import {
+  type SkillMetadataKey,
+  parseSkillsMetadata,
+} from "@/validators/user/document/skillsSectionMetadataValidator";
 
 export const SKILL_SECTION_ITEMS_COUNT = 2;
 
@@ -25,10 +29,10 @@ const CvBuilderSkillsSection = () => {
       (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
     ),
   );
-  const sectionMetadata = section?.metadata
-    ? JSON.parse(section?.metadata)
-    : {};
-  const showExperienceLevel = sectionMetadata?.showExperienceLevel || false;
+  const sectionMetadata = parseSkillsMetadata(section?.metadata);
+  const showExperienceLevel = sectionMetadata?.showExperienceLevel;
+  const isCommaSeparated = sectionMetadata?.isCommaSeparated;
+
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field.sectionId === section?.id),
   );
@@ -78,13 +82,17 @@ const CvBuilderSkillsSection = () => {
     });
   };
 
-  const handleShowExperienceLevelChange = (checked: boolean) => {
+  const updateSectionMetadata = (
+    key: SkillMetadataKey,
+    value: boolean,
+    prevSectionMetadata?: typeof sectionMetadata,
+  ) => {
     setSectionValue({
       sectionId: section?.id as number,
       key: "metadata",
       value: JSON.stringify({
-        ...sectionMetadata,
-        showExperienceLevel: !checked,
+        ...(prevSectionMetadata || sectionMetadata),
+        [key]: value,
       }),
     });
   };
@@ -98,13 +106,31 @@ const CvBuilderSkillsSection = () => {
         </p>
         <div className="mt-2 flex items-center gap-2">
           <Switch
-            disabled={fields.length === 0}
-            checked={showExperienceLevel === false}
+            disabled={fields.length === 0 || isCommaSeparated}
+            checked={showExperienceLevel}
             onCheckedChange={(checked) => {
-              handleShowExperienceLevelChange(checked);
+              updateSectionMetadata("showExperienceLevel", checked);
             }}
           />
-          <Label>Don't show experience level</Label>
+          <Label>Show experience level</Label>
+        </div>
+        <div className="mt-2 flex items-center gap-2">
+          <Switch
+            disabled={fields.length === 0}
+            checked={isCommaSeparated}
+            onCheckedChange={(checked) => {
+              if (checked && showExperienceLevel) {
+                updateSectionMetadata("showExperienceLevel", false, {
+                  ...sectionMetadata,
+                  isCommaSeparated: true,
+                });
+                return;
+              }
+
+              updateSectionMetadata("isCommaSeparated", checked);
+            }}
+          />
+          <Label>Comma separated</Label>
         </div>
       </div>
       <div>

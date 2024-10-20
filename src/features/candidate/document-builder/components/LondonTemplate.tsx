@@ -1,6 +1,6 @@
 "use client";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
-import { exclude, parseSectionMetadata } from "@/lib/utils/object";
+import { exclude } from "@/lib/utils/object";
 import { removeHTMLTags } from "@/lib/utils/string";
 import {
   Document,
@@ -19,6 +19,8 @@ import type {
   MakeResumeDataReturn,
   makeResumeTemplateData,
 } from "./utils";
+import { parseSkillsMetadata } from "@/validators/user/document/skillsSectionMetadataValidator";
+import { parseReferencesMetadata } from "@/validators/user/document/referencesSectionMetadataValidator";
 
 export const PDF_BODY_FONT_SIZE = 11 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 14 as const;
@@ -687,9 +689,43 @@ const SkillsSection = ({
   skillsSection: MakeResumeDataReturn["skillsSection"];
 }) => {
   const { shouldRenderSkillsSectionItems, skillsSectionItems } = skillsSection;
+  const parsedMetadata = parseSkillsMetadata(skillsSection.metadata);
+
+  const { isCommaSeparated, showExperienceLevel } = parsedMetadata;
+
+  const renderSkills = () => {
+    if (isCommaSeparated) {
+      return (
+        <View
+          style={{
+            fontSize: PDF_BODY_FONT_SIZE,
+          }}
+        >
+          <Text>{skillsSectionItems.map((item) => item.name).join(",  ")}</Text>
+        </View>
+      );
+    }
+
+    return skillsSectionItems.map((item) => (
+      <View
+        key={item.id}
+        style={{
+          fontSize: PDF_BODY_FONT_SIZE,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "46%",
+        }}
+      >
+        <Text>{item.name}</Text>
+        {showExperienceLevel ? <Text>{item.level}</Text> : null}
+      </View>
+    ));
+  };
+
   return (
     <>
-      {/* Skills */}
       {shouldRenderSkillsSectionItems ? (
         <View
           style={{
@@ -721,25 +757,7 @@ const SkillsSection = ({
                 width: "75%",
               }}
             >
-              {skillsSectionItems.map((item) => (
-                <View
-                  key={item.id}
-                  style={{
-                    fontSize: PDF_BODY_FONT_SIZE,
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "46%",
-                  }}
-                >
-                  <Text>{item.name}</Text>
-                  {parseSectionMetadata(skillsSection?.metadata)
-                    .showExperienceLevel ? (
-                    <Text>{item.level}</Text>
-                  ) : null}
-                </View>
-              ))}
+              {renderSkills()}
             </View>
           </View>
         </View>
@@ -1021,6 +1039,7 @@ const ReferencesSection = ({
 }) => {
   const { shouldRenderReferencesSectionItems, referencesSectionItems } =
     referencesSection;
+  const parsedMetadata = parseReferencesMetadata(referencesSection?.metadata);
   return (
     <>
       {shouldRenderReferencesSectionItems ? (
@@ -1051,8 +1070,7 @@ const ReferencesSection = ({
               width: "75%",
             }}
           >
-            {parseSectionMetadata(referencesSection?.metadata)
-              .hideReferences ? (
+            {parsedMetadata.hideReferences ? (
               <Text
                 style={{
                   fontSize: 10.9,
