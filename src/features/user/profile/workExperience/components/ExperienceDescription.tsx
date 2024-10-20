@@ -2,12 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { useTruncatedText } from "@/hooks/useTruncatedText";
-import { MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS } from "@/lib/constants";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface ExperienceDescriptionProps {
   description: string | null;
 }
+
+const MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS = 120;
 
 const ExperienceDescription = ({ description }: ExperienceDescriptionProps) => {
   const { isExpanded, setIsExpanded, shouldShowToggleButton, truncatedText } =

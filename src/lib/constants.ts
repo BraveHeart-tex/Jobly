@@ -1,6 +1,5 @@
 import type { ButtonVariant } from "@/components/ui/button";
 import type { ColumnId } from "@/lib/stores/useJobTrackerBoardStore";
-import type { DBUser } from "@/server/db/schema/users";
 import {
   BriefcaseBusinessIcon,
   CircleCheckIcon,
@@ -10,19 +9,6 @@ import {
   XIcon,
 } from "lucide-react";
 import type { InferValueTypeFromConst } from "./types";
-
-export const contentByPortalType: Record<DBUser["role"], string[]> = {
-  candidate: [
-    "Find your dream job with just one click",
-    "Discover endless opportunities aligned with your passions",
-    "Land interviews and secure your dream job",
-  ],
-  employer: [
-    "Discover the ideal talent the right way",
-    "Build your dream team effortlessly",
-    "Transform hiring with tools that prioritize talent and humanity",
-  ],
-};
 
 export const PASSWORD_STRENGTH_LEVELS = {
   VERY_WEAK: 0,
@@ -168,7 +154,5 @@ export const EMPLOYMENT_TYPES = [
 export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;
 
 export const SESSION_CACHE_TTL_SECONDS = 30 * 60 * 24 * 1000; // 30 days
-
-export const MAX_VISIBLE_EXPERIENCE_DESCRIPTION_CHARACTERS = 120 as const;
 
 export const ASYNC_SELECT_OPTIONS_LIMIT = 10 as const;

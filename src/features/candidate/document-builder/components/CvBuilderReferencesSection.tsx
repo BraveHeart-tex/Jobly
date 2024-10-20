@@ -15,6 +15,7 @@ import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
 import DocumentBuilderInput from "./DocumentBuilderInput";
 import EditableSectionTitle from "./EditableSectionTitle";
 import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import { parseReferencesMetadata } from "@/validators/user/document/referencesSectionMetadataValidator";
 
 interface CvBuilderReferencesSectionProps {
   section: DocumentSection;
@@ -25,10 +26,9 @@ export const REFERENCES_SECTION_ITEMS_COUNT = 4;
 const CvBuilderReferencesSection = ({
   section,
 }: CvBuilderReferencesSectionProps) => {
-  const sectionMetadata = section?.metadata
-    ? JSON.parse(section?.metadata)
-    : {};
-  const hideReferences = sectionMetadata?.hideReferences || false;
+  const sectionMetadata = parseReferencesMetadata(section?.metadata);
+  const hideReferences = sectionMetadata?.hideReferences;
+
   const fields = useDocumentBuilderStore((state) =>
     state.fields.filter((field) => field.sectionId === section?.id),
   );
