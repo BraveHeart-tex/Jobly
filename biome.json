@@ -54,7 +54,8 @@
         "noUnusedImports": "warn",
         "noUnusedVariables": "warn",
         "noUnreachable": "error",
-        "noNodejsModules": "off"
+        "noNodejsModules": "off",
+        "noUndeclaredDependencies": "off"
       },
       "recommended": true
     },
