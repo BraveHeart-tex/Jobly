@@ -9,15 +9,20 @@ import { RotateCw, Upload } from "lucide-react";
 
 interface AvatarEditorProps {
   onSave: (canvas: HTMLCanvasElement) => void;
+  initialImage?: string;
 }
 
-const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
+const AvatarEditor: React.FC<AvatarEditorProps> = ({
+  onSave,
+  initialImage = null,
+}) => {
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const [isRounded, setIsRounded] = useState(true);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(initialImage);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,35 +33,37 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
     const img = imageRef.current;
 
     if (canvas && ctx && img) {
-      canvas.width = 250;
-      canvas.height = 250;
+      requestAnimationFrame(() => {
+        canvas.width = 300;
+        canvas.height = 300;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height / 2);
-      ctx.rotate((rotate * Math.PI) / 180);
-      ctx.scale(scale, scale);
-      ctx.drawImage(
-        img,
-        -img.width / 2 + position.x / scale,
-        -img.height / 2 + position.y / scale,
-      );
-      ctx.restore();
-
-      if (isRounded) {
-        ctx.globalCompositeOperation = "destination-in";
-        ctx.beginPath();
-        ctx.arc(
-          canvas.width / 2,
-          canvas.height / 2,
-          canvas.width / 2,
-          0,
-          Math.PI * 2,
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((rotate * Math.PI) / 180);
+        ctx.scale(scale, scale);
+        ctx.drawImage(
+          img,
+          -img.width / 2 + position.x / scale,
+          -img.height / 2 + position.y / scale,
         );
-        ctx.closePath();
-        ctx.fill();
-      }
+        ctx.restore();
+
+        if (isRounded) {
+          ctx.globalCompositeOperation = "destination-in";
+          ctx.beginPath();
+          ctx.arc(
+            canvas.width / 2,
+            canvas.height / 2,
+            canvas.width / 2,
+            0,
+            Math.PI * 2,
+          );
+          ctx.closePath();
+          ctx.fill();
+        }
+      });
     }
   }, [scale, rotate, isRounded, position]);
 
@@ -74,13 +81,33 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      const img = new Image();
       const reader = new FileReader();
       reader.onload = (e) => {
-        setImage(e.target?.result as string);
-        // Reset position and scale when a new image is uploaded
-        setPosition({ x: 0, y: 0 });
-        setScale(1);
-        setRotate(0);
+        img.src = e.target?.result as string;
+        img.onload = () => {
+          const MAX_SIZE = 1024;
+          const scale = Math.min(MAX_SIZE / img.width, MAX_SIZE / img.height);
+
+          // Create an offscreen canvas to resize the image
+          const offscreenCanvas = document.createElement("canvas");
+          const ctx = offscreenCanvas.getContext("2d");
+
+          offscreenCanvas.width = img.width * scale;
+          offscreenCanvas.height = img.height * scale;
+
+          if (ctx) {
+            ctx.drawImage(
+              img,
+              0,
+              0,
+              offscreenCanvas.width,
+              offscreenCanvas.height,
+            );
+
+            setImage(offscreenCanvas.toDataURL());
+          }
+        };
       };
       reader.readAsDataURL(file);
     }

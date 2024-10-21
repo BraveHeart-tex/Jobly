@@ -21,7 +21,16 @@ const AvatarEditorDialog = ({ trigger }: AvatarEditorDialogProps) => {
         <DialogHeader>
           <DialogTitle>Set Profile Picture</DialogTitle>
         </DialogHeader>
-        <AvatarEditor onSave={() => {}} />
+        <AvatarEditor
+          onSave={(canvas) => {
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const url = URL.createObjectURL(blob);
+                window.open(url, "_blank");
+              }
+            });
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
