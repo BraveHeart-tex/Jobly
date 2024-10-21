@@ -1,10 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, MapPin } from "lucide-react";
 import AddProfileSectionDialog from "./dialogs/AddProfileSectionDialog";
 import EditProfileRecordButton from "./EditProfileRecordButton";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import UserAvatarDialog from "@/features/user/profile/components/UserAvatarDialog";
 
 interface UserProfilePersonalInformationProps {
   firstName: string;
@@ -31,10 +31,7 @@ const UserProfilePersonalInformation = ({
     <Card className="w-full max-w-4xl mx-auto shadow-md rounded-md">
       <div className="relative">
         <div className="h-[200px] bg-gradient-to-r from-primary/50 to-primary/90 dark:from-primary/80 dark:to-primary/10 rounded-md rounded-b-none" />
-        <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] rounded-full">
-          <AvatarImage src="/default-avatar.svg" alt="Profile picture" />
-          <AvatarFallback className="text-lg">BK</AvatarFallback>
-        </Avatar>
+        <UserAvatarDialog />
       </div>
 
       <CardContent className="pt-1 pb-6 px-4">
