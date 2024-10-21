@@ -25,6 +25,8 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
   const imageRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const CANVAS_SIZE = 500;
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -32,8 +34,8 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
 
     if (canvas && ctx && img) {
       requestAnimationFrame(() => {
-        canvas.width = 500;
-        canvas.height = 500;
+        canvas.width = CANVAS_SIZE;
+        canvas.height = CANVAS_SIZE;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -108,17 +110,18 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
 
   const calculateMaxOffset = useCallback(() => {
     const img = imageRef.current;
-    if (!img) return { maxX: 0, maxY: 0 };
+    if (!img) return { minX: 0, minY: 0, maxX: 0, maxY: 0 };
 
-    const canvasSize = 250; // Assuming square canvas of 250x250
     const imgWidth = img.width * scale;
     const imgHeight = img.height * scale;
 
-    // Calculate the maximum allowed offset
-    const maxX = Math.max(0, (imgWidth - canvasSize) / 2);
-    const maxY = Math.max(0, (imgHeight - canvasSize) / 2);
+    const minX = Math.min(0, (CANVAS_SIZE - imgWidth) / 2); // Left limit
+    const maxX = Math.max(0, (imgWidth - CANVAS_SIZE) / 2); // Right limit
 
-    return { maxX, maxY };
+    const minY = Math.min(0, (CANVAS_SIZE - imgHeight) / 2); // Top limit
+    const maxY = Math.max(0, (imgHeight - CANVAS_SIZE) / 2); // Bottom limit
+
+    return { minX, maxX, minY, maxY };
   }, [scale]);
 
   const constrainPosition = useCallback(
