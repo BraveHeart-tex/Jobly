@@ -2,7 +2,6 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import type React from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RotateCw, Upload } from "lucide-react";
@@ -18,7 +17,6 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
 }) => {
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [isRounded, setIsRounded] = useState(true);
   const [image, setImage] = useState<string | null>(initialImage);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -34,38 +32,27 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
 
     if (canvas && ctx && img) {
       requestAnimationFrame(() => {
-        canvas.width = 300;
-        canvas.height = 300;
+        canvas.width = 500;
+        canvas.height = 500;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
+
         ctx.translate(canvas.width / 2, canvas.height / 2);
         ctx.rotate((rotate * Math.PI) / 180);
         ctx.scale(scale, scale);
+
         ctx.drawImage(
           img,
           -img.width / 2 + position.x / scale,
           -img.height / 2 + position.y / scale,
         );
-        ctx.restore();
 
-        if (isRounded) {
-          ctx.globalCompositeOperation = "destination-in";
-          ctx.beginPath();
-          ctx.arc(
-            canvas.width / 2,
-            canvas.height / 2,
-            canvas.width / 2,
-            0,
-            Math.PI * 2,
-          );
-          ctx.closePath();
-          ctx.fill();
-        }
+        ctx.restore();
       });
     }
-  }, [scale, rotate, isRounded, position]);
+  }, [scale, rotate, position]);
 
   useEffect(() => {
     if (image) {
@@ -242,17 +229,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
                 </Button>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="rounded-mode"
-                checked={isRounded}
-                onCheckedChange={(checked) => {
-                  setIsRounded(checked);
-                  draw();
-                }}
-              />
-              <Label htmlFor="rounded-mode">Rounded</Label>
-            </div>
+
             <Button onClick={handleSave} className="w-full">
               Save Avatar
             </Button>
