@@ -1,10 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, MapPin } from "lucide-react";
-import AddProfileSectionDialog from "./dialogs/AddProfileSectionDialog";
-import EditProfileRecordButton from "./EditProfileRecordButton";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import UserAvatarDialog from "@/features/user/profile/components/UserAvatarDialog";
+import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
+import AddProfileSectionDialog from "@/features/user/profile/components/dialogs/AddProfileSectionDialog";
 
 interface UserProfilePersonalInformationProps {
   firstName: string;
