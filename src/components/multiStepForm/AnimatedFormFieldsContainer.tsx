@@ -15,7 +15,7 @@ const AnimatedFormFieldsContainer = ({
   return (
     <motion.div
       className={cn(
-        "flex flex-col gap-8 h-[calc(100vh-30rem)] 3xl:h-[calc(100vh-45rem)] overflow-y-auto px-2 overflow-x-hidden",
+        "flex flex-col gap-8 h-[calc(100vh-35rem)]  3xl:h-[calc(100vh-40rem)] overflow-y-auto px-2 overflow-x-hidden",
         className,
       )}
       initial={{
