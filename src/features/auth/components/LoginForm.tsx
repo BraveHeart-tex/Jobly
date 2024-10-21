@@ -14,7 +14,6 @@ import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
-import { useLogin } from "../hooks/useLogin";
 import {
   type LoginData,
   type LoginResponse,
@@ -22,6 +21,7 @@ import {
 } from "@/validators/auth/loginValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import { useLogin } from "@/features/auth/hooks/useLogin";
 
 interface LoginFormProps {
   portalType?: DBUser["role"];

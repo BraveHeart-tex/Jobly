@@ -2,16 +2,16 @@ import { userService } from "@/features/user/services/userService";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
-import {
-  createSessionWithUserId,
-  hashPassword,
-  verifyPassword,
-} from "../utils";
 import { SignUpValidator } from "@/validators/auth/signUpValidator";
 import {
   LoginResponseValidator,
   LoginValidator,
 } from "@/validators/auth/loginValidator";
+import {
+  createSessionWithUserId,
+  hashPassword,
+  verifyPassword,
+} from "@/features/auth/utils";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -76,6 +76,7 @@ export const authRouter = createTRPCRouter({
       const { email, password } = input;
 
       const existingUser = await userService.getUserByEmail(email);
+
       if (!existingUser) {
         return {
           error: "Incorrect username or password.",

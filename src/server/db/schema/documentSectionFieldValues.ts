@@ -1,11 +1,11 @@
+import documentSectionFields from "@/server/db/schema/documentSectionFields";
+import { encryptedTextWithDerivedKey } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
   relations,
 } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import documentSectionFields from "./documentSectionFields";
-import { encryptedText } from "../utils";
 
 const documentSectionFieldValues = mysqlTable(
   "DocumentSectionFieldValues",
@@ -14,7 +14,7 @@ const documentSectionFieldValues = mysqlTable(
     fieldId: int("fieldId")
       .references(() => documentSectionFields.id, { onDelete: "cascade" })
       .notNull(),
-    value: encryptedText("value").notNull(),
+    value: encryptedTextWithDerivedKey("value").notNull(),
   },
   (table) => {
     return {

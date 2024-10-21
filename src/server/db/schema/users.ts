@@ -6,11 +6,7 @@ import {
   userSkills,
   workExperiences,
 } from "@/server/db/schema";
-import {
-  customTimestamp,
-  encryptedText,
-  getCurrentTimestamp,
-} from "@/server/db/utils";
+import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -29,7 +25,7 @@ const users = mysqlTable(
   "Users",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
-    email: encryptedText("email").unique().notNull(),
+    email: varchar("email", { length: 255 }).unique().notNull(),
     firstName: varchar("firstName", { length: 255 }).notNull(),
     lastName: varchar("lastName", { length: 255 }).notNull(),
     hashedPassword: varchar("hashedPassword", { length: 255 }).notNull(),

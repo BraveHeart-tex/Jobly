@@ -33,7 +33,7 @@ export const customTimestamp = customType<{
   },
 });
 
-export const encryptedText = customType<{
+export const encryptedTextWithDerivedKey = customType<{
   data: string;
   driverData: string;
 }>({

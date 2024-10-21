@@ -330,6 +330,13 @@
       "when": 1729163555465,
       "tag": "0046_nasty_thor",
       "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "5",
+      "when": 1729520150640,
+      "tag": "0047_special_havok",
+      "breakpoints": true
     }
   ]
 }
