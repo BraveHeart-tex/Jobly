@@ -1,4 +1,3 @@
-"use client";
 import { useState, useRef, useCallback, useEffect } from "react";
 import type React from "react";
 import { Slider } from "@/components/ui/slider";
@@ -145,7 +144,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
     };
   }, []);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: scale is needed here
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Ensure position is within bounds when scale changes
     setPosition((prevPosition) => constrainPosition(prevPosition));
@@ -172,6 +171,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
           <Button
             onClick={() => fileInputRef.current?.click()}
             className="w-full"
+            variant={"outline"}
           >
             <Upload className="mr-2 h-4 w-4" /> Upload Image
           </Button>
@@ -186,8 +186,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
                 step={0.01}
                 value={[scale]}
                 onValueChange={([value]) => {
-                  if (!value) return;
-                  setScale(value);
+                  setScale(value as number);
                   draw();
                 }}
               />
@@ -200,8 +199,7 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({ onSave }) => {
                   max={360}
                   value={[rotate]}
                   onValueChange={([value]) => {
-                    if (!value) return;
-                    setRotate(value);
+                    setRotate(value as number);
                     draw();
                   }}
                 />

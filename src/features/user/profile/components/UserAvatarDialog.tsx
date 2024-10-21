@@ -9,10 +9,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { CameraIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { CameraIcon, InfoIcon, PencilIcon, TrashIcon } from "lucide-react";
 import AvatarEditorDialog from "@/features/user/profile/components/AvatarEditorDialog";
+import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 
 const UserAvatarDialog = () => {
+  const userAvatarUrl = useCurrentUserStore((state) => state.user?.avatarUrl);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -34,6 +37,11 @@ const UserAvatarDialog = () => {
             className="w-[250px] h-[250px] object-cover mx-auto"
           />
         </div>
+
+        <div className="flex items-center gap-1 px-4">
+          <InfoIcon size={22} />
+          <span className="text-sm">Your profile picture is public.</span>
+        </div>
         <div className="w-full flex items-center justify-between px-4 border-t">
           <div className="flex items-center gap-1 h-full">
             <AvatarEditorDialog
@@ -49,7 +57,11 @@ const UserAvatarDialog = () => {
               <span>Add Picture</span>
             </Button>
           </div>
-          <Button variant="ghost" className="flex flex-col gap-1 h-full">
+          <Button
+            variant="ghost"
+            className="flex flex-col gap-1 h-full"
+            disabled={!userAvatarUrl}
+          >
             <TrashIcon size={22} />
             <span>Delete</span>
           </Button>

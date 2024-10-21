@@ -1,6 +1,6 @@
+import type { CtxUserAttributes } from "@/lib/auth";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { CtxUserAttributes } from "../auth";
 
 interface CurrentUserStore {
   user: CtxUserAttributes | null;
