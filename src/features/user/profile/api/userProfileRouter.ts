@@ -1,5 +1,4 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { userProfileService } from "../services/userProfileService";
 import { number, object, optional, parser } from "valibot";
 import { SaveAboutInformationValidator } from "@/validators/user/profile/saveAboutInformationValidator";
 import {
@@ -7,6 +6,7 @@ import {
   updateUserProfileUseCase,
 } from "@/use-cases/userProfiles";
 import { ProfileValidator } from "@/validators/user/profile/profileValidator";
+import { userProfileService } from "@/features/user/profile/services/userProfileService";
 
 const optionalUserIdValidator = optional(
   object({

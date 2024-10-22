@@ -5,15 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RotateCw, Upload } from "lucide-react";
+import { useUploadThing } from "@/lib/uploadthing";
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "@/components/toastUtils";
+import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 
 interface AvatarEditorProps {
-  onSave: (canvas: HTMLCanvasElement) => void;
+  onSaveSuccess?: () => void;
   initialImage?: string;
 }
 
 const AvatarEditor: React.FC<AvatarEditorProps> = ({
-  onSave,
   initialImage = null,
+  onSaveSuccess,
 }) => {
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
@@ -24,6 +31,32 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const userId = useCurrentUserStore((state) => state.user?.id);
+  const setAvatarUrl = useCurrentUserStore((state) => state.updateAvatarUrl);
+
+  const { startUpload, isUploading } = useUploadThing("userAvatar", {
+    onClientUploadComplete: ([result]) => {
+      if (!result?.url) {
+        showErrorToast(
+          "Something went wrong during the image upload. Please try again later.",
+        );
+        return;
+      }
+
+      setAvatarUrl(result?.url);
+      showSuccessToast("Image uploaded successfully.");
+      onSaveSuccess?.();
+    },
+    onUploadError: () => {
+      showErrorToast(
+        "Something went wrong during the image upload. Please try again later.",
+      );
+    },
+    onUploadBegin: () => {
+      showInfoToast("Uploading image...");
+    },
+  });
 
   const CANVAS_SIZE = 500;
 
@@ -103,9 +136,16 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
   };
 
   const handleSave = () => {
-    if (canvasRef.current) {
-      onSave(canvasRef.current);
-    }
+    if (!canvasRef.current || !userId) return;
+
+    const canvas = canvasRef.current;
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const file = new File([blob], `user-${userId}-avatar`, {
+        type: "image/png",
+      });
+      startUpload([file]);
+    });
   };
 
   const calculateMaxOffset = useCallback(() => {
@@ -232,9 +272,12 @@ const AvatarEditor: React.FC<AvatarEditorProps> = ({
                 </Button>
               </div>
             </div>
-
-            <Button onClick={handleSave} className="w-full">
-              Save Avatar
+            <Button
+              onClick={handleSave}
+              className="w-full"
+              disabled={isUploading}
+            >
+              {!isUploading ? "Save Avatar" : "Uploading..."}
             </Button>
           </>
         )}

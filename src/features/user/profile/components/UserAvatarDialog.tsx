@@ -11,17 +11,33 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CameraIcon, InfoIcon, PencilIcon, TrashIcon } from "lucide-react";
 import AvatarEditorDialog from "@/features/user/profile/components/AvatarEditorDialog";
-import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
+import { getAvatarPlaceholder } from "@/lib/utils/string";
 
-const UserAvatarDialog = () => {
-  const userAvatarUrl = useCurrentUserStore((state) => state.user?.avatarUrl);
+interface UserAvatarDialogProps {
+  userFullName: string;
+  avatarUrl: string | null;
+}
 
+const UserAvatarDialog = ({
+  userFullName,
+  avatarUrl,
+}: UserAvatarDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] rounded-full">
-          <AvatarImage src="/default-avatar.svg" alt="Profile picture" />
-          <AvatarFallback className="text-lg">BK</AvatarFallback>
+          <AvatarImage
+            src={avatarUrl || DEFAULT_AVATAR_URL}
+            alt={
+              avatarUrl
+                ? `Profile picture for ${userFullName}`
+                : "Default profile picture"
+            }
+          />
+          <AvatarFallback className="text-lg">
+            {getAvatarPlaceholder(userFullName)}
+          </AvatarFallback>
         </Avatar>
       </DialogTrigger>
       <DialogContent className="p-0">
@@ -30,10 +46,14 @@ const UserAvatarDialog = () => {
         </DialogHeader>
         <div>
           <Image
-            src="/default-avatar.svg"
+            src={avatarUrl || DEFAULT_AVATAR_URL}
             width={200}
             height={200}
-            alt="avatar"
+            alt={
+              avatarUrl
+                ? `Profile picture for ${userFullName}`
+                : "Default profile picture"
+            }
             className="w-[250px] h-[250px] object-cover mx-auto"
           />
         </div>
@@ -45,22 +65,32 @@ const UserAvatarDialog = () => {
         <div className="w-full flex items-center justify-between px-4 border-t">
           <div className="flex items-center gap-1 h-full">
             <AvatarEditorDialog
+              onSave={() => {}}
               trigger={
-                <Button variant="ghost" className="flex flex-col gap-1 h-full">
+                <Button
+                  variant="ghost"
+                  className="flex flex-col gap-1 h-full"
+                  disabled={!avatarUrl}
+                >
                   <PencilIcon size={22} />
                   <span>Edit</span>
                 </Button>
               }
             />
-            <Button variant="ghost" className="flex flex-col gap-1 h-full">
-              <CameraIcon size={22} />
-              <span>Add Picture</span>
-            </Button>
+            <AvatarEditorDialog
+              onSave={() => {}}
+              trigger={
+                <Button variant="ghost" className="flex flex-col gap-1 h-full">
+                  <CameraIcon size={22} />
+                  <span>Add Picture</span>
+                </Button>
+              }
+            />
           </div>
           <Button
             variant="ghost"
             className="flex flex-col gap-1 h-full"
-            disabled={!userAvatarUrl}
+            disabled={!avatarUrl}
           >
             <TrashIcon size={22} />
             <span>Delete</span>

@@ -1,10 +1,10 @@
-import type { UpdateUserNameAndLastNameParams } from "@/data-access/types";
-import { updateUserNameAndLastName } from "@/data-access/users";
+import { updateUserAvatarUrl } from "@/data-access/users";
 
-export const updateUserNameAndLastNameUseCase = async ({
-  userId,
-  firstName,
-  lastName,
-}: UpdateUserNameAndLastNameParams) => {
-  return await updateUserNameAndLastName({ userId, firstName, lastName });
+export const updateUserAvatarUrlUseCase = async (
+  userId: number,
+  avatarUrl: string,
+): Promise<boolean> => {
+  const [result] = await updateUserAvatarUrl(userId, avatarUrl);
+
+  return result.affectedRows > 0;
 };

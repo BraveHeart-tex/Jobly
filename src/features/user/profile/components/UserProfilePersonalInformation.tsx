@@ -9,12 +9,13 @@ import AddProfileSectionDialog from "@/features/user/profile/components/dialogs/
 interface UserProfilePersonalInformationProps {
   firstName: string;
   lastName: string;
-  title?: string;
-  city?: string;
-  country?: string;
-  employer?: string;
-  websiteLink?: string;
-  websiteLinkText?: string;
+  title?: string | null;
+  city?: string | null;
+  country?: string | null;
+  employer?: string | null;
+  websiteLink?: string | null;
+  websiteLinkText?: string | null;
+  avatarUrl: string | null;
 }
 
 const UserProfilePersonalInformation = ({
@@ -26,12 +27,16 @@ const UserProfilePersonalInformation = ({
   employer,
   websiteLink,
   websiteLinkText,
+  avatarUrl,
 }: UserProfilePersonalInformationProps) => {
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md rounded-md">
       <div className="relative">
         <div className="h-[200px] bg-gradient-to-r from-primary/50 to-primary/90 dark:from-primary/80 dark:to-primary/10 rounded-md rounded-b-none" />
-        <UserAvatarDialog />
+        <UserAvatarDialog
+          userFullName={`${firstName} ${lastName}`}
+          avatarUrl={avatarUrl}
+        />
       </div>
 
       <CardContent className="pt-1 pb-6 px-4">

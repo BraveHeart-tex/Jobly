@@ -6,6 +6,7 @@ interface CurrentUserStore {
   user: CtxUserAttributes | null;
   setUser: (user: CtxUserAttributes | null) => void;
   updateName: (firstName: string, lastName: string) => void;
+  updateAvatarUrl: (avatarUrl: string) => void;
 }
 
 export const useCurrentUserStore = create<
@@ -24,6 +25,16 @@ export const useCurrentUserStore = create<
             ...prevUser,
             firstName,
             lastName,
+          },
+        });
+      },
+      updateAvatarUrl: (avatarUrl: string) => {
+        const prevUser = get().user;
+        if (!prevUser) return;
+        set({
+          user: {
+            ...prevUser,
+            avatarUrl,
           },
         });
       },

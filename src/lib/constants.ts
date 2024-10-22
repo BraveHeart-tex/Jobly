@@ -1,5 +1,6 @@
 import type { ButtonVariant } from "@/components/ui/button";
 import type { ColumnId } from "@/lib/stores/useJobTrackerBoardStore";
+import type { InferValueTypeFromConst } from "@/lib/types";
 import {
   BriefcaseBusinessIcon,
   CircleCheckIcon,
@@ -8,15 +9,6 @@ import {
   type LucideIcon,
   XIcon,
 } from "lucide-react";
-import type { InferValueTypeFromConst } from "./types";
-
-export const PASSWORD_STRENGTH_LEVELS = {
-  VERY_WEAK: 0,
-  WEAK: 1,
-  MODERATE: 2,
-  STRONG: 3,
-  VERY_STRONG: 4,
-} as const;
 
 export const APP_NAME = "Jobly" as const;
 
@@ -153,6 +145,6 @@ export const EMPLOYMENT_TYPES = [
 
 export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;
 
-export const SESSION_CACHE_TTL_SECONDS = 30 * 60 * 24 * 1000; // 30 days
-
 export const ASYNC_SELECT_OPTIONS_LIMIT = 10 as const;
+
+export const DEFAULT_AVATAR_URL = "/images/default-avatar.svg";

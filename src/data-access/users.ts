@@ -3,6 +3,7 @@ import type { UpdateUserNameAndLastNameParams } from "./types";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import type { Transaction } from "@/lib/types";
+import type { MySqlRawQueryResult } from "drizzle-orm/mysql2";
 
 export const updateUserNameAndLastName = async (
   { userId, firstName, lastName }: UpdateUserNameAndLastNameParams,
@@ -21,4 +22,16 @@ export const updateUserNameAndLastName = async (
   const dbLayer = trx || db;
 
   await dbLayer.update(users).set(updateValues).where(eq(users.id, userId));
+};
+
+export const updateUserAvatarUrl = async (
+  userId: number,
+  avatarUrl: string,
+): Promise<MySqlRawQueryResult> => {
+  return await db
+    .update(users)
+    .set({
+      avatarUrl,
+    })
+    .where(eq(users.id, userId));
 };

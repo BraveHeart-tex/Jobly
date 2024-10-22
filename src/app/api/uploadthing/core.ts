@@ -1,26 +1,44 @@
 import { validateRequest } from "@/lib/auth/validateRequest";
+import { utapi } from "@/server/uploadThing";
+import { updateUserAvatarUrlUseCase } from "@/use-cases/users";
 import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
 const f = createUploadthing();
 
 export const fileRouter = {
-  imageUploader: f({
+  userAvatar: f({
     image: { maxFileSize: "4MB" },
   })
     .middleware(async () => {
       const { user } = await validateRequest();
 
-      if (!user) throw new UploadThingError("Unauthorized");
+      if (!user) {
+        throw new UploadThingError(
+          "You must be logged in to upload a profile picture.",
+        );
+      }
 
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.info("Upload complete for userId:", metadata.userId);
+      const fileUrl = file.url;
 
-      console.info("file url", file.url);
+      const updateResult = await updateUserAvatarUrlUseCase(
+        metadata.userId,
+        fileUrl,
+      );
 
-      return { uploadedBy: metadata.userId };
+      if (!updateResult) {
+        await utapi.deleteFiles(file.key);
+        return {
+          uploadedBy: metadata.userId,
+          success: false,
+          url: null,
+        };
+      }
+
+      return { uploadedBy: metadata.userId, success: true, url: file.url };
     }),
 } satisfies FileRouter;
 

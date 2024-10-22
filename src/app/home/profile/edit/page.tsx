@@ -20,7 +20,11 @@ const EditProfilePage = async () => {
   return (
     <main>
       <PageContainer className="grid gap-2 pb-8 relative">
-        <UserProfileStickyHeader />
+        <UserProfileStickyHeader
+          avatarUrl={profileDetailsData.avatarUrl}
+          userFullName={`${profileDetailsData.firstName} ${profileDetailsData.lastName}`}
+          title={profileDetailsData.title}
+        />
         <UserProfilePersonalInformation {...profileDetailsData} />
         <UserProfileAboutSection
           bio={profileDetailsData.bio}

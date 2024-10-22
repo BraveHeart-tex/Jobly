@@ -11,9 +11,10 @@ import type React from "react";
 
 interface AvatarEditorDialogProps {
   trigger: React.ReactNode;
+  onSave: (canvas: HTMLCanvasElement) => void;
 }
 
-const AvatarEditorDialog = ({ trigger }: AvatarEditorDialogProps) => {
+const AvatarEditorDialog = ({ trigger, onSave }: AvatarEditorDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -21,16 +22,7 @@ const AvatarEditorDialog = ({ trigger }: AvatarEditorDialogProps) => {
         <DialogHeader>
           <DialogTitle>Set Profile Picture</DialogTitle>
         </DialogHeader>
-        <AvatarEditor
-          onSave={(canvas) => {
-            canvas.toBlob((blob) => {
-              if (blob) {
-                const url = URL.createObjectURL(blob);
-                window.open(url, "_blank");
-              }
-            });
-          }}
-        />
+        <AvatarEditor onSave={onSave} />
       </DialogContent>
     </Dialog>
   );

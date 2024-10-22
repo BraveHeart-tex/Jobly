@@ -30,6 +30,10 @@ export interface UserProfileInformation {
   highlightedSkills: string[];
   country: string;
   city: string;
+  avatarUrl: string | null;
+  title: string | null;
+  websiteLink: string | null;
+  websiteLinkText: string | null;
 }
 
 export interface GetAboutInformationReturnType {

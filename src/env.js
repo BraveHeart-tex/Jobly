@@ -13,13 +13,9 @@ export const env = createNextjsEnv({
       picklist(["development", "test", "production"]),
       "development",
     ),
-    UPLOADTHING_SECRET: pipe(
+    UPLOADTHING_TOKEN: pipe(
       string(),
-      nonEmpty("UPLOADTHING_SECRET is required"),
-    ),
-    UPLOADTHING_APP_ID: pipe(
-      string(),
-      nonEmpty("UPLOADTHING_APP_ID is required"),
+      nonEmpty("UPLOADTHING_TOKEN is required"),
     ),
     SECRET_CRON_KEY: pipe(string(), nonEmpty("SECRET_CRON_KEY is required")),
     ENCRYPTION_KEY: pipe(string(), nonEmpty("ENCRYPTION_KEY is required")),
@@ -29,10 +25,9 @@ export const env = createNextjsEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
-    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     SECRET_CRON_KEY: process.env.SECRET_CRON_KEY,
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

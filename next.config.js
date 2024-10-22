@@ -1,4 +1,3 @@
-// biome-ignore lint/correctness/noNodejsModules: <explanation>
 import { fileURLToPath } from "node:url";
 import createJiti from "jiti";
 
@@ -15,7 +14,7 @@ const config = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "github.com",
+        hostname: "utfs.io",
       },
     ],
   },

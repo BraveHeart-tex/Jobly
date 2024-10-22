@@ -5,11 +5,9 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import users from "./users";
-import countries from "./countries";
+
 import { type InferSelectModel, relations } from "drizzle-orm";
-import workExperiences from "./workExperiences";
-import cities from "./cities";
+import { cities, countries, users, workExperiences } from "@/server/db/schema";
 
 const userProfiles = mysqlTable(
   "UserProfiles",

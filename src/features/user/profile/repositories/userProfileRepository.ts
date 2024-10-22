@@ -10,12 +10,12 @@ import {
   workExperiences,
 } from "@/server/db/schema";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
+import { mapHighlightedSkills } from "@/features/user/profile/utils";
 import type {
   GetAboutInformationReturnType,
   UserProfileInformation,
-} from "../types";
-import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
-import { mapHighlightedSkills } from "../utils";
+} from "@/features/user/profile/types";
 
 export const userProfileRepository = {
   async fetchUserProfileDetails(
@@ -27,6 +27,7 @@ export const userProfileRepository = {
         email: true,
         firstName: true,
         lastName: true,
+        avatarUrl: true,
       },
       where: () => eq(users.id, userId),
       with: {
@@ -98,6 +99,7 @@ export const userProfileRepository = {
     return {
       firstName: result.firstName,
       lastName: result.lastName,
+      avatarUrl: result.avatarUrl,
       ...result.userProfile,
       educationalBackground: result.educationalBackgrounds,
       skills: result.userSkills.map((item) => item.skill),

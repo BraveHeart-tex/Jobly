@@ -1,12 +1,24 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
+import { getAvatarPlaceholder } from "@/lib/utils/string";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useState } from "react";
 
 const STICKY_HEADER_DISPLAY_THRESHOLD = 450 as const;
 
-const UserProfileStickyHeader = () => {
+interface UserProfileStickyHeaderProps {
+  avatarUrl: string | null;
+  title: string | null;
+  userFullName: string;
+}
+
+const UserProfileStickyHeader = ({
+  avatarUrl,
+  title,
+  userFullName,
+}: UserProfileStickyHeaderProps) => {
   const [visible, setVisible] = useState(false);
   const { scrollY } = useScroll();
 
@@ -40,15 +52,21 @@ const UserProfileStickyHeader = () => {
           }}
         >
           <Avatar>
-            <AvatarImage src="/default-avatar.svg" alt="Profile picture" />
-            <AvatarFallback className="text-lg">BK</AvatarFallback>
+            <AvatarImage
+              src={avatarUrl || DEFAULT_AVATAR_URL}
+              alt={
+                avatarUrl
+                  ? `Profile picture for ${userFullName}`
+                  : "Default profile picture"
+              }
+            />
+            <AvatarFallback className="text-lg">
+              {getAvatarPlaceholder(userFullName)}
+            </AvatarFallback>
           </Avatar>
           <div>
-            <h4 className="text-base font-semibold">Bora Karaca</h4>
-            <p className="text-sm">
-              Software Engineer @Mims - Driving Efficiency Through App
-              Automations
-            </p>
+            <h4 className="text-base font-semibold">{userFullName}</h4>
+            <p className="text-sm">{title}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">

@@ -1,6 +1,6 @@
+import { userProfileRepository } from "@/features/user/profile/repositories/userProfileRepository";
+import type { UserProfileInformation } from "@/features/user/profile/types";
 import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
-import { userProfileRepository } from "../repositories/userProfileRepository";
-import type { UserProfileInformation } from "../types";
 
 export const userProfileService = {
   fetchUserProfileDetails: async (
