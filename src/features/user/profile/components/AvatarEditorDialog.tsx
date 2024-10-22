@@ -8,21 +8,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type React from "react";
+import { useState } from "react";
 
 interface AvatarEditorDialogProps {
   trigger: React.ReactNode;
   onSave: (canvas: HTMLCanvasElement) => void;
 }
 
-const AvatarEditorDialog = ({ trigger, onSave }: AvatarEditorDialogProps) => {
+const AvatarEditorDialog = ({ trigger }: AvatarEditorDialogProps) => {
+  const [open, setOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Set Profile Picture</DialogTitle>
         </DialogHeader>
-        <AvatarEditor onSave={onSave} />
+        <AvatarEditor onSaveSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>
   );
