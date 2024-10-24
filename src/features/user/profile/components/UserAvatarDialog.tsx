@@ -21,16 +21,11 @@ import { showSuccessToast } from "@/components/toastUtils";
 
 interface UserAvatarDialogProps {
   userFullName: string;
-  avatarUrl: string | null;
 }
 
-const UserAvatarDialog = ({
-  userFullName,
-  avatarUrl,
-}: UserAvatarDialogProps) => {
+const UserAvatarDialog = ({ userFullName }: UserAvatarDialogProps) => {
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
-  const userAvatarUrl =
-    useCurrentUserStore((state) => state.user?.avatarUrl) || avatarUrl;
+  const userAvatarUrl = useCurrentUserStore((state) => state.user?.avatarUrl);
   const updateAvatarUrl = useCurrentUserStore((state) => state.updateAvatarUrl);
 
   const { deleteUserAvatar, isDeletingUserAvatar } = useDeleteUserAvatar({

@@ -15,7 +15,6 @@ interface UserProfilePersonalInformationProps {
   employer?: string | null;
   websiteLink?: string | null;
   websiteLinkText?: string | null;
-  avatarUrl: string | null;
 }
 
 const UserProfilePersonalInformation = ({
@@ -27,16 +26,12 @@ const UserProfilePersonalInformation = ({
   employer,
   websiteLink,
   websiteLinkText,
-  avatarUrl,
 }: UserProfilePersonalInformationProps) => {
   return (
     <Card className="w-full max-w-4xl mx-auto shadow-md rounded-md">
       <div className="relative">
         <div className="h-[200px] bg-gradient-to-r from-primary/50 to-primary/90 dark:from-primary/80 dark:to-primary/10 rounded-md rounded-b-none" />
-        <UserAvatarDialog
-          userFullName={`${firstName} ${lastName}`}
-          avatarUrl={avatarUrl}
-        />
+        <UserAvatarDialog userFullName={`${firstName} ${lastName}`} />
       </div>
 
       <CardContent className="pt-1 pb-6 px-4">
