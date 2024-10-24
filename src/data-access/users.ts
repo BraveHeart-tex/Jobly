@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import type { UpdateUserNameAndLastNameParams } from "./types";
+import type { UpdateUserNameAndLastNameParams } from "@/data-access/types";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import type { Transaction } from "@/lib/types";
@@ -26,7 +26,7 @@ export const updateUserNameAndLastName = async (
 
 export const updateUserAvatarUrl = async (
   userId: number,
-  avatarUrl: string,
+  avatarUrl: string | null,
 ): Promise<MySqlRawQueryResult> => {
   return await db
     .update(users)

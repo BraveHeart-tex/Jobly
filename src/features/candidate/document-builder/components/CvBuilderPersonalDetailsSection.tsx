@@ -5,8 +5,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import EditableSectionTitle from "./EditableSectionTitle";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
 
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);

@@ -6,7 +6,7 @@ interface CurrentUserStore {
   user: CtxUserAttributes | null;
   setUser: (user: CtxUserAttributes | null) => void;
   updateName: (firstName: string, lastName: string) => void;
-  updateAvatarUrl: (avatarUrl: string) => void;
+  updateAvatarUrl: (avatarUrl: string | null) => void;
 }
 
 export const useCurrentUserStore = create<

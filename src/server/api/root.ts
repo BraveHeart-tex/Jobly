@@ -12,8 +12,10 @@ import { userSkillRouter } from "@/features/user/skills/api/userSkillRouter";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { educationalBackgroundsRouter } from "@/features/user/profile/api/educationalBackgrounds";
 import { cityRouter } from "@/features/user/profile/api/cities";
+import { userRouter } from "@/features/user/api/userRouter";
 
 export const appRouter = createTRPCRouter({
+  user: userRouter,
   auth: authRouter,
   userJobListing: userJobListingRouter,
   document: documentRouter,

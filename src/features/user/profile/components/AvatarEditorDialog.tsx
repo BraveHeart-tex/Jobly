@@ -12,7 +12,6 @@ import { useState } from "react";
 
 interface AvatarEditorDialogProps {
   trigger: React.ReactNode;
-  onSave: (canvas: HTMLCanvasElement) => void;
 }
 
 const AvatarEditorDialog = ({ trigger }: AvatarEditorDialogProps) => {

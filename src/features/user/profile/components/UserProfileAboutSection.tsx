@@ -1,10 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { ChevronDown, ChevronUp, SparklesIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import EditProfileRecordButton from "./EditProfileRecordButton";
+import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
 
 interface UserProfileAboutSectionProps {
   bio: string;
@@ -17,7 +16,6 @@ const UserProfileAboutSection = ({
   bio,
   highlightedSkills,
 }: UserProfileAboutSectionProps) => {
-  const { openModal } = useProfilePageSearchParams();
   const [isExpanded, setIsExpanded] = useState(false);
   const [shouldShowButton, setShouldShowButton] = useState(false);
 
