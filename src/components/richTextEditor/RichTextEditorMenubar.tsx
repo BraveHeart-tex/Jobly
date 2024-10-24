@@ -28,7 +28,7 @@ import {
   UnlinkIcon,
 } from "lucide-react";
 import { useCallback, useRef } from "react";
-import { HEADING_OPTIONS } from "./constants";
+import { HEADING_OPTIONS } from "@/components/richTextEditor/constants";
 
 interface RichTextEditorMenubarProps {
   editor: Editor | null;
@@ -89,6 +89,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       </DropdownMenu>
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().setParagraph().run()}
         className={
@@ -99,6 +100,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       </Button>
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -110,6 +112,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       </Button>
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
@@ -121,6 +124,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       </Button>
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         disabled={!editor.can().chain().focus().toggleBulletList().run()}
@@ -132,6 +136,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       </Button>
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         disabled={!editor.can().chain().focus().toggleOrderedList().run()}
@@ -145,6 +150,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
+            type="button"
             size="icon"
             className={
               editor.isActive("orderedList")
@@ -179,6 +185,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
             />
           </div>
           <Button
+            type="button"
             onClick={() => {
               setLink();
             }}
@@ -190,6 +197,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       {editor.isActive("link") ? (
         <Button
           variant="outline"
+          type="button"
           size="icon"
           onClick={() => editor?.chain().focus().unsetLink().run()}
         >
@@ -198,6 +206,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       ) : null}
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
@@ -206,6 +215,7 @@ const RichTextEditorMenubar = ({ editor }: RichTextEditorMenubarProps) => {
       </Button>
       <Button
         variant="outline"
+        type="button"
         size="icon"
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
