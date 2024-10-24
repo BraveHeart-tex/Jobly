@@ -1,6 +1,9 @@
 import { validateRequest } from "@/lib/auth/validateRequest";
 import { utapi } from "@/server/uploadThing";
-import { updateUserAvatarUrlUseCase } from "@/use-cases/users";
+import {
+  getUploadThingFileKeyFromUrl,
+  updateUserAvatarUrlUseCase,
+} from "@/use-cases/users";
 import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
@@ -19,26 +22,30 @@ export const fileRouter = {
         );
       }
 
-      return { userId: user.id };
+      return { userId: user.id, previousAvatarUrl: user.avatarUrl };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const fileUrl = file.url;
+      const { previousAvatarUrl, userId } = metadata;
 
-      const updateResult = await updateUserAvatarUrlUseCase(
-        metadata.userId,
-        fileUrl,
-      );
+      const updateResult = await updateUserAvatarUrlUseCase(userId, fileUrl);
 
       if (!updateResult) {
         await utapi.deleteFiles(file.key);
         return {
-          uploadedBy: metadata.userId,
+          uploadedBy: userId,
           success: false,
           url: null,
         };
       }
 
-      return { uploadedBy: metadata.userId, success: true, url: file.url };
+      if (previousAvatarUrl) {
+        await utapi.deleteFiles(
+          getUploadThingFileKeyFromUrl(previousAvatarUrl),
+        );
+      }
+
+      return { uploadedBy: userId, success: true, url: file.url };
     }),
 } satisfies FileRouter;
 

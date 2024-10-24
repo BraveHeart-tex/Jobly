@@ -1,7 +1,7 @@
 import { updateUserAvatarUrl } from "@/data-access/users";
 import { utapi } from "@/server/uploadThing";
 
-const getFileKeyFromUrl = (url: string) => {
+export const getUploadThingFileKeyFromUrl = (url: string) => {
   return url.split("/").pop() || "";
 };
 
@@ -22,7 +22,7 @@ export const deleteUserAvatarUrlUseCase = async (
   const isSuccess = result.affectedRows > 0;
 
   if (isSuccess) {
-    await utapi.deleteFiles(getFileKeyFromUrl(previousAvatarUrl));
+    await utapi.deleteFiles(getUploadThingFileKeyFromUrl(previousAvatarUrl));
   }
 
   return isSuccess;
