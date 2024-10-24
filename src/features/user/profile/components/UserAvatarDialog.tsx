@@ -97,7 +97,7 @@ const UserAvatarDialog = ({
             trigger={
               <Button
                 variant="ghost"
-                className="flex flex-col gap-1 h-full"
+                className="flex flex-col gap-1 h-full rounded-none"
                 disabled={isDeletingUserAvatar}
               >
                 <CameraIcon size={22} />
@@ -107,7 +107,7 @@ const UserAvatarDialog = ({
           />
           <Button
             variant="ghost"
-            className="flex flex-col gap-1 h-full"
+            className="flex flex-col gap-1 h-full rounded-none"
             disabled={!userAvatarUrl || isDeletingUserAvatar}
             onClick={handleDeleteAvatarClick}
           >

@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/features/auth/utils";
 import type { CtxUserAttributes } from "@/lib/auth";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
+import { AvatarImage } from "@radix-ui/react-avatar";
 import { LockIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,6 +26,8 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
+  const userAvatarUrl =
+    useCurrentUserStore((state) => state.user?.avatarUrl) || DEFAULT_AVATAR_URL;
   const pathname = usePathname();
   const router = useRouter();
   const setUser = useCurrentUserStore((state) => state.setUser);
@@ -65,6 +69,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar>
+          <AvatarImage src={userAvatarUrl} />
           <AvatarFallback>
             {user.firstName.charAt(0) + user.lastName.charAt(0)}
           </AvatarFallback>
