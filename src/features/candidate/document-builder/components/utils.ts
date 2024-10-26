@@ -14,26 +14,19 @@ import {
 } from "@/lib/constants";
 import { exclude, groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentBuilderConfig } from "../types";
+import type { DocumentBuilderConfig } from "@/features/candidate/document-builder/types";
 
 export type SectionFieldWithValue = DocumentSectionField & {
   value: string;
 };
 
 export const transformDocumentBuilderData = (data: DocumentBuilderConfig) => {
-  const { document, sections, fields, fieldValues } = data;
+  const { document, sections, fields } = data;
 
   const mappedSections = sections.map((section) => {
-    const sectionFields = fields
-      .filter((field) => field.sectionId === section.id)
-      .map((field) => {
-        const fieldValue =
-          fieldValues.find((value) => value.fieldId === field.id)?.value || "";
-        return {
-          ...field,
-          value: fieldValue,
-        };
-      });
+    const sectionFields = fields.filter(
+      (field) => field.sectionId === section.id,
+    );
 
     return {
       ...section,
@@ -536,18 +529,16 @@ const makeCustomSectionData = (transformedData: TransformedResumeData) => {
 };
 
 export const preparePdfData = (data: DocumentBuilderConfig) => {
-  const { document, sections, fields, fieldValues } = data;
+  const { document, sections, fields } = data;
   const resumeTemplateData = makeResumeTemplateData({
     document,
     sections,
     fields,
-    fieldValues,
   }) as unknown as MakeResumeDataReturn;
   const customSections = makeCustomResumeSectionsData({
     document,
     sections,
     fields,
-    fieldValues,
   });
 
   return {

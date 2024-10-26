@@ -2,7 +2,7 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { api } from "@/trpc/react";
-import { useUpdateFieldDisplayOrdersOnDelete } from "./useUpdateFieldDisplayOrdersOnDelete";
+import { useUpdateFieldDisplayOrdersOnDelete } from "@/features/candidate/document-builder/hooks/useUpdateFieldDisplayOrdersOnDelete";
 
 export const useRemoveFields = () => {
   const updateDisplayOrdersOnDelete = useUpdateFieldDisplayOrdersOnDelete();

@@ -8,29 +8,23 @@ import {
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 
 export const WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT = 2;
 
 const CvBuilderWebsitesAndLinks = () => {
-  const section = useDocumentBuilderStore((state) =>
-    state.sections.find(
-      (section) =>
-        section.internalSectionTag ===
-        INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
-    ),
-  ) as DocumentSection;
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field?.sectionId === section.id),
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS,
   );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+  const fields = useSectionFields(section.id);
+
   const { removeFields } = useRemoveFields();
   const groupedFields = groupEveryN(
     fields,
@@ -42,10 +36,8 @@ const CvBuilderWebsitesAndLinks = () => {
       const labelField = group[0] as DocumentSectionField;
       const linkField = group[1] as DocumentSectionField;
 
-      const labelValue = getFieldValueByFieldId(labelField?.id as number)
-        ?.value as string;
-      const linkValue = getFieldValueByFieldId(linkField?.id as number)
-        ?.value as string;
+      const labelValue = labelField.value;
+      const linkValue = linkField.value;
 
       const triggerTitle = labelValue || "(Untitled)";
       const description = linkValue || "";

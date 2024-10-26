@@ -1,24 +1,23 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);
-  const section = useDocumentBuilderStore((state) =>
-    state.sections.find(
-      (section) =>
-        section.internalSectionTag === INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
-    ),
+
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
   );
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
-  );
+  const fields = useSectionFields(section?.id);
 
   return (
     <>

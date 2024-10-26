@@ -1,37 +1,32 @@
+import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
+import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
+import DocumentBuilderDatePickerInput from "@/features/candidate/document-builder/components/DocumentBuilderDatePickerInput";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
+import DocumentBuilderRichTextInput from "@/features/candidate/document-builder/components/DocumentBuilderRichTextInput";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import AddSectionItemButton from "./AddSectionItemButton";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
-import EditableSectionTitle from "./EditableSectionTitle";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 export const EDUCATION_SECTION_ITEMS_COUNT = 6;
 
 const CvBuilderEducationSection = () => {
-  const section = useDocumentBuilderStore((state) =>
-    state.sections.find(
-      (section) =>
-        section.internalSectionTag === INTERNAL_SECTION_TAGS.EDUCATION,
-    ),
-  ) as DocumentSection;
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field?.sectionId === section.id),
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.EDUCATION,
   );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+  const fields = useSectionFields(section?.id);
+
   const groupedFields = groupEveryN(fields, EDUCATION_SECTION_ITEMS_COUNT);
 
   const { removeFields } = useRemoveFields();
@@ -45,14 +40,10 @@ const CvBuilderEducationSection = () => {
       const cityField = group[4] as DocumentSectionField;
       const descriptionField = group[5] as DocumentSectionField;
 
-      const schoolTitle = getFieldValueByFieldId(schoolField?.id as number)
-        ?.value as string;
-      const startDate = getFieldValueByFieldId(startDateField?.id as number)
-        ?.value as string;
-      const endDate = getFieldValueByFieldId(endDateField?.id as number)
-        ?.value as string;
-      const degree = getFieldValueByFieldId(degreeField?.id as number)
-        ?.value as string;
+      const schoolTitle = schoolField?.value;
+      const startDate = startDateField?.value;
+      const endDate = endDateField?.value;
+      const degree = degreeField?.value;
 
       let triggerTitle =
         degree && schoolTitle

@@ -12,8 +12,8 @@ const mapItemDisplayOrderByIndex = (
 });
 
 export const useUpdateFieldDisplayOrdersOnDelete = () => {
-  const allFields = useDocumentBuilderStore((state) => state.fields);
   const setFields = useDocumentBuilderStore((state) => state.setFields);
+
   const callSaveDocumentDetailsFn = useDocumentBuilderStore(
     (state) => state.callSaveDocumentDetailsFn,
   );
@@ -22,6 +22,7 @@ export const useUpdateFieldDisplayOrdersOnDelete = () => {
     sectionId: DocumentSection["id"],
     deletedFieldIds: DocumentSectionField["id"][],
   ) => {
+    const allFields = useDocumentBuilderStore.getState().fields;
     const mappedSectionFields = allFields
       .filter(
         (field) =>

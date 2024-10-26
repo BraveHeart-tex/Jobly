@@ -21,13 +21,10 @@ export const documentRouter = createTRPCRouter({
   createDocumentAndRelatedEntities: protectedProcedure
     .input(parser(partial(DocumentInsertValidator, ["userId"])))
     .mutation(async ({ input, ctx }) => {
-      return documentService.createDocumentAndRelatedEntities(
-        {
-          ...input,
-          userId: ctx.user.id,
-        },
-        ctx.user,
-      );
+      return documentService.createDocumentAndRelatedEntities({
+        ...input,
+        userId: ctx.user.id,
+      });
     }),
   getDocumentDetails: protectedProcedure
     .input(

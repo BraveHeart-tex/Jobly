@@ -12,18 +12,16 @@ const DocumentInitializer = ({ documentData }: DocumentInitializerProps) => {
   const initializeState = useDocumentBuilderStore(
     (state) => state.initializeState,
   );
-  const initialized = useDocumentBuilderStore((state) => state.initialized);
   const callPdfUpdaterCallback = useDocumentBuilderStore(
     (state) => state.callPdfUpdaterCallback,
   );
 
   useEffect(() => {
-    if (!documentData || Object.keys(documentData).length === 0 || initialized)
-      return;
+    if (!documentData || Object.keys(documentData).length === 0) return;
 
     initializeState(documentData);
     callPdfUpdaterCallback();
-  }, [documentData, initializeState, callPdfUpdaterCallback, initialized]);
+  }, [documentData, initializeState, callPdfUpdaterCallback]);
 
   return null;
 };

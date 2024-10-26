@@ -22,14 +22,8 @@ const DocumentBuilderSelect = ({
   placeholder,
   options,
 }: DocumentBuilderSelectProps) => {
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
-  );
-  const fieldValueObject = getFieldValueByFieldId(field?.id);
-  const value = fieldValueObject?.value || "";
+  const setFieldValue = useDocumentBuilderStore((state) => state.setFieldValue);
+  const value = field?.value || "";
 
   return (
     <div className="flex flex-col gap-2 w-full min-w-full">

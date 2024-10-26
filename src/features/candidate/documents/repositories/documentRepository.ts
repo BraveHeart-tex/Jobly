@@ -1,12 +1,10 @@
 import type { Transaction } from "@/lib/types";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
-  documentSectionFieldValues,
   documentSectionFields,
   documentSections,
   documents,
 } from "@/server/db/schema";
-import type { DocumentSectionFieldValueInsertModel } from "@/server/db/schema/documentSectionFieldValues";
 import type {
   DocumentSectionField,
   DocumentSectionFieldInsertModel,
@@ -62,21 +60,6 @@ export const upsertSectionFields = (
     .$returningId();
 };
 
-export const upsertSectionFieldValues = (
-  trx: Transaction,
-  fieldValues: DocumentSectionFieldValueInsertModel[],
-) => {
-  return trx
-    .insert(documentSectionFieldValues)
-    .values(fieldValues)
-    .onDuplicateKeyUpdate({
-      set: buildConflictUpdateColumns(documentSectionFieldValues, [
-        "fieldId",
-        "id",
-      ]),
-    });
-};
-
 export const getDocumentWithSectionsAndFields = ({
   documentId,
   userId,
@@ -91,9 +74,6 @@ export const getDocumentWithSectionsAndFields = ({
         with: {
           fields: {
             orderBy: () => asc(documentSectionFields.displayOrder),
-            with: {
-              fieldValues: true,
-            },
           },
         },
       },

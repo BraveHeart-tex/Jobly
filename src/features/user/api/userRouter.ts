@@ -3,7 +3,7 @@ import { deleteUserAvatarUrlUseCase } from "@/use-cases/users";
 export const userRouter = createTRPCRouter({
   deleteAvatar: protectedProcedure.mutation(async ({ ctx }) => {
     const userId = ctx.user.id;
-    const previousAvatarUrl = ctx.user.avatarUrl;
+    const previousAvatarUrl = ctx.user.avatarUrl as string;
 
     return await deleteUserAvatarUrlUseCase(userId, previousAvatarUrl);
   }),

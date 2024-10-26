@@ -81,27 +81,24 @@ const OTHER_SECTION_OPTIONS: OtherSectionOption[] = [
 
 const CvBuilderCustomSectionOptions = () => {
   const documentId = useDocumentBuilderStore((state) => state.document.id);
-  const sections = useDocumentBuilderStore((state) => state.sections);
   const addSection = useDocumentBuilderStore((state) => state.addSection);
   const addField = useDocumentBuilderStore((state) => state.addField);
-  const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
 
   const getIsOptionAlreadyAdded = (option: OtherSectionOption) =>
-    sections.some(
-      (section) =>
-        option.internalSectionTag !== INTERNAL_SECTION_TAGS.CUSTOM &&
-        section.internalSectionTag === option.internalSectionTag,
-    );
+    useDocumentBuilderStore
+      .getState()
+      .sections.some(
+        (section) =>
+          option.internalSectionTag !== INTERNAL_SECTION_TAGS.CUSTOM &&
+          section.internalSectionTag === option.internalSectionTag,
+      );
 
   const { mutate: addSectionByInternalTag, isPending } =
     api.document.addSectionByInternalTag.useMutation({
-      onSuccess: ({ section, fields, fieldValues }) => {
+      onSuccess: ({ section, fields }) => {
         addSection(section as DocumentSection);
         for (const field of fields) {
           addField(field);
-        }
-        for (const fieldValue of fieldValues) {
-          addFieldValue(fieldValue);
         }
       },
     });
@@ -115,7 +112,11 @@ const CvBuilderCustomSectionOptions = () => {
     } = option;
 
     const finalDisplayOrder =
-      Math.max(...sections.map((section) => section.displayOrder)) + 1;
+      Math.max(
+        ...useDocumentBuilderStore
+          .getState()
+          .sections.map((section) => section.displayOrder),
+      ) + 1;
 
     addSectionByInternalTag({
       documentId,

@@ -16,13 +16,8 @@ const DocumentBuilderRichTextInput = ({
   renderLabel = true,
   placeholder = "",
 }: DocumentBuilderRichTextInputProps) => {
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
-  const setFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
-  );
-  const value = getFieldValueByFieldId(field?.id)?.value ?? "";
+  const setFieldValue = useDocumentBuilderStore((state) => state.setFieldValue);
+  const value = field.value ?? "";
 
   return (
     <div className="w-full overflow-hidden">
@@ -36,7 +31,7 @@ const DocumentBuilderRichTextInput = ({
           placeholder={placeholder}
           initialValue={value}
           onChange={(html) => {
-            setFieldValueByFieldId(field?.id, html);
+            setFieldValue(field?.id, html);
           }}
         />
       </div>

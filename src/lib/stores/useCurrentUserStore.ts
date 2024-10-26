@@ -28,7 +28,7 @@ export const useCurrentUserStore = create<
           },
         });
       },
-      updateAvatarUrl: (avatarUrl: string) => {
+      updateAvatarUrl: (avatarUrl: string | null) => {
         const prevUser = get().user;
         if (!prevUser) return;
         set({

@@ -1,20 +1,20 @@
+import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
+import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
+import DocumentBuilderDatePickerInput from "@/features/candidate/document-builder/components/DocumentBuilderDatePickerInput";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
+import DocumentBuilderRichTextInput from "@/features/candidate/document-builder/components/DocumentBuilderRichTextInput";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import { useSectionFields } from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import AddSectionItemButton from "./AddSectionItemButton";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
-import EditableSectionTitle from "./EditableSectionTitle";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 interface CvBuilderInternshipsSectionProps {
   section: DocumentSection;
@@ -24,12 +24,8 @@ export const INTERNSHIP_SECTION_ITEMS_COUNT = 6;
 const CvBuilderInternshipsSection = ({
   section,
 }: CvBuilderInternshipsSectionProps) => {
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
-  );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+  const fields = useSectionFields(section.id);
+
   const { removeFields } = useRemoveFields();
   const groupedFields = groupEveryN(fields, INTERNSHIP_SECTION_ITEMS_COUNT);
 
@@ -42,14 +38,13 @@ const CvBuilderInternshipsSection = ({
       const cityField = group[4] as DocumentSectionField;
       const employmentDescriptionField = group[5] as DocumentSectionField;
 
-      const jobTitle = getFieldValueByFieldId(jobTitleField?.id as number)
-        ?.value as string;
-      const startDate = getFieldValueByFieldId(startDateField?.id as number)
-        ?.value as string;
-      const endDate = getFieldValueByFieldId(endDateField?.id as number)
-        ?.value as string;
-      const employer = getFieldValueByFieldId(employerField?.id as number)
-        ?.value as string;
+      const jobTitle = jobTitleField?.value;
+
+      const startDate = startDateField?.value;
+
+      const endDate = endDateField?.value;
+
+      const employer = employerField?.value;
 
       let triggerTitle = jobTitle
         ? `${employer ? `${jobTitle} at ${employer}` : jobTitle}`

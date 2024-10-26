@@ -1,19 +1,19 @@
+import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
+import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
+import DocumentBuilderSelect from "@/features/candidate/document-builder/components/DocumentBuilderSelect";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import { useSectionFields } from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import AddSectionItemButton from "./AddSectionItemButton";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import DocumentBuilderSelect from "./DocumentBuilderSelect";
-import EditableSectionTitle from "./EditableSectionTitle";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
 
 interface CvBuilderLanguagesSectionProps {
   section: DocumentSection;
@@ -37,12 +37,8 @@ const LANGUAGE_LEVELS = [
 const CvBuilderLanguagesSection = ({
   section,
 }: CvBuilderLanguagesSectionProps) => {
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section.id),
-  );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+  const fields = useSectionFields(section?.id);
+
   const { removeFields } = useRemoveFields();
   const groupedFields = groupEveryN(fields, LANGUAGES_SECTION_ITEMS_COUNT);
 
@@ -51,10 +47,8 @@ const CvBuilderLanguagesSection = ({
       const languageField = group[0] as DocumentSectionField;
       const levelField = group[1] as DocumentSectionField;
 
-      const language = getFieldValueByFieldId(languageField?.id as number)
-        ?.value as string;
-      const level = getFieldValueByFieldId(levelField?.id as number)
-        ?.value as string;
+      const language = languageField?.value;
+      const level = levelField?.value;
 
       return (
         <CollapsibleSectionItemContainer

@@ -20,28 +20,24 @@ import {
   type SkillMetadataKey,
   parseSkillsMetadata,
 } from "@/validators/user/document/skillsSectionMetadataValidator";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 
 export const SKILL_SECTION_ITEMS_COUNT = 2;
 
 const CvBuilderSkillsSection = () => {
-  const section = useDocumentBuilderStore((state) =>
-    state.sections.find(
-      (section) => section.internalSectionTag === INTERNAL_SECTION_TAGS.SKILLS,
-    ),
-  );
+  const section = useDocumentSectionByInternalTag(INTERNAL_SECTION_TAGS.SKILLS);
   const sectionMetadata = parseSkillsMetadata(section?.metadata);
   const showExperienceLevel = sectionMetadata?.showExperienceLevel;
   const isCommaSeparated = sectionMetadata?.isCommaSeparated;
 
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
-  );
+  const fields = useSectionFields(section?.id);
   const setSectionValue = useDocumentBuilderStore(
     (state) => state.setSectionValue,
   );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+
   const { removeFields } = useRemoveFields();
   const groupedFields = groupEveryN(fields, SKILL_SECTION_ITEMS_COUNT);
 
@@ -50,10 +46,8 @@ const CvBuilderSkillsSection = () => {
       const skillField = group[0] as DocumentSectionField;
       const levelField = group[1] as DocumentSectionField;
 
-      const skillValue = getFieldValueByFieldId(skillField?.id as number)
-        ?.value as string;
-      const levelValue = getFieldValueByFieldId(levelField?.id as number)
-        ?.value as string;
+      const skillValue = skillField?.value;
+      const levelValue = levelField?.value;
 
       const triggerTitle = skillValue || "(Untitled)";
       const description = levelValue || "";

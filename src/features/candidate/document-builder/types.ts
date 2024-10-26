@@ -1,4 +1,3 @@
-import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type {
   DocumentSection,
@@ -10,7 +9,6 @@ export type DocumentBuilderConfig = {
   document: DocumentSelectModel;
   sections: DocumentSection[];
   fields: DocumentSectionField[];
-  fieldValues: DocumentSectionFieldValue[];
 };
 
 type SectionBase = Omit<

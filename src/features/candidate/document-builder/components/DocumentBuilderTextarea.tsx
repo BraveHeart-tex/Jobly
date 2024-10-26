@@ -12,15 +12,9 @@ const DocumentBuilderTextarea = ({
   field,
   placeholder,
 }: DocumentBuilderTextareaProps) => {
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
-  );
-  const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
+  const setFieldValue = useDocumentBuilderStore((state) => state.setFieldValue);
 
-  const inputValue = fieldValueObject?.value || "";
+  const inputValue = field?.value || "";
 
   return (
     <div className="flex flex-col gap-2 w-full min-w-full">

@@ -47,16 +47,8 @@ const CvBuilderSkillLevelSelector = ({
   field,
   disabled,
 }: CvBuilderSkillLevelSelectorProps) => {
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
-  );
-  const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
-
-  const currentValue =
-    (fieldValueObject?.value as SKILL_LEVEL) || SKILL_LEVELS.NOVICE;
+  const setFieldValue = useDocumentBuilderStore((state) => state.setFieldValue);
+  const currentValue = (field?.value as SKILL_LEVEL) || SKILL_LEVELS.NOVICE;
 
   return (
     <div
