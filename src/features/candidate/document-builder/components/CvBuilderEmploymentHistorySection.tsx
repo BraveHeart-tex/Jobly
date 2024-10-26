@@ -1,5 +1,13 @@
 "use client";
+import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
+import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
+import DocumentBuilderDatePickerInput from "@/features/candidate/document-builder/components/DocumentBuilderDatePickerInput";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
+import DocumentBuilderRichTextInput from "@/features/candidate/document-builder/components/DocumentBuilderRichTextInput";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
@@ -9,30 +17,29 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import AddSectionItemButton from "./AddSectionItemButton";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import DocumentBuilderRichTextInput from "./DocumentBuilderRichTextInput";
-import EditableSectionTitle from "./EditableSectionTitle";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import { useShallow } from "zustand/react/shallow";
 
 export const EMPLOYMENT_SECTION_ITEMS_COUNT = 6;
 
 const CvBuilderEmploymentHistorySection = () => {
-  const section = useDocumentBuilderStore((state) =>
-    state.sections.find(
-      (section) =>
-        section.internalSectionTag === INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+  const section = useDocumentBuilderStore(
+    useShallow((state) =>
+      state.sections.find(
+        (section) =>
+          section.internalSectionTag ===
+          INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
+      ),
     ),
   ) as DocumentSection;
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
+  const fields = useDocumentBuilderStore(
+    useShallow((state) =>
+      state.fields.filter((field) => field.sectionId === section?.id),
+    ),
   );
   const getFieldValueByFieldId = useDocumentBuilderStore(
     (state) => state.getFieldValueByFieldId,
   );
+
   const groupedFields = groupEveryN(fields, EMPLOYMENT_SECTION_ITEMS_COUNT);
 
   const { removeFields } = useRemoveFields();

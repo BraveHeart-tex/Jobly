@@ -7,6 +7,7 @@ import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { Loader2, PlusIcon } from "lucide-react";
 import { getFieldInsertTemplateBySectionTag } from "@/features/candidate/documents/utils";
 import { useAddFieldsWithValues } from "@/features/candidate/document-builder/hooks/useAddFieldsWithValues";
+import { useShallow } from "zustand/react/shallow";
 
 interface AddSectionItemButtonProps {
   sectionId: DocumentSection["id"];
@@ -19,8 +20,10 @@ const AddSectionItemButton = ({
   templateOption,
   label,
 }: AddSectionItemButtonProps) => {
-  const sectionFields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === sectionId),
+  const sectionFields = useDocumentBuilderStore(
+    useShallow((state) =>
+      state.fields.filter((field) => field.sectionId === sectionId),
+    ),
   );
   const addField = useDocumentBuilderStore((state) => state.addField);
   const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);

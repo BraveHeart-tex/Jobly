@@ -1,4 +1,6 @@
+import CvBuilderEmploymentHistorySection from "@/features/candidate/document-builder/components/CvBuilderEmploymentHistorySection";
 import CvBuilderPersonalDetailsSection from "@/features/candidate/document-builder/components/CvBuilderPersonalDetailsSection";
+import CvBuilderProfessionalSummarySection from "@/features/candidate/document-builder/components/CvBuilderProfessionalSummarySection";
 import SectionsDndContext from "@/features/candidate/document-builder/components/SectionsDndContext";
 import {
   type INTERNAL_SECTION_TAG,
@@ -16,12 +18,12 @@ const DocumentSectionsContainer = () => {
       [INTERNAL_SECTION_TAGS.PERSONAL_DETAILS]: (
         <CvBuilderPersonalDetailsSection />
       ),
-      // [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]: (
-      //   <CvBuilderProfessionalSummarySection />
-      // ),
-      // [INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY]: (
-      //   <CvBuilderEmploymentHistorySection />
-      // ),
+      [INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY]: (
+        <CvBuilderProfessionalSummarySection />
+      ),
+      [INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY]: (
+        <CvBuilderEmploymentHistorySection />
+      ),
       // [INTERNAL_SECTION_TAGS.EDUCATION]: <CvBuilderEducationSection />,
       // [INTERNAL_SECTION_TAGS.WEBSITES_SOCIAL_LINKS]: (
       //   <CvBuilderWebsitesAndLinks />
