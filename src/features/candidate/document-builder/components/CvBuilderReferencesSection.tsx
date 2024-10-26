@@ -1,6 +1,13 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
+import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import { useSectionFields } from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
@@ -9,12 +16,6 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import AddSectionItemButton from "./AddSectionItemButton";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import EditableSectionTitle from "./EditableSectionTitle";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
 import { parseReferencesMetadata } from "@/validators/user/document/referencesSectionMetadataValidator";
 
 interface CvBuilderReferencesSectionProps {
@@ -26,15 +27,11 @@ export const REFERENCES_SECTION_ITEMS_COUNT = 4;
 const CvBuilderReferencesSection = ({
   section,
 }: CvBuilderReferencesSectionProps) => {
+  const fields = useSectionFields(section?.id);
+
   const sectionMetadata = parseReferencesMetadata(section?.metadata);
   const hideReferences = sectionMetadata?.hideReferences;
 
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
-  );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
   const { removeFields } = useRemoveFields();
   const setSectionValue = useDocumentBuilderStore(
     (state) => state.setSectionValue,
@@ -48,11 +45,8 @@ const CvBuilderReferencesSection = ({
       const phoneField = group[2] as DocumentSectionField;
       const emailField = group[3] as DocumentSectionField;
 
-      const referentFullName = getFieldValueByFieldId(
-        referentFullNameField?.id as number,
-      )?.value as string;
-      const company = getFieldValueByFieldId(companyField?.id as number)
-        ?.value as string;
+      const referentFullName = referentFullNameField.value;
+      const company = companyField.value;
 
       return (
         <CollapsibleSectionItemContainer

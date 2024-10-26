@@ -4,27 +4,18 @@ import {
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
 import DocumentBuilderRichTextInput from "@/features/candidate/document-builder/components/DocumentBuilderRichTextInput";
-import { useShallow } from "zustand/react/shallow";
 import CharacterCountIndicator from "@/features/candidate/document-builder/components/CharacterCountIndicator";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionField,
+} from "@/features/candidate/document-builder/selectors";
 
 const CvBuilderProfessionalSummarySection = () => {
-  const section = useDocumentBuilderStore(
-    useShallow((state) =>
-      state.sections.find(
-        (section) =>
-          section.internalSectionTag ===
-          INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
-      ),
-    ),
-  ) as DocumentSection;
-  const field = useDocumentBuilderStore(
-    useShallow((state) =>
-      state.fields.find((field) => field.sectionId === section?.id),
-    ),
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
   );
+  const field = useSectionField(section?.id);
 
   if (!field) return;
 

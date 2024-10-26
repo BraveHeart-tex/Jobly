@@ -1,3 +1,5 @@
+import { documentSections } from "@/server/db/schema";
+import { encryptedTextWithDerivedKey } from "@/server/db/utils";
 import {
   type InferInsertModel,
   type InferSelectModel,
@@ -10,8 +12,6 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import documentSectionFieldValues from "./documentSectionFieldValues";
-import documentSections from "./documentSections";
 
 const documentSectionFields = mysqlTable(
   "DocumentSectionFields",
@@ -23,6 +23,7 @@ const documentSectionFields = mysqlTable(
     fieldName: varchar("fieldName", { length: 100 }).notNull(),
     fieldType: varchar("fieldType", { length: 100 }).notNull(),
     displayOrder: int("displayOrder").notNull(),
+    value: encryptedTextWithDerivedKey("value").notNull(),
   },
   (table) => {
     return {
@@ -34,12 +35,11 @@ const documentSectionFields = mysqlTable(
 
 export const documentSectionFieldsRelations = relations(
   documentSectionFields,
-  ({ one, many }) => ({
+  ({ one }) => ({
     section: one(documentSections, {
       fields: [documentSectionFields.sectionId],
       references: [documentSections.id],
     }),
-    fieldValues: many(documentSectionFieldValues),
   }),
 );
 

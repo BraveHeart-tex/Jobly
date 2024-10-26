@@ -5,10 +5,8 @@ export const useAddFieldsWithValues = (options: {
   onSuccess?: (
     {
       fieldInsertIds,
-      fieldValueInsertIds,
     }: {
       fieldInsertIds: number[];
-      fieldValueInsertIds: number[];
     },
     {
       fields,

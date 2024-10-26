@@ -9,36 +9,24 @@ import EditableSectionTitle from "@/features/candidate/document-builder/componen
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
 import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
+import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
   SECTION_DESCRIPTIONS_BY_TAG,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useShallow } from "zustand/react/shallow";
 
 export const EMPLOYMENT_SECTION_ITEMS_COUNT = 6;
 
 const CvBuilderEmploymentHistorySection = () => {
-  const section = useDocumentBuilderStore(
-    useShallow((state) =>
-      state.sections.find(
-        (section) =>
-          section.internalSectionTag ===
-          INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
-      ),
-    ),
-  ) as DocumentSection;
-  const fields = useDocumentBuilderStore(
-    useShallow((state) =>
-      state.fields.filter((field) => field.sectionId === section?.id),
-    ),
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,
   );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+  const fields = useSectionFields(section?.id);
 
   const groupedFields = groupEveryN(fields, EMPLOYMENT_SECTION_ITEMS_COUNT);
 
@@ -53,14 +41,10 @@ const CvBuilderEmploymentHistorySection = () => {
       const cityField = group[4] as DocumentSectionField;
       const employmentDescriptionField = group[5] as DocumentSectionField;
 
-      const jobTitle = getFieldValueByFieldId(jobTitleField?.id as number)
-        ?.value as string;
-      const startDate = getFieldValueByFieldId(startDateField?.id as number)
-        ?.value as string;
-      const endDate = getFieldValueByFieldId(endDateField?.id as number)
-        ?.value as string;
-      const employer = getFieldValueByFieldId(employerField?.id as number)
-        ?.value as string;
+      const jobTitle = jobTitleField?.value;
+      const startDate = startDateField?.value;
+      const endDate = endDateField?.value;
+      const employer = employerField?.value;
 
       let triggerTitle = jobTitle
         ? `${employer ? `${jobTitle} at ${employer}` : jobTitle}`
@@ -117,7 +101,7 @@ const CvBuilderEmploymentHistorySection = () => {
   };
 
   return (
-    <DraggableSectionContainer sectionId={section.id}>
+    <DraggableSectionContainer sectionId={section?.id}>
       <div className="grid">
         <EditableSectionTitle section={section} />
         <p className="text-sm text-muted-foreground">

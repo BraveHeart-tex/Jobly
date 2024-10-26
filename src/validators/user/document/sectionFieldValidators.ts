@@ -28,6 +28,7 @@ export const DocumentSectionFieldValidator = object({
     number(),
     minValue(1, "Display order must be greater than or equal to 1"),
   ),
+  value: string(),
 });
 
 export const DocumentSectionFieldInsertValidator = partial(

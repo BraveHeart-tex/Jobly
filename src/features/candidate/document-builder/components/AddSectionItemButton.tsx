@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { Loader2, PlusIcon } from "lucide-react";
 import { getFieldInsertTemplateBySectionTag } from "@/features/candidate/documents/utils";
@@ -26,26 +25,16 @@ const AddSectionItemButton = ({
     ),
   );
   const addField = useDocumentBuilderStore((state) => state.addField);
-  const addFieldValue = useDocumentBuilderStore((state) => state.addFieldValue);
 
   const { addFields, isPending } = useAddFieldsWithValues({
-    onSuccess({ fieldInsertIds, fieldValueInsertIds }, { fields }) {
+    onSuccess({ fieldInsertIds }, { fields }) {
       const mappedFields = fields.map((item, index) => ({
         ...item,
-        id: fieldInsertIds[index] as DocumentSectionFieldValue["id"],
-      }));
-
-      const fieldValues = mappedFields.map((field, index) => ({
-        id: fieldValueInsertIds[index] as DocumentSectionFieldValue["id"],
-        fieldId: field.id,
-        value: "",
+        id: fieldInsertIds[index] as number,
       }));
 
       for (const field of mappedFields) {
         addField(field);
-      }
-      for (const fieldValue of fieldValues) {
-        addFieldValue(fieldValue);
       }
     },
   });

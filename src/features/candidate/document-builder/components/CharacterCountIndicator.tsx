@@ -1,6 +1,7 @@
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { cn } from "@/lib/utils";
 import { removeHTMLTags } from "@/lib/utils/string";
+import { useShallow } from "zustand/react/shallow";
 
 interface CharacterCountIndicatorProps {
   fieldId: number;
@@ -8,9 +9,10 @@ interface CharacterCountIndicatorProps {
 
 const CharacterCountIndicator = ({ fieldId }: CharacterCountIndicatorProps) => {
   const fieldValue = useDocumentBuilderStore(
-    (state) =>
-      state.fieldValues.find((fieldValue) => fieldValue.fieldId === fieldId)
-        ?.value,
+    useShallow(
+      (state) =>
+        state.fields.find((field) => field.id === fieldId)?.value || "",
+    ),
   );
 
   const renderCharCountIndicator = () => {

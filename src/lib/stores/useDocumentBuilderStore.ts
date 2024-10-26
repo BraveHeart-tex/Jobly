@@ -1,5 +1,4 @@
 import type { DocumentBuilderConfig } from "@/features/candidate/document-builder/types";
-import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
@@ -18,7 +17,6 @@ export interface DocumentBuilderState {
   document: DocumentSelectModel;
   sections: DocumentSection[];
   fields: DocumentSectionField[];
-  fieldValues: DocumentSectionFieldValue[];
   saveDocumentDetailsFn: (documentData: SaveDocumentDetailsData) => unknown;
 
   pdfUpdaterCallback: (data: DocumentBuilderConfig) => unknown;
@@ -34,22 +32,15 @@ interface DocumentBuilderActions {
   setSectionValue: <K extends keyof DocumentSection>(
     params: SetSectionValueParams<K>,
   ) => void;
-  getFieldValueByFieldId: (
-    fieldId: DocumentSectionField["id"],
-  ) => DocumentSectionFieldValue | undefined;
-  setFieldValueByFieldId: (
-    fieldId: DocumentSectionField["id"],
-    newValue: string,
-  ) => void;
   callSaveDocumentDetailsFn: (data: SaveDocumentDetailsData) => void;
   addSection: (section: DocumentSection) => void;
   addField: (field: DocumentSectionField) => void;
-  addFieldValue: (fieldValue: DocumentSectionFieldValue) => void;
   removeFields: (fieldIds: DocumentSectionField["id"][]) => void;
   removeSection: (sectionId: DocumentSection["id"]) => void;
   callPdfUpdaterCallback: () => void;
   setFields: (fields: DocumentSectionField[]) => void;
   setSections: (sections: DocumentSection[]) => void;
+  setFieldValue: (fieldId: DocumentSectionField["id"], value: string) => void;
 }
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
@@ -64,7 +55,6 @@ export const useDocumentBuilderStore = create<
       document: {} as DocumentSelectModel,
       sections: [],
       fields: [],
-      fieldValues: [],
       saveDocumentDetailsFn: () => {},
       pdfUpdaterCallback: () => {},
       callSaveDocumentDetailsFn: (data) => {
@@ -75,7 +65,6 @@ export const useDocumentBuilderStore = create<
           document: get().document,
           sections: get().sections,
           fields: get().fields,
-          fieldValues: get().fieldValues,
         });
       },
       initializeState: (initialState) => {
@@ -117,49 +106,19 @@ export const useDocumentBuilderStore = create<
         });
         get().callPdfUpdaterCallback();
       },
-      getFieldValueByFieldId: (fieldId) => {
-        return get().fieldValues.find(
-          (fieldValue) => fieldValue.fieldId === fieldId,
-        );
-      },
-      setFieldValueByFieldId: (fieldId, newValue) => {
-        const fieldValueToUpdate = get().fieldValues.find(
-          (fieldValue) => fieldValue.fieldId === fieldId,
-        );
-        if (!fieldValueToUpdate) return;
-        fieldValueToUpdate.value = newValue;
 
-        set({
-          fieldValues: get().fieldValues.map((fieldValue) => {
-            if (fieldValue.fieldId === fieldId) {
-              return fieldValueToUpdate;
-            }
-            return fieldValue;
-          }),
-        });
-
-        get().callSaveDocumentDetailsFn({
-          fieldValues: [fieldValueToUpdate],
-        });
-        get().callPdfUpdaterCallback();
-      },
       addSection: (section) => {
         set({ sections: [...get().sections, section] });
       },
       addField: (field) => {
         set({ fields: [...get().fields, field] });
       },
-      addFieldValue: (fieldValue) => {
-        set({ fieldValues: [...get().fieldValues, fieldValue] });
-      },
+
       removeFields: (fieldIds) => {
         const newFields = get().fields.filter(
           (field) => !fieldIds.includes(field.id),
         );
-        const newFieldValues = get().fieldValues.filter(
-          (fieldValue) => !fieldIds.includes(fieldValue.fieldId),
-        );
-        set({ fields: newFields, fieldValues: newFieldValues });
+        set({ fields: newFields });
         get().callPdfUpdaterCallback();
       },
       removeSection: (sectionId) => {
@@ -169,13 +128,10 @@ export const useDocumentBuilderStore = create<
         const newFields = get().fields.filter(
           (field) => field.sectionId !== sectionId,
         );
-        const newFieldValues = get().fieldValues.filter((fieldValue) =>
-          newFields.map((field) => field.id).includes(fieldValue.fieldId),
-        );
+
         set({
           sections: newSections,
           fields: newFields,
-          fieldValues: newFieldValues,
         });
         get().callPdfUpdaterCallback();
       },
@@ -188,6 +144,25 @@ export const useDocumentBuilderStore = create<
         get().callPdfUpdaterCallback();
         get().callSaveDocumentDetailsFn({
           sections: sections,
+        });
+      },
+      setFieldValue: (fieldId, value) => {
+        const field = get().fields.find((field) => field.id === fieldId);
+        if (!field) return;
+
+        field.value = value;
+
+        const newFields = get().fields.map((f) => {
+          if (f.id === fieldId) {
+            return field;
+          }
+          return f;
+        });
+
+        set({ fields: newFields });
+        get().callPdfUpdaterCallback();
+        get().callSaveDocumentDetailsFn({
+          fields: [field],
         });
       },
     }),

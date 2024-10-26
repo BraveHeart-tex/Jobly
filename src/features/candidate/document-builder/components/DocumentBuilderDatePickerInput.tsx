@@ -35,13 +35,9 @@ const DocumentBuilderDatePickerInput = ({
   showPresentToggle = true,
   presentToggleLabel = "Present",
 }: DocumentBuilderDatePickerInputProps) => {
-  const fieldValue = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId(field?.id)?.value,
-  );
+  const fieldValue = field.value;
   const isFieldValuePresent = fieldValue === "Present";
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
-  );
+  const setFieldValue = useDocumentBuilderStore((state) => state.setFieldValue);
   const [year, setYear] = useState(
     fieldValue && !isFieldValuePresent
       ? getYearFromFieldValue(fieldValue)

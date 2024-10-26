@@ -1,25 +1,24 @@
+import DocumentBuilderTextarea from "@/features/candidate/document-builder/components/DocumentBuilderTextarea";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
-import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import { useSectionField } from "@/features/candidate/document-builder/selectors";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import DocumentBuilderTextarea from "./DocumentBuilderTextarea";
-import EditableSectionTitle from "./EditableSectionTitle";
 
 interface CvBuilderHobbiesSectionProps {
   section: DocumentSection;
 }
 
 const CvBuilderHobbiesSection = ({ section }: CvBuilderHobbiesSectionProps) => {
-  const field = useDocumentBuilderStore((state) =>
-    state.fields.find((field) => field.sectionId === section.id),
-  );
+  const field = useSectionField(section.id);
+
+  if (!field) return null;
 
   return (
     <DraggableSectionContainer sectionId={section.id} className="grid gap-2">
       <EditableSectionTitle section={section} />
       <div>
         <DocumentBuilderTextarea
-          field={field as DocumentSectionField}
+          field={field}
           placeholder="e.g. Hiking, Cooking, Painting"
         />
       </div>

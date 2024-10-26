@@ -17,7 +17,6 @@ const DocumentBuilderPreviewContent = () => {
   const document = useDocumentBuilderStore((state) => state.document);
   const sections = useDocumentBuilderStore((state) => state.sections);
   const fields = useDocumentBuilderStore((state) => state.fields);
-  const fieldValues = useDocumentBuilderStore((state) => state.fieldValues);
 
   useEffect(() => {
     const updatePdfProps = () => {
@@ -40,7 +39,6 @@ const DocumentBuilderPreviewContent = () => {
             document,
             sections,
             fields,
-            fieldValues,
           })}
         />
       </PDFViewer>

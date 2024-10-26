@@ -3,7 +3,6 @@ import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
-import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { groupEveryN } from "@/lib/utils/object";
@@ -14,6 +13,7 @@ import DocumentBuilderDatePickerInput from "@/features/candidate/document-builde
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
+import { useSectionFields } from "@/features/candidate/document-builder/selectors";
 
 interface CvBuilderCoursesSectionProps {
   section: DocumentSection;
@@ -22,12 +22,8 @@ interface CvBuilderCoursesSectionProps {
 export const COURSES_SECTION_ITEMS_COUNT = 4;
 
 const CvBuilderCoursesSection = ({ section }: CvBuilderCoursesSectionProps) => {
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
-  );
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
+  const fields = useSectionFields(section.id);
+
   const { removeFields } = useRemoveFields();
   const groupedFields = groupEveryN(fields, COURSES_SECTION_ITEMS_COUNT);
 
@@ -38,14 +34,10 @@ const CvBuilderCoursesSection = ({ section }: CvBuilderCoursesSectionProps) => {
       const startDateField = group[2] as DocumentSectionField;
       const endDateField = group[3] as DocumentSectionField;
 
-      const course = getFieldValueByFieldId(courseField?.id as number)
-        ?.value as string;
-      const institution = getFieldValueByFieldId(institutionField?.id as number)
-        ?.value as string;
-      const startDate = getFieldValueByFieldId(startDateField?.id as number)
-        ?.value as string;
-      const endDate = getFieldValueByFieldId(endDateField?.id as number)
-        ?.value as string;
+      const course = courseField?.value;
+      const institution = institutionField?.value;
+      const startDate = startDateField?.value;
+      const endDate = endDateField?.value;
 
       const triggerTitle = course
         ? institution

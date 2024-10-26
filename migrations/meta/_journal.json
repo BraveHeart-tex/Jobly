@@ -337,6 +337,13 @@
       "when": 1729520150640,
       "tag": "0047_special_havok",
       "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "5",
+      "when": 1729941985278,
+      "tag": "0048_rich_patriot",
+      "breakpoints": true
     }
   ]
 }

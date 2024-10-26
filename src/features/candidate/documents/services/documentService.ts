@@ -7,7 +7,6 @@ import {
   getDocumentsByUserId,
   updateDocumentById,
   upsertDocument,
-  upsertSectionFieldValues,
   upsertSectionFields,
   upsertSections,
 } from "@/features/candidate/documents/repositories/documentRepository";
@@ -15,7 +14,6 @@ import {
   getFieldInsertTemplateBySectionTag,
   getPredefinedDocumentSectionsWithDocumentId,
   makeFieldInsertDTOs,
-  makeFieldValueInsertDTOs,
   normalizeDocumentStructure,
 } from "@/features/candidate/documents/utils";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
@@ -23,10 +21,8 @@ import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import {
   documentSectionFields as fieldSchema,
-  documentSectionFieldValues as fieldValueSchema,
   documentSections as sectionSchema,
 } from "@/server/db/schema";
-import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type {
   DocumentSectionField,
   DocumentSectionFieldInsertModel,
@@ -67,7 +63,6 @@ export const updateDocument = async (input: DocumentUpdateData) => {
 
 export const createDocumentAndRelatedEntities = async (
   documentCreateInput: DocumentInsertModel,
-  user: User,
 ) => {
   return await db.transaction(async (trx) => {
     const documentId = await upsertDocument(trx, documentCreateInput);
@@ -108,20 +103,6 @@ export const createDocumentAndRelatedEntities = async (
       return;
     }
 
-    const DEFAULT_FIELDS: Record<string, string> = {
-      "First Name": user.firstName,
-      "Last Name": user.lastName,
-      Email: user.email,
-    };
-    const fieldValueInsertDTOs = makeFieldValueInsertDTOs(
-      fieldInsertDTOs.map((field, index) => ({
-        ...field,
-        id: fieldInsertIds[index] as DocumentSectionField["id"],
-      })),
-      DEFAULT_FIELDS,
-    );
-    await upsertSectionFieldValues(trx, fieldValueInsertDTOs);
-
     return documentId;
   });
 };
@@ -156,23 +137,6 @@ const insertFields = async (
   return result.map((item) => item.id);
 };
 
-const insertFieldValues = async (
-  trx: Transaction,
-  fieldIds: DocumentSectionField["id"][],
-) => {
-  const result = await trx
-    .insert(fieldValueSchema)
-    .values(
-      fieldIds.map((fieldId) => ({
-        fieldId,
-        value: "",
-      })),
-    )
-    .$returningId();
-
-  return result.map((item) => item.id);
-};
-
 export const getDocumentDetails = async ({
   id,
   userId,
@@ -195,7 +159,7 @@ export const getDocumentDetails = async ({
 export const saveDocumentAndRelatedEntities = async (
   input: SaveDocumentDetailsData,
 ) => {
-  const { document, sections, fields, fieldValues } = input;
+  const { document, sections, fields } = input;
 
   await db.transaction(async (trx) => {
     const documentInsertPromise = document
@@ -203,16 +167,8 @@ export const saveDocumentAndRelatedEntities = async (
       : undefined;
     const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
     const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
-    const fieldValueInserts = fieldValues
-      ? upsertSectionFieldValues(trx, fieldValues)
-      : undefined;
 
-    await Promise.all([
-      documentInsertPromise,
-      sectionInserts,
-      fieldInserts,
-      fieldValueInserts,
-    ]);
+    await Promise.all([documentInsertPromise, sectionInserts, fieldInserts]);
   });
 };
 
@@ -224,19 +180,9 @@ export const addFieldsWithValues = async (
       .insert(fieldSchema)
       .values(fields)
       .$returningId();
-    const fieldValueInsertIds = await trx
-      .insert(fieldValueSchema)
-      .values(
-        fieldInsertIds.map((item) => ({
-          fieldId: item.id,
-          value: "",
-        })),
-      )
-      .$returningId();
 
     return {
       fieldInsertIds: fieldInsertIds.map((item) => item.id),
-      fieldValueInsertIds: fieldValueInsertIds.map((item) => item.id),
     };
   });
 };
@@ -259,7 +205,6 @@ export const addSectionByInternalTag = async (
     );
 
     const fieldIds = await insertFields(trx, sectionId, fieldsTemplate);
-    const fieldValueIds = await insertFieldValues(trx, fieldIds);
 
     const section = {
       ...data,
@@ -271,16 +216,9 @@ export const addSectionByInternalTag = async (
       id: fieldIds[index] as DocumentSectionField["id"],
     }));
 
-    const fieldValues = fieldValueIds.map((fieldValueId, index) => ({
-      id: fieldValueId as DocumentSectionFieldValue["id"],
-      fieldId: fieldIds[index] as DocumentSectionFieldValue["fieldId"],
-      value: "",
-    }));
-
     return {
       section,
       fields,
-      fieldValues,
     };
   });
 };

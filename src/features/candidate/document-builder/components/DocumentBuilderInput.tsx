@@ -23,16 +23,10 @@ const DocumentBuilderInput = ({
   doNotRenderLabel = false,
   autoFocus = false,
 }: DocumentBuilderInputProps) => {
+  const setFieldValue = useDocumentBuilderStore((state) => state.setFieldValue);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const getFieldValueByFieldId = useDocumentBuilderStore(
-    (state) => state.getFieldValueByFieldId,
-  );
-  const setFieldValue = useDocumentBuilderStore(
-    (state) => state.setFieldValueByFieldId,
-  );
-  const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
 
-  const inputValue = value ? value : (fieldValueObject?.value ?? "");
+  const inputValue = value ? value : (field?.value ?? "");
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 1024px)").matches;
@@ -67,7 +61,9 @@ const DocumentBuilderInput = ({
         ref={inputRef}
         defaultValue={inputValue}
         className="w-full rounded-[2px] px-4 py-3 bg-muted/30 text-muted-foreground"
-        onInput={(e) => setValue(e.target.value)}
+        onInput={(e) => {
+          setValue((e.target as HTMLInputElement).value);
+        }}
       />
     </div>
   );

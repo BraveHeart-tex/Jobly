@@ -4,7 +4,6 @@ import {
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import { exclude } from "@/lib/utils/object";
-import type { DocumentSectionFieldValueInsertModel } from "@/server/db/schema/documentSectionFieldValues";
 import type {
   DocumentSectionField,
   DocumentSectionFieldInsertModel,
@@ -89,7 +88,7 @@ const getEmploymentHistoryFields = (
       sectionId,
       fieldType: "richText",
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 const getCustomSectionFields = (
   sectionId: DocumentSection["id"],
@@ -120,7 +119,7 @@ const getCustomSectionFields = (
       sectionId,
       fieldType: "richText",
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getEducationSectionFields = (
   sectionId: DocumentSection["id"],
@@ -156,7 +155,7 @@ export const getEducationSectionFields = (
       sectionId,
       fieldType: "richText",
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getPersonalDetailsFields = (
   sectionId: DocumentSection["id"],
@@ -222,7 +221,7 @@ export const getPersonalDetailsFields = (
       fieldType: "text",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getProfessionalSummaryFields = (
   sectionId: DocumentSection["id"],
@@ -233,7 +232,7 @@ export const getProfessionalSummaryFields = (
       fieldType: "richText",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getPredefinedDocumentSectionsWithDocumentId = (
   documentId: DocumentSelectModel["id"],
@@ -318,7 +317,7 @@ export const getWebsitesAndSocialLinksSectionFields = (
       fieldType: "string",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getSkillSectionFields = (
   sectionId: DocumentSection["id"],
@@ -334,7 +333,7 @@ export const getSkillSectionFields = (
       fieldType: "skillSelect",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getCourseSectionFields = (
   sectionId: DocumentSection["id"],
@@ -360,7 +359,7 @@ export const getCourseSectionFields = (
       fieldType: "date",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getExtraCurricularActivitiesFields = (
   sectionId: DocumentSection["id"],
@@ -396,7 +395,7 @@ export const getExtraCurricularActivitiesFields = (
       fieldType: "richText",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getHobbiesSectionFields = (
   sectionId: DocumentSection["id"],
@@ -407,7 +406,7 @@ export const getHobbiesSectionFields = (
       fieldType: "textarea",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getReferencesSectionFields = (
   sectionId: DocumentSection["id"],
@@ -433,7 +432,7 @@ export const getReferencesSectionFields = (
       fieldType: "string",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const getLanguagesSectionFields = (
   sectionId: DocumentSection["id"],
@@ -449,7 +448,7 @@ export const getLanguagesSectionFields = (
       fieldType: "select",
       sectionId,
     },
-  ].map((item, index) => ({ ...item, displayOrder: index + 1 }));
+  ].map((item, index) => ({ ...item, displayOrder: index + 1, value: "" }));
 
 export const normalizeDocumentStructure = (
   nestedDocument: NonNullable<
@@ -461,12 +460,7 @@ export const normalizeDocumentStructure = (
     sections: nestedDocument.sections.map((section) =>
       exclude(section, ["fields"]),
     ),
-    fields: nestedDocument.sections.flatMap((section) =>
-      section.fields.map((field) => exclude(field, ["fieldValues"])),
-    ),
-    fieldValues: nestedDocument.sections.flatMap((section) =>
-      section.fields.flatMap((field) => field.fieldValues),
-    ),
+    fields: nestedDocument.sections.flatMap((section) => section.fields),
   };
 };
 
@@ -485,16 +479,4 @@ export const makeFieldInsertDTOs = (
   }
 
   return fieldInsertDTOs;
-};
-
-export const makeFieldValueInsertDTOs = (
-  sectionFields: (DocumentSectionFieldInsertModel & {
-    id: DocumentSectionField["id"];
-  })[],
-  defaultValues?: Record<string, string>,
-): DocumentSectionFieldValueInsertModel[] => {
-  return sectionFields.map((sectionField) => ({
-    fieldId: sectionField.id,
-    value: defaultValues?.[sectionField.fieldName] ?? "",
-  }));
 };
