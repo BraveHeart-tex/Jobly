@@ -5,8 +5,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionFieldValue } from "@/server/db/schema/documentSectionFieldValues";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { Loader2, PlusIcon } from "lucide-react";
-import { getFieldInsertTemplateBySectionTag } from "../../documents/utils";
-import { useAddFieldsWithValues } from "../hooks/useAddFieldsWithValues";
+import { getFieldInsertTemplateBySectionTag } from "@/features/candidate/documents/utils";
+import { useAddFieldsWithValues } from "@/features/candidate/document-builder/hooks/useAddFieldsWithValues";
 
 interface AddSectionItemButtonProps {
   sectionId: DocumentSection["id"];

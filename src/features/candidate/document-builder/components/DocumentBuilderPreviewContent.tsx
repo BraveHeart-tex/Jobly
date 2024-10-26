@@ -4,9 +4,9 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import { useNetworkState } from "react-use";
-import LondonTemplate from "./LondonTemplate";
-import PDFViewer from "./PDFViewer";
-import { preparePdfData } from "./utils";
+import LondonTemplate from "@/features/candidate/document-builder/components/LondonTemplate";
+import PDFViewer from "@/features/candidate/document-builder/components/PDFViewer";
+import { preparePdfData } from "@/features/candidate/document-builder/components/utils";
 
 const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;
 
@@ -14,7 +14,10 @@ const DocumentBuilderPreviewContent = () => {
   const [reRender, setReRender] = useState(0);
   const { online, previous } = useNetworkState();
   const userLostConnection = !online && previous;
-  const { document, sections, fields, fieldValues } = useDocumentBuilderStore();
+  const document = useDocumentBuilderStore((state) => state.document);
+  const sections = useDocumentBuilderStore((state) => state.sections);
+  const fields = useDocumentBuilderStore((state) => state.fields);
+  const fieldValues = useDocumentBuilderStore((state) => state.fieldValues);
 
   useEffect(() => {
     const updatePdfProps = () => {

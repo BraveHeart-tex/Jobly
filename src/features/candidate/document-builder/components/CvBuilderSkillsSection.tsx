@@ -14,8 +14,8 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import {
   type SkillMetadataKey,
   parseSkillsMetadata,

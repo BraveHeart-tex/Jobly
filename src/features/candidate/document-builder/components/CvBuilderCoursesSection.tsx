@@ -6,15 +6,14 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-
 import { groupEveryN } from "@/lib/utils/object";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import AddSectionItemButton from "./AddSectionItemButton";
-import CollapsibleSectionItemContainer from "./CollapsibleSectionItemContainer";
-import DocumentBuilderDatePickerInput from "./DocumentBuilderDatePickerInput";
-import DocumentBuilderInput from "./DocumentBuilderInput";
-import EditableSectionTitle from "./EditableSectionTitle";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
+import DocumentBuilderDatePickerInput from "@/features/candidate/document-builder/components/DocumentBuilderDatePickerInput";
+import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
+import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
 
 interface CvBuilderCoursesSectionProps {
   section: DocumentSection;

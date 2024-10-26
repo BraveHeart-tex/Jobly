@@ -12,7 +12,7 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
-import DocumentBuilderInput from "./DocumentBuilderInput";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
 
 const CURRENT_MONTH = MONTHS[new Date().getMonth()] ?? "";
 const CURRENT_YEAR = new Date().getFullYear();

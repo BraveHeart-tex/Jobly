@@ -32,7 +32,7 @@ const DocumentBuilderInput = ({
   );
   const fieldValueObject = field ? getFieldValueByFieldId(field?.id) : null;
 
-  const inputValue = value ? value : fieldValueObject?.value ?? "";
+  const inputValue = value ? value : (fieldValueObject?.value ?? "");
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 1024px)").matches;

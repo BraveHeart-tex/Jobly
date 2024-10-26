@@ -12,8 +12,8 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { useRemoveFields } from "../hooks/useRemoveFields";
-import SectionFieldsDndContext from "./SectionFieldsDndContext";
+import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
+import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 
 export const WEBSITES_SOCIAL_LINKS_SECTION_ITEMS_COUNT = 2;
 
