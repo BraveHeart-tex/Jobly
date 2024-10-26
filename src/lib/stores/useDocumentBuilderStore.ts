@@ -77,8 +77,10 @@ export const useDocumentBuilderStore = create<
         set({ document });
       },
       setDocumentValue: (key, value) => {
-        const document = get().document;
-        document[key] = value;
+        const document = {
+          ...get().document,
+          [key]: value,
+        };
         set({
           document,
         });
@@ -92,17 +94,25 @@ export const useDocumentBuilderStore = create<
           (section) => section.id === sectionId,
         );
         if (!sectionToUpdate) return;
-        sectionToUpdate[key] = value;
+
         set({
           sections: get().sections.map((section) => {
             if (section.id === sectionId) {
-              return sectionToUpdate;
+              return {
+                ...section,
+                [key]: value,
+              };
             }
             return section;
           }),
         });
         get().callSaveDocumentDetailsFn({
-          sections: [sectionToUpdate],
+          sections: [
+            {
+              ...sectionToUpdate,
+              [key]: value,
+            },
+          ],
         });
         get().callPdfUpdaterCallback();
       },
@@ -150,19 +160,15 @@ export const useDocumentBuilderStore = create<
         const field = get().fields.find((field) => field.id === fieldId);
         if (!field) return;
 
-        field.value = value;
-
-        const newFields = get().fields.map((f) => {
-          if (f.id === fieldId) {
-            return field;
-          }
-          return f;
+        set({
+          fields: get().fields.map((field) =>
+            field.id === fieldId ? { ...field, value } : field,
+          ),
         });
 
-        set({ fields: newFields });
         get().callPdfUpdaterCallback();
         get().callSaveDocumentDetailsFn({
-          fields: [field],
+          fields: [{ ...field, value }],
         });
       },
     }),
