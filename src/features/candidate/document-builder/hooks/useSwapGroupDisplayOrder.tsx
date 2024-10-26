@@ -6,7 +6,6 @@ import { arrayMove } from "@dnd-kit/sortable";
 export const useSwapGroupDisplayOrder = (
   groupedFields: DocumentSectionField[][],
 ) => {
-  const allFields = useDocumentBuilderStore((state) => state.fields);
   const setFields = useDocumentBuilderStore((state) => state.setFields);
   const callSaveDocumentDetailsFn = useDocumentBuilderStore(
     (state) => state.callSaveDocumentDetailsFn,
@@ -25,6 +24,8 @@ export const useSwapGroupDisplayOrder = (
     );
 
     const overGroup = groupedFields[overGroupIndex] as DocumentSectionField[];
+
+    const allFields = useDocumentBuilderStore.getState().fields;
 
     const newGroupFields = arrayMove(
       groupedFields,

@@ -14,9 +14,6 @@ const DocumentBuilderPreviewContent = () => {
   const [reRender, setReRender] = useState(0);
   const { online, previous } = useNetworkState();
   const userLostConnection = !online && previous;
-  const document = useDocumentBuilderStore((state) => state.document);
-  const sections = useDocumentBuilderStore((state) => state.sections);
-  const fields = useDocumentBuilderStore((state) => state.fields);
 
   useEffect(() => {
     const updatePdfProps = () => {
@@ -36,9 +33,9 @@ const DocumentBuilderPreviewContent = () => {
       <PDFViewer key={reRender}>
         <LondonTemplate
           data={preparePdfData({
-            document,
-            sections,
-            fields,
+            document: useDocumentBuilderStore.getState().document,
+            sections: useDocumentBuilderStore.getState().sections,
+            fields: useDocumentBuilderStore.getState().fields,
           })}
         />
       </PDFViewer>
