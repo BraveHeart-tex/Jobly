@@ -13,7 +13,7 @@ interface SetSectionValueParams<K extends keyof DocumentSection> {
   value: DocumentSection[K];
 }
 
-interface DocumentBuilderState {
+export interface DocumentBuilderState {
   initialized: boolean;
   document: DocumentSelectModel;
   sections: DocumentSection[];

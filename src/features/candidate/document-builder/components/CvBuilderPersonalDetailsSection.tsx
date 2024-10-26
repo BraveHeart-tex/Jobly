@@ -7,17 +7,23 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
+import { useShallow } from "zustand/react/shallow";
 
 const CvBuilderPersonalDetailsSection = () => {
   const [showAdditionalDetails, setShowAdditionalDetails] = useState(false);
-  const section = useDocumentBuilderStore((state) =>
-    state.sections.find(
-      (section) =>
-        section.internalSectionTag === INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
+  const section = useDocumentBuilderStore(
+    useShallow((state) =>
+      state.sections.find(
+        (section) =>
+          section.internalSectionTag === INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
+      ),
     ),
   );
-  const fields = useDocumentBuilderStore((state) =>
-    state.fields.filter((field) => field.sectionId === section?.id),
+
+  const fields = useDocumentBuilderStore(
+    useShallow((state) =>
+      state.fields.filter((field) => field.sectionId === section?.id),
+    ),
   );
 
   return (
