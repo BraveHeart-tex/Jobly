@@ -11,9 +11,12 @@ import type {
   JobPostingSelectModel,
 } from "@/server/db/schema/jobPostings";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
-import type { User } from "lucia";
-import { withBookmarkJoin, withUserViewsJobJoin } from "../utils";
 import type { GetJobListingsOutput } from "@/validators/getJobListingsValidator";
+import {
+  withBookmarkJoin,
+  withUserViewsJobJoin,
+} from "@/features/candidate/jobs/utils";
+import type { DBUser } from "@/server/db/schema/users";
 
 export const jobRepository = {
   async getJobDetailsList({
@@ -169,7 +172,7 @@ export const jobRepository = {
         ),
       );
   },
-  async getBookmarkedJobs(userId: User["id"]) {
+  async getBookmarkedJobs(userId: DBUser["id"]) {
     return db
       .select({
         // TODO: Get only the needed columns later on instead of spreading
@@ -183,7 +186,7 @@ export const jobRepository = {
       )
       .where(eq(userBookmarksJobPosting.userId, userId));
   },
-  async getViewedJobs(userId: User["id"]) {
+  async getViewedJobs(userId: DBUser["id"]) {
     return db
       .select({
         // TODO: Get only the needed columns later on instead of spreading
@@ -202,7 +205,7 @@ export const jobRepository = {
 interface GetJobDetailsListParams extends Omit<GetJobListingsOutput, "page"> {
   workType?: Nullable<JobPostingSelectModel["workType"]>;
   employmentType?: Nullable<JobPostingSelectModel["employmentType"]>;
-  userId: User["id"];
+  userId: DBUser["id"];
   limit: number;
   skipAmount: number;
 }
@@ -211,12 +214,12 @@ interface GetJobDetailsCountParams {
   query: string;
   workType?: Nullable<JobPostingSelectModel["workType"]>;
   employmentType?: Nullable<JobPostingSelectModel["employmentType"]>;
-  userId: User["id"];
+  userId: DBUser["id"];
   bookmarked: boolean;
   viewed: boolean;
 }
 
 interface GetJobByIdParams {
   jobId: JobPostingSelectModel["id"];
-  userId: User["id"];
+  userId: DBUser["id"];
 }

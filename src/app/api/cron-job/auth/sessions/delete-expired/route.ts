@@ -1,5 +1,4 @@
 import { env } from "@/env";
-import { lucia } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
 export const DELETE = async (request: Request) => {
@@ -11,9 +10,8 @@ export const DELETE = async (request: Request) => {
   console.info("Deleting expired sessions...");
 
   try {
-    await lucia.deleteExpiredSessions();
-
-    // TODO: Delete orphaned redis keys for sessions later on
+    // TODO:
+    // await deleteExpiredSessions();
 
     console.info("Deleted expired sessions");
 

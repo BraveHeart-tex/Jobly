@@ -14,9 +14,9 @@ import type {
   DocumentInsertModel,
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
+import type { DBUser } from "@/server/db/schema/users";
 import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
-import type { User } from "lucia";
 
 export const upsertDocument = async (
   trx: Transaction,
@@ -65,7 +65,7 @@ export const getDocumentWithSectionsAndFields = ({
   userId,
 }: {
   documentId: DocumentSelectModel["id"];
-  userId: User["id"];
+  userId: DBUser["id"];
 }) => {
   return db.query.documents.findFirst({
     where: and(eq(documents.id, documentId), eq(documents.userId, userId)),
@@ -81,7 +81,7 @@ export const getDocumentWithSectionsAndFields = ({
   });
 };
 
-export const getDocumentsByUserId = (userId: User["id"]) => {
+export const getDocumentsByUserId = (userId: DBUser["id"]) => {
   return db
     .select()
     .from(documents)
@@ -94,7 +94,7 @@ export const deleteDocumentById = ({
   userId,
 }: {
   documentId: DocumentSelectModel["id"];
-  userId: User["id"];
+  userId: DBUser["id"];
 }) => {
   return db
     .delete(documents)

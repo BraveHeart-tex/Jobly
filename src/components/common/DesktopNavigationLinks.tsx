@@ -9,13 +9,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import { getNavigationLinksByRole } from "@/lib/navigationLinks";
 import { cn } from "@/lib/utils";
-import type { User } from "lucia";
+import type { DBUser } from "@/server/db/schema/users";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 
 interface DesktopNavigationLinksProps {
-  userRole?: User["role"];
+  userRole?: DBUser["role"];
 }
 
 const DesktopNavigationLinks = ({ userRole }: DesktopNavigationLinksProps) => {

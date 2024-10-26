@@ -1,6 +1,15 @@
 "use server";
-import { lucia } from "@/lib/auth";
-import { validateRequest } from "@/lib/auth/validateRequest";
+import {
+  createSession,
+  generateSessionToken,
+  invalidateSession,
+} from "@/lib/auth/session";
+import {
+  deleteSessionTokenCookie,
+  setSessionTokenCookie,
+} from "@/lib/auth/sessionCookie";
+import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
+import { AUTH_COOKIE_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
@@ -26,34 +35,25 @@ export const verifyPassword = async (
 };
 
 export const createSessionWithUserId = async (userId: DBUser["id"]) => {
-  const session = await lucia.createSession(userId, {});
+  const sessionToken = generateSessionToken();
+  const session = await createSession(sessionToken, userId);
 
-  const sessionCookie = lucia.createSessionCookie(session.id);
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
-  );
+  setSessionTokenCookie(sessionToken, session.expiresAt);
 };
 
 export const signOut = async (role: "candidate" | "employer") => {
-  const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+  const sessionId = cookies().get(AUTH_COOKIE_NAME)?.value ?? null;
   if (!sessionId) return;
 
-  const sessionCookie = lucia.createBlankSessionCookie();
-  cookies().set(
-    sessionCookie.name,
-    sessionCookie.value,
-    sessionCookie.attributes,
-  );
+  deleteSessionTokenCookie();
 
-  await lucia.invalidateSession(sessionId);
+  await invalidateSession(sessionId);
 
   return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
 };
 
 export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {
-  const { session, user } = await validateRequest();
+  const { session, user } = await unCachedValidateRequest();
   if (!session || !user) {
     return redirect(SHARED_ROUTES.LOGIN);
   }

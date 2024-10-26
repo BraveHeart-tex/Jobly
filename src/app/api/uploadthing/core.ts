@@ -1,4 +1,4 @@
-import { validateRequest } from "@/lib/auth/validateRequest";
+import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
 import { utapi } from "@/server/uploadThing";
 import {
   getUploadThingFileKeyFromUrl,
@@ -14,7 +14,7 @@ export const fileRouter = {
     image: { maxFileSize: "4MB" },
   })
     .middleware(async () => {
-      const { user } = await validateRequest();
+      const { user } = await unCachedValidateRequest();
 
       if (!user) {
         throw new UploadThingError(

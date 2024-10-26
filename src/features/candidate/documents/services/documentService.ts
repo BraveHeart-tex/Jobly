@@ -35,12 +35,12 @@ import type {
   DocumentInsertModel,
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
+import type { DBUser } from "@/server/db/schema/users";
 import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
 import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
-import type { User } from "lucia";
 
-export const getUserDocuments = async (userId: User["id"]) => {
+export const getUserDocuments = async (userId: DBUser["id"]) => {
   return getDocumentsByUserId(userId);
 };
 
@@ -49,7 +49,7 @@ export const deleteDocument = async ({
   userId,
 }: {
   documentId: DocumentSelectModel["id"];
-  userId: User["id"];
+  userId: DBUser["id"];
 }) => {
   return deleteDocumentById({
     documentId,
@@ -142,7 +142,7 @@ export const getDocumentDetails = async ({
   userId,
 }: {
   id: DocumentSelectModel["id"];
-  userId: User["id"];
+  userId: DBUser["id"];
 }): Promise<DocumentBuilderConfig | { error: string }> => {
   const document = await getDocumentWithSectionsAndFields({
     documentId: id,

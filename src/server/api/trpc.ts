@@ -1,8 +1,8 @@
-import { validateRequest } from "@/lib/auth/validateRequest";
+import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/server/db";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
-import { users } from "../db/schema";
+import { users } from "@/server/db/schema";
 import {
   ValiError,
   array,
@@ -14,7 +14,7 @@ import {
 } from "valibot";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const { session, user } = await validateRequest();
+  const { session, user } = await unCachedValidateRequest();
 
   return {
     session,

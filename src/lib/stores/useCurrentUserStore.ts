@@ -1,10 +1,10 @@
-import type { CtxUserAttributes } from "@/lib/auth";
+import type { ContextUserAttributes } from "@/lib/auth/session";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface CurrentUserStore {
-  user: CtxUserAttributes | null;
-  setUser: (user: CtxUserAttributes | null) => void;
+  user: ContextUserAttributes | null;
+  setUser: (user: ContextUserAttributes | null) => void;
   updateName: (firstName: string, lastName: string) => void;
   updateAvatarUrl: (avatarUrl: string | null) => void;
 }

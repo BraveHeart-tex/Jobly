@@ -1,9 +1,9 @@
 import { companyUserService } from "@/features/employer/company/services/userCompanyService";
-import type { CtxUserAttributes } from "@/lib/auth";
+import { jobPostingSkillsRepository } from "@/features/employer/jobPosting/repositories/jobPostingSkillsRepository";
+import type { ContextUserAttributes } from "@/lib/auth/session";
 import type { Transaction } from "@/lib/types";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
 import { TRPCError } from "@trpc/server";
-import { jobPostingSkillsRepository } from "./repositories/jobPostingSkillsRepository";
 
 export const insertJobPostingSkills = async (
   skills: SkillSelectModel[],
@@ -21,7 +21,9 @@ export const insertJobPostingSkills = async (
   );
 };
 
-export const ensureEmployerCompanyLink = async (user: CtxUserAttributes) => {
+export const ensureEmployerCompanyLink = async (
+  user: ContextUserAttributes,
+) => {
   if (user.role !== "employer") {
     throw new TRPCError({
       code: "UNAUTHORIZED",

@@ -1,22 +1,29 @@
 import { companyUserService } from "@/features/employer/company/services/userCompanyService";
-import type { CtxUserAttributes } from "@/lib/auth";
-import { validateRequest } from "@/lib/auth/validateRequest";
+import type { ContextUserAttributes } from "@/lib/auth/session";
 
-export const getCurrentUser = async () => {
-  const result = await validateRequest();
-  if (!result.user) return;
+import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
 
-  const ctxUser: CtxUserAttributes = result.user;
+export interface GetCurrentUserReturnType extends ContextUserAttributes {
+  hasToSetupCompanyInformation?: boolean;
+  companyId?: number;
+}
 
-  if (ctxUser?.role === "employer") {
-    const companyDetails =
-      await companyUserService.getCompanyUserDetailsByUserId(ctxUser.id);
-    if (!companyDetails) {
-      ctxUser.hasToSetupCompanyInformation = true;
-    } else {
-      ctxUser.companyId = companyDetails.id;
+export const getCurrentUser =
+  async (): Promise<GetCurrentUserReturnType | null> => {
+    const result = await unCachedValidateRequest();
+    if (!result.user) return null;
+
+    const ctxUser: GetCurrentUserReturnType = result.user;
+
+    if (ctxUser?.role === "employer") {
+      const companyDetails =
+        await companyUserService.getCompanyUserDetailsByUserId(ctxUser.id);
+      if (!companyDetails) {
+        ctxUser.hasToSetupCompanyInformation = true;
+      } else {
+        ctxUser.companyId = companyDetails.id;
+      }
     }
-  }
 
-  return ctxUser;
-};
+    return ctxUser;
+  };

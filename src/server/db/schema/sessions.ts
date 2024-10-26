@@ -7,6 +7,7 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import { users } from "../schema";
+import type { InferSelectModel } from "drizzle-orm";
 
 const sessions = mysqlTable(
   "Sessions",
@@ -28,5 +29,7 @@ const sessions = mysqlTable(
     };
   },
 );
+
+export type Session = InferSelectModel<typeof sessions>;
 
 export default sessions;

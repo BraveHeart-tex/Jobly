@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/sheet";
 import { APP_NAME } from "@/lib/constants";
 import { getNavigationLinksByRole } from "@/lib/navigationLinks";
-import type { User } from "lucia";
+import type { DBUser } from "@/server/db/schema/users";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 interface MobileNavigationLinksProps {
-  userRole?: User["role"];
+  userRole?: DBUser["role"];
 }
 
 const MobileNavigationLinks = ({ userRole }: MobileNavigationLinksProps) => {

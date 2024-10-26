@@ -1,7 +1,7 @@
+import { jobRepository } from "@/features/candidate/jobs/repositories/jobRepository";
 import type { MakeFieldsRequired } from "@/lib/types";
 import type { JobPostingInsertModel } from "@/server/db/schema/jobPostings";
-import type { User } from "lucia";
-import { jobRepository } from "../repositories/jobRepository";
+import type { DBUser } from "@/server/db/schema/users";
 import type { GetJobListingsOutput } from "@/validators/getJobListingsValidator";
 
 export const jobService = {
@@ -64,7 +64,7 @@ export const jobService = {
     viewed = false,
     employmentType,
     workType,
-  }: GetJobListingsOutput & { userId: User["id"] }) {
+  }: GetJobListingsOutput & { userId: DBUser["id"] }) {
     const limit = 12;
     const skipAmount = (page - 1) * limit;
 

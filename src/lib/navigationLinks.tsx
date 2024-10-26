@@ -1,6 +1,7 @@
 import { PORTAL_TYPE_QUERY_KEY } from "@/lib/constants";
+import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "@/lib/routes";
 import type { NavigationMenuItem } from "@/lib/types";
-import type { User } from "lucia";
+import type { DBUser } from "@/server/db/schema/users";
 import {
   BarChartIcon,
   BellIcon,
@@ -25,7 +26,6 @@ import {
   UsersIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { CANDIDATE_ROUTES, EMPLOYER_ROUTES } from "./routes";
 
 export const CANDIDATE_NAVIGATION_LINKS: NavigationMenuItem[] = [
   {
@@ -195,17 +195,17 @@ export const EMPLOYER_NAVIGATION_LINKS: NavigationMenuItem[] = [
   },
 ];
 
-export const getNavigationLinksByRole = (role?: User["role"]) => {
+export const getNavigationLinksByRole = (role?: DBUser["role"]) => {
   const portalTypeParam = useSearchParams().get(
     PORTAL_TYPE_QUERY_KEY,
-  ) as User["role"];
-  const validRoles: User["role"][] = ["candidate", "employer"];
+  ) as DBUser["role"];
+  const validRoles: DBUser["role"][] = ["candidate", "employer"];
 
   const targetRole =
     role ||
     (validRoles.includes(portalTypeParam) ? portalTypeParam : "candidate");
 
-  const roleToLinksMap: Record<User["role"], NavigationMenuItem[]> = {
+  const roleToLinksMap: Record<DBUser["role"], NavigationMenuItem[]> = {
     candidate: CANDIDATE_NAVIGATION_LINKS,
     employer: EMPLOYER_NAVIGATION_LINKS,
   };

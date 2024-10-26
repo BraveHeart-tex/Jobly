@@ -1,5 +1,6 @@
 "use client";
 
+import type { GetCurrentUserReturnType } from "@/actions/auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -10,7 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/features/auth/utils";
-import type { CtxUserAttributes } from "@/lib/auth";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
@@ -22,7 +22,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
 
 interface UserMenuProps {
-  user: CtxUserAttributes;
+  user: GetCurrentUserReturnType;
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
