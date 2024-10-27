@@ -1,5 +1,5 @@
 import { educationalBackgrounds, userSkills } from "@/server/db/schema";
-import { relations } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 
 const userSkillEducationalBackgrounds = mysqlTable(
@@ -38,5 +38,9 @@ export const userSkillEducationalBackgroundsRelations = relations(
     }),
   }),
 );
+
+export type InsertUserSkillEducationalBackgroundModel = InferInsertModel<
+  typeof userSkillEducationalBackgrounds
+>;
 
 export default userSkillEducationalBackgrounds;

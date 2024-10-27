@@ -1,5 +1,9 @@
 import { skills, users } from "@/server/db/schema";
-import { type InferSelectModel, relations } from "drizzle-orm";
+import {
+  type InferSelectModel,
+  relations,
+  type InferInsertModel,
+} from "drizzle-orm";
 import { index, int, mysqlTable } from "drizzle-orm/mysql-core";
 
 const userSkills = mysqlTable(
@@ -38,5 +42,6 @@ export const userSkillsRelations = relations(userSkills, ({ one }) => ({
 }));
 
 export type UserSkill = InferSelectModel<typeof userSkills>;
+export type InsertUserSkillModel = InferInsertModel<typeof userSkills>;
 
 export default userSkills;

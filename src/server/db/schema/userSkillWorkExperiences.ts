@@ -1,5 +1,5 @@
 import { userSkills, workExperiences } from "@/server/db/schema";
-import { relations } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
 
 const userSkillWorkExperiences = mysqlTable(
@@ -36,5 +36,9 @@ export const userSkillWorkExperiencesRelations = relations(
     }),
   }),
 );
+
+export type InsertUserSkillWorkExperienceModel = InferInsertModel<
+  typeof userSkillWorkExperiences
+>;
 
 export default userSkillWorkExperiences;

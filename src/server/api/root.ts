@@ -8,11 +8,11 @@ import { jobPostingRouter } from "@/features/employer/jobPosting/api/jobPostingR
 import { skillsRouter } from "@/features/employer/jobPosting/api/skillsRouter";
 import { userProfileRouter } from "@/features/user/profile/api/userProfileRouter";
 import { workExperienceRouter } from "@/features/user/profile/workExperience/api/workExperienceRouter";
-import { userSkillRouter } from "@/features/user/skills/api/userSkillRouter";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { educationalBackgroundsRouter } from "@/features/user/profile/api/educationalBackgrounds";
 import { cityRouter } from "@/features/user/profile/api/cities";
 import { userRouter } from "@/features/user/api/userRouter";
+import { userSkillsRouter } from "@/features/user/profile/api/userSkillsRouter";
 
 export const appRouter = createTRPCRouter({
   user: userRouter,
@@ -24,7 +24,7 @@ export const appRouter = createTRPCRouter({
   company: companyRouter,
   skill: skillsRouter,
   userProfile: userProfileRouter,
-  userSkill: userSkillRouter,
+  userSkills: userSkillsRouter,
   workExperience: workExperienceRouter,
   educationalBackgrounds: educationalBackgroundsRouter,
   countries: countryRouter,

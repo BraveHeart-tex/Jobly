@@ -1,6 +1,7 @@
 import FormDialog from "@/components/common/FormDialog";
 import RequiredIndicator from "@/components/common/RequiredIndicator";
 import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import { showSuccessToast } from "@/components/toastUtils";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { useLoadSkillOptions } from "@/features/employer/jobPosting/hooks/useLoadSkillOptions";
+import { useCreateUserSkill } from "@/features/user/profile/hooks/useCreateUserSkill";
 import { useGetEducationalBackgrounds } from "@/features/user/profile/hooks/useGetEducationalBackgrounds";
 import { useGetWorkExperiences } from "@/features/user/profile/hooks/useGetWorkExperiences";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
@@ -20,8 +22,10 @@ import {
   type UserSkillsData,
   userSkillsValidator,
 } from "@/validators/user/profile/userSkillsValidator";
+import { useRouter } from "next/navigation";
 
 const UserSkillsFormDialog = () => {
+  const router = useRouter();
   const form = useExtendedForm<UserSkillsData>(userSkillsValidator, {
     defaultValues: {
       selectedSkill: undefined,
@@ -32,6 +36,14 @@ const UserSkillsFormDialog = () => {
 
   const { idQuery, closeModal } = useProfilePageSearchParams();
 
+  const { createUserSkill, isCreatingUserSkill } = useCreateUserSkill({
+    onSuccess: async () => {
+      form.reset();
+      await closeModal();
+      router.refresh();
+      showSuccessToast("Skill created successfully.");
+    },
+  });
   const { workExperiences, isFetchingWorkExperiences } =
     useGetWorkExperiences();
   const { educationalBackgrounds, isFetchingEducationalBackgrounds } =
@@ -47,15 +59,27 @@ const UserSkillsFormDialog = () => {
 
   const loadSkillOptions = useLoadSkillOptions();
 
-  const onSubmit = (_data: UserSkillsData) => {};
+  const onSubmit = (data: UserSkillsData) => {
+    if (isEditMode) {
+    } else {
+      createUserSkill(data);
+    }
+  };
+
   const handleDelete = () => {};
 
   return (
     <FormDialog
       title={`${isEditMode ? "Edit" : "Add"} Skill`}
       onClose={closeModal}
-      isSaveDisabled={isFetchingSkillDetails || isUpdatingSkill}
-      isCloseDisabled={isUpdatingSkill}
+      isSaveDisabled={
+        isFetchingSkillDetails ||
+        isUpdatingSkill ||
+        isFetchingWorkExperiences ||
+        isFetchingEducationalBackgrounds ||
+        isCreatingUserSkill
+      }
+      isCloseDisabled={isUpdatingSkill || isCreatingUserSkill}
       isLoadingInitialData={isFetchingSkillDetails}
       form={form}
       onSubmit={onSubmit}
