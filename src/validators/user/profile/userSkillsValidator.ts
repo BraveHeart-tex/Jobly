@@ -16,18 +16,8 @@ export const userSkillsValidator = object({
     ),
     label: string(),
   }),
-  selectedWorkExperience: nullable(
-    object({
-      id: number(),
-      label: string(),
-    }),
-  ),
-  selectedEducation: nullable(
-    object({
-      id: number(),
-      label: string(),
-    }),
-  ),
+  attributedWorkExperienceId: nullable(number()),
+  attributedEducationId: nullable(number()),
 });
 
 export type UserSkillsData = InferOutput<typeof userSkillsValidator>;

@@ -3,6 +3,7 @@ import {
   createEducationalBackgroundUseCase,
   deleteEducationalBackgroundUseCase,
   getEducationalBackgroundUseCase,
+  getEducationalBackgroundsUseCase,
   updateEducationalBackgroundUseCase,
 } from "@/features/user/profile/use-cases/educationalBackgrounds";
 import { GenericIdValidator } from "@/validators/schemaUtils";
@@ -43,4 +44,8 @@ export const educationalBackgroundsRouter = createTRPCRouter({
         userId,
       });
     }),
+  getEducationalBackgrounds: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return getEducationalBackgroundsUseCase(userId);
+  }),
 });

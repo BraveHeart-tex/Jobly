@@ -29,6 +29,15 @@ export const getWorkExperience = ({
   });
 };
 
+export const getWorkExperiences = (
+  userId: number,
+): Promise<WorkExperience[]> => {
+  return db
+    .select()
+    .from(workExperiences)
+    .where(eq(workExperiences.userId, userId));
+};
+
 export const updateWorkExperience = (
   data: MakeFieldsRequired<WorkExperience, "id">,
 ) => {

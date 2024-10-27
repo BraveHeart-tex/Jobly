@@ -52,3 +52,12 @@ export const updateEducationalBackground = async (
     .set(data)
     .where(eq(educationalBackgrounds.id, data.id));
 };
+
+export const getEducationalBackgrounds = async (
+  userId: number,
+): Promise<EducationalBackground[]> => {
+  return await db
+    .select()
+    .from(educationalBackgrounds)
+    .where(eq(educationalBackgrounds.userId, userId));
+};

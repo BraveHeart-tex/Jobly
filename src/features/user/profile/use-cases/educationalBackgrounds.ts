@@ -2,6 +2,7 @@ import {
   createEducationalBackground,
   deleteEducationalBackground,
   getEducationalBackground,
+  getEducationalBackgrounds,
   updateEducationalBackground,
 } from "@/features/user/profile/data-access/educationalBackgrounds";
 import type { MakeFieldsRequired } from "@/lib/types";
@@ -34,4 +35,8 @@ export const updateEducationalBackgroundUseCase = async (
   data: MakeFieldsRequired<EducationalBackground, "id">,
 ) => {
   return await updateEducationalBackground(data);
+};
+
+export const getEducationalBackgroundsUseCase = async (userId: number) => {
+  return await getEducationalBackgrounds(userId);
 };

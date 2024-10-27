@@ -3,6 +3,7 @@ import {
   getWorkExperienceUseCase,
   updateWorkExperienceUseCase,
   deleteWorkExperienceUseCase,
+  getWorkExperiencesUseCase,
 } from "@/features/user/profile/workExperience/use-cases/workExperiences";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
@@ -66,4 +67,8 @@ export const workExperienceRouter = createTRPCRouter({
         experienceId: input.id,
       });
     }),
+  getWorkExperiences: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return getWorkExperiencesUseCase(userId);
+  }),
 });

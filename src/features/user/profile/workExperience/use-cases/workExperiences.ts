@@ -12,6 +12,7 @@ import {
   getWorkExperience,
   updateWorkExperience,
   deleteWorkExperience,
+  getWorkExperiences,
 } from "@/features/user/profile/workExperience/data-access/workExperiences";
 
 export const createWorkExperienceUseCase = async (
@@ -25,6 +26,10 @@ export const getWorkExperienceUseCase = async ({
   experienceId,
 }: GetWorkExperienceParams) => {
   return getWorkExperience({ userId, experienceId });
+};
+
+export const getWorkExperiencesUseCase = async (userId: number) => {
+  return getWorkExperiences(userId);
 };
 
 export const updateWorkExperienceUseCase = async (
