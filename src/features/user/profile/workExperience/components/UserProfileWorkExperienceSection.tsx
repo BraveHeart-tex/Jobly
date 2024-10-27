@@ -1,13 +1,14 @@
 import { DateTime } from "luxon";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
-import SingleExperienceCard from "./SingleExperienceCard";
-import type { ExperienceGroup } from "../types";
-import GroupedExperienceCard from "./GroupedExperienceCard";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import ClientOnly from "@/components/common/ClientOnly";
-import AddProfileRecordButton from "../../components/AddProfileRecordButton";
+import AddProfileRecordButton from "@/features/user/profile/components/AddProfileRecordButton";
+import GroupedExperienceCard from "@/features/user/profile/workExperience/components/GroupedExperienceCard";
+import SingleExperienceCard from "@/features/user/profile/workExperience/components/SingleExperienceCard";
+import type { ExperienceGroup } from "@/features/user/profile/workExperience/types";
 
 interface UserProfileWorkExperienceSectionProps {
   experiences: WorkExperience[];

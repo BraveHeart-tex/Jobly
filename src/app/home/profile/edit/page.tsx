@@ -5,6 +5,7 @@ import UserProfileAboutSection from "@/features/user/profile/components/UserProf
 import UserProfileEducationSection from "@/features/user/profile/components/UserProfileEducationSection";
 import UserProfilePersonalInformation from "@/features/user/profile/components/UserProfilePersonalInformation";
 import UserProfileStickyHeader from "@/features/user/profile/components/UserProfileStickyHeader";
+import UserProfileSkillsSection from "@/features/user/profile/workExperience/components/UserProfileSkillsSection";
 import UserProfileWorkExperienceSection from "@/features/user/profile/workExperience/components/UserProfileWorkExperienceSection";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { api } from "@/trpc/server";
@@ -35,6 +36,9 @@ const EditProfilePage = async () => {
         />
         <UserProfileEducationSection
           educationBackground={profileDetailsData.educationalBackground}
+        />
+        <UserProfileSkillsSection
+          skills={profileDetailsData.skillsWithExperience}
         />
       </PageContainer>
       <ClientOnly>

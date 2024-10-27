@@ -14,6 +14,7 @@ import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAb
 import { mapHighlightedSkills } from "@/features/user/profile/utils";
 import type {
   GetAboutInformationReturnType,
+  SkillWithExperience,
   UserProfileInformation,
 } from "@/features/user/profile/types";
 
@@ -52,6 +53,8 @@ export const userProfileRepository = {
         userSkills: {
           with: {
             skill: true,
+            userSkillEducationalBackgrounds: true,
+            userSkillWorkExperiences: true,
           },
         },
       },
@@ -96,6 +99,38 @@ export const userProfileRepository = {
       city = countryResult?.cities?.[0]?.name || "";
     }
 
+    const skillsWithExperience: SkillWithExperience[] = result.userSkills
+      .map((userSkill) => ({
+        skillId: userSkill.skill.id,
+        skillName: userSkill.skill.name,
+        workExperiences: userSkill.userSkillWorkExperiences.map((item) => {
+          const workExperience = result.workExperiences.find(
+            (workExperience) => workExperience.id === item.workExperienceId,
+          );
+
+          if (!workExperience) return null;
+          return {
+            workExperienceId: workExperience.id,
+            workExperienceTitle: `${workExperience.jobTitle} - ${workExperience.employer}`,
+          };
+        }),
+        educationalBackgrounds: userSkill.userSkillEducationalBackgrounds.map(
+          (item) => {
+            const educationalBackground = result.educationalBackgrounds.find(
+              (educationalBackground) =>
+                educationalBackground.id === item.educationalBackgroundId,
+            );
+
+            if (!educationalBackground) return null;
+            return {
+              educationalBackgroundId: educationalBackground.id,
+              educationalBackgroundTitle: `${educationalBackground.fieldOfStudy} - ${educationalBackground.school}`,
+            };
+          },
+        ),
+      }))
+      .filter(Boolean) as SkillWithExperience[];
+
     return {
       firstName: result.firstName,
       lastName: result.lastName,
@@ -103,6 +138,7 @@ export const userProfileRepository = {
       ...result.userProfile,
       educationalBackground: result.educationalBackgrounds,
       skills: result.userSkills.map((item) => item.skill),
+      skillsWithExperience,
       bio: result.userBio?.bio || "",
       highlightedSkills,
       workExperiences: result.workExperiences,

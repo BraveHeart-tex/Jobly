@@ -1,4 +1,9 @@
-import { skills, users } from "@/server/db/schema";
+import {
+  skills,
+  userSkillEducationalBackgrounds,
+  userSkillWorkExperiences,
+  users,
+} from "@/server/db/schema";
 import {
   type InferSelectModel,
   relations,
@@ -30,7 +35,7 @@ const userSkills = mysqlTable(
   },
 );
 
-export const userSkillsRelations = relations(userSkills, ({ one }) => ({
+export const userSkillsRelations = relations(userSkills, ({ one, many }) => ({
   user: one(users, {
     fields: [userSkills.userId],
     references: [users.id],
@@ -39,6 +44,8 @@ export const userSkillsRelations = relations(userSkills, ({ one }) => ({
     fields: [userSkills.skillId],
     references: [skills.id],
   }),
+  userSkillWorkExperiences: many(userSkillWorkExperiences),
+  userSkillEducationalBackgrounds: many(userSkillEducationalBackgrounds),
 }));
 
 export type UserSkill = InferSelectModel<typeof userSkills>;

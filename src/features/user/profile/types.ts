@@ -34,6 +34,7 @@ export interface UserProfileInformation {
   title: string | null;
   websiteLink: string | null;
   websiteLinkText: string | null;
+  skillsWithExperience: SkillWithExperience[];
 }
 
 export interface GetAboutInformationReturnType {
@@ -66,4 +67,14 @@ export interface GetUserProfileReturn {
   educationalBackgrounds: EducationalBackground[];
   selectedCountry: { label: string; value: number } | null;
   selectedCity: { label: string; value: number } | null;
+}
+
+export interface SkillWithExperience {
+  skillName: string;
+  skillId: number;
+  workExperiences: { workExperienceId: number; workExperienceTitle: string }[];
+  educationalBackgrounds: {
+    educationalBackgroundId: number;
+    educationalBackgroundTitle: string;
+  }[];
 }
