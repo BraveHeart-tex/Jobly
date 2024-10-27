@@ -1,17 +1,22 @@
+import {
+  createWorkExperienceUseCase,
+  getWorkExperienceUseCase,
+  updateWorkExperienceUseCase,
+  deleteWorkExperienceUseCase,
+} from "@/features/user/profile/workExperience/use-cases/workExperiences";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   UpdateWorkExperienceValidator,
   WorkExperienceValidator,
 } from "@/validators/user/profile/workExperienceValidator";
 import { minValue, number, object, parser, pipe } from "valibot";
-import { workExperienceService } from "../services/workExperienceService";
 
 export const workExperienceRouter = createTRPCRouter({
   createWorkExperience: protectedProcedure
     .input(parser(WorkExperienceValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      return workExperienceService.createWorkExperience({
+      return createWorkExperienceUseCase({
         ...input,
         userId,
       });
@@ -29,7 +34,7 @@ export const workExperienceRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      return workExperienceService.getWorkExperience({
+      return getWorkExperienceUseCase({
         userId,
         experienceId: input.id,
       });
@@ -38,7 +43,7 @@ export const workExperienceRouter = createTRPCRouter({
     .input(parser(UpdateWorkExperienceValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      return workExperienceService.updateWorkExperience({
+      return updateWorkExperienceUseCase({
         ...input,
         userId,
       });
@@ -56,7 +61,7 @@ export const workExperienceRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      return workExperienceService.deleteWorkExperience({
+      return deleteWorkExperienceUseCase({
         userId,
         experienceId: input.id,
       });

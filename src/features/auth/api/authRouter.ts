@@ -12,9 +12,9 @@ import {
   verifyPassword,
 } from "@/features/auth/utils";
 import {
-  createUserUseCase,
   getUserByEmailUseCase,
-} from "@/features/user/services/userService";
+  createUserUseCase,
+} from "@/features/user/profile/use-cases/users";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
