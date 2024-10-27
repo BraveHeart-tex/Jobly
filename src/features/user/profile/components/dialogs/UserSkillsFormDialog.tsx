@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { useLoadSkillOptions } from "@/features/employer/jobPosting/hooks/useLoadSkillOptions";
 import { useCreateUserSkill } from "@/features/user/profile/hooks/useCreateUserSkill";
 import { useGetEducationalBackgrounds } from "@/features/user/profile/hooks/useGetEducationalBackgrounds";
+import { useGetUserSkill } from "@/features/user/profile/hooks/useGetUserSkill";
 import { useGetWorkExperiences } from "@/features/user/profile/hooks/useGetWorkExperiences";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
@@ -23,6 +24,7 @@ import {
   userSkillsValidator,
 } from "@/validators/user/profile/userSkillsValidator";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const UserSkillsFormDialog = () => {
   const router = useRouter();
@@ -48,13 +50,14 @@ const UserSkillsFormDialog = () => {
     useGetWorkExperiences();
   const { educationalBackgrounds, isFetchingEducationalBackgrounds } =
     useGetEducationalBackgrounds();
+  const { userSkill, isFetchingUserSkill } = useGetUserSkill(idQuery);
 
   const isEditMode = !!idQuery;
   const workExperienceCount = workExperiences?.length ?? 0;
   const educationalBackgroundCount = educationalBackgrounds?.length ?? 0;
   const shouldRenderAttributeTitle =
     workExperienceCount > 0 || educationalBackgroundCount > 0;
-  const isFetchingSkillDetails = false;
+
   const isUpdatingSkill = false;
 
   const loadSkillOptions = useLoadSkillOptions();
@@ -68,19 +71,25 @@ const UserSkillsFormDialog = () => {
 
   const handleDelete = () => {};
 
+  useEffect(() => {
+    if (!userSkill) return;
+
+    form.reset(userSkill);
+  }, [userSkill, form.reset]);
+
   return (
     <FormDialog
       title={`${isEditMode ? "Edit" : "Add"} Skill`}
       onClose={closeModal}
       isSaveDisabled={
-        isFetchingSkillDetails ||
+        isFetchingUserSkill ||
         isUpdatingSkill ||
         isFetchingWorkExperiences ||
         isFetchingEducationalBackgrounds ||
         isCreatingUserSkill
       }
       isCloseDisabled={isUpdatingSkill || isCreatingUserSkill}
-      isLoadingInitialData={isFetchingSkillDetails}
+      isLoadingInitialData={isFetchingUserSkill}
       form={form}
       onSubmit={onSubmit}
       onDeleteClick={isEditMode ? handleDelete : undefined}

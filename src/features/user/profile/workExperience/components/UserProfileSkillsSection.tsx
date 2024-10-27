@@ -29,24 +29,24 @@ const UserProfileSkillsSection = ({
 
       <div className="p-4 grid gap-8">
         {skills.map((skill) => (
-          <div key={skill.skillId} className="flex flex-col gap-2">
+          <div key={skill.userSkillId} className="flex flex-col gap-2">
             <div className="flex items-center justify-between gap-2">
               <p className="font-semibold text-base">{skill.skillName}</p>
               <EditProfileRecordButton
                 modalLink="skills/edit"
-                recordId={skill.skillId}
+                recordId={skill.userSkillId}
               />
             </div>
             <div className="grid gap-2">
               {skill.workExperiences.map((workExperience) => (
                 <SkillExperienceItem
-                  key={`${workExperience.workExperienceId}-${skill.skillId}`}
+                  key={`${workExperience.workExperienceId}-${skill.userSkillId}`}
                   title={workExperience.workExperienceTitle}
                 />
               ))}
               {skill.educationalBackgrounds.map((educationalBackground) => (
                 <SkillExperienceItem
-                  key={`${educationalBackground.educationalBackgroundId}-${skill.skillId}`}
+                  key={`${educationalBackground.educationalBackgroundId}-${skill.userSkillId}`}
                   title={educationalBackground.educationalBackgroundTitle}
                 />
               ))}

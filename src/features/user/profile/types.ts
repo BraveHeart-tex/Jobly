@@ -71,7 +71,7 @@ export interface GetUserProfileReturn {
 
 export interface SkillWithExperience {
   skillName: string;
-  skillId: number;
+  userSkillId: number;
   workExperiences: { workExperienceId: number; workExperienceTitle: string }[];
   educationalBackgrounds: {
     educationalBackgroundId: number;

@@ -101,7 +101,7 @@ export const userProfileRepository = {
 
     const skillsWithExperience: SkillWithExperience[] = result.userSkills
       .map((userSkill) => ({
-        skillId: userSkill.skill.id,
+        userSkillId: userSkill.id,
         skillName: userSkill.skill.name,
         workExperiences: userSkill.userSkillWorkExperiences.map((item) => {
           const workExperience = result.workExperiences.find(

@@ -1,6 +1,9 @@
 import { createUserSkillEducationalBackgrounds } from "@/features/user/profile/data-access/userSkillEducationalBackgrounds";
 import { createUserSkillWorkExperiences } from "@/features/user/profile/data-access/userSkillWorkExperiences";
-import { createUserSkill } from "@/features/user/profile/data-access/userSkills";
+import {
+  createUserSkill,
+  getUserSkillById,
+} from "@/features/user/profile/data-access/userSkills";
 import { db } from "@/server/db";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
 
@@ -48,4 +51,8 @@ export const createUserSkillUseCase = async (
         : undefined,
     ]);
   });
+};
+
+export const getUserSkillByIdUseCase = async (id: number) => {
+  return await getUserSkillById(id);
 };
