@@ -41,6 +41,7 @@ export const validateSessionToken = async (
   token: string,
 ): Promise<SessionValidationResult> => {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+
   const [result] = await db
     .select({
       user: {

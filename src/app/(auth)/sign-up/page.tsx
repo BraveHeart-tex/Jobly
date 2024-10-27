@@ -1,6 +1,6 @@
 import AuthPageContainer from "@/features/auth/components/AuthPageContainer";
 import SignUpForm from "@/features/auth/components/SignUpForm";
-import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
+import { cachedValidateRequest } from "@/lib/auth/validateRequest";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
 import Link from "next/link";
@@ -15,7 +15,7 @@ interface SignUpPageProps {
 }
 
 const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
-  const { user } = await unCachedValidateRequest();
+  const { user } = await cachedValidateRequest();
 
   if (user) {
     redirect(SHARED_ROUTES.HOME);

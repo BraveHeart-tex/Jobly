@@ -6,7 +6,7 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import { users } from "../schema";
+import { users } from "@/server/db/schema";
 import type { InferSelectModel } from "drizzle-orm";
 
 const sessions = mysqlTable(

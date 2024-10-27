@@ -1,6 +1,7 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import AddProfileSectionDialog from "@/features/user/profile/components/dialogs/AddProfileSectionDialog";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { getAvatarPlaceholder } from "@/lib/utils/string";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
@@ -70,7 +71,7 @@ const UserProfileStickyHeader = ({
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline">Add Profile Section</Button>
+          <AddProfileSectionDialog />
           <Button variant={"secondary"}>About this profile</Button>
         </div>
       </div>
