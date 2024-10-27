@@ -44,7 +44,7 @@ import {
   EmployerJobPostingFormValidator,
 } from "@/validators/jobPostingFormValidator";
 import type { MultiValue } from "react-select";
-import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import type { OptionType } from "@/components/common/select/types";
 import { showSuccessToast } from "@/components/toastUtils";
 
@@ -243,7 +243,7 @@ const EmployerJobPostingForm = ({
               <FormItem>
                 <FormLabel>Skills</FormLabel>
                 <FormControl>
-                  <CreatableMultiSelect
+                  <BaseCreatableMultiSelect
                     placeholder="Select or add skills"
                     loadOptions={loadSkillOptions}
                     ref={field.ref}

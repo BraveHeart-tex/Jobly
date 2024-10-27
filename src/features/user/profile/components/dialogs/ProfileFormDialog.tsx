@@ -23,7 +23,7 @@ import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { SingleValue } from "react-select";
 import type { ControllerRenderProps } from "react-hook-form";
 import type { OptionType } from "@/components/common/select/types";
-import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import { showSuccessToast } from "@/components/toastUtils";
 import CreatableSelect from "@/components/common/select/CreatableSelect";
 import { useGetUserProfile } from "@/features/user/profile/hooks/useGetUserProfile";
@@ -281,7 +281,7 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>Country</FormLabel>
                     <FormControl>
-                      <CreatableMultiSelect
+                      <BaseCreatableMultiSelect
                         isMulti={false}
                         placeholder="Select country"
                         loadOptions={loadCountryOptions}
@@ -306,7 +306,7 @@ const ProfileFormDialog = () => {
                   <FormItem>
                     <FormLabel>City</FormLabel>
                     <FormControl>
-                      <CreatableMultiSelect
+                      <BaseCreatableMultiSelect
                         disabled={!form.watch("countryId")}
                         isMulti={false}
                         placeholder={

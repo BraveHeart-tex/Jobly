@@ -17,7 +17,7 @@ import { useSaveAboutSectionData } from "../../hooks/useSaveAboutSectionData";
 import FormDialog from "@/components/common/FormDialog";
 import { useRouter } from "next/navigation";
 import type { OptionType } from "@/components/common/select/types";
-import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
+import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import { showSuccessToast } from "@/components/toastUtils";
 
 const MAX_HIGHLIGHTED_SKILLS_COUNT = 5 as const;
@@ -173,7 +173,7 @@ const AboutSectionFormDialog = () => {
 
           {shouldShowSkillsSelect ? (
             <div className="w-full my-2">
-              <CreatableMultiSelect
+              <BaseCreatableMultiSelect
                 value={highlightedSkills.map((item) => ({
                   label: item.name,
                   value: item.id,
