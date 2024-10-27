@@ -1,4 +1,10 @@
-import { updateUserAvatarUrl } from "@/data-access/users";
+import {
+  createUser,
+  deleteUserById,
+  getUserByEmail,
+  updateUserAvatarUrl,
+} from "@/features/user/profile/data-access/users";
+import type { DBUserInsertModel, DBUser } from "@/server/db/schema/users";
 import { utapi } from "@/server/uploadThing";
 
 export const getUploadThingFileKeyFromUrl = (url: string) => {
@@ -26,4 +32,16 @@ export const deleteUserAvatarUrlUseCase = async (
   }
 
   return isSuccess;
+};
+
+export const getUserByEmailUseCase = async (email: string) => {
+  return await getUserByEmail(email);
+};
+
+export const createUserUseCase = async (data: DBUserInsertModel) => {
+  return await createUser(data);
+};
+
+export const deleteUserByIdUseCase = async (id: DBUser["id"]) => {
+  return await deleteUserById(id);
 };

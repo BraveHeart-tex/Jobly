@@ -13,24 +13,24 @@ import {
   ProfileValidator,
   type ProfileData,
 } from "@/validators/user/profile/profileValidator";
-import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 import { Input } from "@/components/ui/input";
 import RequiredIndicator from "@/components/common/RequiredIndicator";
 import { useEffect, useState } from "react";
-import { useGetUserProfile } from "../../hooks/useGetUserProfile";
 import Combobox, { type ComboboxOption } from "@/components/common/Combobox";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
-import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile";
 import { useRouter } from "next/navigation";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import { useLoadCountryOptions } from "../../hooks/useLoadCountryOptions";
 import type { SingleValue } from "react-select";
 import type { ControllerRenderProps } from "react-hook-form";
-import { useLoadCityOptions } from "../../hooks/useLoadCityOptions";
 import type { OptionType } from "@/components/common/select/types";
 import CreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import { showSuccessToast } from "@/components/toastUtils";
 import CreatableSelect from "@/components/common/select/CreatableSelect";
+import { useGetUserProfile } from "@/features/user/profile/hooks/useGetUserProfile";
+import { useLoadCityOptions } from "@/features/user/profile/hooks/useLoadCityOptions";
+import { useLoadCountryOptions } from "@/features/user/profile/hooks/useLoadCountryOptions";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
+import { useUpdateUserProfile } from "@/features/user/profile/hooks/useUpdateUserProfile";
 
 const defaultSpaceYClassName = "space-y-4";
 const subSectionHeadingClassNames = "scroll-m-20 text-xl font-semibold mb-2";

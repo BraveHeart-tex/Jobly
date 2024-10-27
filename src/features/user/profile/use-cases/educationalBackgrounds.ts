@@ -3,7 +3,7 @@ import {
   deleteEducationalBackground,
   getEducationalBackground,
   updateEducationalBackground,
-} from "@/data-access/educationalBackgrounds";
+} from "@/features/user/profile/data-access/educationalBackgrounds";
 import type { MakeFieldsRequired } from "@/lib/types";
 import type {
   EducationalBackground,

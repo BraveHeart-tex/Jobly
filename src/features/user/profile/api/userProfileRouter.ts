@@ -2,11 +2,13 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { number, object, optional, parser } from "valibot";
 import { SaveAboutInformationValidator } from "@/validators/user/profile/saveAboutInformationValidator";
 import {
+  fetchUserProfileDetailsUseCase,
   fetchUserProfileUseCase,
+  getAboutInformationUseCase,
+  saveAboutInformationUseCase,
   updateUserProfileUseCase,
-} from "@/use-cases/userProfiles";
+} from "@/features/user/profile/use-cases/userProfiles";
 import { ProfileValidator } from "@/validators/user/profile/profileValidator";
-import { userProfileService } from "@/features/user/profile/services/userProfileService";
 
 const optionalUserIdValidator = optional(
   object({
@@ -34,18 +36,18 @@ export const userProfileRouter = createTRPCRouter({
     .input(parser(optionalUserIdValidator))
     .query(async ({ ctx, input }) => {
       const userId = input?.userId || ctx.user.id;
-      return userProfileService.fetchUserProfileDetails(userId);
+      return fetchUserProfileDetailsUseCase(userId);
     }),
   getAboutInformation: protectedProcedure
     .input(parser(optionalUserIdValidator))
     .query(async ({ ctx, input }) => {
       const userId = input?.userId || ctx.user.id;
-      return userProfileService.getAboutInformation(userId);
+      return getAboutInformationUseCase(userId);
     }),
   saveAboutInformation: protectedProcedure
     .input(parser(SaveAboutInformationValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
-      return userProfileService.saveAboutInformation(userId, input);
+      return saveAboutInformationUseCase(userId, input);
     }),
 });

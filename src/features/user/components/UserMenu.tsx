@@ -15,7 +15,7 @@ import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { LockIcon, UserIcon } from "lucide-react";
+import { KeyRoundIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
@@ -40,9 +40,9 @@ const UserMenu = ({ user }: UserMenuProps) => {
       icon: UserIcon,
     },
     {
-      title: "Privacy Settings",
-      href: SHARED_ROUTES.PRIVACY_SETTINGS,
-      icon: LockIcon,
+      title: "Account",
+      href: SHARED_ROUTES.ACCOUNT_SETTINGS,
+      icon: KeyRoundIcon,
     },
   ];
 
@@ -86,7 +86,6 @@ const UserMenu = ({ user }: UserMenuProps) => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div>
-          <DropdownMenuLabel>Account</DropdownMenuLabel>
           {userMenuProfileLinks.map((link) => (
             <DropdownMenuItem
               key={link.title}

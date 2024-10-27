@@ -45,3 +45,25 @@ export interface GetAboutInformationReturnType {
     order: number;
   }[];
 }
+export interface UpdateUserNameAndLastNameParams {
+  userId: number;
+  firstName?: string;
+  lastName?: string;
+}
+export interface GetUserProfileReturn {
+  id: number;
+  title: string | null;
+  sector: string | null;
+  presentedWorkExperienceId: number | null;
+  countryId: number | null;
+  cityId: number | null;
+  websiteLink: string | null;
+  websiteLinkText: string | null;
+  userId: number;
+  firstName: string;
+  lastName: string;
+  workExperiences: WorkExperience[];
+  educationalBackgrounds: EducationalBackground[];
+  selectedCountry: { label: string; value: number } | null;
+  selectedCity: { label: string; value: number } | null;
+}

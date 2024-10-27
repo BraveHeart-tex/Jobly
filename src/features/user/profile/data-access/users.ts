@@ -1,9 +1,10 @@
 import { db } from "@/server/db";
-import type { UpdateUserNameAndLastNameParams } from "@/data-access/types";
+import type { UpdateUserNameAndLastNameParams } from "@/features/user/profile/types";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import type { Transaction } from "@/lib/types";
 import type { MySqlRawQueryResult } from "drizzle-orm/mysql2";
+import type { DBUser, DBUserInsertModel } from "@/server/db/schema/users";
 
 export const updateUserNameAndLastName = async (
   { userId, firstName, lastName }: UpdateUserNameAndLastNameParams,
@@ -34,4 +35,19 @@ export const updateUserAvatarUrl = async (
       avatarUrl,
     })
     .where(eq(users.id, userId));
+};
+
+export const getUserByEmail = async (email: string) => {
+  return db.query.users.findFirst({
+    where: (users) => eq(users.email, email),
+  });
+};
+
+export const createUser = async (data: DBUserInsertModel) => {
+  const [response] = await db.insert(users).values(data).$returningId();
+  return response?.id;
+};
+
+export const deleteUserById = async (id: DBUser["id"]) => {
+  return db.delete(users).where(eq(users.id, id));
 };

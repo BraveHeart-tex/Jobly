@@ -4,7 +4,7 @@ import {
   deleteEducationalBackgroundUseCase,
   getEducationalBackgroundUseCase,
   updateEducationalBackgroundUseCase,
-} from "@/use-cases/educationalBackgrounds";
+} from "@/features/user/profile/use-cases/educationalBackgrounds";
 import { GenericIdValidator } from "@/validators/schemaUtils";
 import {
   InsertEducationValidator,

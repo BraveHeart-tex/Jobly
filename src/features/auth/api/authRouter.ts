@@ -1,4 +1,3 @@
-import { userService } from "@/features/user/services/userService";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
@@ -12,6 +11,10 @@ import {
   hashPassword,
   verifyPassword,
 } from "@/features/auth/utils";
+import {
+  createUserUseCase,
+  getUserByEmailUseCase,
+} from "@/features/user/services/userService";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -27,7 +30,7 @@ export const authRouter = createTRPCRouter({
 
       const { email, firstName, lastName, password, role } = input;
 
-      const userAlreadyExists = await userService.getUserByEmail(email);
+      const userAlreadyExists = await getUserByEmailUseCase(email);
 
       if (userAlreadyExists) {
         throw new TRPCError({
@@ -38,7 +41,7 @@ export const authRouter = createTRPCRouter({
 
       const hashedPassword = await hashPassword(password);
 
-      const userId = await userService.createUser({
+      const userId = await createUserUseCase({
         email,
         firstName,
         lastName,
@@ -75,7 +78,7 @@ export const authRouter = createTRPCRouter({
 
       const { email, password } = input;
 
-      const existingUser = await userService.getUserByEmail(email);
+      const existingUser = await getUserByEmailUseCase(email);
 
       if (!existingUser) {
         return {

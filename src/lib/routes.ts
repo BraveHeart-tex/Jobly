@@ -1,4 +1,4 @@
-import type { InferValueTypeFromConst } from "./types";
+import type { InferValueTypeFromConst } from "@/lib/types";
 
 export const SHARED_ROUTES = {
   LOGIN: "/login",
@@ -6,7 +6,7 @@ export const SHARED_ROUTES = {
   HOME: "/home",
   PROFILE: "/home/profile",
   EDIT_PROFILE: "/home/profile/edit",
-  PRIVACY_SETTINGS: "/home/profile/privacy-settings",
+  ACCOUNT_SETTINGS: "/home/profile/account-settings",
 } as const;
 
 const BASE_CANDIDATE_ROUTE = "/home/candidate";

@@ -1,5 +1,5 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { getCountryCitiesByNameUseCase } from "@/use-cases/cities";
+import { getCountryCitiesByNameUseCase } from "@/features/user/profile/use-cases/cities";
 import { number, object, parser, string } from "valibot";
 
 export const cityRouter = createTRPCRouter({

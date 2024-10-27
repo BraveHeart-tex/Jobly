@@ -1,5 +1,5 @@
+import { deleteUserAvatarUrlUseCase } from "@/features/user/profile/use-cases/users";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { deleteUserAvatarUrlUseCase } from "@/use-cases/users";
 export const userRouter = createTRPCRouter({
   deleteAvatar: protectedProcedure.mutation(async ({ ctx }) => {
     const userId = ctx.user.id;
