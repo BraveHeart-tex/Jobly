@@ -8,11 +8,16 @@ import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
 import { TRPCReactProvider } from "@/trpc/react";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import { GeistSans } from "geist/font/sans";
 import NextTopLoader from "nextjs-toploader";
 import type React from "react";
 import { extractRouterConfig } from "uploadthing/server";
-import { fileRouter } from "./api/uploadthing/core";
+import { fileRouter } from "@/app/api/uploadthing/core";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: APP_NAME,
@@ -23,7 +28,7 @@ export default function RootLayout({
   children,
 }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${inter.className}`}>
       <body>
         <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)} />
         <TRPCReactProvider>
