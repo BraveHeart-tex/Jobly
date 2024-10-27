@@ -9,8 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import type { ModalDialogMapKey } from "../FormDialogContainer";
-import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
+import type { ModalDialogMapKey } from "@/features/user/profile/components/FormDialogContainer";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 
 interface AddProfileSectionDialogProps {
   className?: string;
@@ -40,6 +40,11 @@ const profileSectionOptions: ProfileSectionOption[] = [
     description:
       "Provide details about your academic background, degrees, and any relevant coursework or certifications.",
     modalLink: "educationalBackground/new",
+  },
+  {
+    label: "Skill",
+    description: "Showcase your key skills and expertise.",
+    modalLink: "skills/new",
   },
 ];
 

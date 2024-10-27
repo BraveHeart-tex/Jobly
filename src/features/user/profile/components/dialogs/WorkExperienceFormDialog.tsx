@@ -1,6 +1,5 @@
 "use client";
 import FormDialog from "@/components/common/FormDialog";
-import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
 import {
   type WorkExperienceData,
   WorkExperienceValidator,
@@ -20,7 +19,6 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState, useTransition } from "react";
 import { DateTime } from "luxon";
-import { useCreateWorkExperience } from "../../hooks/useCreateWorkExperience";
 import SelectInput from "@/components/common/SelectInput";
 import {
   employmentOptions,
@@ -28,11 +26,13 @@ import {
 } from "@/features/candidate/jobs/components/JobListFilters";
 import { useRouter } from "next/navigation";
 import MonthYearInput from "@/components/common/MonthYearInput";
-import { useGetWorkExperience } from "../../hooks/useGetWorkExperience";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
-import { useDeleteWorkExperience } from "../../hooks/useDeleteWorkExperience";
-import { useUpdateWorkExperience } from "../../hooks/useUpdateWorkExperience";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import { useCreateWorkExperience } from "@/features/user/profile/hooks/useCreateWorkExperience";
+import { useDeleteWorkExperience } from "@/features/user/profile/hooks/useDeleteWorkExperience";
+import { useGetWorkExperience } from "@/features/user/profile/hooks/useGetWorkExperience";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
+import { useUpdateWorkExperience } from "@/features/user/profile/hooks/useUpdateWorkExperience";
 
 const WorkExperienceFormDialog = () => {
   const router = useRouter();

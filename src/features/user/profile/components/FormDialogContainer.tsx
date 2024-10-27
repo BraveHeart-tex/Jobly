@@ -1,9 +1,10 @@
 "use client";
+import AboutSectionFormDialog from "@/features/user/profile/components/dialogs/AboutSectionFormDialog";
+import EducationalBackgroundFormDialog from "@/features/user/profile/components/dialogs/EducationalBackgroundFormDialog";
+import ProfileFormDialog from "@/features/user/profile/components/dialogs/ProfileFormDialog";
+import SkillsDialog from "@/features/user/profile/components/dialogs/SkillsDialog";
+import WorkExperienceFormDialog from "@/features/user/profile/components/dialogs/WorkExperienceFormDialog";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
-import AboutSectionFormDialog from "./dialogs/AboutSectionFormDialog";
-import WorkExperienceFormDialog from "./dialogs/WorkExperienceFormDialog";
-import EducationalBackgroundFormDialog from "./dialogs/EducationalBackgroundFormDialog";
-import ProfileFormDialog from "./dialogs/ProfileFormDialog";
 
 export const modalDialogMap = {
   about: AboutSectionFormDialog,
@@ -12,6 +13,8 @@ export const modalDialogMap = {
   "educationalBackground/new": EducationalBackgroundFormDialog,
   "educationalBackground/edit": EducationalBackgroundFormDialog,
   personalDetails: ProfileFormDialog,
+  "skills/new": SkillsDialog,
+  "skills/edit": SkillsDialog,
 } as const;
 
 export type ModalDialogMapKey = keyof typeof modalDialogMap;

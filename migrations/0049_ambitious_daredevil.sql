@@ -1,0 +1,4 @@
+ALTER TABLE `UserSkills` ADD `attributedWorkExperienceId` int;--> statement-breakpoint
+ALTER TABLE `UserSkills` ADD `attributedEducationalBackgroundId` int;--> statement-breakpoint
+ALTER TABLE `UserSkills` ADD CONSTRAINT `UserSkills_attributedWorkExperienceId_WorkExperiences_id_fk` FOREIGN KEY (`attributedWorkExperienceId`) REFERENCES `WorkExperiences`(`id`) ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE `UserSkills` ADD CONSTRAINT `UserSkills_attributedEducationalBackgroundId_fk` FOREIGN KEY (`attributedEducationalBackgroundId`) REFERENCES `EducationalBackgrounds`(`id`) ON DELETE set null ON UPDATE no action;

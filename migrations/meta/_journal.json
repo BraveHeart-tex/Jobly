@@ -344,6 +344,20 @@
       "when": 1729941985278,
       "tag": "0048_rich_patriot",
       "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "5",
+      "when": 1730022146951,
+      "tag": "0049_ambitious_daredevil",
+      "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "5",
+      "when": 1730022416985,
+      "tag": "0050_naive_sleeper",
+      "breakpoints": true
     }
   ]
 }
