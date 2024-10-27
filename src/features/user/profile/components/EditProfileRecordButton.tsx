@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import type { HTMLAttributes } from "react";
-import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
-import type { ModalDialogMapKey } from "./FormDialogContainer";
 import { cn } from "@/lib/utils";
 import { PencilIcon } from "lucide-react";
+import type { ModalDialogMapKey } from "@/features/user/profile/components/FormDialogContainer";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 
 interface EditProfileRecordButtonProps
   extends HTMLAttributes<HTMLButtonElement> {

@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import AddProfileRecordButton from "@/features/user/profile/components/AddProfileRecordButton";
+import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
 import type { SkillWithExperience } from "@/features/user/profile/types";
 import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,7 +26,13 @@ const UserProfileSkillsSection = ({
       <div className="p-4 grid gap-8">
         {skills.map((skill) => (
           <div key={skill.skillId} className="flex flex-col gap-2">
-            <p className="font-semibold text-base">{skill.skillName}</p>
+            <div className="flex items-center justify-between gap-2">
+              <p className="font-semibold text-base">{skill.skillName}</p>
+              <EditProfileRecordButton
+                modalLink="skills/edit"
+                recordId={skill.skillId}
+              />
+            </div>
             <div className="grid gap-2">
               {skill.workExperiences.map((workExperience) => (
                 <SkillExperienceItem
