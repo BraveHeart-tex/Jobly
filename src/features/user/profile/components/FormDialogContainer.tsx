@@ -15,6 +15,7 @@ export const modalDialogMap = {
   personalDetails: ProfileFormDialog,
   "skills/new": UserSkillsFormDialog,
   "skills/edit": UserSkillsFormDialog,
+  "skills/reorder": UserSkillsFormDialog,
 } as const;
 
 export type ModalDialogMapKey = keyof typeof modalDialogMap;

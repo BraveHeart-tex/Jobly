@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import AddProfileRecordButton from "@/features/user/profile/components/AddProfileRecordButton";
 import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
 import type { SkillWithExperience } from "@/features/user/profile/types";
+import OpenSkillOrderDialogButton from "@/features/user/profile/workExperience/components/OpenSkillOrderDialogButton";
 import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -19,7 +20,10 @@ const UserProfileSkillsSection = ({
       <CardContent className="p-0 flex flex-col justify-between">
         <div className="flex items-center justify-between p-4">
           <h2 className="text-2xl font-bold">Skills</h2>
-          <AddProfileRecordButton modalLink="skills/new" />
+          <div className="flex items-center gap-2">
+            {skills.length > 1 && <OpenSkillOrderDialogButton />}
+            <AddProfileRecordButton modalLink="skills/new" />
+          </div>
         </div>
       </CardContent>
 

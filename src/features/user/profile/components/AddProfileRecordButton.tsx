@@ -1,14 +1,21 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useProfilePageSearchParams } from "../hooks/useProfilePageSearchParams";
 import { PlusIcon } from "lucide-react";
-import type { ModalDialogMapKey } from "./FormDialogContainer";
+import { cn } from "@/lib/utils";
+import type { HTMLAttributes } from "react";
+import type { ModalDialogMapKey } from "@/features/user/profile/components/FormDialogContainer";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 
-interface AddProfileRecordButtonProps {
+interface AddProfileRecordButtonProps
+  extends HTMLAttributes<HTMLButtonElement> {
   modalLink: ModalDialogMapKey;
 }
 
-const AddProfileRecordButton = ({ modalLink }: AddProfileRecordButtonProps) => {
+const AddProfileRecordButton = ({
+  modalLink,
+  className,
+  ...props
+}: AddProfileRecordButtonProps) => {
   const { openModal } = useProfilePageSearchParams();
 
   const handleNewExperienceClick = () => {
@@ -16,7 +23,13 @@ const AddProfileRecordButton = ({ modalLink }: AddProfileRecordButtonProps) => {
   };
 
   return (
-    <Button size="icon" variant={"ghost"} onClick={handleNewExperienceClick}>
+    <Button
+      size="icon"
+      variant={"ghost"}
+      className={cn("w-8 h-8", className)}
+      onClick={handleNewExperienceClick}
+      {...props}
+    >
       <PlusIcon />
     </Button>
   );
