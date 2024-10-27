@@ -1,5 +1,6 @@
 import {
   createUserSkillUseCase,
+  deleteUserSkillUseCase,
   getUserSkillByIdUseCase,
 } from "@/features/user/profile/use-cases/userSkills";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
@@ -18,5 +19,14 @@ export const userSkillsRouter = createTRPCRouter({
     .input(parser(GenericIdValidator))
     .query(async ({ input }) => {
       return getUserSkillByIdUseCase(input.id);
+    }),
+  deleteUserSkill: protectedProcedure
+    .input(parser(GenericIdValidator))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      return deleteUserSkillUseCase({
+        userId,
+        userSkillId: input.id,
+      });
     }),
 });

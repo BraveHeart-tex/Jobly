@@ -14,11 +14,13 @@ import {
 import { Label } from "@/components/ui/label";
 import { useLoadSkillOptions } from "@/features/employer/jobPosting/hooks/useLoadSkillOptions";
 import { useCreateUserSkill } from "@/features/user/profile/hooks/useCreateUserSkill";
+import { useDeleteUserSkill } from "@/features/user/profile/hooks/useDeleteUserSkill";
 import { useGetEducationalBackgrounds } from "@/features/user/profile/hooks/useGetEducationalBackgrounds";
 import { useGetUserSkill } from "@/features/user/profile/hooks/useGetUserSkill";
 import { useGetWorkExperiences } from "@/features/user/profile/hooks/useGetWorkExperiences";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import {
   type UserSkillsData,
   userSkillsValidator,
@@ -28,6 +30,7 @@ import { useEffect } from "react";
 
 const UserSkillsFormDialog = () => {
   const router = useRouter();
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
   const form = useExtendedForm<UserSkillsData>(userSkillsValidator, {
     defaultValues: {
       selectedSkill: undefined,
@@ -38,14 +41,24 @@ const UserSkillsFormDialog = () => {
 
   const { idQuery, closeModal } = useProfilePageSearchParams();
 
+  const handleMutationSuccess = async (message: string) => {
+    form.reset();
+    await closeModal();
+    router.refresh();
+    showSuccessToast(message);
+  };
+
   const { createUserSkill, isCreatingUserSkill } = useCreateUserSkill({
     onSuccess: async () => {
-      form.reset();
-      await closeModal();
-      router.refresh();
-      showSuccessToast("Skill created successfully.");
+      handleMutationSuccess("Skill created successfully.");
     },
   });
+  const { deleteUserSkill, isDeletingUserSkill } = useDeleteUserSkill({
+    onSuccess: async () => {
+      handleMutationSuccess("Skill deleted successfully.");
+    },
+  });
+
   const { workExperiences, isFetchingWorkExperiences } =
     useGetWorkExperiences();
   const { educationalBackgrounds, isFetchingEducationalBackgrounds } =
@@ -69,7 +82,19 @@ const UserSkillsFormDialog = () => {
     }
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    showConfirmDialog({
+      title: "Are you sure you want to delete this skill?",
+      message: "This action cannot be undone.",
+      primaryActionLabel: "Delete",
+      onConfirm: () => {
+        if (!idQuery) return;
+        deleteUserSkill({
+          id: idQuery,
+        });
+      },
+    });
+  };
 
   useEffect(() => {
     if (!userSkill) return;
@@ -86,9 +111,12 @@ const UserSkillsFormDialog = () => {
         isUpdatingSkill ||
         isFetchingWorkExperiences ||
         isFetchingEducationalBackgrounds ||
-        isCreatingUserSkill
+        isCreatingUserSkill ||
+        isDeletingUserSkill
       }
-      isCloseDisabled={isUpdatingSkill || isCreatingUserSkill}
+      isCloseDisabled={
+        isUpdatingSkill || isCreatingUserSkill || isDeletingUserSkill
+      }
       isLoadingInitialData={isFetchingUserSkill}
       form={form}
       onSubmit={onSubmit}

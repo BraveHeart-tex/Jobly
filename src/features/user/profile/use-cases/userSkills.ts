@@ -2,8 +2,10 @@ import { createUserSkillEducationalBackgrounds } from "@/features/user/profile/d
 import { createUserSkillWorkExperiences } from "@/features/user/profile/data-access/userSkillWorkExperiences";
 import {
   createUserSkill,
+  deleteUserSkill,
   getUserSkillById,
 } from "@/features/user/profile/data-access/userSkills";
+import type { DeleteUserSkillParams } from "@/features/user/profile/types";
 import { db } from "@/server/db";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
 
@@ -17,7 +19,6 @@ export const createUserSkillUseCase = async (
     attributedEducationIds,
   } = data;
 
-  // insert userSkill
   await db.transaction(async (trx) => {
     const userSkillId = await createUserSkill(
       {
@@ -55,4 +56,11 @@ export const createUserSkillUseCase = async (
 
 export const getUserSkillByIdUseCase = async (id: number) => {
   return await getUserSkillById(id);
+};
+
+export const deleteUserSkillUseCase = async ({
+  userId,
+  userSkillId,
+}: DeleteUserSkillParams) => {
+  return await deleteUserSkill({ userId, userSkillId });
 };

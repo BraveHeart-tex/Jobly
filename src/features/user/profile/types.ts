@@ -78,3 +78,8 @@ export interface SkillWithExperience {
     educationalBackgroundTitle: string;
   }[];
 }
+
+export interface DeleteUserSkillParams {
+  userId: number;
+  userSkillId: number;
+}

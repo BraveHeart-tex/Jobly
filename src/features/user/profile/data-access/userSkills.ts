@@ -1,10 +1,11 @@
+import type { DeleteUserSkillParams } from "@/features/user/profile/types";
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import userSkills, {
   type InsertUserSkillModel,
 } from "@/server/db/schema/userSkills";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export const createUserSkill = async (
   data: InsertUserSkillModel,
@@ -56,4 +57,13 @@ export const getUserSkillById = async (
       label: result.skill.name,
     },
   };
+};
+
+export const deleteUserSkill = ({
+  userId,
+  userSkillId,
+}: DeleteUserSkillParams) => {
+  return db
+    .delete(userSkills)
+    .where(and(eq(userSkills.userId, userId), eq(userSkills.id, userSkillId)));
 };
