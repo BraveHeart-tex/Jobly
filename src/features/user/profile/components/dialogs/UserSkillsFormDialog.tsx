@@ -25,8 +25,8 @@ const UserSkillsFormDialog = () => {
   const form = useExtendedForm<UserSkillsData>(userSkillsValidator, {
     defaultValues: {
       selectedSkill: undefined,
-      attributedWorkExperienceId: null,
-      attributedEducationId: null,
+      attributedWorkExperienceIds: [],
+      attributedEducationIds: [],
     },
   });
 
@@ -116,7 +116,7 @@ const UserSkillsFormDialog = () => {
                 {workExperienceCount > 0 ? (
                   <FormField
                     control={form.control}
-                    name="attributedWorkExperienceId"
+                    name="attributedWorkExperienceIds"
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel>Work Experience</FormLabel>
@@ -130,9 +130,14 @@ const UserSkillsFormDialog = () => {
                                 <Checkbox
                                   ref={field.ref}
                                   value={item.id}
-                                  checked={field.value === item.id}
+                                  checked={field.value.includes(item.id)}
                                   onCheckedChange={(checked) => {
-                                    field.onChange(checked ? item.id : null);
+                                    const newItems = checked
+                                      ? [...field.value, item.id]
+                                      : field.value.filter(
+                                          (id) => id !== item.id,
+                                        );
+                                    field.onChange(newItems);
                                   }}
                                   id={item.id.toString()}
                                 />
@@ -150,7 +155,7 @@ const UserSkillsFormDialog = () => {
                 {educationalBackgroundCount > 0 ? (
                   <FormField
                     control={form.control}
-                    name="attributedEducationId"
+                    name="attributedEducationIds"
                     render={({ field }) => (
                       <FormItem className="space-y-2">
                         <FormLabel>Education</FormLabel>
@@ -164,9 +169,14 @@ const UserSkillsFormDialog = () => {
                                 <Checkbox
                                   ref={field.ref}
                                   value={item.id}
-                                  checked={field.value === item.id}
+                                  checked={field.value.includes(item.id)}
                                   onCheckedChange={(checked) => {
-                                    field.onChange(checked ? item.id : null);
+                                    const newItems = checked
+                                      ? [...field.value, item.id]
+                                      : field.value.filter(
+                                          (id) => id !== item.id,
+                                        );
+                                    field.onChange(newItems);
                                   }}
                                   id={item.id.toString()}
                                 />

@@ -1,15 +1,11 @@
-import {
-  educationalBackgrounds,
-  skills,
-  users,
-  workExperiences,
-} from "@/server/db/schema";
+import { skills, users } from "@/server/db/schema";
 import { type InferSelectModel, relations } from "drizzle-orm";
-import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
+import { index, int, mysqlTable } from "drizzle-orm/mysql-core";
 
 const userSkills = mysqlTable(
   "UserSkills",
   {
+    id: int("id").autoincrement().primaryKey().notNull(),
     userId: int("userId")
       .references(() => users.id, {
         onDelete: "cascade",
@@ -20,22 +16,10 @@ const userSkills = mysqlTable(
         onDelete: "cascade",
       })
       .notNull(),
-    attributedWorkExperienceId: int("attributedWorkExperienceId").references(
-      () => workExperiences.id,
-      {
-        onDelete: "set null",
-      },
-    ),
-    attributedEducationalBackgroundId: int(
-      "attributedEducationalBackgroundId",
-    ).references(() => educationalBackgrounds.id, {
-      onDelete: "set null",
-    }),
     displayOrder: int("displayOrder"),
   },
   (table) => {
     return {
-      UserSkill_id: primaryKey({ columns: [table.userId, table.skillId] }),
       userId: index("userId").on(table.userId),
       skillId: index("skillId").on(table.skillId),
     };

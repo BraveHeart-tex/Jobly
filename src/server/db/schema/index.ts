@@ -63,3 +63,11 @@ export {
   countryRelations,
 } from "@/server/db/schema/countries";
 export { default as cities, cityRelations } from "@/server/db/schema/cities";
+export {
+  default as userSkillWorkExperiences,
+  userSkillWorkExperiencesRelations,
+} from "@/server/db/schema/userSkillWorkExperiences";
+export {
+  default as userSkillEducationalBackgrounds,
+  userSkillEducationalBackgroundsRelations,
+} from "@/server/db/schema/userSkillEducationalBackgrounds";

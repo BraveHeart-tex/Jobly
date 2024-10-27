@@ -1,11 +1,11 @@
 import {
   type InferOutput,
   minValue,
-  nullable,
   number,
   object,
   pipe,
   string,
+  array,
 } from "valibot";
 
 export const userSkillsValidator = object({
@@ -16,8 +16,8 @@ export const userSkillsValidator = object({
     ),
     label: string(),
   }),
-  attributedWorkExperienceId: nullable(number()),
-  attributedEducationId: nullable(number()),
+  attributedWorkExperienceIds: array(number()),
+  attributedEducationIds: array(number()),
 });
 
 export type UserSkillsData = InferOutput<typeof userSkillsValidator>;
