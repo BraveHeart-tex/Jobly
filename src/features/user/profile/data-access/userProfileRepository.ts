@@ -208,6 +208,7 @@ export const userProfileRepository = {
       highlightedSkills,
     };
   },
+  // FIXME: God, help me.
   async saveAboutInformation(
     userId: number,
     input: SaveAboutInformationInput,
@@ -246,15 +247,17 @@ export const userProfileRepository = {
         (item) => item.UserHighlightedSkills,
       );
 
-      await trx.delete(userSkills).where(
-        and(
-          eq(userSkills.userId, userId),
-          inArray(
-            userSkills.id,
-            prevUserHighlightedSkills.map((item) => item.userSkillId),
+      if (prevUserHighlightedSkills.length > 0) {
+        await trx.delete(userSkills).where(
+          and(
+            eq(userSkills.userId, userId),
+            inArray(
+              userSkills.id,
+              prevUserHighlightedSkills.map((item) => item.userSkillId),
+            ),
           ),
-        ),
-      );
+        );
+      }
 
       const userSkillIds = await trx
         .insert(userSkills)
