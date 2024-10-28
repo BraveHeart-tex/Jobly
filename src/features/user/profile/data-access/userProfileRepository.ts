@@ -1,10 +1,12 @@
-import { buildConflictUpdateColumns, db } from "@/server/db";
+import { db } from "@/server/db";
 import {
   cities,
   countries,
   educationalBackgrounds,
   userBios,
   userHighlightedSkills,
+  userSkillEducationalBackgrounds,
+  userSkillWorkExperiences,
   userSkills,
   users,
   workExperiences,
@@ -16,6 +18,10 @@ import type {
   SkillWithExperience,
   UserProfileInformation,
 } from "@/features/user/profile/types";
+import {
+  deleteHighlightedUserSkills,
+  getHighlightedUserSkillsByUserId,
+} from "@/features/user/profile/data-access/userSkills";
 
 export const userProfileRepository = {
   async fetchUserProfileDetails(
@@ -230,65 +236,81 @@ export const userProfileRepository = {
           .where(and(eq(userBios.userId, userId), eq(userBios.id, bio.id)));
       }
 
-      const hasHighlightedSkills = highlightedSkills.length > 0;
+      const highlightedUserSkillsResult =
+        await getHighlightedUserSkillsByUserId(userId, trx);
 
-      if (!hasHighlightedSkills) return;
-
-      const prevUserSkills = await trx
-        .select()
-        .from(userSkills)
-        .innerJoin(
-          userHighlightedSkills,
-          eq(userSkills.id, userHighlightedSkills.userSkillId),
-        )
-        .where(and(eq(userSkills.userId, userId)));
-
-      const prevUserHighlightedSkills = prevUserSkills.map(
+      const prevHighlightedSkills = highlightedUserSkillsResult.map(
         (item) => item.UserHighlightedSkills,
       );
 
-      if (prevUserHighlightedSkills.length > 0) {
-        await trx.delete(userSkills).where(
-          and(
-            eq(userSkills.userId, userId),
-            inArray(
-              userSkills.id,
-              prevUserHighlightedSkills.map((item) => item.userSkillId),
-            ),
-          ),
-        );
-      }
+      const prevUserSkills = highlightedUserSkillsResult.map(
+        (item) => item.UserSkills,
+      );
 
-      const userSkillIds = await trx
-        .insert(userSkills)
-        .values(
-          highlightedSkills.map((item) => ({
-            userId,
-            skillId: item.id,
+      await Promise.all([
+        prevUserSkills.length
+          ? deleteHighlightedUserSkills(
+              prevUserSkills.map((item) => item.id),
+              trx,
+            )
+          : undefined,
+        prevHighlightedSkills.length
+          ? trx.delete(userHighlightedSkills).where(
+              inArray(
+                userHighlightedSkills.id,
+                prevHighlightedSkills.map((item) => item.id),
+              ),
+            )
+          : undefined,
+      ]);
+
+      if (highlightedSkills.length > 0) {
+        const userSkillInsertIds = await trx
+          .insert(userSkills)
+          .values(
+            highlightedSkills.map((item) => ({
+              skillId: item.id,
+              userId,
+            })),
+          )
+          .$returningId();
+
+        await trx.insert(userHighlightedSkills).values(
+          highlightedSkills.map((item, index) => ({
+            order: item.order,
+            userSkillId: userSkillInsertIds[index]?.id as number,
           })),
-        )
-        .onDuplicateKeyUpdate({
-          set: buildConflictUpdateColumns(userSkills, [
-            "id",
-            "userId",
-            "skillId",
-          ]),
-        })
-        .$returningId();
+        );
 
-      await trx.delete(userHighlightedSkills).where(
-        inArray(
-          userHighlightedSkills.userSkillId,
-          userSkillIds.map((item) => item.id),
-        ),
-      );
+        const updatePromises = [];
 
-      await trx.insert(userHighlightedSkills).values(
-        highlightedSkills.map((item, index) => ({
-          userSkillId: userSkillIds[index]?.id as number,
-          order: item.order,
-        })),
-      );
+        for (const [index, prevUserSkill] of prevUserSkills.entries()) {
+          const newUserSkillId = userSkillInsertIds[index]?.id as number;
+          updatePromises.push(
+            trx
+              .update(userSkillWorkExperiences)
+              .set({
+                userSkillId: newUserSkillId,
+              })
+              .where(
+                eq(userSkillWorkExperiences.userSkillId, prevUserSkill.id),
+              ),
+            trx
+              .update(userSkillEducationalBackgrounds)
+              .set({
+                userSkillId: newUserSkillId,
+              })
+              .where(
+                eq(
+                  userSkillEducationalBackgrounds.userSkillId,
+                  prevUserSkill.id,
+                ),
+              ),
+          );
+        }
+
+        await Promise.all(updatePromises);
+      }
     });
   },
 };

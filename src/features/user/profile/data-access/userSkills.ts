@@ -1,11 +1,12 @@
 import type { DeleteUserSkillParams } from "@/features/user/profile/types";
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
+import { userHighlightedSkills } from "@/server/db/schema";
 import userSkills, {
   type InsertUserSkillModel,
 } from "@/server/db/schema/userSkills";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 export const createUserSkill = async (
   data: InsertUserSkillModel,
@@ -66,4 +67,30 @@ export const deleteUserSkill = ({
   return db
     .delete(userSkills)
     .where(and(eq(userSkills.userId, userId), eq(userSkills.id, userSkillId)));
+};
+
+export const getHighlightedUserSkillsByUserId = async (
+  userId: number,
+  trx?: Transaction,
+) => {
+  const dbLayer = trx || db;
+
+  return await dbLayer
+    .select()
+    .from(userSkills)
+    .innerJoin(
+      userHighlightedSkills,
+      eq(userSkills.id, userHighlightedSkills.userSkillId),
+    )
+    .where(eq(userSkills.userId, userId));
+};
+
+export const deleteHighlightedUserSkills = async (
+  userSkillIds: number[],
+  trx?: Transaction,
+) => {
+  const dbLayer = trx || db;
+  return await dbLayer
+    .delete(userSkills)
+    .where(and(inArray(userSkills.id, userSkillIds)));
 };
