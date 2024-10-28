@@ -1,4 +1,4 @@
-import { db } from "@/server/db";
+import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   cities,
   countries,
@@ -9,9 +9,8 @@ import {
   users,
   workExperiences,
 } from "@/server/db/schema";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
-import { mapHighlightedSkills } from "@/features/user/profile/utils";
 import type {
   GetAboutInformationReturnType,
   SkillWithExperience,
@@ -44,17 +43,13 @@ export const userProfileRepository = {
         educationalBackgrounds: {
           orderBy: () => desc(educationalBackgrounds.startDate),
         },
-        userHighlightedSkills: {
-          orderBy: () => asc(userHighlightedSkills.order),
-          columns: {
-            skillId: true,
-          },
-        },
+
         userSkills: {
           with: {
             skill: true,
             userSkillEducationalBackgrounds: true,
             userSkillWorkExperiences: true,
+            userHighlightedSkills: true,
           },
         },
       },
@@ -62,13 +57,16 @@ export const userProfileRepository = {
 
     if (!result) return null;
 
-    const highlightedSkills = result.userHighlightedSkills
-      .map(
-        (item) =>
-          result?.userSkills.find(
-            (skillItem) => skillItem.skillId === item.skillId,
-          )?.skill.name || "",
-      )
+    const highlightedSkills: string[] = result.userSkills
+      .map((userSkill) => {
+        const userHighlightedSkill = userSkill.userHighlightedSkills.find(
+          (item) => item.userSkillId === userSkill.id,
+        );
+
+        if (!userHighlightedSkill) return null;
+
+        return userSkill.skill.name;
+      })
       .filter(Boolean) as string[];
 
     const cityId = result.userProfile?.cityId;
@@ -161,10 +159,12 @@ export const userProfileRepository = {
             bio: true,
           },
         },
-        userHighlightedSkills: {
-          orderBy: () => asc(userHighlightedSkills.order),
+        userSkills: {
           with: {
             skill: true,
+            userHighlightedSkills: {
+              orderBy: () => asc(userHighlightedSkills.order),
+            },
           },
         },
       },
@@ -172,12 +172,40 @@ export const userProfileRepository = {
 
     if (!result) return null;
 
+    const highlightedSkills: {
+      name: string;
+      userId: number;
+      skillId: number;
+      order: number;
+    }[] = result.userSkills
+      .map((userSkill) => {
+        const userHighlightedSkill = userSkill.userHighlightedSkills.find(
+          (userHighlightedSkill) =>
+            userHighlightedSkill.userSkillId === userSkill.id,
+        );
+
+        if (!userHighlightedSkill) return null;
+
+        return {
+          name: userSkill.skill.name,
+          userId: result.id,
+          skillId: userSkill.skill.id,
+          order: userHighlightedSkill.order,
+        };
+      })
+      .filter(Boolean) as {
+      name: string;
+      userId: number;
+      skillId: number;
+      order: number;
+    }[];
+
     return {
       bio: {
         id: result.userBio?.id,
         content: result.userBio?.bio || "",
       },
-      highlightedSkills: mapHighlightedSkills(result.userHighlightedSkills),
+      highlightedSkills,
     };
   },
   async saveAboutInformation(
@@ -205,40 +233,34 @@ export const userProfileRepository = {
 
       const hasHighlightedSkills = highlightedSkills.length > 0;
 
-      await Promise.all([
-        hasHighlightedSkills
-          ? trx.delete(userSkills).where(
-              and(
-                eq(userSkills.userId, userId),
-                inArray(
-                  userSkills.skillId,
-                  highlightedSkills.map((item) => item.id),
-                ),
-              ),
-            )
-          : undefined,
-        trx
-          .delete(userHighlightedSkills)
-          .where(eq(userHighlightedSkills.userId, userId)),
-      ]);
-
       if (!hasHighlightedSkills) return;
 
-      await Promise.all([
-        trx.insert(userSkills).values(
+      const userSkillIds = await trx
+        .insert(userSkills)
+        .values(
           highlightedSkills.map((item) => ({
             userId,
             skillId: item.id,
           })),
-        ),
-        trx.insert(userHighlightedSkills).values(
-          highlightedSkills.map((item) => ({
-            userId,
-            skillId: item.id,
-            order: item.order,
+        )
+        .onDuplicateKeyUpdate({
+          set: buildConflictUpdateColumns(userSkills, ["userId", "skillId"]),
+        })
+        .$returningId();
+
+      await trx
+        .insert(userHighlightedSkills)
+        .values(
+          userSkillIds.map(({ id: userSkillId }, index) => ({
+            userSkillId,
+            order: index + 1,
           })),
-        ),
-      ]);
+        )
+        .onDuplicateKeyUpdate({
+          set: buildConflictUpdateColumns(userHighlightedSkills, [
+            "userSkillId",
+          ]),
+        });
     });
   },
 };

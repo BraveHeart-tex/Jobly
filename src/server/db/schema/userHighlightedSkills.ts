@@ -1,17 +1,13 @@
-import { skills, users } from "@/server/db/schema/index";
+import { userSkills } from "@/server/db/schema";
 import { relations } from "drizzle-orm";
-import { int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
+import { int, mysqlTable, index } from "drizzle-orm/mysql-core";
 
 const userHighlightedSkills = mysqlTable(
   "UserHighlightedSkills",
   {
-    userId: int("userId")
-      .references(() => users.id, {
-        onDelete: "cascade",
-      })
-      .notNull(),
-    skillId: int("skillId")
-      .references(() => skills.id, {
+    id: int("id").autoincrement().primaryKey().notNull(),
+    userSkillId: int("userSkillId")
+      .references(() => userSkills.id, {
         onDelete: "cascade",
       })
       .notNull(),
@@ -19,9 +15,7 @@ const userHighlightedSkills = mysqlTable(
   },
   (table) => {
     return {
-      UserHighlightedSkill_Id: primaryKey({
-        columns: [table.userId, table.skillId],
-      }),
+      UserSkillId_index: index("UserSkillId_index").on(table.userSkillId),
     };
   },
 );
@@ -29,13 +23,9 @@ const userHighlightedSkills = mysqlTable(
 export const userHighlightedSkillsRelations = relations(
   userHighlightedSkills,
   ({ one }) => ({
-    user: one(users, {
-      fields: [userHighlightedSkills.userId],
-      references: [users.id],
-    }),
-    skill: one(skills, {
-      fields: [userHighlightedSkills.skillId],
-      references: [skills.id],
+    userSkill: one(userSkills, {
+      fields: [userHighlightedSkills.userSkillId],
+      references: [userSkills.id],
     }),
   }),
 );

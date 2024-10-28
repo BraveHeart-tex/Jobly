@@ -1,5 +1,6 @@
 import {
   skills,
+  userHighlightedSkills,
   userSkillEducationalBackgrounds,
   userSkillWorkExperiences,
   users,
@@ -9,7 +10,7 @@ import {
   relations,
   type InferInsertModel,
 } from "drizzle-orm";
-import { index, int, mysqlTable } from "drizzle-orm/mysql-core";
+import { index, int, mysqlTable, uniqueIndex } from "drizzle-orm/mysql-core";
 
 const userSkills = mysqlTable(
   "UserSkills",
@@ -31,6 +32,10 @@ const userSkills = mysqlTable(
     return {
       userId: index("userId").on(table.userId),
       skillId: index("skillId").on(table.skillId),
+      User_Skill_Id: uniqueIndex("User_Skill_Id").on(
+        table.userId,
+        table.skillId,
+      ),
     };
   },
 );
@@ -46,6 +51,7 @@ export const userSkillsRelations = relations(userSkills, ({ one, many }) => ({
   }),
   userSkillWorkExperiences: many(userSkillWorkExperiences),
   userSkillEducationalBackgrounds: many(userSkillEducationalBackgrounds),
+  userHighlightedSkills: many(userHighlightedSkills),
 }));
 
 export type UserSkill = InferSelectModel<typeof userSkills>;

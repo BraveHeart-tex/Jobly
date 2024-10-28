@@ -1,7 +1,6 @@
 import {
   educationalBackgrounds,
   userBios,
-  userHighlightedSkills,
   userProfiles,
   userSkills,
   workExperiences,
@@ -55,7 +54,6 @@ export const userRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [userBios.userId],
   }),
-  userHighlightedSkills: many(userHighlightedSkills),
   userProfile: one(userProfiles, {
     fields: [users.id],
     references: [userProfiles.userId],
