@@ -9,7 +9,7 @@ import {
   users,
   workExperiences,
 } from "@/server/db/schema";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
 import type {
   GetAboutInformationReturnType,
@@ -229,11 +229,32 @@ export const userProfileRepository = {
           .where(and(eq(userBios.userId, userId), eq(userBios.id, bio.id)));
       }
 
-      if (!highlightedSkills) return;
-
       const hasHighlightedSkills = highlightedSkills.length > 0;
 
       if (!hasHighlightedSkills) return;
+
+      const prevUserSkills = await trx
+        .select()
+        .from(userSkills)
+        .innerJoin(
+          userHighlightedSkills,
+          eq(userSkills.id, userHighlightedSkills.userSkillId),
+        )
+        .where(and(eq(userSkills.userId, userId)));
+
+      const prevUserHighlightedSkills = prevUserSkills.map(
+        (item) => item.UserHighlightedSkills,
+      );
+
+      await trx.delete(userSkills).where(
+        and(
+          eq(userSkills.userId, userId),
+          inArray(
+            userSkills.id,
+            prevUserHighlightedSkills.map((item) => item.userSkillId),
+          ),
+        ),
+      );
 
       const userSkillIds = await trx
         .insert(userSkills)
@@ -244,23 +265,27 @@ export const userProfileRepository = {
           })),
         )
         .onDuplicateKeyUpdate({
-          set: buildConflictUpdateColumns(userSkills, ["userId", "skillId"]),
+          set: buildConflictUpdateColumns(userSkills, [
+            "id",
+            "userId",
+            "skillId",
+          ]),
         })
         .$returningId();
 
-      await trx
-        .insert(userHighlightedSkills)
-        .values(
-          userSkillIds.map(({ id: userSkillId }, index) => ({
-            userSkillId,
-            order: index + 1,
-          })),
-        )
-        .onDuplicateKeyUpdate({
-          set: buildConflictUpdateColumns(userHighlightedSkills, [
-            "userSkillId",
-          ]),
-        });
+      await trx.delete(userHighlightedSkills).where(
+        inArray(
+          userHighlightedSkills.userSkillId,
+          userSkillIds.map((item) => item.id),
+        ),
+      );
+
+      await trx.insert(userHighlightedSkills).values(
+        highlightedSkills.map((item, index) => ({
+          userSkillId: userSkillIds[index]?.id as number,
+          order: item.order,
+        })),
+      );
     });
   },
 };

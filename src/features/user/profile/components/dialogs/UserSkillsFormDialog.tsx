@@ -107,7 +107,7 @@ const UserSkillsFormDialog = () => {
       title={`${isEditMode ? "Edit" : "Add"} Skill`}
       onClose={closeModal}
       isSaveDisabled={
-        isFetchingUserSkill ||
+        (isEditMode ? isFetchingUserSkill : false) ||
         isUpdatingSkill ||
         isFetchingWorkExperiences ||
         isFetchingEducationalBackgrounds ||
@@ -117,7 +117,7 @@ const UserSkillsFormDialog = () => {
       isCloseDisabled={
         isUpdatingSkill || isCreatingUserSkill || isDeletingUserSkill
       }
-      isLoadingInitialData={isFetchingUserSkill}
+      isLoadingInitialData={isEditMode ? isFetchingUserSkill : false}
       form={form}
       onSubmit={onSubmit}
       onDeleteClick={isEditMode ? handleDelete : undefined}
