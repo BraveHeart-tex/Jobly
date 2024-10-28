@@ -40,6 +40,7 @@ export const createUserSkillUseCase = async (
               userSkillId,
               workExperienceId,
             })),
+            trx,
           )
         : undefined,
       attributedEducationIds.length
@@ -48,6 +49,7 @@ export const createUserSkillUseCase = async (
               userSkillId,
               educationalBackgroundId,
             })),
+            trx,
           )
         : undefined,
     ]);
