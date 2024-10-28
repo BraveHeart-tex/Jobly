@@ -1,5 +1,10 @@
 import { companyUserService } from "@/features/employer/company/services/userCompanyService";
-import { employerJobPostingService } from "@/features/employer/jobPosting/services/employerJobPostingService";
+import {
+  getJobPostingsUseCase,
+  createJobPostingUseCase,
+  getJobPostingByIdUseCase,
+  updateJobPostingUseCase,
+} from "@/features/employer/jobPosting/use-cases/employerJobPostings";
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
@@ -31,7 +36,7 @@ export const jobPostingRouter = createTRPCRouter({
         });
       }
 
-      return employerJobPostingService.getJobPostings({
+      return getJobPostingsUseCase({
         ...input,
         companyId: company.id,
       });
@@ -42,7 +47,7 @@ export const jobPostingRouter = createTRPCRouter({
       const user = ctx.user;
       const companyId = await ensureEmployerCompanyLink(user);
 
-      return employerJobPostingService.createJobPosting({
+      return createJobPostingUseCase({
         ...input,
         companyId,
         createdUserId: user.id,
@@ -66,7 +71,7 @@ export const jobPostingRouter = createTRPCRouter({
         });
       }
 
-      return employerJobPostingService.getJobPostingById(id);
+      return getJobPostingByIdUseCase(id);
     }),
   updateJobPosting: protectedProcedure
     .input(parser(required(EmployerJobPostingFormValidator, ["id"])))
@@ -74,7 +79,7 @@ export const jobPostingRouter = createTRPCRouter({
       const user = ctx.user;
       const companyId = await ensureEmployerCompanyLink(user);
 
-      return employerJobPostingService.updateJobPosting({
+      return updateJobPostingUseCase({
         ...input,
         companyId,
         createdUserId: user.id,

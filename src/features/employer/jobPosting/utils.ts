@@ -1,5 +1,5 @@
 import { companyUserService } from "@/features/employer/company/services/userCompanyService";
-import { jobPostingSkillsRepository } from "@/features/employer/jobPosting/repositories/jobPostingSkillsRepository";
+import { addJobPostingSkills } from "@/features/employer/jobPosting/data-access/jobPostingSkills";
 import type { ContextUserAttributes } from "@/lib/auth/session";
 import type { Transaction } from "@/lib/types";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
@@ -12,7 +12,7 @@ export const insertJobPostingSkills = async (
 ) => {
   if (!skills.length) return [];
 
-  await jobPostingSkillsRepository.addJobSkills(
+  await addJobPostingSkills(
     skills.map((skill) => ({
       jobPostingId,
       skillId: skill.id,
