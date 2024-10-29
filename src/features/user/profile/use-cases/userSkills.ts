@@ -4,10 +4,14 @@ import {
   createUserSkill,
   deleteUserSkill,
   getUserSkillById,
+  getUserSkillBySkillId,
   getUserSkillsByUserId,
   saveUserSkillOrder,
 } from "@/features/user/profile/data-access/userSkills";
-import type { DeleteUserSkillParams } from "@/features/user/profile/types";
+import type {
+  DeleteUserSkillParams,
+  GetUserSkillBySkillIdParams,
+} from "@/features/user/profile/types";
 import { db } from "@/server/db";
 import type { SaveUserSkillOrderData } from "@/validators/user/profile/saveUserSkillOrderValidator";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
@@ -23,7 +27,7 @@ export const createUserSkillUseCase = async (
   } = data;
 
   await db.transaction(async (trx) => {
-    const userSkillId = await createUserSkill(
+    let userSkillId = await createUserSkill(
       {
         skillId,
         userId,
@@ -32,8 +36,18 @@ export const createUserSkillUseCase = async (
     );
 
     if (!userSkillId) {
-      trx.rollback();
-      return;
+      const duplicateUserSkill = await getUserSkillBySkillIdUse({
+        userId,
+        skillId,
+        trx,
+      });
+
+      if (!duplicateUserSkill) {
+        trx.rollback();
+        return;
+      }
+
+      userSkillId = duplicateUserSkill.id;
     }
 
     await Promise.all([
@@ -79,4 +93,12 @@ export const saveUserSkillOrderUseCase = async (
   data: SaveUserSkillOrderData,
 ) => {
   return await saveUserSkillOrder(userId, data);
+};
+
+export const getUserSkillBySkillIdUse = async ({
+  userId,
+  skillId,
+  trx,
+}: GetUserSkillBySkillIdParams) => {
+  return await getUserSkillBySkillId({ userId, skillId, trx });
 };

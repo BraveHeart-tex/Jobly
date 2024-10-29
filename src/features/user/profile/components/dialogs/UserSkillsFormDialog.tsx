@@ -205,9 +205,11 @@ const UserSkillsFormDialog = () => {
                                         );
                                     field.onChange(newItems);
                                   }}
-                                  id={item.id.toString()}
+                                  id={`workExperience-${item.id.toString()}`}
                                 />
-                                <Label htmlFor={item.id.toString()}>
+                                <Label
+                                  htmlFor={`workExperience-${item.id.toString()}`}
+                                >
                                   {item.jobTitle} - {item.employer}
                                 </Label>
                               </div>
@@ -230,7 +232,7 @@ const UserSkillsFormDialog = () => {
                             {educationalBackgrounds?.map((item) => (
                               <div
                                 className="flex items-center gap-1"
-                                key={item.id}
+                                key={`education-${item.id.toString()}`}
                               >
                                 <Checkbox
                                   ref={field.ref}
@@ -244,9 +246,11 @@ const UserSkillsFormDialog = () => {
                                         );
                                     field.onChange(newItems);
                                   }}
-                                  id={item.id.toString()}
+                                  id={`education-${item.id.toString()}`}
                                 />
-                                <Label htmlFor={item.id.toString()}>
+                                <Label
+                                  htmlFor={`education-${item.id.toString()}`}
+                                >
                                   {item.fieldOfStudy} - {item.school}
                                 </Label>
                               </div>

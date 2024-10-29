@@ -1,3 +1,4 @@
+import type { Transaction } from "@/lib/types";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
 import type { SkillSelectModel } from "@/server/db/schema/skills";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
@@ -90,4 +91,10 @@ export interface OrderedUserSkill {
   name: string;
   userId: number;
   displayOrder: number | null;
+}
+
+export interface GetUserSkillBySkillIdParams {
+  userId: number;
+  skillId: number;
+  trx?: Transaction;
 }

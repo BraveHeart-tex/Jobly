@@ -1,11 +1,13 @@
 import type {
   DeleteUserSkillParams,
+  GetUserSkillBySkillIdParams,
   OrderedUserSkill,
 } from "@/features/user/profile/types";
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
 import { skills, userHighlightedSkills } from "@/server/db/schema";
 import userSkills, {
+  type UserSkill,
   type InsertUserSkillModel,
 } from "@/server/db/schema/userSkills";
 import type { SaveUserSkillOrderData } from "@/validators/user/profile/saveUserSkillOrderValidator";
@@ -18,7 +20,15 @@ export const createUserSkill = async (
 ): Promise<number | undefined> => {
   const dbLayer = trx || db;
 
-  const [result] = await dbLayer.insert(userSkills).values(data).$returningId();
+  const [result] = await dbLayer
+    .insert(userSkills)
+    .values(data)
+    .onDuplicateKeyUpdate({
+      set: {
+        skillId: data.skillId,
+      },
+    })
+    .$returningId();
 
   return result?.id;
 };
@@ -140,4 +150,17 @@ export const saveUserSkillOrder = async (
       ),
     );
   });
+};
+
+export const getUserSkillBySkillId = async ({
+  userId,
+  skillId,
+  trx,
+}: GetUserSkillBySkillIdParams): Promise<UserSkill | undefined> => {
+  const [result] = await (trx || db)
+    .select()
+    .from(userSkills)
+    .where(and(eq(userSkills.userId, userId), eq(userSkills.skillId, skillId)));
+
+  return result;
 };
