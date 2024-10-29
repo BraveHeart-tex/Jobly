@@ -4,6 +4,7 @@ import {
   createUserSkill,
   deleteUserSkill,
   getUserSkillById,
+  getUserSkillsByUserId,
 } from "@/features/user/profile/data-access/userSkills";
 import type { DeleteUserSkillParams } from "@/features/user/profile/types";
 import { db } from "@/server/db";
@@ -65,4 +66,8 @@ export const deleteUserSkillUseCase = async ({
   userSkillId,
 }: DeleteUserSkillParams) => {
   return await deleteUserSkill({ userId, userSkillId });
+};
+
+export const getUserSkillsByUserIdUseCase = async (userId: number) => {
+  return await getUserSkillsByUserId(userId);
 };

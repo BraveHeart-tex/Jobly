@@ -1,12 +1,15 @@
-import type { DeleteUserSkillParams } from "@/features/user/profile/types";
+import type {
+  DeleteUserSkillParams,
+  OrderedUserSkill,
+} from "@/features/user/profile/types";
 import type { Transaction } from "@/lib/types";
 import { db } from "@/server/db";
-import { userHighlightedSkills } from "@/server/db/schema";
+import { skills, userHighlightedSkills } from "@/server/db/schema";
 import userSkills, {
   type InsertUserSkillModel,
 } from "@/server/db/schema/userSkills";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
-import { and, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 
 export const createUserSkill = async (
   data: InsertUserSkillModel,
@@ -93,4 +96,21 @@ export const deleteHighlightedUserSkills = async (
   return await dbLayer
     .delete(userSkills)
     .where(and(inArray(userSkills.id, userSkillIds)));
+};
+
+export const getUserSkillsByUserId = async (
+  userId: number,
+): Promise<OrderedUserSkill[]> => {
+  return await db
+    .select({
+      id: userSkills.id,
+      skillId: skills.id,
+      name: skills.name,
+      userId: userSkills.userId,
+      displayOrder: userSkills.displayOrder,
+    })
+    .from(userSkills)
+    .innerJoin(skills, eq(userSkills.skillId, skills.id))
+    .where(eq(userSkills.userId, userId))
+    .orderBy(desc(userSkills.displayOrder));
 };

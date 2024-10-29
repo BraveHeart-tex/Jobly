@@ -1,6 +1,6 @@
 "use client";
 
-import type { SkillSelectModel } from "@/server/db/schema/skills";
+import type { OrderedUserSkill } from "@/features/user/profile/types";
 import {
   DndContext,
   type DragEndEvent,
@@ -19,16 +19,16 @@ import {
 } from "@dnd-kit/sortable";
 import type { PropsWithChildren } from "react";
 
-interface HighlightedSkillsDndContextProps {
-  highlightedSkills: SkillSelectModel[];
-  setHighlightedSkills: (highlightedSkills: SkillSelectModel[]) => void;
+interface UserSkillsDndContextProps {
+  userSkills: OrderedUserSkill[];
+  setUserSkills: (highlightedSkills: OrderedUserSkill[]) => void;
 }
 
-const HighlightedSkillsDndContext = ({
+const UserSkillsDndContext = ({
   children,
-  highlightedSkills,
-  setHighlightedSkills,
-}: PropsWithChildren<HighlightedSkillsDndContextProps>) => {
+  userSkills,
+  setUserSkills,
+}: PropsWithChildren<UserSkillsDndContextProps>) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(TouchSensor),
@@ -42,15 +42,14 @@ const HighlightedSkillsDndContext = ({
 
     if (!over?.id || !active.id || over.id === active.id) return;
 
-    const activeIndex = highlightedSkills.findIndex(
-      (skill) => skill.id === active.id,
+    const activeIndex = userSkills.findIndex(
+      (userSkill) => userSkill.id === active.id,
+    );
+    const overIndex = userSkills.findIndex(
+      (userSkill) => userSkill.id === over.id,
     );
 
-    const overIndex = highlightedSkills.findIndex(
-      (skill) => skill.id === over.id,
-    );
-
-    setHighlightedSkills(arrayMove(highlightedSkills, activeIndex, overIndex));
+    setUserSkills(arrayMove(userSkills, activeIndex, overIndex));
   };
 
   return (
@@ -60,7 +59,7 @@ const HighlightedSkillsDndContext = ({
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={highlightedSkills}
+        items={userSkills}
         strategy={verticalListSortingStrategy}
       >
         {children}
@@ -69,4 +68,4 @@ const HighlightedSkillsDndContext = ({
   );
 };
 
-export default HighlightedSkillsDndContext;
+export default UserSkillsDndContext;

@@ -2,6 +2,7 @@ import {
   createUserSkillUseCase,
   deleteUserSkillUseCase,
   getUserSkillByIdUseCase,
+  getUserSkillsByUserIdUseCase,
 } from "@/features/user/profile/use-cases/userSkills";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { GenericIdValidator } from "@/validators/schemaUtils";
@@ -29,4 +30,8 @@ export const userSkillsRouter = createTRPCRouter({
         userSkillId: input.id,
       });
     }),
+  getUserSkillsByUserId: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return getUserSkillsByUserIdUseCase(userId);
+  }),
 });

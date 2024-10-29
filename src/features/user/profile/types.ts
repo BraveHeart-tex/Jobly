@@ -83,3 +83,11 @@ export interface DeleteUserSkillParams {
   userId: number;
   userSkillId: number;
 }
+
+export interface OrderedUserSkill {
+  id: number;
+  skillId: number;
+  name: string;
+  userId: number;
+  displayOrder: number | null;
+}

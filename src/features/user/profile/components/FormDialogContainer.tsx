@@ -2,6 +2,7 @@
 import AboutSectionFormDialog from "@/features/user/profile/components/dialogs/AboutSectionFormDialog";
 import EducationalBackgroundFormDialog from "@/features/user/profile/components/dialogs/EducationalBackgroundFormDialog";
 import ProfileFormDialog from "@/features/user/profile/components/dialogs/ProfileFormDialog";
+import ReOrderSkillsDialog from "@/features/user/profile/components/dialogs/ReOrderSkillsDialog";
 import UserSkillsFormDialog from "@/features/user/profile/components/dialogs/UserSkillsFormDialog";
 import WorkExperienceFormDialog from "@/features/user/profile/components/dialogs/WorkExperienceFormDialog";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
@@ -15,7 +16,7 @@ export const modalDialogMap = {
   personalDetails: ProfileFormDialog,
   "skills/new": UserSkillsFormDialog,
   "skills/edit": UserSkillsFormDialog,
-  "skills/reorder": UserSkillsFormDialog,
+  "skills/reorder": ReOrderSkillsDialog,
 } as const;
 
 export type ModalDialogMapKey = keyof typeof modalDialogMap;
