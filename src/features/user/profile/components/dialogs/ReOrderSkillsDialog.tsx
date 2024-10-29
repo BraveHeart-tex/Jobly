@@ -25,7 +25,12 @@ const ReOrderSkillsDialog = () => {
   });
   const { userSkills, isFetchingUserSkills } = useGetUserSkills();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!isDirty) {
+      await closeModal();
+      return;
+    }
+
     saveUserSkillOrder({
       items: orderedSkills.map((item, index) => ({
         ...item,
