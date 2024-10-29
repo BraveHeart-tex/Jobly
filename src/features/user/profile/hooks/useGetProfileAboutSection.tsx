@@ -1,6 +1,6 @@
 import type { SkillSelectModel } from "@/server/db/schema/skills";
 import { api } from "@/trpc/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const useGetProfileAboutSection = () => {
   const [bio, setBio] = useState<{
@@ -30,11 +30,29 @@ export const useGetProfileAboutSection = () => {
     );
   }, [aboutSectionData]);
 
+  const isDirty = useMemo(() => {
+    if (!aboutSectionData) return false;
+
+    const initialHighlightedSkillsIds = aboutSectionData?.highlightedSkills.map(
+      (item) => item.skillId,
+    );
+    const currentHighlightedSkillsIds = highlightedSkills.map(
+      (item) => item.id,
+    );
+
+    return (
+      aboutSectionData.bio.content !== bio.content ||
+      JSON.stringify(initialHighlightedSkillsIds) !==
+        JSON.stringify(currentHighlightedSkillsIds)
+    );
+  }, [aboutSectionData, bio.content, highlightedSkills]);
+
   return {
     bio,
     highlightedSkills,
     setBio,
     setHighlightedSkills,
     isPendingAboutData,
+    isDirty,
   };
 };

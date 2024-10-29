@@ -33,6 +33,7 @@ const AboutSectionFormDialog = () => {
     setBio,
     setHighlightedSkills,
     isPendingAboutData,
+    isDirty,
   } = useGetProfileAboutSection();
 
   const { saveAboutInformation, isSavingAboutInformation } =
@@ -120,6 +121,7 @@ const AboutSectionFormDialog = () => {
       isSaveDisabled={
         isPendingAboutData || isCreatingSkill || isSavingAboutInformation
       }
+      isDirty={isDirty}
     >
       <div className="space-y-1">
         <p className="text-sm">
