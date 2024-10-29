@@ -82,7 +82,7 @@ export const getHighlightedUserSkillsByUserId = async (
   return await dbLayer
     .select()
     .from(userSkills)
-    .innerJoin(
+    .leftJoin(
       userHighlightedSkills,
       eq(userSkills.id, userHighlightedSkills.userSkillId),
     )

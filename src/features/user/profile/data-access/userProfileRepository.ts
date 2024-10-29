@@ -176,9 +176,7 @@ export const userProfileRepository = {
         userSkills: {
           with: {
             skill: true,
-            userHighlightedSkills: {
-              orderBy: () => desc(userHighlightedSkills.order),
-            },
+            userHighlightedSkills: true,
           },
         },
       },
@@ -207,12 +205,8 @@ export const userProfileRepository = {
           order: userHighlightedSkill.order,
         };
       })
-      .filter(Boolean) as {
-      name: string;
-      userId: number;
-      skillId: number;
-      order: number;
-    }[];
+      .filter((item) => item !== null)
+      .sort((a, b) => a.order - b.order);
 
     return {
       bio: {
@@ -279,16 +273,28 @@ export const userProfileRepository = {
         const userSkillIdsResult = await trx
           .insert(userSkills)
           .values(
-            addedUserHighlightedSkills.map((item) => ({
-              userId,
-              skillId: item.id,
-            })),
+            addedUserHighlightedSkills
+              .filter(
+                (skill) =>
+                  !prevUserSkills
+                    .map((prevUserSkill) => prevUserSkill.skillId)
+                    .includes(skill.id),
+              )
+              .map((item) => ({
+                userId,
+                skillId: item.id,
+              })),
           )
+
           .$returningId();
 
         await trx.insert(userHighlightedSkills).values(
           addedUserHighlightedSkills.map((item, index) => ({
-            userSkillId: userSkillIdsResult[index]?.id as number,
+            userSkillId:
+              userSkillIdsResult[index]?.id ||
+              (prevUserSkills
+                .map((item) => item.id)
+                .find((id) => id === item.id) as number),
             order: item.order,
           })),
         );

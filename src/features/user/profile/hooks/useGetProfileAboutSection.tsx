@@ -25,6 +25,7 @@ export const useGetProfileAboutSection = () => {
       aboutSectionData?.highlightedSkills.map((item) => ({
         id: item.skillId,
         name: item.name,
+        order: item.order,
       })),
     );
   }, [aboutSectionData]);
