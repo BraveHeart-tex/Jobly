@@ -3,9 +3,11 @@ import {
   deleteUserSkillUseCase,
   getUserSkillByIdUseCase,
   getUserSkillsByUserIdUseCase,
+  saveUserSkillOrderUseCase,
 } from "@/features/user/profile/use-cases/userSkills";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { GenericIdValidator } from "@/validators/schemaUtils";
+import { SaveUserSkillOrderValidator } from "@/validators/user/profile/saveUserSkillOrderValidator";
 import { userSkillsValidator } from "@/validators/user/profile/userSkillsValidator";
 import { parser } from "valibot";
 
@@ -34,4 +36,10 @@ export const userSkillsRouter = createTRPCRouter({
     const userId = ctx.user.id;
     return getUserSkillsByUserIdUseCase(userId);
   }),
+  saveUserSkillOrder: protectedProcedure
+    .input(parser(SaveUserSkillOrderValidator))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      return saveUserSkillOrderUseCase(userId, input);
+    }),
 });

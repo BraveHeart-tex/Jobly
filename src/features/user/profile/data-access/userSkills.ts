@@ -8,6 +8,7 @@ import { skills, userHighlightedSkills } from "@/server/db/schema";
 import userSkills, {
   type InsertUserSkillModel,
 } from "@/server/db/schema/userSkills";
+import type { SaveUserSkillOrderData } from "@/validators/user/profile/saveUserSkillOrderValidator";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
 import { and, desc, eq, inArray } from "drizzle-orm";
 
@@ -113,4 +114,30 @@ export const getUserSkillsByUserId = async (
     .innerJoin(skills, eq(userSkills.skillId, skills.id))
     .where(eq(userSkills.userId, userId))
     .orderBy(desc(userSkills.displayOrder));
+};
+
+export const saveUserSkillOrder = async (
+  userId: number,
+  data: SaveUserSkillOrderData,
+) => {
+  await db.transaction(async (trx) => {
+    const items = data.items.map((item) => ({
+      id: item.id,
+      skillId: item.skillId,
+      userId,
+      displayOrder: item.displayOrder,
+    }));
+    await Promise.all(
+      items.map((item) =>
+        trx
+          .update(userSkills)
+          .set({
+            displayOrder: item.displayOrder,
+          })
+          .where(
+            and(eq(userSkills.id, item.id), eq(userSkills.userId, userId)),
+          ),
+      ),
+    );
+  });
 };

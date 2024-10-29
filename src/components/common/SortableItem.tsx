@@ -14,7 +14,7 @@ interface SortableItemProps<
   item: T;
   idField: IdField;
   nameField: NameField;
-  onRemoveClick: (id: T[IdField]) => void;
+  onRemoveClick?: (id: T[IdField]) => void;
   shouldShowGripIcon?: boolean;
   renderContent?: (item: T) => React.ReactNode;
   className?: string;
@@ -43,7 +43,7 @@ const SortableItem = <
     useSortable({ id: item[idField] as string });
 
   const handleRemoveClick = () => {
-    onRemoveClick(item[idField] as T[IdField]);
+    onRemoveClick?.(item[idField] as T[IdField]);
   };
 
   return (
@@ -57,15 +57,17 @@ const SortableItem = <
       {...attributes}
     >
       <div className="flex items-center gap-2 w-full">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className={removeButtonClassName}
-          onClick={handleRemoveClick}
-        >
-          <XIcon />
-        </Button>
+        {onRemoveClick && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className={removeButtonClassName}
+            onClick={handleRemoveClick}
+          >
+            <XIcon />
+          </Button>
+        )}
 
         {renderContent ? (
           renderContent(item)

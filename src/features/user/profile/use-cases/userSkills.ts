@@ -5,9 +5,11 @@ import {
   deleteUserSkill,
   getUserSkillById,
   getUserSkillsByUserId,
+  saveUserSkillOrder,
 } from "@/features/user/profile/data-access/userSkills";
 import type { DeleteUserSkillParams } from "@/features/user/profile/types";
 import { db } from "@/server/db";
+import type { SaveUserSkillOrderData } from "@/validators/user/profile/saveUserSkillOrderValidator";
 import type { UserSkillsData } from "@/validators/user/profile/userSkillsValidator";
 
 export const createUserSkillUseCase = async (
@@ -70,4 +72,11 @@ export const deleteUserSkillUseCase = async ({
 
 export const getUserSkillsByUserIdUseCase = async (userId: number) => {
   return await getUserSkillsByUserId(userId);
+};
+
+export const saveUserSkillOrderUseCase = async (
+  userId: number,
+  data: SaveUserSkillOrderData,
+) => {
+  return await saveUserSkillOrder(userId, data);
 };

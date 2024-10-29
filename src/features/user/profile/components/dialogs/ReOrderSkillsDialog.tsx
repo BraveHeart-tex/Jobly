@@ -2,19 +2,37 @@
 import FormDialog from "@/components/common/FormDialog";
 import SortableDndContext from "@/components/common/SortableDndContext";
 import SortableItem from "@/components/common/SortableItem";
+import { showSuccessToast } from "@/components/toastUtils";
 import { useGetUserSkills } from "@/features/user/profile/hooks/useGetUserSkills";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
+import { useSaveUserSkillOrder } from "@/features/user/profile/hooks/useSaveUserSkillOrder";
 import type { OrderedUserSkill } from "@/features/user/profile/types";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 const ReOrderSkillsDialog = () => {
   const [orderedSkills, setOrderedSkills] = useState<OrderedUserSkill[]>([]);
 
   const { closeModal } = useProfilePageSearchParams();
+  const router = useRouter();
 
+  const { saveUserSkillOrder, isSavingUserSkillOrder } = useSaveUserSkillOrder({
+    onSuccess: async () => {
+      await closeModal();
+      router.refresh();
+      showSuccessToast("Skills order saved successfully.");
+    },
+  });
   const { userSkills, isFetchingUserSkills } = useGetUserSkills();
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    saveUserSkillOrder({
+      items: orderedSkills.map((item, index) => ({
+        ...item,
+        displayOrder: index + 1,
+      })),
+    });
+  };
 
   const isDirty = useMemo(() => {
     if (!userSkills) return false;
@@ -36,6 +54,8 @@ const ReOrderSkillsDialog = () => {
       onSubmit={handleSubmit}
       isDirty={isDirty}
       isLoadingInitialData={isFetchingUserSkills}
+      isSaveDisabled={isSavingUserSkillOrder}
+      isCloseDisabled={isSavingUserSkillOrder}
     >
       {!isFetchingUserSkills && orderedSkills.length === 0 && (
         <p>No skills were found.</p>
@@ -66,11 +86,6 @@ const ReOrderSkillsDialog = () => {
                 nameField="name"
                 key={userSkill.id}
                 item={userSkill}
-                onRemoveClick={(id) => {
-                  setOrderedSkills((prev) =>
-                    prev.filter((skill) => skill.id !== id),
-                  );
-                }}
               />
             ))}
         </div>
