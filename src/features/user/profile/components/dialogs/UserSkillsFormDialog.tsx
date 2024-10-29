@@ -71,8 +71,6 @@ const UserSkillsFormDialog = () => {
   const shouldRenderAttributeTitle =
     workExperienceCount > 0 || educationalBackgroundCount > 0;
 
-  const isUpdatingSkill = false;
-
   const loadSkillOptions = useLoadSkillOptions();
 
   const onSubmit = async (data: UserSkillsData) => {
@@ -81,10 +79,7 @@ const UserSkillsFormDialog = () => {
       return;
     }
 
-    if (isEditMode) {
-    } else {
-      createUserSkill(data);
-    }
+    createUserSkill(data);
   };
 
   const handleDelete = () => {
@@ -113,15 +108,12 @@ const UserSkillsFormDialog = () => {
       onClose={closeModal}
       isSaveDisabled={
         (isEditMode ? isFetchingUserSkill : false) ||
-        isUpdatingSkill ||
         isFetchingWorkExperiences ||
         isFetchingEducationalBackgrounds ||
         isCreatingUserSkill ||
         isDeletingUserSkill
       }
-      isCloseDisabled={
-        isUpdatingSkill || isCreatingUserSkill || isDeletingUserSkill
-      }
+      isCloseDisabled={isCreatingUserSkill || isDeletingUserSkill}
       isLoadingInitialData={isEditMode ? isFetchingUserSkill : false}
       form={form}
       onSubmit={onSubmit}

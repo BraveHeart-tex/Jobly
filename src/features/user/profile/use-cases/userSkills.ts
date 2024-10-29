@@ -1,5 +1,11 @@
-import { createUserSkillEducationalBackgrounds } from "@/features/user/profile/data-access/userSkillEducationalBackgrounds";
-import { createUserSkillWorkExperiences } from "@/features/user/profile/data-access/userSkillWorkExperiences";
+import {
+  createUserSkillEducationalBackgrounds,
+  deleteUserSkillEducationalBackgrounds,
+} from "@/features/user/profile/data-access/userSkillEducationalBackgrounds";
+import {
+  createUserSkillWorkExperiences,
+  deleteUserSkillWorkExperiences,
+} from "@/features/user/profile/data-access/userSkillWorkExperiences";
 import {
   createUserSkill,
   deleteUserSkill,
@@ -49,6 +55,11 @@ export const createUserSkillUseCase = async (
 
       userSkillId = duplicateUserSkill.id;
     }
+
+    await Promise.all([
+      deleteUserSkillWorkExperiences(userSkillId, trx),
+      deleteUserSkillEducationalBackgrounds(userSkillId, trx),
+    ]);
 
     await Promise.all([
       attributedWorkExperienceIds.length
