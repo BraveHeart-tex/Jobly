@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import UserAvatarDialog from "@/features/user/profile/components/UserAvatarDialog";
+import UserAvatarDialog from "@/features/user/profile/components/dialogs/UserAvatarDialog";
 import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
 import AddProfileSectionDialog from "@/features/user/profile/components/dialogs/AddProfileSectionDialog";
 

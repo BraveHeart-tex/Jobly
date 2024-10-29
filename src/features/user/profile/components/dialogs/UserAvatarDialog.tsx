@@ -11,13 +11,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { CameraIcon, InfoIcon, TrashIcon } from "lucide-react";
-import AvatarEditorDialog from "@/features/user/profile/components/AvatarEditorDialog";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { getAvatarPlaceholder } from "@/lib/utils/string";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDeleteUserAvatar } from "@/features/user/profile/hooks/useDeleteUserAvatar";
 import { showSuccessToast } from "@/components/toastUtils";
+import AvatarEditorDialog from "@/features/user/profile/components/dialogs/AvatarEditorDialog";
 
 interface UserAvatarDialogProps {
   userFullName: string;
