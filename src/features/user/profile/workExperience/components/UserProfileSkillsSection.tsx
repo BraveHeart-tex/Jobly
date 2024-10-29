@@ -3,8 +3,7 @@ import AddProfileRecordButton from "@/features/user/profile/components/AddProfil
 import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
 import type { SkillWithExperience } from "@/features/user/profile/types";
 import OpenSkillOrderDialogButton from "@/features/user/profile/workExperience/components/OpenSkillOrderDialogButton";
-import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
-import Link from "next/link";
+import { CheckCircleIcon } from "lucide-react";
 
 interface UserProfileSkillsSectionProps {
   skills: SkillWithExperience[];
@@ -27,7 +26,7 @@ const UserProfileSkillsSection = ({
         </div>
       </CardContent>
 
-      <div className="p-4 grid gap-8">
+      <div className="p-4 grid gap-8 ">
         {skills.map((skill) => (
           <div key={skill.userSkillId} className="flex flex-col gap-2">
             <div className="flex items-center justify-between gap-2">
@@ -54,18 +53,6 @@ const UserProfileSkillsSection = ({
           </div>
         ))}
       </div>
-
-      {skills.length > 5 && (
-        <Link
-          href={"#"}
-          className="w-full px-2 py-[0.625rem] z-5 border-t border-b-0 bg-card text-center rounded-md rounded-t-none hover:bg-secondary transition-all"
-        >
-          <div className="flex items-center gap-1 justify-center text-base font-semibold">
-            <p>Show all {skills.length} work experiences</p>
-            <ArrowRightIcon />
-          </div>
-        </Link>
-      )}
     </Card>
   );
 };
