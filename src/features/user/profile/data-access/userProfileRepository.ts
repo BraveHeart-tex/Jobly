@@ -11,7 +11,7 @@ import {
   users,
   workExperiences,
 } from "@/server/db/schema";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
 import type {
   GetAboutInformationReturnType,
@@ -49,7 +49,6 @@ export const userProfileRepository = {
         educationalBackgrounds: {
           orderBy: () => desc(educationalBackgrounds.startDate),
         },
-
         userSkills: {
           with: {
             skill: true,
@@ -71,9 +70,23 @@ export const userProfileRepository = {
 
         if (!userHighlightedSkill) return null;
 
-        return userSkill.skill.name;
+        return {
+          skillName: userSkill.skill.name,
+          ...userHighlightedSkill,
+        };
       })
-      .filter(Boolean) as string[];
+      .filter(Boolean)
+      // biome-ignore lint/style/noNonNullAssertion: we filtered the nulls in the line above
+      .sort((a, b) => a!.order - b!.order)
+      .map((item) => item?.skillName as string);
+
+    const mappedUserSkills = result.userSkills
+      .sort((a, b) => {
+        if (!a.displayOrder && !b.displayOrder) return a.id - b.id;
+
+        return (a?.displayOrder || 0) - (b.displayOrder || 0);
+      })
+      .map((item) => item.skill);
 
     const cityId = result.userProfile?.cityId;
     const countryId = result.userProfile?.countryId;
@@ -141,7 +154,7 @@ export const userProfileRepository = {
       avatarUrl: result.avatarUrl,
       ...result.userProfile,
       educationalBackground: result.educationalBackgrounds,
-      skills: result.userSkills.map((item) => item.skill),
+      skills: mappedUserSkills,
       skillsWithExperience,
       bio: result.userBio?.bio || "",
       highlightedSkills,
@@ -169,7 +182,7 @@ export const userProfileRepository = {
           with: {
             skill: true,
             userHighlightedSkills: {
-              orderBy: () => asc(userHighlightedSkills.order),
+              orderBy: () => desc(userHighlightedSkills.order),
             },
           },
         },
@@ -283,6 +296,8 @@ export const userProfileRepository = {
         );
 
         const updatePromises = [];
+
+        if (!prevUserSkills.length) return;
 
         for (const [index, prevUserSkill] of prevUserSkills.entries()) {
           const newUserSkillId = userSkillInsertIds[index]?.id as number;
