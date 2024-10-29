@@ -15,7 +15,7 @@ import {
   EducationalBackgroundValidator,
 } from "@/validators/user/profile/educationalBackgroundValidator";
 import { DateTime } from "luxon";
-import { useProfilePageSearchParams } from "../../hooks/useProfilePageSearchParams";
+import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { Textarea } from "@/components/ui/textarea";
@@ -100,7 +100,12 @@ const EducationalBackgroundFormDialog = () => {
     });
   }, [idQuery]);
 
-  const onSubmit = (data: EducationalBackgroundData) => {
+  const onSubmit = async (data: EducationalBackgroundData) => {
+    if (!form.formState.isDirty) {
+      await closeModal();
+      return;
+    }
+
     if (isEditMode) {
       updateEducationalBackground({
         ...data,

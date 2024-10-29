@@ -107,8 +107,12 @@ const WorkExperienceFormDialog = () => {
     });
   }, [idQuery]);
 
-  const onSubmit = (values: WorkExperienceData) => {
+  const onSubmit = async (values: WorkExperienceData) => {
     if (isMutating) return;
+    if (!form.formState.isDirty) {
+      await closeModal();
+      return;
+    }
 
     if (values?.id) {
       updateWorkExperience({

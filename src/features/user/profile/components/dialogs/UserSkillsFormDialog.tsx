@@ -75,7 +75,12 @@ const UserSkillsFormDialog = () => {
 
   const loadSkillOptions = useLoadSkillOptions();
 
-  const onSubmit = (data: UserSkillsData) => {
+  const onSubmit = async (data: UserSkillsData) => {
+    if (!form.formState.isDirty) {
+      await closeModal();
+      return;
+    }
+
     if (isEditMode) {
     } else {
       createUserSkill(data);
