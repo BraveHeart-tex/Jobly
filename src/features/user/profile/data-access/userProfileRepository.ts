@@ -243,9 +243,10 @@ export const userProfileRepository = {
       const highlightedUserSkillsResult =
         await getHighlightedUserSkillsByUserId(userId, trx);
 
-      const prevUserSkills = highlightedUserSkillsResult.map(
-        (item) => item.UserSkills,
-      );
+      const prevUserSkills = highlightedUserSkillsResult.map((item) => ({
+        ...item.UserSkills,
+        highlighted: !!item.UserHighlightedSkills?.id,
+      }));
 
       // get the deleted ones
       const deletedUserSkills = prevUserSkills.filter(
@@ -285,7 +286,6 @@ export const userProfileRepository = {
                 skillId: item.id,
               })),
           )
-
           .$returningId();
 
         await trx.insert(userHighlightedSkills).values(
@@ -296,6 +296,25 @@ export const userProfileRepository = {
                 .map((item) => item.id)
                 .find((id) => id === item.id) as number),
             order: item.order,
+          })),
+        );
+      }
+
+      const unhHighlightedUserSkills = highlightedSkills.filter((item) => {
+        const userSkill = prevUserSkills.find(
+          (prevUserSkill) =>
+            !prevUserSkill.highlighted && prevUserSkill.skillId === item.id,
+        );
+        return userSkill;
+      });
+
+      if (unhHighlightedUserSkills.length > 0) {
+        await trx.insert(userHighlightedSkills).values(
+          unhHighlightedUserSkills.map((item) => ({
+            order: item.order,
+            userSkillId: prevUserSkills.find(
+              (userSkill) => userSkill.skillId === item.id,
+            )?.id as number,
           })),
         );
       }
