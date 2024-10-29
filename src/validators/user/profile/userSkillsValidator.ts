@@ -6,6 +6,7 @@ import {
   pipe,
   string,
   array,
+  nullable,
 } from "valibot";
 
 export const userSkillsValidator = object({
@@ -18,6 +19,7 @@ export const userSkillsValidator = object({
   }),
   attributedWorkExperienceIds: array(number()),
   attributedEducationIds: array(number()),
+  previousSkillId: nullable(number()),
 });
 
 export type UserSkillsData = InferOutput<typeof userSkillsValidator>;

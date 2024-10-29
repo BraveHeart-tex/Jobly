@@ -36,6 +36,7 @@ const UserSkillsFormDialog = () => {
       selectedSkill: undefined,
       attributedWorkExperienceIds: [],
       attributedEducationIds: [],
+      previousSkillId: null,
     },
   });
 
@@ -101,6 +102,12 @@ const UserSkillsFormDialog = () => {
 
     form.reset(userSkill);
   }, [userSkill, form.reset]);
+
+  useEffect(() => {
+    if (!isEditMode || !userSkill) return;
+
+    form.setValue("previousSkillId", userSkill.selectedSkill?.id);
+  }, [userSkill, isEditMode, form.setValue]);
 
   return (
     <FormDialog

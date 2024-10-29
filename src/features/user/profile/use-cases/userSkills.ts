@@ -9,6 +9,7 @@ import {
 import {
   createUserSkill,
   deleteUserSkill,
+  deleteUserSkillBySkillId,
   getUserSkillById,
   getUserSkillBySkillId,
   getUserSkillsByUserId,
@@ -30,9 +31,14 @@ export const createUserSkillUseCase = async (
     selectedSkill: { id: skillId },
     attributedWorkExperienceIds,
     attributedEducationIds,
+    previousSkillId,
   } = data;
 
   await db.transaction(async (trx) => {
+    if (previousSkillId) {
+      await deleteUserSkillBySkillId(previousSkillId, trx);
+    }
+
     let userSkillId = await createUserSkill(
       {
         skillId,

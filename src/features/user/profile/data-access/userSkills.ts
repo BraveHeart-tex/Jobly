@@ -35,7 +35,7 @@ export const createUserSkill = async (
 
 export const getUserSkillById = async (
   id: number,
-): Promise<UserSkillsData | null> => {
+): Promise<Omit<UserSkillsData, "previousSkillId"> | null> => {
   const result = await db.query.userSkills.findFirst({
     where: () => eq(userSkills.id, id),
     with: {
@@ -163,4 +163,15 @@ export const getUserSkillBySkillId = async ({
     .where(and(eq(userSkills.userId, userId), eq(userSkills.skillId, skillId)));
 
   return result;
+};
+
+export const deleteUserSkillBySkillId = async (
+  skillId: number,
+  trx?: Transaction,
+) => {
+  const dbLayer = trx || db;
+
+  return await dbLayer
+    .delete(userSkills)
+    .where(eq(userSkills.skillId, skillId));
 };
