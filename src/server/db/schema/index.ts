@@ -71,3 +71,11 @@ export {
   default as userSkillEducationalBackgrounds,
   userSkillEducationalBackgroundsRelations,
 } from "@/server/db/schema/userSkillEducationalBackgrounds";
+export {
+  default as userSecuritySettings,
+  userSecuritySettingsRelations,
+} from "@/server/db/schema/userSecuritySettings";
+export {
+  default as userEmailNotificationSettings,
+  userEmailNotificationSettingsRelations,
+} from "@/server/db/schema/userEmailNotificationSettings";

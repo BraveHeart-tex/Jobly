@@ -216,7 +216,6 @@ export const userProfileRepository = {
       highlightedSkills,
     };
   },
-  // FIXME: God, help me.
   async saveAboutInformation(
     userId: number,
     input: SaveAboutInformationInput,
