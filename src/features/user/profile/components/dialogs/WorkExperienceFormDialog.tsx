@@ -2,7 +2,7 @@
 import FormDialog from "@/components/common/FormDialog";
 import {
   type WorkExperienceData,
-  WorkExperienceValidator,
+  workExperienceValidator,
 } from "@/validators/user/profile/workExperienceValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
@@ -40,7 +40,7 @@ const WorkExperienceFormDialog = () => {
   const isEditMode = !!idQuery;
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
 
-  const form = useExtendedForm<WorkExperienceData>(WorkExperienceValidator, {
+  const form = useExtendedForm<WorkExperienceData>(workExperienceValidator, {
     defaultValues: {
       id: isEditMode ? idQuery : undefined,
       jobTitle: "",

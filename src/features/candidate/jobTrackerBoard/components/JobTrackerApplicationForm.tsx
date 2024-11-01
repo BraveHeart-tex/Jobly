@@ -23,7 +23,7 @@ import { compareMatchingKeys } from "@/lib/utils/object";
 import type { JobTrackerApplication } from "@/server/db/schema/jobTrackerApplications";
 import { api } from "@/trpc/react";
 import {
-  JobTrackerFormValidator,
+  jobTrackerFormValidator,
   type JobTrackerApplicationInput,
   type JobTrackerApplicationOutput,
 } from "@/validators/jobTrackerApplicationValidator";
@@ -112,7 +112,7 @@ const JobTrackerApplicationForm = ({
   ).length;
 
   const form = useExtendedForm<JobTrackerApplicationInput>(
-    JobTrackerFormValidator,
+    jobTrackerFormValidator,
     {
       defaultValues: {
         company: "",

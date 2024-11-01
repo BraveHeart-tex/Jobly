@@ -1,4 +1,4 @@
-import { DateValidator } from "@/validators/schemaUtils";
+import { dateValidator } from "@/validators/schemaUtils";
 import { DateTime } from "luxon";
 import {
   maxLength,
@@ -15,7 +15,7 @@ import {
   rawCheck,
 } from "valibot";
 
-export const EducationalBackgroundValidator = pipe(
+export const educationalBackgroundValidator = pipe(
   object({
     id: optional(number()),
     userId: optional(number()),
@@ -32,8 +32,8 @@ export const EducationalBackgroundValidator = pipe(
     gpa: nullable(
       pipe(string(), decimal("Please enter a valid decimal number (e.g. 3.5)")),
     ),
-    startDate: DateValidator,
-    endDate: nullable(DateValidator),
+    startDate: dateValidator,
+    endDate: nullable(dateValidator),
     description: nullable(string()),
   }),
   rawCheck(({ dataset, addIssue }) => {
@@ -61,16 +61,16 @@ export const EducationalBackgroundValidator = pipe(
   }),
 );
 
-export const InsertEducationValidator = object({
-  ...EducationalBackgroundValidator.entries,
+export const insertEducationValidator = object({
+  ...educationalBackgroundValidator.entries,
   id: optional(number()),
 });
 
-export const UpdateEducationValidator = object({
-  ...EducationalBackgroundValidator.entries,
+export const updateEducationValidator = object({
+  ...educationalBackgroundValidator.entries,
   id: pipe(number(), minValue(1, "Please provide valid education id.")),
 });
 
 export type EducationalBackgroundData = InferOutput<
-  typeof EducationalBackgroundValidator
+  typeof educationalBackgroundValidator
 >;

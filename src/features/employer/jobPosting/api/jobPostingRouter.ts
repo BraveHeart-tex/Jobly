@@ -8,7 +8,7 @@ import {
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
-import { EmployerJobPostingFormValidator } from "@/validators/jobPostingFormValidator";
+import { employerJobPostingFormValidator } from "@/validators/jobPostingFormValidator";
 import { TRPCError } from "@trpc/server";
 import { number, object, optional, parser, picklist, required } from "valibot";
 
@@ -42,7 +42,7 @@ export const jobPostingRouter = createTRPCRouter({
       });
     }),
   createJobPosting: protectedProcedure
-    .input(parser(EmployerJobPostingFormValidator))
+    .input(parser(employerJobPostingFormValidator))
     .mutation(async ({ ctx, input }) => {
       const user = ctx.user;
       const companyId = await ensureEmployerCompanyLink(user);
@@ -74,7 +74,7 @@ export const jobPostingRouter = createTRPCRouter({
       return getJobPostingByIdUseCase(id);
     }),
   updateJobPosting: protectedProcedure
-    .input(parser(required(EmployerJobPostingFormValidator, ["id"])))
+    .input(parser(required(employerJobPostingFormValidator, ["id"])))
     .mutation(async ({ ctx, input }) => {
       const user = ctx.user;
       const companyId = await ensureEmployerCompanyLink(user);

@@ -1,5 +1,5 @@
 import { documents } from "@/server/db/schema";
-import { DateTimeValidator } from "@/validators/schemaUtils";
+import { dateTimeValidator } from "@/validators/schemaUtils";
 import {
   type InferInput,
   maxLength,
@@ -12,7 +12,7 @@ import {
   string,
 } from "valibot";
 
-export const DocumentValidator = object({
+export const documentValidator = object({
   id: number(),
   title: pipe(
     string(),
@@ -21,21 +21,21 @@ export const DocumentValidator = object({
   ),
   userId: number(),
   type: pipe(picklist(documents.type.enumValues), nonEmpty("Type is required")),
-  createdAt: DateTimeValidator,
-  updatedAt: DateTimeValidator,
+  createdAt: dateTimeValidator,
+  updatedAt: dateTimeValidator,
 });
 
-export const DocumentInsertValidator = partial(DocumentValidator, [
+export const documentInsertValidator = partial(documentValidator, [
   "id",
   "createdAt",
   "updatedAt",
 ]);
 
-export const DocumentUpdateValidator = partial(DocumentValidator, [
+export const documentUpdateValidator = partial(documentValidator, [
   "userId",
   "createdAt",
   "updatedAt",
   "type",
 ]);
 
-export type DocumentUpdateData = InferInput<typeof DocumentUpdateValidator>;
+export type DocumentUpdateData = InferInput<typeof documentUpdateValidator>;

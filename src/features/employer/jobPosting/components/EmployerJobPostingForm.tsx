@@ -41,7 +41,7 @@ import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
 import { oneWeekFromNow } from "@/validators/jobPostingValidator";
 import {
   type EmployerJobPostingFormOutput,
-  EmployerJobPostingFormValidator,
+  employerJobPostingFormValidator,
 } from "@/validators/jobPostingFormValidator";
 import type { MultiValue } from "react-select";
 import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
@@ -81,7 +81,7 @@ const EmployerJobPostingForm = ({
 }: EmployerJobPostingFormProps) => {
   const router = useRouter();
   const form = useExtendedForm<EmployerJobPostingFormOutput>(
-    EmployerJobPostingFormValidator,
+    employerJobPostingFormValidator,
     {
       defaultValues: {
         skills: [],

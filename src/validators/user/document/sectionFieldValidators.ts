@@ -11,7 +11,7 @@ import {
   string,
 } from "valibot";
 
-export const DocumentSectionFieldValidator = object({
+export const documentSectionFieldValidator = object({
   id: number(),
   sectionId: number(),
   fieldName: pipe(
@@ -32,7 +32,7 @@ export const DocumentSectionFieldValidator = object({
 });
 
 export const DocumentSectionFieldInsertValidator = partial(
-  DocumentSectionFieldValidator,
+  documentSectionFieldValidator,
   ["id"],
 );
 
@@ -40,7 +40,7 @@ export type DocumentSectionFieldInsertData = InferInput<
   typeof DocumentSectionFieldInsertValidator
 >;
 
-export const DocumentSectionFieldUpdateValidator = required(
-  DocumentSectionFieldValidator,
+export const documentSectionFieldUpdateValidator = required(
+  documentSectionFieldValidator,
   ["id"],
 );

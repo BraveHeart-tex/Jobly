@@ -17,7 +17,7 @@ import { useState } from "react";
 import { useSignUp } from "../hooks/useSignUp";
 import {
   type SignUpData,
-  SignUpValidator,
+  signUpValidator,
 } from "@/validators/auth/signUpValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showSuccessToast } from "@/components/toastUtils";
@@ -29,7 +29,7 @@ interface SignUpFormProps {
 const SignUpForm = ({ portalType }: SignUpFormProps) => {
   const router = useRouter();
   const { isSignUpPending, signUp } = useSignUp();
-  const form = useExtendedForm(SignUpValidator, {
+  const form = useExtendedForm(signUpValidator, {
     defaultValues: {
       firstName: "",
       lastName: "",

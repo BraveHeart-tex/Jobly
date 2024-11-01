@@ -9,8 +9,7 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
-import { AnimatePresence, motion } from "framer-motion";
-
+import { AnimatePresence, type HTMLMotionProps, motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
@@ -148,7 +147,7 @@ FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLMotionProps<"p">
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message) : children;

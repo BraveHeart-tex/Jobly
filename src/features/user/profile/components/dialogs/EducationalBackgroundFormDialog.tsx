@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   type EducationalBackgroundData,
-  EducationalBackgroundValidator,
+  educationalBackgroundValidator,
 } from "@/validators/user/profile/educationalBackgroundValidator";
 import { DateTime } from "luxon";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
@@ -36,7 +36,7 @@ const EducationalBackgroundFormDialog = () => {
   const isEditMode = !!idQuery;
 
   const form = useExtendedForm<EducationalBackgroundData>(
-    EducationalBackgroundValidator,
+    educationalBackgroundValidator,
     {
       defaultValues: {
         school: "",

@@ -1,6 +1,6 @@
 import { type InferOutput, array, number, object } from "valibot";
 
-export const SaveUserSkillOrderValidator = object({
+export const saveUserSkillOrderValidator = object({
   items: array(
     object({
       id: number(),
@@ -11,5 +11,5 @@ export const SaveUserSkillOrderValidator = object({
 });
 
 export type SaveUserSkillOrderData = InferOutput<
-  typeof SaveUserSkillOrderValidator
+  typeof saveUserSkillOrderValidator
 >;

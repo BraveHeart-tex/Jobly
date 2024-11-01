@@ -36,33 +36,33 @@ export const parseEnumValue = <T extends string>(
   return (parseResult.success ? parseResult.output : fallbackValue) as T;
 };
 
-export const EmailValidator = pipe(
+export const emailValidator = pipe(
   string("Please enter a valid email address"),
   nonEmpty("Email is required"),
   email("Please enter a valid email address"),
 );
 
-export const PasswordValidator = pipe(
+export const passwordValidator = pipe(
   string("Please enter your password"),
   minLength(8, "Password must be at least 8 characters long"),
   maxLength(256, "Password cannot exceed 256 characters"),
 );
 
-export const DateTimeValidator = pipe(
+export const dateTimeValidator = pipe(
   string(),
   regex(ISO_8601_DATE_TIME_REGEX, "Please enter a valid date-time format."),
 );
 
-export const DateValidator = pipe(
+export const dateValidator = pipe(
   string(),
   regex(ISO_DATE_FORMAT_REGEX, "Please enter a valid date format."),
 );
 
-export const UrlValidator = pipe(
+export const urlValidator = pipe(
   string(),
   regex(URL_REGEX, "Please enter a valid URL."),
 );
 
-export const GenericIdValidator = object({
+export const genericIdValidator = object({
   id: pipe(number(), minValue(1, "Please provide valid id.")),
 });

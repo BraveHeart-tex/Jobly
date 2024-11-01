@@ -8,7 +8,7 @@ import {
   string,
 } from "valibot";
 
-export const SkillValidator = object({
+export const skillValidator = object({
   id: number(),
   name: pipe(
     string(),
@@ -17,4 +17,4 @@ export const SkillValidator = object({
   ),
 });
 
-export const SkillInsertValidator = partial(SkillValidator, ["id"]);
+export const insertSkillValidator = partial(skillValidator, ["id"]);

@@ -1,3 +1,4 @@
+import { urlValidator } from "@/validators/schemaUtils";
 import {
   type InferOutput,
   check,
@@ -11,7 +12,6 @@ import {
   string,
   union,
 } from "valibot";
-import { UrlValidator } from "./schemaUtils";
 
 const currentYear = new Date().getFullYear();
 const MIN_YEAR_OF_ESTABLISHMENT = 1800 as const;
@@ -27,10 +27,10 @@ const yearOfEstablishmentSchema = pipe(
   }, `Year must be between ${MIN_YEAR_OF_ESTABLISHMENT} and ${currentYear}`),
 );
 
-export const CompanyProfileValidator = object({
+export const companyProfileValidator = object({
   name: pipe(string(), nonEmpty("Company name is required")),
   bio: pipe(string(), nonEmpty("Please provide a short bio about the company")),
-  website: union([UrlValidator, literal("")]),
+  website: union([urlValidator, literal("")]),
   industry: pipe(string(), nonEmpty("Company industry is required")),
   address: optional(string(), ""),
   yearOfEstablishment: yearOfEstablishmentSchema,
@@ -41,4 +41,4 @@ export const CompanyProfileValidator = object({
   description: optional(string(), ""),
 });
 
-export type CompanyProfileOutput = InferOutput<typeof CompanyProfileValidator>;
+export type CompanyProfileOutput = InferOutput<typeof companyProfileValidator>;

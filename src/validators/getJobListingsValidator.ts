@@ -10,7 +10,7 @@ import {
   type InferOutput,
 } from "valibot";
 
-export const GetJobListingsValidator = object({
+export const getJobListingsValidator = object({
   query: optional(string(), ""),
   page: optional(number(), 1),
   bookmarked: optional(boolean(), false),
@@ -19,4 +19,4 @@ export const GetJobListingsValidator = object({
   employmentType: nullish(picklist(jobPostings.employmentType.enumValues)),
 });
 
-export type GetJobListingsOutput = InferOutput<typeof GetJobListingsValidator>;
+export type GetJobListingsOutput = InferOutput<typeof getJobListingsValidator>;

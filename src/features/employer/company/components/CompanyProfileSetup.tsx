@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils";
 import { isObjectEmpty } from "@/lib/utils/object";
 import { api } from "@/trpc/react";
 import {
-  CompanyProfileValidator,
+  companyProfileValidator,
   type CompanyProfileOutput,
 } from "@/validators/companyProfileSetupValidator";
 import { useRouter } from "nextjs-toploader/app";
@@ -72,7 +72,7 @@ const companySizeOptions = [
 ];
 
 const CompanyProfileSetup = () => {
-  const form = useExtendedForm<CompanyProfileOutput>(CompanyProfileValidator, {
+  const form = useExtendedForm<CompanyProfileOutput>(companyProfileValidator, {
     defaultValues: {
       name: "",
       bio: "",

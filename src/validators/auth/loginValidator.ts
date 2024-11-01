@@ -1,3 +1,4 @@
+import { emailValidator, passwordValidator } from "@/validators/schemaUtils";
 import {
   type InferInput,
   type InferOutput,
@@ -6,26 +7,25 @@ import {
   string,
   union,
 } from "valibot";
-import { EmailValidator, PasswordValidator } from "../schemaUtils";
 
-export const LoginValidator = object({
-  email: EmailValidator,
-  password: PasswordValidator,
+export const loginValidator = object({
+  email: emailValidator,
+  password: passwordValidator,
 });
 
-const LoginSuccessValidator = object({
+const loginSuccessValidator = object({
   success: boolean(),
   message: string(),
 });
 
-const LoginErrorValidator = object({
+const loginErrorValidator = object({
   error: string(),
 });
 
-export const LoginResponseValidator = union([
-  LoginSuccessValidator,
-  LoginErrorValidator,
+export const loginResponseValidator = union([
+  loginSuccessValidator,
+  loginErrorValidator,
 ]);
 
-export type LoginResponse = InferOutput<typeof LoginResponseValidator>;
-export type LoginData = InferInput<typeof LoginValidator>;
+export type LoginResponse = InferOutput<typeof loginResponseValidator>;
+export type LoginData = InferInput<typeof loginValidator>;

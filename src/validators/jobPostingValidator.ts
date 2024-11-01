@@ -1,4 +1,5 @@
 import { jobPostings } from "@/server/db/schema";
+import { dateTimeValidator } from "@/validators/schemaUtils";
 import { DateTime } from "luxon";
 import {
   type InferInput,
@@ -14,13 +15,11 @@ import {
   pipe,
   string,
 } from "valibot";
-import { DateTimeValidator } from "./schemaUtils";
 
 export const oneWeekFromNow = DateTime.now().plus({ days: 7 }).toISO();
 const POST_EXPIRY_THRESHOLD_DAYS = 60 as const;
 
-// TODO: check iso date time values
-export const JobPostingValidator = pipe(
+export const jobPostingValidator = pipe(
   object({
     id: optional(number()),
     title: pipe(
@@ -43,7 +42,7 @@ export const JobPostingValidator = pipe(
       "full-time",
     ),
     status: optional(picklist(jobPostings.status.enumValues), "draft"),
-    expiresAt: optional(DateTimeValidator, oneWeekFromNow),
+    expiresAt: optional(dateTimeValidator, oneWeekFromNow),
   }),
   check((input) => {
     const expiresAt = DateTime.fromISO(input.expiresAt);
@@ -53,5 +52,5 @@ export const JobPostingValidator = pipe(
   }, `Job posting expiry date can't exceed ${POST_EXPIRY_THRESHOLD_DAYS} days.`),
 );
 
-export type JobPostingInput = InferInput<typeof JobPostingValidator>;
-export type JobPostingOutput = InferOutput<typeof JobPostingValidator>;
+export type JobPostingInput = InferInput<typeof jobPostingValidator>;
+export type JobPostingOutput = InferOutput<typeof jobPostingValidator>;

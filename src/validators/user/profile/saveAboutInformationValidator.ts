@@ -7,7 +7,7 @@ import {
   string,
 } from "valibot";
 
-export const SaveAboutInformationValidator = object({
+export const saveAboutInformationValidator = object({
   bio: object({
     id: nullish(number()),
     content: string(),
@@ -22,5 +22,5 @@ export const SaveAboutInformationValidator = object({
 });
 
 export type SaveAboutInformationInput = InferInput<
-  typeof SaveAboutInformationValidator
+  typeof saveAboutInformationValidator
 >;

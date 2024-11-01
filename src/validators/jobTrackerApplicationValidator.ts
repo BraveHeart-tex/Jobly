@@ -1,4 +1,5 @@
 import { jobTrackerApplications } from "@/server/db/schema";
+import { urlValidator } from "@/validators/schemaUtils";
 import {
   type InferInput,
   type InferOutput,
@@ -15,9 +16,8 @@ import {
   union,
   literal,
 } from "valibot";
-import { UrlValidator } from "./schemaUtils";
 
-export const JobTrackerApplicationValidator = object({
+export const jobTrackerApplicationValidator = object({
   id: number(),
   status: pipe(
     picklist(jobTrackerApplications.status.enumValues),
@@ -39,7 +39,7 @@ export const JobTrackerApplicationValidator = object({
     nonEmpty("Location is required"),
     maxLength(512, "Location cannot exceed 512 characters"),
   ),
-  url: nullish(union([UrlValidator, literal("")])),
+  url: nullish(union([urlValidator, literal("")])),
   salary: nullish(
     union([
       pipe(
@@ -54,24 +54,24 @@ export const JobTrackerApplicationValidator = object({
   displayOrder: number(),
 });
 
-export const JobTrackerApplicationInsertValidator = partial(
-  JobTrackerApplicationValidator,
+export const jobTrackerApplicationInsertValidator = partial(
+  jobTrackerApplicationValidator,
   ["id", "userId"],
 );
 
-export const JobTrackerFormValidator = object({
-  ...JobTrackerApplicationInsertValidator.entries,
+export const jobTrackerFormValidator = object({
+  ...jobTrackerApplicationInsertValidator.entries,
   displayOrder: nullish(number()),
 });
 
 export type JobTrackerApplicationInsertInput = InferInput<
-  typeof JobTrackerApplicationInsertValidator
+  typeof jobTrackerApplicationInsertValidator
 >;
 
 export type JobTrackerApplicationInput = InferInput<
-  typeof JobTrackerApplicationValidator
+  typeof jobTrackerApplicationValidator
 >;
 
 export type JobTrackerApplicationOutput = InferOutput<
-  typeof JobTrackerApplicationValidator
+  typeof jobTrackerApplicationValidator
 >;

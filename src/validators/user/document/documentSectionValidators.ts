@@ -15,7 +15,7 @@ import {
   nullable,
 } from "valibot";
 
-export const DocumentSectionValidator = object({
+export const documentSectionValidator = object({
   id: number(),
   documentId: number(),
   name: pipe(
@@ -44,16 +44,16 @@ export const DocumentSectionValidator = object({
   metadata: optional(nullable(string())),
 });
 
-export const DocumentSectionInsertValidator = partial(
-  DocumentSectionValidator,
+export const documentSectionInsertValidator = partial(
+  documentSectionValidator,
   ["id"],
 );
 
 export type DocumentSectionInsertData = InferInput<
-  typeof DocumentSectionInsertValidator
+  typeof documentSectionInsertValidator
 >;
 
-export const DocumentSectionUpdateValidator = required(
-  DocumentSectionValidator,
+export const documentSectionUpdateValidator = required(
+  documentSectionValidator,
   ["id"],
 );

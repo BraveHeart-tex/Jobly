@@ -1,10 +1,10 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
-import { SignUpValidator } from "@/validators/auth/signUpValidator";
+import { signUpValidator } from "@/validators/auth/signUpValidator";
 import {
-  LoginResponseValidator,
-  LoginValidator,
+  loginResponseValidator,
+  loginValidator,
 } from "@/validators/auth/loginValidator";
 import {
   createSessionWithUserId,
@@ -18,7 +18,7 @@ import {
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
-    .input(parser(SignUpValidator))
+    .input(parser(signUpValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({
@@ -65,8 +65,8 @@ export const authRouter = createTRPCRouter({
       };
     }),
   login: publicProcedure
-    .input(parser(LoginValidator))
-    .output(parser(LoginResponseValidator))
+    .input(parser(loginValidator))
+    .output(parser(loginResponseValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({

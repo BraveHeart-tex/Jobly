@@ -17,7 +17,7 @@ import { useState } from "react";
 import {
   type LoginData,
   type LoginResponse,
-  LoginValidator,
+  loginValidator,
 } from "@/validators/auth/loginValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
@@ -28,7 +28,7 @@ interface LoginFormProps {
 }
 
 const LoginForm = ({ portalType }: LoginFormProps) => {
-  const form = useExtendedForm<LoginData>(LoginValidator, {
+  const form = useExtendedForm<LoginData>(loginValidator, {
     defaultValues: {
       email: "",
       password: "",

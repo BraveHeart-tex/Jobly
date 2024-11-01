@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
-  ProfileValidator,
+  profileValidator,
   type ProfileData,
 } from "@/validators/user/profile/profileValidator";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ const ProfileFormDialog = () => {
   const router = useRouter();
   const { closeModal } = useProfilePageSearchParams();
   const updateName = useCurrentUserStore((state) => state.updateName);
-  const form = useExtendedForm<ProfileData>(ProfileValidator, {
+  const form = useExtendedForm<ProfileData>(profileValidator, {
     defaultValues: {
       firstName: "",
       lastName: "",

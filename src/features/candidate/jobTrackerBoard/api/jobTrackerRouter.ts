@@ -3,8 +3,8 @@ import { jobTrackerApplications } from "@/server/db/schema";
 import { jobTrackerApplicationService } from "../services/jobTrackerApplicationService";
 import { array, number, object, parser, picklist } from "valibot";
 import {
-  JobTrackerApplicationInsertValidator,
-  JobTrackerApplicationValidator,
+  jobTrackerApplicationInsertValidator,
+  jobTrackerApplicationValidator,
 } from "@/validators/jobTrackerApplicationValidator";
 
 export const jobTrackerRouter = createTRPCRouter({
@@ -12,7 +12,7 @@ export const jobTrackerRouter = createTRPCRouter({
     return jobTrackerApplicationService.getApplications(ctx.user.id);
   }),
   addJobTrackerApplication: protectedProcedure
-    .input(parser(JobTrackerApplicationInsertValidator))
+    .input(parser(jobTrackerApplicationInsertValidator))
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.createApplication({
         ...input,
@@ -34,7 +34,7 @@ export const jobTrackerRouter = createTRPCRouter({
       });
     }),
   updateJobTrackerApplication: protectedProcedure
-    .input(parser(JobTrackerApplicationValidator))
+    .input(parser(jobTrackerApplicationValidator))
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.updateApplication({
         ...input,
@@ -59,7 +59,7 @@ export const jobTrackerRouter = createTRPCRouter({
     .input(
       parser(
         object({
-          data: array(JobTrackerApplicationValidator),
+          data: array(jobTrackerApplicationValidator),
         }),
       ),
     )

@@ -1,15 +1,15 @@
-import { JobPostingValidator } from "./jobPostingValidator";
+import { jobPostingValidator } from "@/validators/jobPostingValidator";
+import { skillValidator } from "@/validators/skillValidator";
 import { type InferInput, type InferOutput, array, object } from "valibot";
-import { SkillValidator } from "./user/profile/skillValidator";
 
-export const EmployerJobPostingFormValidator = object({
-  ...JobPostingValidator.entries,
-  skills: array(SkillValidator),
+export const employerJobPostingFormValidator = object({
+  ...jobPostingValidator.entries,
+  skills: array(skillValidator),
 });
 
 export type EmployerJobPostingFormInput = InferInput<
-  typeof EmployerJobPostingFormValidator
+  typeof employerJobPostingFormValidator
 >;
 export type EmployerJobPostingFormOutput = InferOutput<
-  typeof EmployerJobPostingFormValidator
+  typeof employerJobPostingFormValidator
 >;

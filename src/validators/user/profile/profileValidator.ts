@@ -1,4 +1,4 @@
-import { UrlValidator } from "@/validators/schemaUtils";
+import { urlValidator } from "@/validators/schemaUtils";
 import {
   literal,
   nonEmpty,
@@ -14,7 +14,7 @@ import {
   type InferOutput,
 } from "valibot";
 
-export const ProfileValidator = pipe(
+export const profileValidator = pipe(
   object({
     id: optional(number()),
     firstName: pipe(string(), nonEmpty("First Name is required")),
@@ -24,7 +24,7 @@ export const ProfileValidator = pipe(
     presentedWorkExperienceId: nullish(number()),
     countryId: nullish(number()),
     cityId: nullish(number()),
-    websiteLink: union([nullable(UrlValidator), literal("")]),
+    websiteLink: union([nullable(urlValidator), literal("")]),
     websiteLinkText: nullable(string()),
     selectedCountry: nullable(
       object({
@@ -60,4 +60,4 @@ export const ProfileValidator = pipe(
   }),
 );
 
-export type ProfileData = InferOutput<typeof ProfileValidator>;
+export type ProfileData = InferOutput<typeof profileValidator>;
