@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import AccountSettingContentCard from "@/features/user/accountSettings/AccountSettingContentCard";
+import DeleteAccountButton from "@/features/user/accountSettings/DeleteAccountButton";
 import SettingBlock from "@/features/user/accountSettings/SettingBlock";
 import SettingSectionTitle from "@/features/user/accountSettings/SettingSectionTitle";
 
@@ -26,7 +26,7 @@ const PrivacySettings = () => {
           <SettingSectionTitle>Danger Zone</SettingSectionTitle>
           <hr />
         </div>
-        <Button variant="destructive">Delete Account & Data</Button>
+        <DeleteAccountButton />
         <p className="text-sm text-muted-foreground">
           This action cannot be undone. This will permanently delete your
           account and all of your data from our servers.

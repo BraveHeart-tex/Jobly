@@ -22,11 +22,6 @@ const NotificationSettings = () => {
             renderSettingControl={() => <Switch />}
           />
           <SettingBlock
-            title="Interview Reminders"
-            description="Get notified about upcoming interviews"
-            renderSettingControl={() => <Switch />}
-          />
-          <SettingBlock
             title="Application Status"
             description="Updates about your job applications"
             renderSettingControl={() => <Switch />}
