@@ -18,12 +18,14 @@ import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useDeleteUserAvatar } from "@/features/user/profile/hooks/useDeleteUserAvatar";
 import { showSuccessToast } from "@/components/toastUtils";
 import AvatarEditorDialog from "@/features/user/profile/components/dialogs/AvatarEditorDialog";
+import type React from "react";
 
 interface UserAvatarDialogProps {
   userFullName: string;
+  trigger?: React.ReactNode;
 }
 
-const UserAvatarDialog = ({ userFullName }: UserAvatarDialogProps) => {
+const UserAvatarDialog = ({ userFullName, trigger }: UserAvatarDialogProps) => {
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
   const userAvatarUrl = useCurrentUserStore((state) => state.user?.avatarUrl);
   const updateAvatarUrl = useCurrentUserStore((state) => state.updateAvatarUrl);
@@ -48,20 +50,24 @@ const UserAvatarDialog = ({ userFullName }: UserAvatarDialogProps) => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] rounded-full border-primary-foreground border-4">
-          <AvatarImage
-            src={userAvatarUrl || DEFAULT_AVATAR_URL}
-            alt={
-              userAvatarUrl
-                ? `Profile picture for ${userFullName}`
-                : "Default profile picture"
-            }
-          />
-          <AvatarFallback className="text-2xl font-bold">
-            {getAvatarPlaceholder(userFullName)}
-          </AvatarFallback>
-        </Avatar>
+      <DialogTrigger asChild={!trigger}>
+        {trigger ? (
+          trigger
+        ) : (
+          <Avatar className="cursor-pointer absolute bottom-0 left-6 transform translate-y-1/3 w-[9.5rem] h-[9.5rem] rounded-full border-primary-foreground border-4">
+            <AvatarImage
+              src={userAvatarUrl || DEFAULT_AVATAR_URL}
+              alt={
+                userAvatarUrl
+                  ? `Profile picture for ${userFullName}`
+                  : "Default profile picture"
+              }
+            />
+            <AvatarFallback className="text-2xl font-bold">
+              {getAvatarPlaceholder(userFullName)}
+            </AvatarFallback>
+          </Avatar>
+        )}
       </DialogTrigger>
       <DialogContent className="p-0">
         <DialogHeader className="p-4">

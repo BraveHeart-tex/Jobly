@@ -7,17 +7,17 @@ import {
 } from "@/components/ui/card";
 import type React from "react";
 
-interface SettingContentCardProps {
+interface AccountSettingContentCardProps {
   title: string;
   description: string;
   children: React.ReactNode;
 }
 
-const SettingContentCard = ({
+const AccountSettingContentCard = ({
   title,
   description,
   children,
-}: SettingContentCardProps) => {
+}: AccountSettingContentCardProps) => {
   return (
     <Card className="shadow-none border-0 lg:shadow lg:border bg-background lg:bg-card">
       <CardHeader className="p-0 lg:p-6">
@@ -28,4 +28,4 @@ const SettingContentCard = ({
     </Card>
   );
 };
-export default SettingContentCard;
+export default AccountSettingContentCard;

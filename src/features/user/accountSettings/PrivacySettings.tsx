@@ -1,9 +1,9 @@
 import { Switch } from "@/components/ui/switch";
-import SettingContentCard from "@/features/user/accountSettings/SettingContentCard";
+import AccountSettingContentCard from "@/features/user/accountSettings/AccountSettingContentCard";
 
 const PrivacySettings = () => {
   return (
-    <SettingContentCard
+    <AccountSettingContentCard
       title="Privacy Settings"
       description="Control your profile visibility and search preferences"
     >
@@ -38,7 +38,7 @@ const PrivacySettings = () => {
           <Switch />
         </div>
       </div>
-    </SettingContentCard>
+    </AccountSettingContentCard>
   );
 };
 export default PrivacySettings;

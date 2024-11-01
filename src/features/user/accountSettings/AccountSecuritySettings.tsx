@@ -8,11 +8,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import SettingContentCard from "@/features/user/accountSettings/SettingContentCard";
+import AccountSettingContentCard from "@/features/user/accountSettings/AccountSettingContentCard";
 
 const AccountSecuritySettings = () => {
   return (
-    <SettingContentCard
+    <AccountSettingContentCard
       title="Security Settings"
       description="Manage your security preferences and two-factor authentication"
     >
@@ -45,7 +45,7 @@ const AccountSecuritySettings = () => {
           <Button variant="destructive">Sign Out All Other Sessions</Button>
         </div>
       </div>
-    </SettingContentCard>
+    </AccountSettingContentCard>
   );
 };
 export default AccountSecuritySettings;

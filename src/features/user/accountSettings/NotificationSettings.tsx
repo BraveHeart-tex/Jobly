@@ -1,9 +1,9 @@
 import { Switch } from "@/components/ui/switch";
-import SettingContentCard from "@/features/user/accountSettings/SettingContentCard";
+import AccountSettingContentCard from "@/features/user/accountSettings/AccountSettingContentCard";
 
 const NotificationSettings = () => {
   return (
-    <SettingContentCard
+    <AccountSettingContentCard
       title="Notification Preferences"
       description="Choose what notifications you want to receive"
     >
@@ -38,7 +38,7 @@ const NotificationSettings = () => {
           <Switch />
         </div>
       </div>
-    </SettingContentCard>
+    </AccountSettingContentCard>
   );
 };
 export default NotificationSettings;

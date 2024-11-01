@@ -1,7 +1,7 @@
 "use client";
 
 import type { GetCurrentUserReturnType } from "@/actions/auth";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import UserAvatar from "@/components/common/UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,10 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/features/auth/utils";
-import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import { AvatarImage } from "@radix-ui/react-avatar";
 import { BuildingIcon, KeyRoundIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,8 +24,6 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
-  const userAvatarUrl =
-    useCurrentUserStore((state) => state.user?.avatarUrl) || DEFAULT_AVATAR_URL;
   const pathname = usePathname();
   const router = useRouter();
   const setUser = useCurrentUserStore((state) => state.setUser);
@@ -76,12 +72,7 @@ const UserMenu = ({ user }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar>
-          <AvatarImage src={userAvatarUrl} />
-          <AvatarFallback>
-            {user.firstName.charAt(0) + user.lastName.charAt(0)}
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
