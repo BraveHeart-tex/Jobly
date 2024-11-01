@@ -1,11 +1,11 @@
-import { type PropsWithRef, forwardRef } from "react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
+import { type PropsWithRef, forwardRef } from "react";
 
 interface SelectInputProps {
   options: { value: string; label: string }[];
@@ -29,7 +29,7 @@ const SelectInput = forwardRef<
     ref,
   ) => {
     return (
-      <Select value={value} onValueChange={onChange} defaultValue={value}>
+      <Select key={value} defaultValue={value} onValueChange={onChange}>
         <SelectTrigger className="w-full" ref={ref}>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

@@ -19,18 +19,17 @@ import {
   type PersonalSettingsFormData,
   personalSettingsFormValidator,
 } from "@/validators/user/profile/settings/personalSettingsFormValidator";
+import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
 
 const PersonalSettingsForm = () => {
+  const router = useRouter();
   const user = useCurrentUserStore((state) => state.user);
   const setUser = useCurrentUserStore((state) => state.setUser);
   const form = useExtendedForm<PersonalSettingsFormData>(
     personalSettingsFormValidator,
   );
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
-  const updateUserStorePersonalSettings = useCurrentUserStore(
-    (state) => state.updatePersonalSettings,
-  );
 
   useEffect(() => {
     if (!user) return;
@@ -55,7 +54,7 @@ const PersonalSettingsForm = () => {
           return;
         }
 
-        updateUserStorePersonalSettings(variables);
+        router.refresh();
       },
     });
 
