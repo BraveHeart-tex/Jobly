@@ -15,7 +15,7 @@ import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { KeyRoundIcon, UserIcon } from "lucide-react";
+import { BuildingIcon, KeyRoundIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
@@ -35,7 +35,6 @@ const UserMenu = ({ user }: UserMenuProps) => {
   const userMenuProfileLinks = [
     {
       title: "Profile",
-      // TODO: users will be able set their own profile slugs
       href: SHARED_ROUTES.EDIT_PROFILE,
       icon: UserIcon,
     },
@@ -44,6 +43,15 @@ const UserMenu = ({ user }: UserMenuProps) => {
       href: SHARED_ROUTES.ACCOUNT_SETTINGS,
       icon: KeyRoundIcon,
     },
+    ...(user.role === "employer"
+      ? [
+          {
+            title: "Company Profile",
+            href: EMPLOYER_ROUTES.COMPANY_PROFILE,
+            icon: BuildingIcon,
+          },
+        ]
+      : []),
   ];
 
   useEffect(() => {
