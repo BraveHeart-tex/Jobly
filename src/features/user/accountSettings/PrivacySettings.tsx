@@ -11,7 +11,7 @@ const PrivacySettings = () => {
         <div className="flex items-center justify-between">
           <div>
             <h4 className="font-medium">Profile Visibility</h4>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Make your profile visible to employers
             </p>
           </div>
@@ -21,7 +21,7 @@ const PrivacySettings = () => {
         <div className="flex items-center justify-between">
           <div>
             <h4 className="font-medium">Searchable Profile</h4>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Allow employers to find you in search results
             </p>
           </div>
@@ -31,7 +31,7 @@ const PrivacySettings = () => {
         <div className="flex items-center justify-between">
           <div>
             <h4 className="font-medium">Show Contact Details</h4>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Display your contact information to approved connections
             </p>
           </div>
