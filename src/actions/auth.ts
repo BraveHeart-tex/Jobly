@@ -1,7 +1,6 @@
-import { companyUserService } from "@/features/employer/company/services/userCompanyService";
+import { getCompanyUserCompanyId } from "@/features/user/profile/use-cases/users";
 import type { ContextUserAttributes } from "@/lib/auth/session";
-
-import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
+import { cachedValidateRequest } from "@/lib/auth/validateRequest";
 
 export interface GetCurrentUserReturnType extends ContextUserAttributes {
   hasToSetupCompanyInformation?: boolean;
@@ -10,18 +9,18 @@ export interface GetCurrentUserReturnType extends ContextUserAttributes {
 
 export const getCurrentUser =
   async (): Promise<GetCurrentUserReturnType | null> => {
-    const result = await unCachedValidateRequest();
+    const result = await cachedValidateRequest();
     if (!result.user) return null;
 
     const ctxUser: GetCurrentUserReturnType = result.user;
 
     if (ctxUser?.role === "employer") {
-      const companyDetails =
-        await companyUserService.getCompanyUserDetailsByUserId(ctxUser.id);
-      if (!companyDetails) {
+      const companyId = await getCompanyUserCompanyId(ctxUser.id);
+
+      if (!companyId) {
         ctxUser.hasToSetupCompanyInformation = true;
       } else {
-        ctxUser.companyId = companyDetails.id;
+        ctxUser.companyId = companyId;
       }
     }
 

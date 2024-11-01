@@ -1,5 +1,5 @@
+import { companyUserRepository } from "@/features/employer/company/repositories/companyUserRepository";
 import type { DBUser } from "@/server/db/schema/users";
-import { companyUserRepository } from "../repositories/companyUserRepository";
 
 export const companyUserService = {
   async checkIfUserHasCompany(userId: DBUser["id"]) {

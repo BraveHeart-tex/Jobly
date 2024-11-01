@@ -15,8 +15,6 @@ import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { BuildingIcon, KeyRoundIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
 
 interface UserMenuProps {
@@ -24,8 +22,6 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
-  const pathname = usePathname();
-  const router = useRouter();
   const setUser = useCurrentUserStore((state) => state.setUser);
 
   const userMenuProfileLinks = [
@@ -53,16 +49,6 @@ const UserMenu = ({ user }: UserMenuProps) => {
   useEffect(() => {
     setUser(user);
   }, [setUser, user]);
-
-  useEffect(() => {
-    if (!user.hasToSetupCompanyInformation) return;
-
-    const redirectPath = `${EMPLOYER_ROUTES.COMPANY_PROFILE}`;
-
-    if (pathname === redirectPath) return;
-
-    router.push(redirectPath);
-  }, [pathname, user, router]);
 
   const handleSignOut = () => {
     signOut(user.role);

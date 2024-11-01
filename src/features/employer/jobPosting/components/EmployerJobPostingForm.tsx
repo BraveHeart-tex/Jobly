@@ -32,7 +32,7 @@ import {
   generateReadableEnumLabel,
 } from "@/lib/utils/string";
 import { DateTime } from "luxon";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
 import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
 import { useCreateSkill } from "../hooks/useCreateSkill";

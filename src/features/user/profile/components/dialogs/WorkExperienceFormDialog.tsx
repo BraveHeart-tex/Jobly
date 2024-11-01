@@ -24,7 +24,7 @@ import {
   employmentOptions,
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";

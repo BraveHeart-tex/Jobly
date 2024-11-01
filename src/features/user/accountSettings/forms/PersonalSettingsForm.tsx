@@ -1,4 +1,5 @@
 import SelectInput from "@/components/common/SelectInput";
+import { showSuccessToast } from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,6 +10,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signOut } from "@/features/auth/utils";
+import { useUpdatePersonalSettings } from "@/features/user/hooks/useUpdatePersonalSettings";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
@@ -20,10 +23,14 @@ import { useEffect } from "react";
 
 const PersonalSettingsForm = () => {
   const user = useCurrentUserStore((state) => state.user);
+  const setUser = useCurrentUserStore((state) => state.setUser);
   const form = useExtendedForm<PersonalSettingsFormData>(
     personalSettingsFormValidator,
   );
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+  const updateUserStorePersonalSettings = useCurrentUserStore(
+    (state) => state.updatePersonalSettings,
+  );
 
   useEffect(() => {
     if (!user) return;
@@ -34,16 +41,37 @@ const PersonalSettingsForm = () => {
     });
   }, [user, form.reset]);
 
+  const { updatePersonalSettings, isUpdatingPersonalSettings } =
+    useUpdatePersonalSettings({
+      onSuccess: (_data, variables) => {
+        const hasChangedRoles = variables.accountType !== user?.role;
+        showSuccessToast(
+          `Personal settings updated successfully. ${hasChangedRoles ? "You are being logged out." : ""}`,
+        );
+
+        if (hasChangedRoles) {
+          signOut(variables.accountType);
+          setUser(null);
+          return;
+        }
+
+        updateUserStorePersonalSettings(variables);
+      },
+    });
+
   const onSubmit = (data: PersonalSettingsFormData) => {
     const hasChangedRoles = data.accountType !== user?.role;
     if (hasChangedRoles) {
       return showConfirmDialog({
         title: "Are you sure you want to change your account type?",
-        message: "This action cannot be undone. There might be data loss.",
-        onConfirm: () => {},
+        message:
+          "This action cannot be undone. There might be data loss. You will be logged out of all your current sessions.",
+        onConfirm: () => updatePersonalSettings(data),
         primaryActionLabel: "Yes",
       });
     }
+
+    updatePersonalSettings(data);
   };
 
   return (
@@ -102,9 +130,13 @@ const PersonalSettingsForm = () => {
         <Button
           type="submit"
           className="w-full sm:w-max mt-2"
-          disabled={form.formState.isSubmitting || !form.formState.isDirty}
+          disabled={
+            form.formState.isSubmitting ||
+            !form.formState.isDirty ||
+            isUpdatingPersonalSettings
+          }
         >
-          Save Changes
+          {!isUpdatingPersonalSettings ? "Save" : "Saving..."}
         </Button>
       </form>
     </Form>

@@ -13,7 +13,7 @@ import { useCreateSkill } from "@/features/employer/jobPosting/hooks/useCreateSk
 import type { MultiValue } from "react-select";
 
 import FormDialog from "@/components/common/FormDialog";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import type { OptionType } from "@/components/common/select/types";
 import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import { showSuccessToast } from "@/components/toastUtils";
