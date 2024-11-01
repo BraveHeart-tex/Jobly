@@ -55,6 +55,8 @@ export const EMPLOYER_ROUTES = {
   EMPLOYER_BRANDING: `${BASE_EMPLOYER_ROUTE}/company/branding`,
   ACCOUNT_SETTINGS: `${BASE_EMPLOYER_ROUTE}/company/settings`,
   DASHBOARD: `${BASE_EMPLOYER_ROUTE}/dashboard`,
+
+  ROLES_AND_PERMISSIONS: `${BASE_EMPLOYER_ROUTE}/roles-and-permissions`,
 } as const;
 
 export type CandidateRoute = InferValueTypeFromConst<typeof CANDIDATE_ROUTES>;

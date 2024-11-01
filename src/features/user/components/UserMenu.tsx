@@ -13,7 +13,7 @@ import {
 import { signOut } from "@/features/auth/utils";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import { BuildingIcon, KeyRoundIcon, UserIcon } from "lucide-react";
+import { BuildingIcon, KeyRoundIcon, UserIcon, UsersIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -48,6 +48,11 @@ const UserMenu = ({ user }: UserMenuProps) => {
             title: "Company Profile",
             href: EMPLOYER_ROUTES.COMPANY_PROFILE,
             icon: BuildingIcon,
+          },
+          {
+            title: "User Roles & Permissions",
+            href: EMPLOYER_ROUTES.ROLES_AND_PERMISSIONS,
+            icon: UsersIcon,
           },
         ]
       : []),
