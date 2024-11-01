@@ -1,6 +1,9 @@
 import { getCompanyUserCompanyId } from "@/features/user/profile/use-cases/users";
 import type { ContextUserAttributes } from "@/lib/auth/session";
 import { cachedValidateRequest } from "@/lib/auth/validateRequest";
+import { db } from "@/server/db";
+import { users } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export interface GetCurrentUserReturnType extends ContextUserAttributes {
   hasToSetupCompanyInformation?: boolean;
@@ -34,4 +37,8 @@ export const validateEmployerRequest = async () => {
   }
 
   return user;
+};
+
+export const deleteUserAccount = async (userId: number) => {
+  return await db.delete(users).where(eq(users.id, userId));
 };

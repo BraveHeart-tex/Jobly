@@ -20,6 +20,7 @@ import {
   createUserUseCase,
 } from "@/features/user/profile/use-cases/users";
 import { invalidateAllOtherUserSessions } from "@/lib/auth/session";
+import { deleteUserAccount } from "@/actions/auth";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -115,4 +116,8 @@ export const authRouter = createTRPCRouter({
       return await invalidateAllOtherUserSessions(sessionId, userId);
     },
   ),
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return await deleteUserAccount(userId);
+  }),
 });
