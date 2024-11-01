@@ -22,6 +22,13 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
+  const userFullName =
+    useCurrentUserStore(
+      (state) => `${state.user?.firstName} ${state.user?.lastName}`,
+    ) || `${user.firstName} ${user.lastName}`;
+  const userEmail =
+    useCurrentUserStore((state) => state.user?.email) || user.email;
+
   const setUser = useCurrentUserStore((state) => state.setUser);
 
   const userMenuProfileLinks = [
@@ -63,10 +70,8 @@ const UserMenu = ({ user }: UserMenuProps) => {
       <DropdownMenuContent>
         <DropdownMenuLabel>
           <div className="grid">
-            <span>
-              {user.firstName} {user.lastName}
-            </span>
-            <span className="text-muted-foreground">{user.email}</span>
+            <span>{userFullName}</span>
+            <span className="text-muted-foreground">{userEmail}</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
