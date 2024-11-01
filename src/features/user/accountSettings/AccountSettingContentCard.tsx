@@ -20,7 +20,7 @@ const AccountSettingContentCard = ({
 }: AccountSettingContentCardProps) => {
   return (
     <Card className="shadow-none border-0 lg:shadow lg:border bg-background lg:bg-card">
-      <CardHeader className="p-0 lg:p-6">
+      <CardHeader className="p-0 lg:p-6 mb-4 lg:mb-0">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
