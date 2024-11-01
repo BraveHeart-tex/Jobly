@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
 import { signUpValidator } from "@/validators/auth/signUpValidator";
@@ -15,6 +19,7 @@ import {
   getUserByEmailUseCase,
   createUserUseCase,
 } from "@/features/user/profile/use-cases/users";
+import { invalidateAllOtherUserSessions } from "@/lib/auth/session";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
@@ -103,4 +108,11 @@ export const authRouter = createTRPCRouter({
         message: "Successfully signed in.",
       };
     }),
+  invalidateAllOtherUserSessions: protectedProcedure.mutation(
+    async ({ ctx }) => {
+      const userId = ctx.user.id;
+      const sessionId = ctx.session.id;
+      return await invalidateAllOtherUserSessions(sessionId, userId);
+    },
+  ),
 });

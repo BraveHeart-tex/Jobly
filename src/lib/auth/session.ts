@@ -7,7 +7,7 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import { db } from "@/server/db";
 import sessions from "@/server/db/schema/sessions";
 import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 import type { DBUser } from "@/server/db/schema/users";
 
 export interface ContextUserAttributes
@@ -90,6 +90,17 @@ export const invalidateAllUserSessions = async (
   userId: number,
 ): Promise<void> => {
   await db.delete(sessions).where(eq(sessions.userId, userId));
+};
+
+export const invalidateAllOtherUserSessions = async (
+  currentSessionId: string,
+  userId: number,
+) => {
+  await db
+    .delete(sessions)
+    .where(
+      and(eq(sessions.userId, userId), not(eq(sessions.id, currentSessionId))),
+    );
 };
 
 export type SessionValidationResult =

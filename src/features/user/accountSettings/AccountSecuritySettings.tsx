@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+"use client";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import AccountSettingContentCard from "@/features/user/accountSettings/AccountSettingContentCard";
+import SignOutAllOtherSessionsButton from "@/features/user/accountSettings/SignOutAllOtherSessionsButton";
 
 const AccountSecuritySettings = () => {
   return (
@@ -42,7 +43,7 @@ const AccountSecuritySettings = () => {
         </div>
 
         <div className="pt-4">
-          <Button variant="destructive">Sign Out All Other Sessions</Button>
+          <SignOutAllOtherSessionsButton />
         </div>
       </div>
     </AccountSettingContentCard>
