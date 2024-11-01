@@ -24,7 +24,9 @@ const AccountSettingContentCard = ({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6 p-0 lg:p-6">{children}</CardContent>
+      <CardContent className="pt-4 lg:pt-0 space-y-6 p-0 lg:p-6">
+        {children}
+      </CardContent>
     </Card>
   );
 };

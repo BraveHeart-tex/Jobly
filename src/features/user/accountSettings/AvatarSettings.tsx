@@ -11,7 +11,7 @@ const AvatarSettings = () => {
     (state) => `${state.user?.firstName} ${state.user?.lastName}`,
   );
   return (
-    <div className="group relative">
+    <div className="group relative w-max">
       <UserAvatarDialog
         trigger={<UserAvatar className="w-32 h-32 cursor-pointer" />}
         userFullName={userFullName}
