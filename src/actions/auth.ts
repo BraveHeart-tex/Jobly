@@ -26,3 +26,12 @@ export const getCurrentUser =
 
     return ctxUser;
   };
+
+export const validateEmployerRequest = async () => {
+  const user = await getCurrentUser();
+  if (!user || user?.role !== "employer" || !user.companyId) {
+    return null;
+  }
+
+  return user;
+};
