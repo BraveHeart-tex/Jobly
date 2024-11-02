@@ -11,7 +11,19 @@ export const getCandidateAccountSettingsUseCase = async (
     },
     where: (users) => eq(users.id, userId),
     with: {
-      userEmailNotificationSetting: true,
+      userEmailNotificationSettings: {
+        columns: {
+          followedJobPostingClosingDates: true,
+          jobAlerts: true,
+          suitableJobPostings: true,
+        },
+      },
+      candidateNotificationSettings: {
+        columns: {
+          applicationStatus: true,
+          jobRecommendations: true,
+        },
+      },
     },
   });
 
@@ -20,15 +32,16 @@ export const getCandidateAccountSettingsUseCase = async (
   }
 
   const { followedJobPostingClosingDates, jobAlerts, suitableJobPostings } =
-    result.userEmailNotificationSetting;
+    result.userEmailNotificationSettings || {};
+  const { applicationStatus, jobRecommendations } =
+    result.candidateNotificationSettings || {};
 
   return {
     userId: result?.id,
     notificationSettings: {
-      // TODO:
       general: {
-        jobRecommendations: true,
-        applicationStatus: true,
+        jobRecommendations,
+        applicationStatus,
       },
       email: {
         followedJobPostingClosingDates,
