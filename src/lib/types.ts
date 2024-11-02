@@ -1,3 +1,4 @@
+import type { CandidateRoute, EmployerRoute } from "@/lib/routes";
 import type { appRouter } from "@/server/api/root";
 import type * as schema from "@/server/db/schema";
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
@@ -8,7 +9,6 @@ import type {
   MySql2QueryResultHKT,
 } from "drizzle-orm/mysql2";
 import type { LucideIcon } from "lucide-react";
-import type { CandidateRoute, EmployerRoute } from "./routes";
 
 export interface NavigationMenuItem {
   triggerLabel: string;

@@ -3,8 +3,8 @@ import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/use
 import { cn } from "@/lib/utils";
 import { generateReadableEnumLabel } from "@/lib/utils/string";
 import { forwardRef } from "react";
-import CompanyLogo from "./CompanyLogo";
 import type { JobListingItem } from "@/lib/types";
+import CompanyLogo from "@/features/candidate/jobs/components/CompanyLogo";
 
 interface JobsListCardProps {
   job: JobListingItem;

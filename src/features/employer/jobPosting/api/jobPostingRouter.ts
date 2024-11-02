@@ -8,7 +8,7 @@ import {
 import { ensureEmployerCompanyLink } from "@/features/employer/jobPosting/utils";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobPostings } from "@/server/db/schema";
-import { employerJobPostingFormValidator } from "@/validators/jobPostingFormValidator";
+import { employerJobPostingFormValidator } from "@/validation/employer/jobPosting/jobPostingFormValidator";
 import { TRPCError } from "@trpc/server";
 import { number, object, optional, parser, picklist, required } from "valibot";
 

@@ -1,11 +1,11 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobTrackerApplications } from "@/server/db/schema";
-import { jobTrackerApplicationService } from "../services/jobTrackerApplicationService";
 import { array, number, object, parser, picklist } from "valibot";
 import {
   jobTrackerApplicationInsertValidator,
   jobTrackerApplicationValidator,
-} from "@/validators/jobTrackerApplicationValidator";
+} from "@/validation/user/jobTracker/jobTrackerApplicationValidator";
+import { jobTrackerApplicationService } from "@/features/candidate/jobTrackerBoard/services/jobTrackerApplicationService";
 
 export const jobTrackerRouter = createTRPCRouter({
   getJobTrackerApplications: protectedProcedure.query(async ({ ctx }) => {

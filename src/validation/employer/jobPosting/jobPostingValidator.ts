@@ -1,5 +1,5 @@
 import { jobPostings } from "@/server/db/schema";
-import { dateTimeValidator } from "@/validators/schemaUtils";
+import { dateTimeValidator } from "@/validation/schemaUtils";
 import { DateTime } from "luxon";
 import {
   type InferInput,

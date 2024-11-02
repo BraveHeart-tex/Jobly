@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import Combobox from "./Combobox";
+import Combobox from "@/components/common/Combobox";
 import { cn } from "@/lib/utils";
 
 interface MonthYearInputProps {

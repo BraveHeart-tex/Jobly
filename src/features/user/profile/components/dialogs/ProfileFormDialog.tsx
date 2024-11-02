@@ -12,7 +12,7 @@ import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   profileValidator,
   type ProfileData,
-} from "@/validators/user/profile/profileValidator";
+} from "@/validation/user/profile/profileValidator";
 import { Input } from "@/components/ui/input";
 import RequiredIndicator from "@/components/common/RequiredIndicator";
 import { useEffect, useState } from "react";

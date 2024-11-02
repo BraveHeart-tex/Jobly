@@ -1,7 +1,7 @@
 import { companyService } from "@/features/employer/company/services/companyService";
 import { companyUserService } from "@/features/employer/company/services/userCompanyService";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { companyProfileValidator } from "@/validators/companyProfileSetupValidator";
+import { companyProfileValidator } from "@/validation/employer/companyProfile/companyProfileSetupValidator";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
 

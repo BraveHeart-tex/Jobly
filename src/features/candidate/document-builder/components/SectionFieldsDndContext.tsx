@@ -1,4 +1,5 @@
 "use client";
+import { useSwapGroupDisplayOrder } from "@/features/candidate/document-builder/hooks/useSwapGroupDisplayOrder";
 import type { FIELD_DND_INDEX_PREFIX } from "@/lib/constants";
 
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
@@ -17,7 +18,6 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import type React from "react";
-import { useSwapGroupDisplayOrder } from "../hooks/useSwapGroupDisplayOrder";
 
 interface SectionFieldsDndContextProps {
   children: React.ReactNode;

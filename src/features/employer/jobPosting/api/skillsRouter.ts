@@ -1,6 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { object, parser, string } from "valibot";
-import { insertSkillValidator } from "@/validators/skillValidator";
+import { insertSkillValidator } from "@/validation/skillValidator";
 import {
   getSkillsByNameUseCase,
   createSkillUseCase,

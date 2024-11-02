@@ -16,7 +16,7 @@ import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
-import { parseReferencesMetadata } from "@/validators/user/document/referencesSectionMetadataValidator";
+import { parseReferencesMetadata } from "@/validation/user/document/referencesSectionMetadataValidator";
 
 interface CvBuilderReferencesSectionProps {
   section: DocumentSection;

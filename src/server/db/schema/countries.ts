@@ -1,3 +1,4 @@
+import { cities } from "@/server/db/schema";
 import { type InferSelectModel, relations } from "drizzle-orm";
 import {
   index,
@@ -6,7 +7,6 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import cities from "./cities";
 
 const countries = mysqlTable(
   "Countries",

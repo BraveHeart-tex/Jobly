@@ -1,4 +1,4 @@
-import { urlValidator } from "@/validators/schemaUtils";
+import { urlValidator } from "@/validation/schemaUtils";
 import {
   literal,
   nonEmpty,

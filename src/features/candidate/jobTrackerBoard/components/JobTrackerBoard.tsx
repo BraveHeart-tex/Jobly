@@ -1,5 +1,13 @@
 "use client";
 import {
+  BoardContainer,
+  BoardColumn,
+} from "@/features/candidate/jobTrackerBoard/components/BoardColumn";
+import { JobCard } from "@/features/candidate/jobTrackerBoard/components/JobCard";
+import { coordinateGetter } from "@/features/candidate/jobTrackerBoard/components/multipleContainersKeyboardPreset";
+import { useUpdateDisplayOrderByStatus } from "@/features/candidate/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
+import { hasDraggableData } from "@/features/candidate/jobTrackerBoard/utils";
+import {
   type ColumnId,
   useJobTrackerBoardStore,
 } from "@/lib/stores/useJobTrackerBoardStore";
@@ -20,11 +28,6 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
-import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
-import { hasDraggableData } from "../utils";
-import { BoardColumn, BoardContainer } from "./BoardColumn";
-import { JobCard } from "./JobCard";
-import { coordinateGetter } from "./multipleContainersKeyboardPreset";
 
 interface JobTrackerApplicationsBoardProps {
   data: JobTrackerApplication[];

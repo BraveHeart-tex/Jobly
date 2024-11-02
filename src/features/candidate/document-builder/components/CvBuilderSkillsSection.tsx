@@ -19,7 +19,7 @@ import SectionFieldsDndContext from "@/features/candidate/document-builder/compo
 import {
   type SkillMetadataKey,
   parseSkillsMetadata,
-} from "@/validators/user/document/skillsSectionMetadataValidator";
+} from "@/validation/user/document/skillsSectionMetadataValidator";
 import {
   useDocumentSectionByInternalTag,
   useSectionFields,

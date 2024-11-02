@@ -2,7 +2,7 @@ import type { DocumentBuilderConfig } from "@/features/candidate/document-builde
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
-import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
+import type { SaveDocumentDetailsData } from "@/validation/user/document/saveDocumentDetailsValidator";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 

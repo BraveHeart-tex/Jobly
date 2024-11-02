@@ -1,8 +1,8 @@
-import { type PropsWithRef, forwardRef } from "react";
 import RichTextEditor, {
-  type RichTextEditorProps,
   type RichTextEditorRef,
-} from "../richTextEditor/RichTextEditor";
+  type RichTextEditorProps,
+} from "@/components/richTextEditor/RichTextEditor";
+import { type PropsWithRef, forwardRef } from "react";
 
 const EditorInput = forwardRef<
   PropsWithRef<RichTextEditorRef>,

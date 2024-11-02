@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
+import AddProfileRecordButton from "@/features/user/profile/components/AddProfileRecordButton";
 import EducationInformationCard from "@/features/user/profile/components/EducationInformationCard";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
 import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
-import AddProfileRecordButton from "./AddProfileRecordButton";
 
 interface UserProfileEducationSectionProps {
   educationBackground: EducationalBackground[];

@@ -3,8 +3,8 @@ import { db } from "@/server/db";
 import { companies, companyUsers } from "@/server/db/schema";
 import type { DBUser } from "@/server/db/schema/users";
 import { and, count, eq, getTableColumns, sql } from "drizzle-orm";
-import type { VerifyCompanyUserAssociationParams } from "../types";
 import type { CompanyUserInsertModel } from "@/server/db/schema/companyUsers";
+import type { VerifyCompanyUserAssociationParams } from "@/features/employer/company/types";
 
 export const companyUserRepository = {
   async checkIfUserHasCompany(userId: DBUser["id"], transaction?: Transaction) {

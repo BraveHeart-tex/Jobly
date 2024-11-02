@@ -1,11 +1,14 @@
 "use client";
 import { CalendarDays, MapPin } from "lucide-react";
-import { calculateDuration, formatExperienceDate } from "../utils";
 import { DateTime } from "luxon";
 import type { WorkExperience } from "@/server/db/schema/workExperiences";
 import { generateReadableEnumLabel } from "@/lib/utils/string";
-import ExperienceDescription from "./ExperienceDescription";
-import EditProfileRecordButton from "../../components/EditProfileRecordButton";
+import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
+import ExperienceDescription from "@/features/user/profile/workExperience/components/ExperienceDescription";
+import {
+  formatExperienceDate,
+  calculateDuration,
+} from "@/features/user/profile/workExperience/utils";
 
 interface SingleExperienceCardProps {
   experience: WorkExperience;

@@ -26,7 +26,7 @@ import {
   jobTrackerFormValidator,
   type JobTrackerApplicationInput,
   type JobTrackerApplicationOutput,
-} from "@/validators/jobTrackerApplicationValidator";
+} from "@/validation/user/jobTracker/jobTrackerApplicationValidator";
 import {
   BanknoteIcon,
   BriefcaseBusinessIcon,

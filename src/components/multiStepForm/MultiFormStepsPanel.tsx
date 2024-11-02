@@ -1,10 +1,10 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import type { StepItem } from "@/hooks/useMultiStepForm";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useId } from "react";
 import type { FieldErrors } from "react-hook-form";
-import { Button } from "../ui/button";
 
 interface MultiFormStepsPanelProps {
   // biome-ignore lint/suspicious/noExplicitAny: We don't need a generic argument here

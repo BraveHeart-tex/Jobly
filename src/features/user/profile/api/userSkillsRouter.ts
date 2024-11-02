@@ -6,9 +6,9 @@ import {
   saveUserSkillOrderUseCase,
 } from "@/features/user/profile/use-cases/userSkills";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { genericIdValidator } from "@/validators/schemaUtils";
-import { saveUserSkillOrderValidator } from "@/validators/user/profile/saveUserSkillOrderValidator";
-import { userSkillsValidator } from "@/validators/user/profile/userSkillsValidator";
+import { genericIdValidator } from "@/validation/schemaUtils";
+import { saveUserSkillOrderValidator } from "@/validation/user/profile/saveUserSkillOrderValidator";
+import { userSkillsValidator } from "@/validation/user/profile/userSkillsValidator";
 import { parser } from "valibot";
 
 export const userSkillsRouter = createTRPCRouter({

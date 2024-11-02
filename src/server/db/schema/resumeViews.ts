@@ -1,7 +1,6 @@
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import { documents } from "../schema";
-import companies from "./companies";
+import { documents, companies } from "@/server/db/schema";
 
 const resumeViews = mysqlTable(
   "ResumeViews",

@@ -3,10 +3,10 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   documentInsertValidator,
   documentUpdateValidator,
-} from "@/validators/user/document/baseDocumentValidator";
-import { documentSectionInsertValidator } from "@/validators/user/document/documentSectionValidators";
-import { saveDocumentDetailsValidator } from "@/validators/user/document/saveDocumentDetailsValidator";
-import { DocumentSectionFieldInsertValidator } from "@/validators/user/document/sectionFieldValidators";
+} from "@/validation/user/document/baseDocumentValidator";
+import { documentSectionInsertValidator } from "@/validation/user/document/documentSectionValidators";
+import { saveDocumentDetailsValidator } from "@/validation/user/document/saveDocumentDetailsValidator";
+import { DocumentSectionFieldInsertValidator } from "@/validation/user/document/sectionFieldValidators";
 import {
   array,
   minValue,

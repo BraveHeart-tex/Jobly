@@ -12,9 +12,9 @@ import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "nextjs-toploader/app";
 import { useId, useState } from "react";
-import { useDocuments } from "../hooks/useDocuments";
-import DocumentListItem from "./DocumentListItem";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import DocumentListItem from "@/features/candidate/documents/components/DocumentListItem";
+import { useDocuments } from "@/features/candidate/documents/hooks/useDocuments";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",

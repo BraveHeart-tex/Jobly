@@ -1,9 +1,9 @@
 "use client";
+import DocumentBuilderPreviewContent from "@/features/candidate/document-builder/components/DocumentBuilderPreviewContent";
+import DocumentBuilderPreviewFooter from "@/features/candidate/document-builder/components/DocumentBuilderPreviewFooter";
+import DocumentBuilderPreviewHeader from "@/features/candidate/document-builder/components/DocumentBuilderPreviewHeader";
 import { useDocumentBuilderSearchParams } from "@/features/candidate/document-builder/hooks/useDocumentBuilderSearchParams";
 import { cn } from "@/lib/utils";
-import DocumentBuilderPreviewContent from "./DocumentBuilderPreviewContent";
-import DocumentBuilderPreviewFooter from "./DocumentBuilderPreviewFooter";
-import DocumentBuilderPreviewHeader from "./DocumentBuilderPreviewHeader";
 
 const DocumentBuilderPreview = () => {
   const { view } = useDocumentBuilderSearchParams();

@@ -1,4 +1,4 @@
-import { dateValidator } from "@/validators/schemaUtils";
+import { dateValidator } from "@/validation/schemaUtils";
 import { DateTime } from "luxon";
 import {
   maxLength,

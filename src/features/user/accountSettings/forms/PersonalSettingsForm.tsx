@@ -18,7 +18,7 @@ import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import {
   type PersonalSettingsFormData,
   personalSettingsFormValidator,
-} from "@/validators/user/settings/personalSettingsFormValidator";
+} from "@/validation/user/settings/personalSettingsFormValidator";
 import { useEffect } from "react";
 
 const PersonalSettingsForm = () => {

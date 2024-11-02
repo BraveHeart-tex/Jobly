@@ -5,9 +5,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import DocumentBuilderInput from "@/features/candidate/document-builder/components/DocumentBuilderInput";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
-import DocumentBuilderInput from "./DocumentBuilderInput";
 
 const MONTHS = [
   "Jan",

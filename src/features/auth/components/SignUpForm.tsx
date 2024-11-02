@@ -14,13 +14,13 @@ import type { RouterOutputs } from "@/lib/types";
 import type { DBUser } from "@/server/db/schema/users";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
-import { useSignUp } from "../hooks/useSignUp";
 import {
   type SignUpData,
   signUpValidator,
-} from "@/validators/auth/signUpValidator";
+} from "@/validation/auth/signUpValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showSuccessToast } from "@/components/toastUtils";
+import { useSignUp } from "@/features/auth/hooks/useSignUp";
 
 interface SignUpFormProps {
   portalType?: DBUser["role"];

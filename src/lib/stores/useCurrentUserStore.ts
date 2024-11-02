@@ -1,6 +1,6 @@
 import type { GetCurrentUserReturnType } from "@/actions/auth";
 import type { Nullable } from "@/lib/types";
-import type { PersonalSettingsFormData } from "@/validators/user/settings/personalSettingsFormValidator";
+import type { PersonalSettingsFormData } from "@/validation/user/settings/personalSettingsFormValidator";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 

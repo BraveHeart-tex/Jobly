@@ -25,10 +25,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
 import { GripVertical, TrashIcon } from "lucide-react";
 import { useState } from "react";
-import { useUpdateDisplayOrderByStatus } from "../hooks/useUpdateDisplayOrderByStatus";
-import type { TaskDragData } from "../types";
-import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
+
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import JobTrackerApplicationForm from "@/features/candidate/jobTrackerBoard/components/JobTrackerApplicationForm";
+import { useUpdateDisplayOrderByStatus } from "@/features/candidate/jobTrackerBoard/hooks/useUpdateDisplayOrderByStatus";
+import type { TaskDragData } from "@/features/candidate/jobTrackerBoard/types";
 
 interface JobCardProps {
   job: JobTrackerApplication;

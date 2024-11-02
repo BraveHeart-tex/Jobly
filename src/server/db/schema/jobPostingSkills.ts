@@ -1,7 +1,6 @@
+import { jobPostings, skills } from "@/server/db/schema";
 import { type InferInsertModel, relations } from "drizzle-orm";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import jobPostings from "./jobPostings";
-import skills from "./skills";
 
 const jobPostingSkills = mysqlTable(
   "JobPostingSkills",

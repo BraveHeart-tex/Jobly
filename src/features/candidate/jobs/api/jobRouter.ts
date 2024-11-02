@@ -1,7 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { jobService } from "../services/jobService";
 import { number, object, parser } from "valibot";
-import { getJobListingsValidator } from "@/validators/getJobListingsValidator";
+import { getJobListingsValidator } from "@/validation/user/jobListings/getJobListingsValidator";
+import { jobService } from "@/features/candidate/jobs/services/jobService";
 
 const jobIdValidator = object({
   id: number(),

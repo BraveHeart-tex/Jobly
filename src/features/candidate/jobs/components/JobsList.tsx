@@ -2,6 +2,8 @@
 import Pagination from "@/components/common/Pagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import JobDetails from "@/features/candidate/jobs/components/JobDetails";
+import JobsListCard from "@/features/candidate/jobs/components/JobsListCard";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import { cn } from "@/lib/utils";
 import { exclude } from "@/lib/utils/object";
@@ -13,8 +15,6 @@ import React, {
   useRef,
 } from "react";
 import { useMedia } from "react-use";
-import JobDetails from "./JobDetails";
-import JobsListCard from "./JobsListCard";
 
 const JobsList = () => {
   const {

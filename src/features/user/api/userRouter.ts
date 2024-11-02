@@ -3,7 +3,7 @@ import {
   updatePersonalSettingsUseCase,
 } from "@/features/user/profile/use-cases/users";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { personalSettingsFormValidator } from "@/validators/user/settings/personalSettingsFormValidator";
+import { personalSettingsFormValidator } from "@/validation/user/settings/personalSettingsFormValidator";
 import { parser } from "valibot";
 export const userRouter = createTRPCRouter({
   deleteAvatar: protectedProcedure.mutation(async ({ ctx }) => {

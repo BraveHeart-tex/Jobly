@@ -10,7 +10,7 @@ import { invalidateAllUserSessions } from "@/lib/auth/session";
 import { db } from "@/server/db";
 import type { DBUser, DBUserInsertModel } from "@/server/db/schema/users";
 import { deleteFilesFromStorage } from "@/server/uploadThing";
-import type { PersonalSettingsFormData } from "@/validators/user/settings/personalSettingsFormValidator";
+import type { PersonalSettingsFormData } from "@/validation/user/settings/personalSettingsFormValidator";
 
 export const updateUserAvatarUrlUseCase = async (
   userId: number,

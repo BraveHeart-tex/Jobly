@@ -4,7 +4,7 @@ export const useUpsertEmailNotificationSettings = () => {
   const {
     mutate: upsertUserEmailNotificationSettings,
     isPending: isUpsertingNotificationSettings,
-  } = api.candidateSettings.upsertUserEmailNotificationSettings.useMutation();
+  } = api.accountSettings.upsertUserEmailNotificationSettings.useMutation();
 
   return {
     upsertUserEmailNotificationSettings,

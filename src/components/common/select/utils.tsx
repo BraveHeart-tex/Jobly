@@ -11,8 +11,8 @@ import {
 } from "react-select";
 import { Badge } from "@/components/ui/badge";
 import type React from "react";
-import type { OptionType } from "./types";
 import { useEffect, useState } from "react";
+import type { OptionType } from "@/components/common/select/types";
 
 export const selectContainerClassNames = "w-full relative z-[9999]";
 

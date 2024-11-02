@@ -1,5 +1,5 @@
 import { api } from "@/trpc/react";
-import type { PersonalSettingsFormData } from "@/validators/user/settings/personalSettingsFormValidator";
+import type { PersonalSettingsFormData } from "@/validation/user/settings/personalSettingsFormValidator";
 
 export const useUpdatePersonalSettings = (options?: {
   onSuccess?: (

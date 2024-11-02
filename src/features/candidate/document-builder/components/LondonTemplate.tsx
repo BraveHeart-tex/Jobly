@@ -13,14 +13,14 @@ import {
 } from "@react-pdf/renderer";
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
-import CommaSeparatedPDFText from "./CommaSeparatedPDFText";
+import { parseSkillsMetadata } from "@/validation/user/document/skillsSectionMetadataValidator";
+import { parseReferencesMetadata } from "@/validation/user/document/referencesSectionMetadataValidator";
+import CommaSeparatedPDFText from "@/features/candidate/document-builder/components/CommaSeparatedPDFText";
 import type {
-  CustomSection,
-  MakeResumeDataReturn,
   makeResumeTemplateData,
-} from "./utils";
-import { parseSkillsMetadata } from "@/validators/user/document/skillsSectionMetadataValidator";
-import { parseReferencesMetadata } from "@/validators/user/document/referencesSectionMetadataValidator";
+  MakeResumeDataReturn,
+  CustomSection,
+} from "@/features/candidate/document-builder/components/utils";
 
 export const PDF_BODY_FONT_SIZE = 11 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 14 as const;

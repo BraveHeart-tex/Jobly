@@ -33,10 +33,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { cva } from "class-variance-authority";
 import { ListXIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
-import type { Column } from "../types";
-import { JobCard } from "./JobCard";
-import JobTrackerApplicationForm from "./JobTrackerApplicationForm";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import JobTrackerApplicationForm from "@/features/candidate/jobTrackerBoard/components/JobTrackerApplicationForm";
+import { JobCard } from "@/features/candidate/jobTrackerBoard/components/JobCard";
+import type { Column } from "@/features/candidate/jobTrackerBoard/types";
 
 export type ColumnType = "Column";
 
