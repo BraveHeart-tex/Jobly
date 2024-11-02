@@ -87,3 +87,7 @@ export {
   default as candidateNotificationSettings,
   candidateNotificationSettingsRelations,
 } from "@/server/db/schema/candidateNotificationSettings";
+export {
+  default as deviceSessions,
+  deviceSessionsRelations,
+} from "@/server/db/schema/deviceSessions";
