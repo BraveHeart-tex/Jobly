@@ -13,6 +13,7 @@ import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import type React from "react";
 import SuperJSON from "superjson";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;
@@ -74,6 +75,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {props.children}
       </api.Provider>

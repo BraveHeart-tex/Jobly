@@ -1,9 +1,9 @@
-import { boolean, object, type InferInput } from "valibot";
+import { boolean, nullable, object, type InferInput } from "valibot";
 
 export const upsertEmailSettingsValidator = object({
-  jobAlerts: boolean(),
-  suitableJobPostings: boolean(),
-  followedJobPostingClosingDates: boolean(),
+  jobAlerts: nullable(boolean()),
+  suitableJobPostings: nullable(boolean()),
+  followedJobPostingClosingDates: nullable(boolean()),
 });
 
 export type UpsertEmailSettingsData = InferInput<

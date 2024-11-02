@@ -1,21 +1,19 @@
 "use client";
-
-import type { DBUser } from "@/server/db/schema/users";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, Lock, User, Shield } from "lucide-react";
 import PersonalAccountSettings from "@/features/user/accountSettings/PersonalAccountSettings";
 import AccountSecuritySettings from "@/features/user/accountSettings/AccountSecuritySettings";
 import NotificationSettings from "@/features/user/accountSettings/NotificationSettings";
 import PrivacySettings from "@/features/user/accountSettings/PrivacySettings";
-import type { GetCandidateAccountSettingsReturnType } from "@/features/user/accountSettings/types";
-import type { Nullable } from "@/lib/types";
+import { useGetCandidateAccountSettings } from "@/features/user/accountSettings/hooks/useGetCandidateAccountSettings";
+import SettingsSkeleton from "@/features/user/accountSettings/AccountSettingsSkeleton";
 
-interface AccountSettingsTabsProps {
-  role: DBUser["role"];
-  accountSettings: Nullable<GetCandidateAccountSettingsReturnType>;
-}
+const AccountSettingsTabs = () => {
+  const { accountSettings, isFetchingAccountSettings } =
+    useGetCandidateAccountSettings();
 
-const AccountSettingsTabs = ({ accountSettings }: AccountSettingsTabsProps) => {
+  if (isFetchingAccountSettings) return <SettingsSkeleton />;
+
   return (
     <Tabs defaultValue="personal" className="space-y-2">
       <TabsList className="fixed bottom-0 right-0 w-screen lg:relative grid grid-cols-4 lg:w-full h-14 lg:h-max rounded-none lg:rounded-md">
@@ -60,7 +58,8 @@ const AccountSettingsTabs = ({ accountSettings }: AccountSettingsTabsProps) => {
       <TabsContent value="notifications">
         <NotificationSettings
           settings={
-            accountSettings ? accountSettings?.notificationSettings : null
+            // biome-ignore lint/style/noNonNullAssertion: <explanation>
+            accountSettings?.notificationSettings!
           }
         />
       </TabsContent>

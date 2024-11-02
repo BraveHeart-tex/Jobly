@@ -6,64 +6,39 @@ import SettingBlock from "@/features/user/accountSettings/SettingBlock";
 import SettingSectionTitle from "@/features/user/accountSettings/SettingSectionTitle";
 import type { CandidateNotificationSettings } from "@/features/user/accountSettings/types";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import type { Nullable } from "@/lib/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 interface NotificationSettingsProps {
-  settings: Nullable<CandidateNotificationSettings>;
+  settings: CandidateNotificationSettings;
 }
 
 const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
+  const { emailNotificationSettings, generalNotificationSettings } =
+    useMemo(() => {
+      return {
+        emailNotificationSettings: settings?.email,
+        generalNotificationSettings: settings?.general,
+      };
+    }, [settings]);
+
   const userEmail = useCurrentUserStore((state) => state.user?.email);
-  const [generalNotificationSettings, setGeneralNotificationSettings] =
-    useState({
-      jobRecommendations: false,
-      applicationStatus: false,
-    });
-  const [emailNotificationSettings, setEmailNotificationSettings] = useState({
-    jobAlerts: false,
-    suitableJobPostings: false,
-    followedJobPostingClosingDates: false,
-  });
 
   const { upsertUserEmailNotificationSettings } =
     useUpsertEmailNotificationSettings();
 
   useEffect(() => {
     if (!settings) return;
-
-    setGeneralNotificationSettings({
-      jobRecommendations: settings?.general?.jobRecommendations ?? false,
-      applicationStatus: settings?.general?.applicationStatus ?? false,
-    });
-
-    setEmailNotificationSettings({
-      jobAlerts: settings?.email?.jobAlerts ?? false,
-      suitableJobPostings: settings?.email?.suitableJobPostings ?? false,
-      followedJobPostingClosingDates:
-        settings?.email?.followedJobPostingClosingDates ?? false,
-    });
   }, [settings]);
 
   const handleGeneralNotificationSettingsChange = (
     key: keyof typeof generalNotificationSettings,
     value: boolean,
-  ) => {
-    setGeneralNotificationSettings({
-      ...generalNotificationSettings,
-      [key]: value,
-    });
-  };
+  ) => {};
 
   const handleEmailNotificationSettingsChange = (
     key: keyof typeof emailNotificationSettings,
     value: boolean,
   ) => {
-    setEmailNotificationSettings({
-      ...emailNotificationSettings,
-      [key]: value,
-    });
-
     upsertUserEmailNotificationSettings({
       ...emailNotificationSettings,
       [key]: value,
@@ -84,7 +59,7 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
             description="Receive notifications about relevant job opportunities"
             renderSettingControl={() => (
               <Switch
-                checked={generalNotificationSettings.jobRecommendations}
+                checked={!!generalNotificationSettings.jobRecommendations}
                 onCheckedChange={(value) =>
                   handleGeneralNotificationSettingsChange(
                     "jobRecommendations",
@@ -99,7 +74,7 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
             description="Updates about your job applications"
             renderSettingControl={() => (
               <Switch
-                checked={generalNotificationSettings.applicationStatus}
+                checked={!!generalNotificationSettings.applicationStatus}
                 onCheckedChange={(value) =>
                   handleGeneralNotificationSettingsChange(
                     "applicationStatus",
@@ -125,7 +100,7 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
             title="Job postings that match your job alert settings"
             renderSettingControl={() => (
               <Switch
-                checked={emailNotificationSettings.jobAlerts}
+                checked={!!emailNotificationSettings.jobAlerts}
                 onCheckedChange={(value) =>
                   handleEmailNotificationSettingsChange("jobAlerts", value)
                 }
@@ -136,7 +111,7 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
             title="Job postings that match your skills and preferences"
             renderSettingControl={() => (
               <Switch
-                checked={emailNotificationSettings.suitableJobPostings}
+                checked={!!emailNotificationSettings.suitableJobPostings}
                 onCheckedChange={(value) =>
                   handleEmailNotificationSettingsChange(
                     "suitableJobPostings",
@@ -151,7 +126,7 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
             renderSettingControl={() => (
               <Switch
                 checked={
-                  emailNotificationSettings.followedJobPostingClosingDates
+                  !!emailNotificationSettings.followedJobPostingClosingDates
                 }
                 onCheckedChange={(value) =>
                   handleEmailNotificationSettingsChange(

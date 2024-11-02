@@ -1,3 +1,4 @@
+import { getCandidateAccountSettingsUseCase } from "@/features/user/accountSettings/data-access/accountSettings";
 import { upsertUserEmailNotificationSettingsUseCase } from "@/features/user/accountSettings/use-cases/userEmailNotifications";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { upsertEmailSettingsValidator } from "@/validation/user/settings/upsertEmailSettingsValidator";
@@ -10,4 +11,8 @@ export const accountSettingsRouter = createTRPCRouter({
       const userId = ctx.user.id;
       return await upsertUserEmailNotificationSettingsUseCase(userId, input);
     }),
+  getCandidateAccountSettings: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return await getCandidateAccountSettingsUseCase(userId);
+  }),
 });

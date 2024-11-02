@@ -4,7 +4,6 @@ import {
   updateUserEmailNotificationSettings,
 } from "@/features/user/accountSettings/data-access/userEmailNotifications";
 import { getChangedObjectFields } from "@/lib/utils/object";
-
 import type { UpsertEmailSettingsData } from "@/validation/user/settings/upsertEmailSettingsValidator";
 
 export const upsertUserEmailNotificationSettingsUseCase = async (

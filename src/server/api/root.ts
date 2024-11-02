@@ -16,22 +16,21 @@ import { userSkillsRouter } from "@/features/user/profile/api/userSkillsRouter";
 import { accountSettingsRouter } from "@/features/user/accountSettings/api/userSettingsRouter";
 
 export const appRouter = createTRPCRouter({
-  user: userRouter,
   auth: authRouter,
+  user: userRouter,
   userJobListing: userJobListingRouter,
   document: documentRouter,
   jobTracker: jobTrackerRouter,
   jobPosting: jobPostingRouter,
-  company: companyRouter,
   skill: skillsRouter,
   userProfile: userProfileRouter,
   userSkills: userSkillsRouter,
   workExperience: workExperienceRouter,
   educationalBackgrounds: educationalBackgroundsRouter,
+  accountSettings: accountSettingsRouter,
   countries: countryRouter,
   cities: cityRouter,
-
-  accountSettings: accountSettingsRouter,
+  company: companyRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);
