@@ -4,7 +4,13 @@ import { Button } from "@/components/ui/button";
 import { useInvalidateAllOtherSessions } from "@/features/auth/hooks/useInvalidateAllOtherSessions";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 
-const SignOutAllOtherSessionsButton = () => {
+interface SignOutAllOtherSessionsButtonProps {
+  disabled?: boolean;
+}
+
+const SignOutAllOtherSessionsButton = ({
+  disabled,
+}: SignOutAllOtherSessionsButtonProps) => {
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
   const { invalidateAllOtherUserSessions, isPending } =
     useInvalidateAllOtherSessions({
@@ -16,8 +22,8 @@ const SignOutAllOtherSessionsButton = () => {
   const handleSignOutAllOtherSessions = async () => {
     showConfirmDialog({
       title: "Are you sure you want to sign out all other sessions?",
-      message: "This action cannot be undone.",
-      primaryActionLabel: "Yes",
+      message: "You will be signed out.",
+      primaryActionLabel: "Sign Out",
       onConfirm() {
         invalidateAllOtherUserSessions();
       },
@@ -28,7 +34,7 @@ const SignOutAllOtherSessionsButton = () => {
     <Button
       variant="destructive"
       onClick={handleSignOutAllOtherSessions}
-      disabled={isPending}
+      disabled={disabled || isPending}
     >
       {isPending ? "Signing out..." : "Sign Out All Other Sessions"}
     </Button>

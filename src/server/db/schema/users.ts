@@ -1,4 +1,5 @@
 import {
+  deviceSessions,
   educationalBackgrounds,
   userBios,
   userEmailNotificationSettings,
@@ -73,6 +74,7 @@ export const userRelations = relations(users, ({ one, many }) => ({
     fields: [users.id],
     references: [candidateNotificationSettings.userId],
   }),
+  deviceSessions: many(deviceSessions),
 }));
 
 export type DBUser = InferSelectModel<typeof users>;

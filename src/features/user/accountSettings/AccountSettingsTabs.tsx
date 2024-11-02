@@ -61,7 +61,9 @@ const AccountSettingsTabs = () => {
       </TabsContent>
 
       <TabsContent value="security">
-        <AccountSecuritySettings />
+        <AccountSecuritySettings
+          devices={accountSettings?.deviceSessions || null}
+        />
       </TabsContent>
 
       <TabsContent value="notifications">

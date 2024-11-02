@@ -1,0 +1,1 @@
+ALTER TABLE `DeviceSessions` ADD `deviceType` varchar(255);

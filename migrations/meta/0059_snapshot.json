@@ -1,0 +1,2878 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "d94c8b68-f7bb-4b66-902d-3d26c9313bab",
+  "prevId": "552ffa2e-5df4-4084-90a7-1fef2363abf0",
+  "tables": {
+    "CandidateNotificationSettings": {
+      "name": "CandidateNotificationSettings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobRecommendations": {
+          "name": "jobRecommendations",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        },
+        "applicationStatus": {
+          "name": "applicationStatus",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "CandidateNotificationSettings_userId_Users_id_fk": {
+          "name": "CandidateNotificationSettings_userId_Users_id_fk",
+          "tableFrom": "CandidateNotificationSettings",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "CandidateNotificationSettings_id": {
+          "name": "CandidateNotificationSettings_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "CandidateNotificationSettings_userId_unique": {
+          "name": "CandidateNotificationSettings_userId_unique",
+          "columns": ["userId"]
+        }
+      }
+    },
+    "Cities": {
+      "name": "Cities",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "countryId": {
+          "name": "countryId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "countryId": {
+          "name": "countryId",
+          "columns": ["countryId"],
+          "isUnique": false
+        },
+        "name": {
+          "name": "name",
+          "columns": ["name"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "Cities_countryId_Countries_id_fk": {
+          "name": "Cities_countryId_Countries_id_fk",
+          "tableFrom": "Cities",
+          "tableTo": "Countries",
+          "columnsFrom": ["countryId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "Cities_id": {
+          "name": "Cities_id",
+          "columns": ["id"]
+        },
+        "City_id": {
+          "name": "City_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Companies": {
+      "name": "Companies",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "website": {
+          "name": "website",
+          "type": "varchar(2048)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "industry": {
+          "name": "industry",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "yearOfEstablishment": {
+          "name": "yearOfEstablishment",
+          "type": "varchar(4)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "companySize": {
+          "name": "companySize",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "logo": {
+          "name": "logo",
+          "type": "varchar(2048)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "areasOfExpertise": {
+          "name": "areasOfExpertise",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "verifiedAt": {
+          "name": "verifiedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "name": {
+          "name": "name",
+          "columns": ["name"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Companies_id": {
+          "name": "Companies_id",
+          "columns": ["id"]
+        },
+        "Company_id": {
+          "name": "Company_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "CompanyUsers": {
+      "name": "CompanyUsers",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "companyId": {
+          "name": "companyId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "companyId": {
+          "name": "companyId",
+          "columns": ["companyId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "CompanyUsers_userId_Users_id_fk": {
+          "name": "CompanyUsers_userId_Users_id_fk",
+          "tableFrom": "CompanyUsers",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "CompanyUsers_companyId_Companies_id_fk": {
+          "name": "CompanyUsers_companyId_Companies_id_fk",
+          "tableFrom": "CompanyUsers",
+          "tableTo": "Companies",
+          "columnsFrom": ["companyId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "CompanyUsers_id": {
+          "name": "CompanyUsers_id",
+          "columns": ["id"]
+        },
+        "CompanyUser_id": {
+          "name": "CompanyUser_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Countries": {
+      "name": "Countries",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "name": {
+          "name": "name",
+          "columns": ["name"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Countries_id": {
+          "name": "Countries_id",
+          "columns": ["id"]
+        },
+        "Country_id": {
+          "name": "Country_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "DeviceSessions": {
+      "name": "DeviceSessions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "sessionId": {
+          "name": "sessionId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "deviceName": {
+          "name": "deviceName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "browser": {
+          "name": "browser",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "operatingSystem": {
+          "name": "operatingSystem",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "lastActive": {
+          "name": "lastActive",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "deviceType": {
+          "name": "deviceType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ipAddress": {
+          "name": "ipAddress",
+          "type": "varchar(45)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "user_id": {
+          "name": "user_id",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "session_id": {
+          "name": "session_id",
+          "columns": ["sessionId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "DeviceSessions_userId_Users_id_fk": {
+          "name": "DeviceSessions_userId_Users_id_fk",
+          "tableFrom": "DeviceSessions",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "DeviceSessions_sessionId_Sessions_id_fk": {
+          "name": "DeviceSessions_sessionId_Sessions_id_fk",
+          "tableFrom": "DeviceSessions",
+          "tableTo": "Sessions",
+          "columnsFrom": ["sessionId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "DeviceSessions_id": {
+          "name": "DeviceSessions_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "DeviceSessions_sessionId_unique": {
+          "name": "DeviceSessions_sessionId_unique",
+          "columns": ["sessionId"]
+        }
+      }
+    },
+    "DocumentSectionFields": {
+      "name": "DocumentSectionFields",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "sectionId": {
+          "name": "sectionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fieldName": {
+          "name": "fieldName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fieldType": {
+          "name": "fieldType",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "sectionId": {
+          "name": "sectionId",
+          "columns": ["sectionId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "DocumentSectionFields_sectionId_DocumentSections_id_fk": {
+          "name": "DocumentSectionFields_sectionId_DocumentSections_id_fk",
+          "tableFrom": "DocumentSectionFields",
+          "tableTo": "DocumentSections",
+          "columnsFrom": ["sectionId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "DocumentSectionFields_id": {
+          "name": "DocumentSectionFields_id",
+          "columns": ["id"]
+        },
+        "Field_id": {
+          "name": "Field_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "DocumentSections": {
+      "name": "DocumentSections",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "documentId": {
+          "name": "documentId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fieldsContainerType": {
+          "name": "fieldsContainerType",
+          "type": "enum('collapsible','static')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'static'"
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "internalSectionTag": {
+          "name": "internalSectionTag",
+          "type": "enum('personal-details','professional-summary','employment-history','education','websites-social-links','skills','custom','internships','extra-curricular-activities','hobbies','references','courses','languages')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "defaultName": {
+          "name": "defaultName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "itemCountPerContainer": {
+          "name": "itemCountPerContainer",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "documentId": {
+          "name": "documentId",
+          "columns": ["documentId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "DocumentSections_documentId_Documents_id_fk": {
+          "name": "DocumentSections_documentId_Documents_id_fk",
+          "tableFrom": "DocumentSections",
+          "tableTo": "Documents",
+          "columnsFrom": ["documentId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "DocumentSections_id": {
+          "name": "DocumentSections_id",
+          "columns": ["id"]
+        },
+        "Section_id": {
+          "name": "Section_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Documents": {
+      "name": "Documents",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "type": {
+          "name": "type",
+          "type": "enum('resume','cover_letter')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "Documents_userId_Users_id_fk": {
+          "name": "Documents_userId_Users_id_fk",
+          "tableFrom": "Documents",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "Documents_id": {
+          "name": "Documents_id",
+          "columns": ["id"]
+        },
+        "Document_id": {
+          "name": "Document_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "EducationalBackgrounds": {
+      "name": "EducationalBackgrounds",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "school": {
+          "name": "school",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fieldOfStudy": {
+          "name": "fieldOfStudy",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "gpa": {
+          "name": "gpa",
+          "type": "decimal(10,2)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "startDate": {
+          "name": "startDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "endDate": {
+          "name": "endDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "EducationalBackgrounds_userId_Users_id_fk": {
+          "name": "EducationalBackgrounds_userId_Users_id_fk",
+          "tableFrom": "EducationalBackgrounds",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "EducationalBackgrounds_id": {
+          "name": "EducationalBackgrounds_id",
+          "columns": ["id"]
+        },
+        "EducationalBackgrounds_id_pk": {
+          "name": "EducationalBackgrounds_id_pk",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "EntityPermissions": {
+      "name": "EntityPermissions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "entityId": {
+          "name": "entityId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "entityType": {
+          "name": "entityType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "permissionId": {
+          "name": "permissionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "EntityPermissions_userId_Users_id_fk": {
+          "name": "EntityPermissions_userId_Users_id_fk",
+          "tableFrom": "EntityPermissions",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "EntityPermissions_permissionId_Permissions_id_fk": {
+          "name": "EntityPermissions_permissionId_Permissions_id_fk",
+          "tableFrom": "EntityPermissions",
+          "tableTo": "Permissions",
+          "columnsFrom": ["permissionId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "EntityPermissions_id": {
+          "name": "EntityPermissions_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobApplications": {
+      "name": "JobApplications",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobPostingId": {
+          "name": "jobPostingId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "coverLetterId": {
+          "name": "coverLetterId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "resumeId": {
+          "name": "resumeId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('pending','applied','rejected','interview','offer')",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'applied'"
+        },
+        "appliedAt": {
+          "name": "appliedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "jobId": {
+          "name": "jobId",
+          "columns": ["jobPostingId"],
+          "isUnique": false
+        },
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "status": {
+          "name": "status",
+          "columns": ["status"],
+          "isUnique": false
+        },
+        "coverLetterId": {
+          "name": "coverLetterId",
+          "columns": ["coverLetterId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "JobApplications_userId_Users_id_fk": {
+          "name": "JobApplications_userId_Users_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "JobApplications_jobPostingId_JobPostings_id_fk": {
+          "name": "JobApplications_jobPostingId_JobPostings_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["jobPostingId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "JobApplications_coverLetterId_Documents_id_fk": {
+          "name": "JobApplications_coverLetterId_Documents_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "Documents",
+          "columnsFrom": ["coverLetterId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "JobApplications_resumeId_Documents_id_fk": {
+          "name": "JobApplications_resumeId_Documents_id_fk",
+          "tableFrom": "JobApplications",
+          "tableTo": "Documents",
+          "columnsFrom": ["resumeId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobApplications_id": {
+          "name": "JobApplications_id",
+          "columns": ["id"]
+        },
+        "JobApplication_id": {
+          "name": "JobApplication_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobPostingSkills": {
+      "name": "JobPostingSkills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "jobPostingId": {
+          "name": "jobPostingId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "skillId": {
+          "name": "skillId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "jobPostingId": {
+          "name": "jobPostingId",
+          "columns": ["jobPostingId"],
+          "isUnique": false
+        },
+        "skillId": {
+          "name": "skillId",
+          "columns": ["skillId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "JobPostingSkills_jobPostingId_JobPostings_id_fk": {
+          "name": "JobPostingSkills_jobPostingId_JobPostings_id_fk",
+          "tableFrom": "JobPostingSkills",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["jobPostingId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "JobPostingSkills_skillId_Skills_id_fk": {
+          "name": "JobPostingSkills_skillId_Skills_id_fk",
+          "tableFrom": "JobPostingSkills",
+          "tableTo": "Skills",
+          "columnsFrom": ["skillId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobPostingSkills_id": {
+          "name": "JobPostingSkills_id",
+          "columns": ["id"]
+        },
+        "JobPostingSkill_id": {
+          "name": "JobPostingSkill_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobPostings": {
+      "name": "JobPostings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "companyId": {
+          "name": "companyId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "workType": {
+          "name": "workType",
+          "type": "enum('office','remote','hybrid','other')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'office'"
+        },
+        "salaryRange": {
+          "name": "salaryRange",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "postingContent": {
+          "name": "postingContent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "employmentType": {
+          "name": "employmentType",
+          "type": "enum('full-time','part-time','contract','internship','temporary','volunteer','other')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'full-time'"
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('draft','published')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "postedAt": {
+          "name": "postedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdUserId": {
+          "name": "createdUserId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "title": {
+          "name": "title",
+          "columns": ["title"],
+          "isUnique": false
+        },
+        "companyId": {
+          "name": "companyId",
+          "columns": ["companyId"],
+          "isUnique": false
+        },
+        "location": {
+          "name": "location",
+          "columns": ["location"],
+          "isUnique": false
+        },
+        "workType": {
+          "name": "workType",
+          "columns": ["workType"],
+          "isUnique": false
+        },
+        "employmentType": {
+          "name": "employmentType",
+          "columns": ["employmentType"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "JobPostings_companyId_Companies_id_fk": {
+          "name": "JobPostings_companyId_Companies_id_fk",
+          "tableFrom": "JobPostings",
+          "tableTo": "Companies",
+          "columnsFrom": ["companyId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "JobPostings_createdUserId_Users_id_fk": {
+          "name": "JobPostings_createdUserId_Users_id_fk",
+          "tableFrom": "JobPostings",
+          "tableTo": "Users",
+          "columnsFrom": ["createdUserId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobPostings_id": {
+          "name": "JobPostings_id",
+          "columns": ["id"]
+        },
+        "JobPosting_id": {
+          "name": "JobPosting_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "JobTrackerApplications": {
+      "name": "JobTrackerApplications",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "status": {
+          "name": "status",
+          "type": "enum('shortlist','applied','interview','offer','rejected')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "company": {
+          "name": "company",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobTitle": {
+          "name": "jobTitle",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "salary": {
+          "name": "salary",
+          "type": "decimal(10,2)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "jobDescription": {
+          "name": "jobDescription",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "status": {
+          "name": "status",
+          "columns": ["status"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "JobTrackerApplications_userId_Users_id_fk": {
+          "name": "JobTrackerApplications_userId_Users_id_fk",
+          "tableFrom": "JobTrackerApplications",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "JobTrackerApplications_id": {
+          "name": "JobTrackerApplications_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "ResumeViews": {
+      "name": "ResumeViews",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "viewerCompanyId": {
+          "name": "viewerCompanyId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "viewedResumeId": {
+          "name": "viewedResumeId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "viewedAt": {
+          "name": "viewedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "viewerCompanyId": {
+          "name": "viewerCompanyId",
+          "columns": ["viewerCompanyId"],
+          "isUnique": false
+        },
+        "viewedResumeId": {
+          "name": "viewedResumeId",
+          "columns": ["viewedResumeId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "ResumeViews_viewerCompanyId_Companies_id_fk": {
+          "name": "ResumeViews_viewerCompanyId_Companies_id_fk",
+          "tableFrom": "ResumeViews",
+          "tableTo": "Companies",
+          "columnsFrom": ["viewerCompanyId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "ResumeViews_viewedResumeId_Documents_id_fk": {
+          "name": "ResumeViews_viewedResumeId_Documents_id_fk",
+          "tableFrom": "ResumeViews",
+          "tableTo": "Documents",
+          "columnsFrom": ["viewedResumeId"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "ResumeViews_id": {
+          "name": "ResumeViews_id",
+          "columns": ["id"]
+        },
+        "ResumeView_id": {
+          "name": "ResumeView_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Roles": {
+      "name": "Roles",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdBy": {
+          "name": "createdBy",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updatedBy": {
+          "name": "updatedBy",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Roles_createdBy_Users_id_fk": {
+          "name": "Roles_createdBy_Users_id_fk",
+          "tableFrom": "Roles",
+          "tableTo": "Users",
+          "columnsFrom": ["createdBy"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "Roles_updatedBy_Users_id_fk": {
+          "name": "Roles_updatedBy_Users_id_fk",
+          "tableFrom": "Roles",
+          "tableTo": "Users",
+          "columnsFrom": ["updatedBy"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "Roles_id": {
+          "name": "Roles_id",
+          "columns": ["id"]
+        },
+        "Role_id": {
+          "name": "Role_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Sessions": {
+      "name": "Sessions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "user_id": {
+          "name": "user_id",
+          "columns": ["user_id"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "Sessions_user_id_Users_id_fk": {
+          "name": "Sessions_user_id_Users_id_fk",
+          "tableFrom": "Sessions",
+          "tableTo": "Users",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "Sessions_id": {
+          "name": "Sessions_id",
+          "columns": ["id"]
+        },
+        "Session_id": {
+          "name": "Session_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Skills": {
+      "name": "Skills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "name": {
+          "name": "name",
+          "columns": ["name"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Skills_id": {
+          "name": "Skills_id",
+          "columns": ["id"]
+        },
+        "Skill_id": {
+          "name": "Skill_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "Skills_name_unique": {
+          "name": "Skills_name_unique",
+          "columns": ["name"]
+        }
+      }
+    },
+    "UserBios": {
+      "name": "UserBios",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "varchar(2600)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserBios_userId_Users_id_fk": {
+          "name": "UserBios_userId_Users_id_fk",
+          "tableFrom": "UserBios",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserBios_id": {
+          "name": "UserBios_id",
+          "columns": ["id"]
+        },
+        "UserBio_id": {
+          "name": "UserBio_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserBookmarksJobPosting": {
+      "name": "UserBookmarksJobPosting",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobPostingId": {
+          "name": "jobPostingId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bookmarkedAt": {
+          "name": "bookmarkedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "jobId": {
+          "name": "jobId",
+          "columns": ["jobPostingId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserBookmarksJobPosting_userId_Users_id_fk": {
+          "name": "UserBookmarksJobPosting_userId_Users_id_fk",
+          "tableFrom": "UserBookmarksJobPosting",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserBookmarksJobPosting_jobPostingId_JobPostings_id_fk": {
+          "name": "UserBookmarksJobPosting_jobPostingId_JobPostings_id_fk",
+          "tableFrom": "UserBookmarksJobPosting",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["jobPostingId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserBookmarksJobPosting_id": {
+          "name": "UserBookmarksJobPosting_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserEmailNotificationSettings": {
+      "name": "UserEmailNotificationSettings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobAlerts": {
+          "name": "jobAlerts",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "suitableJobPostings": {
+          "name": "suitableJobPostings",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "followedJobPostingClosingDates": {
+          "name": "followedJobPostingClosingDates",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserEmailNotificationSettings_userId_Users_id_fk": {
+          "name": "UserEmailNotificationSettings_userId_Users_id_fk",
+          "tableFrom": "UserEmailNotificationSettings",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserEmailNotificationSettings_id": {
+          "name": "UserEmailNotificationSettings_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "UserEmailNotificationSettings_userId_unique": {
+          "name": "UserEmailNotificationSettings_userId_unique",
+          "columns": ["userId"]
+        }
+      }
+    },
+    "UserFollowsCompany": {
+      "name": "UserFollowsCompany",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "companyId": {
+          "name": "companyId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "companyId": {
+          "name": "companyId",
+          "columns": ["companyId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserFollowsCompany_companyId_Companies_id_fk": {
+          "name": "UserFollowsCompany_companyId_Companies_id_fk",
+          "tableFrom": "UserFollowsCompany",
+          "tableTo": "Companies",
+          "columnsFrom": ["companyId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserFollowsCompany_userId_Users_id_fk": {
+          "name": "UserFollowsCompany_userId_Users_id_fk",
+          "tableFrom": "UserFollowsCompany",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserFollowsCompany_id": {
+          "name": "UserFollowsCompany_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserHighlightedSkills": {
+      "name": "UserHighlightedSkills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userSkillId": {
+          "name": "userSkillId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "order": {
+          "name": "order",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "UserSkillId_index": {
+          "name": "UserSkillId_index",
+          "columns": ["userSkillId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserHighlightedSkills_userSkillId_UserSkills_id_fk": {
+          "name": "UserHighlightedSkills_userSkillId_UserSkills_id_fk",
+          "tableFrom": "UserHighlightedSkills",
+          "tableTo": "UserSkills",
+          "columnsFrom": ["userSkillId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserHighlightedSkills_id": {
+          "name": "UserHighlightedSkills_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserPrivacySettings": {
+      "name": "UserPrivacySettings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "searchableProfile": {
+          "name": "searchableProfile",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": true
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserPrivacySettings_userId_Users_id_fk": {
+          "name": "UserPrivacySettings_userId_Users_id_fk",
+          "tableFrom": "UserPrivacySettings",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserPrivacySettings_id": {
+          "name": "UserPrivacySettings_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserProfiles": {
+      "name": "UserProfiles",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sector": {
+          "name": "sector",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "presentedWorkExperienceId": {
+          "name": "presentedWorkExperienceId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "countryId": {
+          "name": "countryId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cityId": {
+          "name": "cityId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "websiteLink": {
+          "name": "websiteLink",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "websiteLinkText": {
+          "name": "websiteLinkText",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "countryId": {
+          "name": "countryId",
+          "columns": ["countryId"],
+          "isUnique": false
+        },
+        "cityId": {
+          "name": "cityId",
+          "columns": ["cityId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserProfiles_userId_Users_id_fk": {
+          "name": "UserProfiles_userId_Users_id_fk",
+          "tableFrom": "UserProfiles",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserProfiles_presentedWorkExperienceId_WorkExperiences_id_fk": {
+          "name": "UserProfiles_presentedWorkExperienceId_WorkExperiences_id_fk",
+          "tableFrom": "UserProfiles",
+          "tableTo": "WorkExperiences",
+          "columnsFrom": ["presentedWorkExperienceId"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "UserProfiles_countryId_Countries_id_fk": {
+          "name": "UserProfiles_countryId_Countries_id_fk",
+          "tableFrom": "UserProfiles",
+          "tableTo": "Countries",
+          "columnsFrom": ["countryId"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "UserProfiles_cityId_Cities_id_fk": {
+          "name": "UserProfiles_cityId_Cities_id_fk",
+          "tableFrom": "UserProfiles",
+          "tableTo": "Cities",
+          "columnsFrom": ["cityId"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserProfiles_id": {
+          "name": "UserProfiles_id",
+          "columns": ["id"]
+        },
+        "UserProfile_id": {
+          "name": "UserProfile_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserRoles": {
+      "name": "UserRoles",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "roleId": {
+          "name": "roleId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "companyId": {
+          "name": "companyId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "roleId": {
+          "name": "roleId",
+          "columns": ["roleId"],
+          "isUnique": false
+        },
+        "companyId": {
+          "name": "companyId",
+          "columns": ["companyId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserRoles_userId_Users_id_fk": {
+          "name": "UserRoles_userId_Users_id_fk",
+          "tableFrom": "UserRoles",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserRoles_roleId_Roles_id_fk": {
+          "name": "UserRoles_roleId_Roles_id_fk",
+          "tableFrom": "UserRoles",
+          "tableTo": "Roles",
+          "columnsFrom": ["roleId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserRoles_companyId_Companies_id_fk": {
+          "name": "UserRoles_companyId_Companies_id_fk",
+          "tableFrom": "UserRoles",
+          "tableTo": "Companies",
+          "columnsFrom": ["companyId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserRoles_id": {
+          "name": "UserRoles_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserSecuritySettings": {
+      "name": "UserSecuritySettings",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "enableTwoFactorAuth": {
+          "name": "enableTwoFactorAuth",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "twoFactorAuthMethod": {
+          "name": "twoFactorAuthMethod",
+          "type": "enum('email','auth_app')",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserSecuritySettings_userId_Users_id_fk": {
+          "name": "UserSecuritySettings_userId_Users_id_fk",
+          "tableFrom": "UserSecuritySettings",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserSecuritySettings_id": {
+          "name": "UserSecuritySettings_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserSkillEducationalBackgrounds": {
+      "name": "UserSkillEducationalBackgrounds",
+      "columns": {
+        "userSkillId": {
+          "name": "userSkillId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "educationalBackgroundId": {
+          "name": "educationalBackgroundId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userSkillId": {
+          "name": "userSkillId",
+          "columns": ["userSkillId"],
+          "isUnique": false
+        },
+        "educationalBackgroundId": {
+          "name": "educationalBackgroundId",
+          "columns": ["educationalBackgroundId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserSkillEducationalBackgrounds_userSkillId_UserSkills_id_fk": {
+          "name": "UserSkillEducationalBackgrounds_userSkillId_UserSkills_id_fk",
+          "tableFrom": "UserSkillEducationalBackgrounds",
+          "tableTo": "UserSkills",
+          "columnsFrom": ["userSkillId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserSkillEducationalBackgrounds_educationalBackgroundId_EducationalBackgrounds_id_fk": {
+          "name": "UserSkillEducationalBackgrounds_educationalBackgroundId_EducationalBackgrounds_id_fk",
+          "tableFrom": "UserSkillEducationalBackgrounds",
+          "tableTo": "EducationalBackgrounds",
+          "columnsFrom": ["educationalBackgroundId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserSkillEducationalBackgrounds_userSkillId_educationalBackgroundId_pk": {
+          "name": "UserSkillEducationalBackgrounds_userSkillId_educationalBackgroundId_pk",
+          "columns": ["userSkillId", "educationalBackgroundId"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserSkillWorkExperiences": {
+      "name": "UserSkillWorkExperiences",
+      "columns": {
+        "userSkillId": {
+          "name": "userSkillId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "workExperienceId": {
+          "name": "workExperienceId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userSkillId": {
+          "name": "userSkillId",
+          "columns": ["userSkillId"],
+          "isUnique": false
+        },
+        "workExperienceId": {
+          "name": "workExperienceId",
+          "columns": ["workExperienceId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserSkillWorkExperiences_userSkillId_UserSkills_id_fk": {
+          "name": "UserSkillWorkExperiences_userSkillId_UserSkills_id_fk",
+          "tableFrom": "UserSkillWorkExperiences",
+          "tableTo": "UserSkills",
+          "columnsFrom": ["userSkillId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserSkillWorkExperiences_workExperienceId_WorkExperiences_id_fk": {
+          "name": "UserSkillWorkExperiences_workExperienceId_WorkExperiences_id_fk",
+          "tableFrom": "UserSkillWorkExperiences",
+          "tableTo": "WorkExperiences",
+          "columnsFrom": ["workExperienceId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserSkillWorkExperiences_userSkillId_workExperienceId_pk": {
+          "name": "UserSkillWorkExperiences_userSkillId_workExperienceId_pk",
+          "columns": ["userSkillId", "workExperienceId"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserSkills": {
+      "name": "UserSkills",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "skillId": {
+          "name": "skillId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "displayOrder": {
+          "name": "displayOrder",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        },
+        "skillId": {
+          "name": "skillId",
+          "columns": ["skillId"],
+          "isUnique": false
+        },
+        "User_Skill_Id": {
+          "name": "User_Skill_Id",
+          "columns": ["userId", "skillId"],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "UserSkills_userId_Users_id_fk": {
+          "name": "UserSkills_userId_Users_id_fk",
+          "tableFrom": "UserSkills",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserSkills_skillId_Skills_id_fk": {
+          "name": "UserSkills_skillId_Skills_id_fk",
+          "tableFrom": "UserSkills",
+          "tableTo": "Skills",
+          "columnsFrom": ["skillId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserSkills_id": {
+          "name": "UserSkills_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UserViewsJobPosting": {
+      "name": "UserViewsJobPosting",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "viewerUserId": {
+          "name": "viewerUserId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "viewedJobPostingId": {
+          "name": "viewedJobPostingId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "viewedAt": {
+          "name": "viewedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "viewerUserId": {
+          "name": "viewerUserId",
+          "columns": ["viewerUserId"],
+          "isUnique": false
+        },
+        "viewedJobId": {
+          "name": "viewedJobId",
+          "columns": ["viewedJobPostingId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "UserViewsJobPosting_viewerUserId_Users_id_fk": {
+          "name": "UserViewsJobPosting_viewerUserId_Users_id_fk",
+          "tableFrom": "UserViewsJobPosting",
+          "tableTo": "Users",
+          "columnsFrom": ["viewerUserId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "UserViewsJobPosting_viewedJobPostingId_JobPostings_id_fk": {
+          "name": "UserViewsJobPosting_viewedJobPostingId_JobPostings_id_fk",
+          "tableFrom": "UserViewsJobPosting",
+          "tableTo": "JobPostings",
+          "columnsFrom": ["viewedJobPostingId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "UserViewsJobPosting_id": {
+          "name": "UserViewsJobPosting_id",
+          "columns": ["id"]
+        },
+        "UserViewsJob_id": {
+          "name": "UserViewsJob_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Users": {
+      "name": "Users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hashedPassword": {
+          "name": "hashedPassword",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "enum('employer','candidate')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "avatarUrl": {
+          "name": "avatarUrl",
+          "type": "varchar(2048)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "email": {
+          "name": "email",
+          "columns": ["email"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Users_id": {
+          "name": "Users_id",
+          "columns": ["id"]
+        },
+        "User_id": {
+          "name": "User_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "Users_email_unique": {
+          "name": "Users_email_unique",
+          "columns": ["email"]
+        }
+      }
+    },
+    "WorkExperiences": {
+      "name": "WorkExperiences",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "jobTitle": {
+          "name": "jobTitle",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "employer": {
+          "name": "employer",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "startDate": {
+          "name": "startDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "endDate": {
+          "name": "endDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "employmentType": {
+          "name": "employmentType",
+          "type": "enum('full-time','part-time','contract','internship','temporary','volunteer','other')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'full-time'"
+        },
+        "workType": {
+          "name": "workType",
+          "type": "enum('office','remote','hybrid','other')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'office'"
+        },
+        "location": {
+          "name": "location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "userId": {
+          "name": "userId",
+          "columns": ["userId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "WorkExperiences_userId_Users_id_fk": {
+          "name": "WorkExperiences_userId_Users_id_fk",
+          "tableFrom": "WorkExperiences",
+          "tableTo": "Users",
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "WorkExperiences_id": {
+          "name": "WorkExperiences_id",
+          "columns": ["id"]
+        },
+        "WorkExperience_id": {
+          "name": "WorkExperience_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Permissions": {
+      "name": "Permissions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "permissionName": {
+          "name": "permissionName",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "permissionName": {
+          "name": "permissionName",
+          "columns": ["permissionName"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Permissions_id": {
+          "name": "Permissions_id",
+          "columns": ["id"]
+        },
+        "Permission_id": {
+          "name": "Permission_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "RolePermissions": {
+      "name": "RolePermissions",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "roleId": {
+          "name": "roleId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "permissionId": {
+          "name": "permissionId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "roleId": {
+          "name": "roleId",
+          "columns": ["roleId"],
+          "isUnique": false
+        },
+        "permissionId": {
+          "name": "permissionId",
+          "columns": ["permissionId"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "RolePermissions_roleId_Roles_id_fk": {
+          "name": "RolePermissions_roleId_Roles_id_fk",
+          "tableFrom": "RolePermissions",
+          "tableTo": "Roles",
+          "columnsFrom": ["roleId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "RolePermissions_permissionId_Permissions_id_fk": {
+          "name": "RolePermissions_permissionId_Permissions_id_fk",
+          "tableFrom": "RolePermissions",
+          "tableTo": "Permissions",
+          "columnsFrom": ["permissionId"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "RolePermissions_id": {
+          "name": "RolePermissions_id",
+          "columns": ["id"]
+        },
+        "RolePermission_id": {
+          "name": "RolePermission_id",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
+  }
+}
