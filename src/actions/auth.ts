@@ -1,4 +1,4 @@
-import { getCompanyUserCompanyId } from "@/features/user/profile/use-cases/users";
+import { getUserAssociatedWithCompanyUseCase } from "@/features/user/profile/use-cases/users";
 import type { ContextUserAttributes } from "@/lib/auth/session";
 import { cachedValidateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/server/db";
@@ -18,7 +18,7 @@ export const getCurrentUser =
     const ctxUser: GetCurrentUserReturnType = result.user;
 
     if (ctxUser?.role === "employer") {
-      const companyId = await getCompanyUserCompanyId(ctxUser.id);
+      const companyId = await getUserAssociatedWithCompanyUseCase(ctxUser.id);
 
       if (!companyId) {
         ctxUser.hasToSetupCompanyInformation = true;

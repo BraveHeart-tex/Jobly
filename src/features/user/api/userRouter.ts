@@ -19,7 +19,7 @@ export const userRouter = createTRPCRouter({
       return await updatePersonalSettingsUseCase({
         ...input,
         userId,
-        hasChangedRoles: input.accountType !== ctx.user.role,
+        previousRole: ctx.user.role,
       });
     }),
 });

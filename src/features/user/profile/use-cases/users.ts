@@ -1,20 +1,16 @@
 import {
   createUser,
+  deleteCompanyUserAssociation,
+  getUserAssociatedWithCompany,
   getUserByEmail,
   updatePersonalSettings,
   updateUserAvatarUrl,
 } from "@/features/user/profile/data-access/users";
 import { invalidateAllUserSessions } from "@/lib/auth/session";
 import { db } from "@/server/db";
-import { companyUsers } from "@/server/db/schema";
-import type { DBUserInsertModel } from "@/server/db/schema/users";
-import { utapi } from "@/server/uploadThing";
+import type { DBUser, DBUserInsertModel } from "@/server/db/schema/users";
+import { deleteFilesFromStorage } from "@/server/uploadThing";
 import type { PersonalSettingsFormData } from "@/validators/user/profile/settings/personalSettingsFormValidator";
-import { eq } from "drizzle-orm";
-
-export const getUploadThingFileKeyFromUrl = (url: string) => {
-  return url.split("/").pop() || "";
-};
 
 export const updateUserAvatarUrlUseCase = async (
   userId: number,
@@ -33,7 +29,7 @@ export const deleteUserAvatarUrlUseCase = async (
   const isSuccess = result.affectedRows > 0;
 
   if (isSuccess) {
-    await utapi.deleteFiles(getUploadThingFileKeyFromUrl(previousAvatarUrl));
+    await deleteFilesFromStorage(previousAvatarUrl);
   }
 
   return isSuccess;
@@ -48,21 +44,31 @@ export const createUserUseCase = async (data: DBUserInsertModel) => {
 };
 
 export const updatePersonalSettingsUseCase = async (
-  data: PersonalSettingsFormData & { userId: number; hasChangedRoles: boolean },
+  data: PersonalSettingsFormData & {
+    userId: number;
+    previousRole?: DBUser["role"];
+  },
 ) => {
-  if (data.hasChangedRoles) {
-    await invalidateAllUserSessions(data.userId);
-  }
+  return await db.transaction(async (trx) => {
+    const hasChangedRoles = data.accountType !== data.previousRole;
 
-  return await updatePersonalSettings(data);
+    if (hasChangedRoles) {
+      const shouldDeleteUserCompanyAssociation =
+        data.previousRole === "employer";
+
+      await Promise.all([
+        invalidateAllUserSessions(data.userId, trx),
+        shouldDeleteUserCompanyAssociation
+          ? deleteCompanyUserAssociation(data.userId, trx)
+          : null,
+      ]);
+    }
+
+    return await updatePersonalSettings(data, trx);
+  });
 };
 
-export const getCompanyUserCompanyId = async (userId: number) => {
-  const [result] = await db
-    .select({
-      companyId: companyUsers.companyId,
-    })
-    .from(companyUsers)
-    .where(eq(companyUsers.userId, userId));
+export const getUserAssociatedWithCompanyUseCase = async (userId: number) => {
+  const result = await getUserAssociatedWithCompany(userId);
   return result?.companyId;
 };

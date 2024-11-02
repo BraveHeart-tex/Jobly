@@ -9,6 +9,7 @@ import sessions from "@/server/db/schema/sessions";
 import { users } from "@/server/db/schema";
 import { and, eq, not } from "drizzle-orm";
 import type { DBUser } from "@/server/db/schema/users";
+import type { Transaction } from "@/lib/types";
 
 export interface ContextUserAttributes
   extends Pick<
@@ -88,8 +89,10 @@ export const invalidateSession = async (sessionId: string): Promise<void> => {
 
 export const invalidateAllUserSessions = async (
   userId: number,
+  trx?: Transaction,
 ): Promise<void> => {
-  await db.delete(sessions).where(eq(sessions.userId, userId));
+  const dbLayer = trx || db;
+  await dbLayer.delete(sessions).where(eq(sessions.userId, userId));
 };
 
 export const invalidateAllOtherUserSessions = async (
