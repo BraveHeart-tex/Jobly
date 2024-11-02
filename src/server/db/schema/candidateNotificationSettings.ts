@@ -1,5 +1,5 @@
 import users from "@/server/db/schema/users";
-import { relations } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { boolean, index, int, mysqlTable } from "drizzle-orm/mysql-core";
 
 const candidateNotificationSettings = mysqlTable(
@@ -19,6 +19,10 @@ const candidateNotificationSettings = mysqlTable(
     };
   },
 );
+
+export type InsertCandidateNotificationSettingsModel = InferInsertModel<
+  typeof candidateNotificationSettings
+>;
 
 export const candidateNotificationSettingsRelations = relations(
   candidateNotificationSettings,

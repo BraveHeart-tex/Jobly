@@ -1,6 +1,7 @@
 "use client";
 import { Switch } from "@/components/ui/switch";
 import AccountSettingContentCard from "@/features/user/accountSettings/AccountSettingContentCard";
+import { useUpsertNotificationSettings } from "@/features/user/accountSettings/hooks/useUpsertNotificationSettings";
 import { useUpsertEmailNotificationSettings } from "@/features/user/accountSettings/hooks/useUpsertEmailNotificationSettings";
 import SettingBlock from "@/features/user/accountSettings/SettingBlock";
 import SettingSectionTitle from "@/features/user/accountSettings/SettingSectionTitle";
@@ -16,8 +17,16 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
   const { emailNotificationSettings, generalNotificationSettings } =
     useMemo(() => {
       return {
-        emailNotificationSettings: settings?.email,
-        generalNotificationSettings: settings?.general,
+        emailNotificationSettings: {
+          jobAlerts: settings?.email?.jobAlerts ?? false,
+          suitableJobPostings: settings?.email?.suitableJobPostings ?? false,
+          followedJobPostingClosingDates:
+            settings?.email?.followedJobPostingClosingDates ?? false,
+        },
+        generalNotificationSettings: {
+          jobRecommendations: settings?.general?.jobRecommendations ?? false,
+          applicationStatus: settings?.general?.applicationStatus ?? false,
+        },
       };
     }, [settings]);
 
@@ -25,6 +34,7 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
 
   const { upsertUserEmailNotificationSettings } =
     useUpsertEmailNotificationSettings();
+  const { upsertNotificationSettings } = useUpsertNotificationSettings();
 
   useEffect(() => {
     if (!settings) return;
@@ -33,7 +43,12 @@ const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
   const handleGeneralNotificationSettingsChange = (
     key: keyof typeof generalNotificationSettings,
     value: boolean,
-  ) => {};
+  ) => {
+    upsertNotificationSettings({
+      ...generalNotificationSettings,
+      [key]: value,
+    });
+  };
 
   const handleEmailNotificationSettingsChange = (
     key: keyof typeof emailNotificationSettings,
