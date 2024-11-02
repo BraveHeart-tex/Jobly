@@ -79,3 +79,7 @@ export {
   default as userEmailNotificationSettings,
   userEmailNotificationSettingsRelations,
 } from "@/server/db/schema/userEmailNotificationSettings";
+export {
+  default as userPrivacySettings,
+  userPrivacySettingsRelations,
+} from "@/server/db/schema/userPrivacySettings";

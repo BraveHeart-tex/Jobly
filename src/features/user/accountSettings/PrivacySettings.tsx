@@ -12,16 +12,10 @@ const PrivacySettings = () => {
     >
       <div className="space-y-4">
         <SettingBlock
-          title="Profile Visibility"
-          description="Make your profile visible to employers"
-          renderSettingControl={() => <Switch />}
-        />
-        <SettingBlock
           title="Searchable Profile"
           description="Allow employers to find you in search results"
           renderSettingControl={() => <Switch />}
         />
-
         <div className="space-y-2">
           <SettingSectionTitle>Danger Zone</SettingSectionTitle>
           <hr />
