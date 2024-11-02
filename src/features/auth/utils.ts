@@ -8,12 +8,18 @@ import {
   deleteSessionTokenCookie,
   setSessionTokenCookie,
 } from "@/lib/auth/sessionCookie";
+import {
+  formatLocation,
+  getClientIp,
+  getDeviceInfo,
+  getLocationData,
+} from "@/lib/auth/userAgent";
 import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
 import { AUTH_COOKIE_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
 import { type Options, hash, verify } from "@node-rs/argon2";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 const DEFAULT_HASH_OPTIONS: Options = {
@@ -36,7 +42,22 @@ export const verifyPassword = async (
 
 export const createSessionWithUserId = async (userId: DBUser["id"]) => {
   const sessionToken = generateSessionToken();
-  const session = await createSession(sessionToken, userId);
+  const headersList = headers();
+  const userAgent = headersList.get("user-agent") || "";
+  const deviceInfo = getDeviceInfo(userAgent);
+  const clientIp = getClientIp(headersList);
+  const locationData = await getLocationData(clientIp);
+  const locationDataFormatted = formatLocation(locationData);
+
+  const session = await createSession(sessionToken, userId, {
+    deviceName: deviceInfo.deviceName,
+    userId,
+    browser: deviceInfo.browser,
+    ipAddress: clientIp,
+    location: locationDataFormatted,
+    operatingSystem: deviceInfo.operatingSystem,
+    deviceType: deviceInfo.deviceType,
+  });
 
   setSessionTokenCookie(sessionToken, session.expiresAt);
 };
@@ -47,7 +68,8 @@ export const signOut = async (role: "candidate" | "employer") => {
 
   deleteSessionTokenCookie();
 
-  await invalidateSession(sessionId);
+  invalidateSession(sessionId);
+
   redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
 };
 

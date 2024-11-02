@@ -29,6 +29,18 @@ export const getCandidateAccountSettingsUseCase = async (
           jobRecommendations: true,
         },
       },
+      deviceSessions: {
+        columns: {
+          id: true,
+          ipAddress: true,
+          browser: true,
+          deviceName: true,
+          lastActive: true,
+          location: true,
+          operatingSystem: true,
+          sessionId: true,
+        },
+      },
     },
   });
 
@@ -55,5 +67,6 @@ export const getCandidateAccountSettingsUseCase = async (
       },
     },
     privacySettings: result.userPrivacySettings,
+    deviceSessions: result.deviceSessions,
   };
 };

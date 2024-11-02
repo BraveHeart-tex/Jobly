@@ -1,7 +1,11 @@
 import sessions from "@/server/db/schema/sessions";
 import users from "@/server/db/schema/users";
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
-import { relations } from "drizzle-orm";
+import {
+  type InferInsertModel,
+  type InferSelectModel,
+  relations,
+} from "drizzle-orm";
 import { index, int, mysqlTable, text, varchar } from "drizzle-orm/mysql-core";
 
 const deviceSessions = mysqlTable(
@@ -25,6 +29,7 @@ const deviceSessions = mysqlTable(
     lastActive: customTimestamp("lastActive").$defaultFn(() =>
       getCurrentTimestamp(),
     ),
+    deviceType: varchar("deviceType", { length: 255 }),
     ipAddress: varchar("ipAddress", { length: 45 }),
     location: text("location"),
   },
@@ -35,6 +40,9 @@ const deviceSessions = mysqlTable(
     };
   },
 );
+
+export type InsertDeviceSessionModel = InferInsertModel<typeof deviceSessions>;
+export type SelectDeviceSessionModel = InferSelectModel<typeof deviceSessions>;
 
 export const deviceSessionsRelations = relations(deviceSessions, ({ one }) => ({
   user: one(users, {

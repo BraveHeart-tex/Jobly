@@ -6,10 +6,12 @@ import {
 import { sha256 } from "@oslojs/crypto/sha2";
 import { db } from "@/server/db";
 import sessions from "@/server/db/schema/sessions";
-import { users } from "@/server/db/schema";
+import { deviceSessions, users } from "@/server/db/schema";
 import { and, eq, not } from "drizzle-orm";
 import type { DBUser } from "@/server/db/schema/users";
 import type { Transaction } from "@/lib/types";
+import type { InsertDeviceSessionModel } from "@/server/db/schema/deviceSessions";
+import { getCurrentTimestamp } from "@/server/db/utils";
 
 export interface ContextUserAttributes
   extends Pick<
@@ -27,6 +29,7 @@ export const generateSessionToken = (): string => {
 export const createSession = async (
   token: string,
   userId: number,
+  deviceSessionData: Omit<InsertDeviceSessionModel, "sessionId">,
 ): Promise<Session> => {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const session: Session = {
@@ -34,8 +37,18 @@ export const createSession = async (
     userId,
     expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
   };
-  await db.insert(sessions).values(session);
-  return session;
+
+  return await db.transaction(async (trx) => {
+    await Promise.all([
+      trx.insert(sessions).values(session),
+      trx.insert(deviceSessions).values({
+        ...deviceSessionData,
+        sessionId,
+      }),
+    ]);
+
+    return session;
+  });
 };
 
 export const validateSessionToken = async (
@@ -72,19 +85,34 @@ export const validateSessionToken = async (
 
   if (Date.now() >= session.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15) {
     session.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
-    await db
-      .update(sessions)
-      .set({
-        expiresAt: session.expiresAt,
-      })
-      .where(eq(sessions.id, session.id));
+    await Promise.all([
+      db
+        .update(sessions)
+        .set({
+          expiresAt: session.expiresAt,
+        })
+        .where(eq(sessions.id, session.id)),
+      db
+        .update(deviceSessions)
+        .set({
+          lastActive: getCurrentTimestamp(),
+        })
+        .where(eq(deviceSessions.sessionId, sessionId)),
+    ]);
   }
 
   return { session, user };
 };
 
 export const invalidateSession = async (sessionId: string): Promise<void> => {
-  await db.delete(sessions).where(eq(sessions.id, sessionId));
+  await db
+    .delete(sessions)
+    .where(
+      eq(
+        sessions.id,
+        encodeHexLowerCase(sha256(new TextEncoder().encode(sessionId))),
+      ),
+    );
 };
 
 export const invalidateAllUserSessions = async (

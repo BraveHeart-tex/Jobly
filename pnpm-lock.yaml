@@ -218,6 +218,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.3)
+      ua-parser-js:
+        specifier: 2.0.0-rc.1
+        version: 2.0.0-rc.1
       uploadthing:
         specifier: ^7.1.0
         version: 7.1.0(next@14.2.15(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.3)
@@ -2580,6 +2583,9 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
+  detect-europe-js@0.1.1:
+    resolution: {integrity: sha512-+bUXDf+tI3L4dcEuRdAFa44Amx9aEaJzoZssx7Xis4H1bXWc5fAcOP850BOj0wJPRzOdovOuOVEvrg6T+GflZA==}
+
   detect-libc@2.0.3:
     resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
     engines: {node: '>=8'}
@@ -4052,6 +4058,10 @@ packages:
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
+    hasBin: true
+
+  ua-parser-js@2.0.0-rc.1:
+    resolution: {integrity: sha512-H+kTJv7j04XbMuASIIrp7TwKj8rVHfGLR9dI36FAWneGHyQ6JZVwFukFgxSyM/OChmk7dxsV82R/tnEQxb1EXg==}
     hasBin: true
 
   uc.micro@2.1.0:
@@ -6483,6 +6493,8 @@ snapshots:
 
   dequal@2.0.3: {}
 
+  detect-europe-js@0.1.1: {}
+
   detect-libc@2.0.3:
     optional: true
 
@@ -7948,6 +7960,10 @@ snapshots:
       fsevents: 2.3.3
 
   typescript@5.6.3: {}
+
+  ua-parser-js@2.0.0-rc.1:
+    dependencies:
+      detect-europe-js: 0.1.1
 
   uc.micro@2.1.0: {}
 
