@@ -12,15 +12,15 @@ import { Input } from "@/components/ui/input";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   type EducationalBackgroundData,
-  EducationalBackgroundValidator,
-} from "@/validators/user/profile/educationalBackgroundValidator";
+  educationalBackgroundValidator,
+} from "@/validation/user/profile/educationalBackgroundValidator";
 import { DateTime } from "luxon";
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useCreateEducationalBackground";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useDeleteEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useDeleteEducationalBackground";
 import { useEffect, useTransition } from "react";
 import { useGetEducationalBackground } from "@/features/user/educationalBackgrounds/hooks/useGetEducationalBackground";
@@ -36,7 +36,7 @@ const EducationalBackgroundFormDialog = () => {
   const isEditMode = !!idQuery;
 
   const form = useExtendedForm<EducationalBackgroundData>(
-    EducationalBackgroundValidator,
+    educationalBackgroundValidator,
     {
       defaultValues: {
         school: "",

@@ -1,10 +1,10 @@
 "use client";
 
+import JobListFilters from "@/features/candidate/jobs/components/JobListFilters";
+import JobListLocationInput from "@/features/candidate/jobs/components/JobListLocationInput";
+import JobListSearchInput from "@/features/candidate/jobs/components/JobListSearchInput";
 import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/useJobsListPageSearchParams";
 import { cn } from "@/lib/utils";
-import JobListFilters from "./JobListFilters";
-import JobListLocationInput from "./JobListLocationInput";
-import JobListSearchInput from "./JobListSearchInput";
 
 const JobListSearchToolbar = () => {
   const { view } = useJobsListPageSearchParams();

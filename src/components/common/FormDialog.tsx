@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -11,8 +12,8 @@ import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { Loader2 } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
+
 import type { FieldValues } from "react-hook-form";
-import { Button } from "../ui/button";
 
 interface FormDialogProps<T extends FieldValues = FieldValues> {
   title: string;

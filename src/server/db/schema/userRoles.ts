@@ -1,7 +1,5 @@
+import { users, companies, roles } from "@/server/db/schema";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import companies from "./companies";
-import roles from "./roles";
-import users from "./users";
 
 const userRoles = mysqlTable(
   "UserRoles",

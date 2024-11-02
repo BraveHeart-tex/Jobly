@@ -36,8 +36,8 @@ import type {
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
 import type { DBUser } from "@/server/db/schema/users";
-import type { DocumentUpdateData } from "@/validators/user/document/baseDocumentValidator";
-import type { SaveDocumentDetailsData } from "@/validators/user/document/saveDocumentDetailsValidator";
+import type { DocumentUpdateData } from "@/validation/user/document/baseDocumentValidator";
+import type { SaveDocumentDetailsData } from "@/validation/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
 
 export const getUserDocuments = async (userId: DBUser["id"]) => {

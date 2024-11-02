@@ -1,6 +1,6 @@
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import { int, mysqlTable, primaryKey, varchar } from "drizzle-orm/mysql-core";
-import users from "./users";
+import { users } from "@/server/db/schema";
 
 const roles = mysqlTable(
   "Roles",

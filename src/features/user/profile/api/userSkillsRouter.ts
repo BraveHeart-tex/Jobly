@@ -6,9 +6,9 @@ import {
   saveUserSkillOrderUseCase,
 } from "@/features/user/profile/use-cases/userSkills";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { GenericIdValidator } from "@/validators/schemaUtils";
-import { SaveUserSkillOrderValidator } from "@/validators/user/profile/saveUserSkillOrderValidator";
-import { userSkillsValidator } from "@/validators/user/profile/userSkillsValidator";
+import { genericIdValidator } from "@/validation/schemaUtils";
+import { saveUserSkillOrderValidator } from "@/validation/user/profile/saveUserSkillOrderValidator";
+import { userSkillsValidator } from "@/validation/user/profile/userSkillsValidator";
 import { parser } from "valibot";
 
 export const userSkillsRouter = createTRPCRouter({
@@ -19,12 +19,12 @@ export const userSkillsRouter = createTRPCRouter({
       return createUserSkillUseCase(userId, input);
     }),
   getUserSkillById: protectedProcedure
-    .input(parser(GenericIdValidator))
+    .input(parser(genericIdValidator))
     .query(async ({ input }) => {
       return getUserSkillByIdUseCase(input.id);
     }),
   deleteUserSkill: protectedProcedure
-    .input(parser(GenericIdValidator))
+    .input(parser(genericIdValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return deleteUserSkillUseCase({
@@ -37,7 +37,7 @@ export const userSkillsRouter = createTRPCRouter({
     return getUserSkillsByUserIdUseCase(userId);
   }),
   saveUserSkillOrder: protectedProcedure
-    .input(parser(SaveUserSkillOrderValidator))
+    .input(parser(saveUserSkillOrderValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return saveUserSkillOrderUseCase(userId, input);

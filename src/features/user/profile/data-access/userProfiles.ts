@@ -1,9 +1,9 @@
+import type { GetUserProfileReturn } from "@/features/user/profile/types";
 import type { Transaction } from "@/lib/types";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import { cities, countries, userProfiles, users } from "@/server/db/schema";
-import type { ProfileData } from "@/validators/user/profile/profileValidator";
+import type { ProfileData } from "@/validation/user/profile/profileValidator";
 import { eq } from "drizzle-orm";
-import type { GetUserProfileReturn } from "../types";
 
 export const getUserProfile = async (
   userId: number,

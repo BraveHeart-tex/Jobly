@@ -148,3 +148,5 @@ export const WORK_TYPES = ["office", "remote", "hybrid", "other"] as const;
 export const ASYNC_SELECT_OPTIONS_LIMIT = 10 as const;
 
 export const DEFAULT_AVATAR_URL = "/images/default-avatar.svg";
+
+export const TWO_FACTOR_AUTH_METHODS = ["email", "auth_app"] as const;

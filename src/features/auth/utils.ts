@@ -48,8 +48,7 @@ export const signOut = async (role: "candidate" | "employer") => {
   deleteSessionTokenCookie();
 
   await invalidateSession(sessionId);
-
-  return redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
+  redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
 };
 
 export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {

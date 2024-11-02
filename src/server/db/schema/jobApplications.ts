@@ -1,3 +1,4 @@
+import { users, jobPostings, documents } from "@/server/db/schema";
 import { customTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
@@ -11,9 +12,6 @@ import {
   mysqlTable,
   primaryKey,
 } from "drizzle-orm/mysql-core";
-import documents from "./documents";
-import jobPostings from "./jobPostings";
-import users from "./users";
 
 const jobApplications = mysqlTable(
   "JobApplications",

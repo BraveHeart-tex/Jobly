@@ -10,15 +10,15 @@ import {
 } from "@/components/ui/form";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
-  ProfileValidator,
+  profileValidator,
   type ProfileData,
-} from "@/validators/user/profile/profileValidator";
+} from "@/validation/user/profile/profileValidator";
 import { Input } from "@/components/ui/input";
 import RequiredIndicator from "@/components/common/RequiredIndicator";
 import { useEffect, useState } from "react";
 import Combobox, { type ComboboxOption } from "@/components/common/Combobox";
 import { INDUSTRIES_DATASET } from "@/lib/datasets";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import type { SingleValue } from "react-select";
 import type { ControllerRenderProps } from "react-hook-form";
@@ -39,7 +39,7 @@ const ProfileFormDialog = () => {
   const router = useRouter();
   const { closeModal } = useProfilePageSearchParams();
   const updateName = useCurrentUserStore((state) => state.updateName);
-  const form = useExtendedForm<ProfileData>(ProfileValidator, {
+  const form = useExtendedForm<ProfileData>(profileValidator, {
     defaultValues: {
       firstName: "",
       lastName: "",

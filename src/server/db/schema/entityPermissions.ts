@@ -1,7 +1,7 @@
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import { int, mysqlTable, varchar } from "drizzle-orm/mysql-core";
-import permissions from "./permissions";
-import users from "./users";
+import { users } from "@/server/db/schema";
+import permissions from "@/server/db/schema/permissions";
 
 const entityPermissions = mysqlTable("EntityPermissions", {
   id: int("id").primaryKey().autoincrement().notNull(),

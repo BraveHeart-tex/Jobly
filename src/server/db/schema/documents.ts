@@ -12,8 +12,7 @@ import {
   primaryKey,
   varchar,
 } from "drizzle-orm/mysql-core";
-import documentSections from "./documentSections";
-import users from "./users";
+import { documentSections, users } from "@/server/db/schema";
 
 const documents = mysqlTable(
   "Documents",

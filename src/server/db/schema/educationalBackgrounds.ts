@@ -1,3 +1,4 @@
+import { users } from "@/server/db/schema";
 import {
   type InferSelectModel,
   relations,
@@ -13,7 +14,6 @@ import {
   text,
   varchar,
 } from "drizzle-orm/mysql-core";
-import users from "./users";
 
 const educationalBackgrounds = mysqlTable(
   "EducationalBackgrounds",

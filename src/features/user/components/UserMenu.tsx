@@ -1,7 +1,7 @@
 "use client";
 
 import type { GetCurrentUserReturnType } from "@/actions/auth";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import UserAvatar from "@/components/common/UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,14 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/features/auth/utils";
-import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import { AvatarImage } from "@radix-ui/react-avatar";
-import { KeyRoundIcon, UserIcon } from "lucide-react";
+import { BuildingIcon, KeyRoundIcon, UserIcon, UsersIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
 
 interface UserMenuProps {
@@ -26,16 +22,18 @@ interface UserMenuProps {
 }
 
 const UserMenu = ({ user }: UserMenuProps) => {
-  const userAvatarUrl =
-    useCurrentUserStore((state) => state.user?.avatarUrl) || DEFAULT_AVATAR_URL;
-  const pathname = usePathname();
-  const router = useRouter();
+  const userFullName =
+    useCurrentUserStore(
+      (state) => `${state.user?.firstName} ${state.user?.lastName}`,
+    ) || `${user.firstName} ${user.lastName}`;
+  const userEmail =
+    useCurrentUserStore((state) => state.user?.email) || user.email;
+
   const setUser = useCurrentUserStore((state) => state.setUser);
 
   const userMenuProfileLinks = [
     {
       title: "Profile",
-      // TODO: users will be able set their own profile slugs
       href: SHARED_ROUTES.EDIT_PROFILE,
       icon: UserIcon,
     },
@@ -44,21 +42,25 @@ const UserMenu = ({ user }: UserMenuProps) => {
       href: SHARED_ROUTES.ACCOUNT_SETTINGS,
       icon: KeyRoundIcon,
     },
+    ...(user.role === "employer"
+      ? [
+          {
+            title: "Company Profile",
+            href: EMPLOYER_ROUTES.COMPANY_PROFILE,
+            icon: BuildingIcon,
+          },
+          {
+            title: "User Roles & Permissions",
+            href: EMPLOYER_ROUTES.ROLES_AND_PERMISSIONS,
+            icon: UsersIcon,
+          },
+        ]
+      : []),
   ];
 
   useEffect(() => {
     setUser(user);
   }, [setUser, user]);
-
-  useEffect(() => {
-    if (!user.hasToSetupCompanyInformation) return;
-
-    const redirectPath = `${EMPLOYER_ROUTES.COMPANY_PROFILE}`;
-
-    if (pathname === redirectPath) return;
-
-    router.push(redirectPath);
-  }, [pathname, user, router]);
 
   const handleSignOut = () => {
     signOut(user.role);
@@ -68,20 +70,13 @@ const UserMenu = ({ user }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar>
-          <AvatarImage src={userAvatarUrl} />
-          <AvatarFallback>
-            {user.firstName.charAt(0) + user.lastName.charAt(0)}
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>
           <div className="grid">
-            <span>
-              {user.firstName} {user.lastName}
-            </span>
-            <span className="text-muted-foreground">{user.email}</span>
+            <span>{userFullName}</span>
+            <span className="text-muted-foreground">{userEmail}</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

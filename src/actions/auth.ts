@@ -1,7 +1,9 @@
-import { companyUserService } from "@/features/employer/company/services/userCompanyService";
+import { getUserAssociatedWithCompanyUseCase } from "@/features/user/profile/use-cases/users";
 import type { ContextUserAttributes } from "@/lib/auth/session";
-
-import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
+import { cachedValidateRequest } from "@/lib/auth/validateRequest";
+import { db } from "@/server/db";
+import { users } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 export interface GetCurrentUserReturnType extends ContextUserAttributes {
   hasToSetupCompanyInformation?: boolean;
@@ -10,20 +12,33 @@ export interface GetCurrentUserReturnType extends ContextUserAttributes {
 
 export const getCurrentUser =
   async (): Promise<GetCurrentUserReturnType | null> => {
-    const result = await unCachedValidateRequest();
+    const result = await cachedValidateRequest();
     if (!result.user) return null;
 
     const ctxUser: GetCurrentUserReturnType = result.user;
 
     if (ctxUser?.role === "employer") {
-      const companyDetails =
-        await companyUserService.getCompanyUserDetailsByUserId(ctxUser.id);
-      if (!companyDetails) {
+      const companyId = await getUserAssociatedWithCompanyUseCase(ctxUser.id);
+
+      if (!companyId) {
         ctxUser.hasToSetupCompanyInformation = true;
       } else {
-        ctxUser.companyId = companyDetails.id;
+        ctxUser.companyId = companyId;
       }
     }
 
     return ctxUser;
   };
+
+export const validateEmployerRequest = async () => {
+  const user = await getCurrentUser();
+  if (!user || user?.role !== "employer" || !user.companyId) {
+    return null;
+  }
+
+  return user;
+};
+
+export const deleteUserAccount = async (userId: number) => {
+  return await db.delete(users).where(eq(users.id, userId));
+};

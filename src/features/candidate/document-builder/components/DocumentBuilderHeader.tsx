@@ -1,4 +1,4 @@
-import EditableDocumentTitle from "./EditableDocumentTitle";
+import EditableDocumentTitle from "@/features/candidate/document-builder/components/EditableDocumentTitle";
 
 const DocumentBuilderHeader = () => {
   return (

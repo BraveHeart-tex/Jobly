@@ -1,4 +1,5 @@
 import { EMPLOYMENT_TYPES, WORK_TYPES } from "@/lib/constants";
+import { users } from "@/server/db/schema";
 import {
   type InferSelectModel,
   relations,
@@ -14,7 +15,6 @@ import {
   text,
   varchar,
 } from "drizzle-orm/mysql-core";
-import users from "./users";
 
 const workExperiences = mysqlTable(
   "WorkExperiences",

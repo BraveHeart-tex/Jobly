@@ -7,8 +7,9 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import { db } from "@/server/db";
 import sessions from "@/server/db/schema/sessions";
 import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 import type { DBUser } from "@/server/db/schema/users";
+import type { Transaction } from "@/lib/types";
 
 export interface ContextUserAttributes
   extends Pick<
@@ -84,6 +85,25 @@ export const validateSessionToken = async (
 
 export const invalidateSession = async (sessionId: string): Promise<void> => {
   await db.delete(sessions).where(eq(sessions.id, sessionId));
+};
+
+export const invalidateAllUserSessions = async (
+  userId: number,
+  trx?: Transaction,
+): Promise<void> => {
+  const dbLayer = trx || db;
+  await dbLayer.delete(sessions).where(eq(sessions.userId, userId));
+};
+
+export const invalidateAllOtherUserSessions = async (
+  currentSessionId: string,
+  userId: number,
+) => {
+  await db
+    .delete(sessions)
+    .where(
+      and(eq(sessions.userId, userId), not(eq(sessions.id, currentSessionId))),
+    );
 };
 
 export type SessionValidationResult =

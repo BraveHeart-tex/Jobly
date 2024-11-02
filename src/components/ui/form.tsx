@@ -9,7 +9,7 @@ import {
   FormProvider,
   useFormContext,
 } from "react-hook-form";
-
+import { AnimatePresence, type HTMLMotionProps, motion } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
@@ -78,7 +78,11 @@ const FormItem = React.forwardRef<
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn("space-y-0", className)} {...props} />
+      <div
+        ref={ref}
+        className={cn("space-y-0 relative", className)}
+        {...props}
+      />
     </FormItemContext.Provider>
   );
 });
@@ -143,7 +147,7 @@ FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLMotionProps<"p">
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message) : children;
@@ -153,14 +157,25 @@ const FormMessage = React.forwardRef<
   }
 
   return (
-    <p
-      ref={ref}
-      id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
-      {...props}
-    >
-      {body}
-    </p>
+    <AnimatePresence>
+      {body ? (
+        <motion.p
+          ref={ref}
+          id={formMessageId}
+          initial={{ y: -5, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.2 }}
+          exit={{ y: -5, opacity: 0 }}
+          className={cn(
+            "text-[0.8rem] font-medium text-destructive",
+            className,
+          )}
+          {...props}
+        >
+          {body}
+        </motion.p>
+      ) : null}
+    </AnimatePresence>
   );
 });
 FormMessage.displayName = "FormMessage";

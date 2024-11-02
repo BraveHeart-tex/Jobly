@@ -1,7 +1,6 @@
+import { jobPostings, users } from "@/server/db/schema";
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import { index, int, mysqlTable, primaryKey } from "drizzle-orm/mysql-core";
-import jobPostings from "./jobPostings";
-import users from "./users";
 
 const userViewsJobPosting = mysqlTable(
   "UserViewsJobPosting",

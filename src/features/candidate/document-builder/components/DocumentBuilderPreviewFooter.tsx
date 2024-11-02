@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
+import DebouncedDocumentSaver from "@/features/candidate/document-builder/components/DebouncedDocumentSaver";
 import { usePDFViewerStore } from "@/lib/stores/usePDFViewerStore";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import DebouncedDocumentSaver from "./DebouncedDocumentSaver";
 
 const DocumentBuilderPreviewFooter = () => {
   const currentPage = usePDFViewerStore((state) => state.currentPage);

@@ -1,10 +1,13 @@
 import {
   educationalBackgrounds,
   userBios,
+  userEmailNotificationSettings,
+  userPrivacySettings,
   userProfiles,
   userSkills,
   workExperiences,
 } from "@/server/db/schema";
+import candidateNotificationSettings from "@/server/db/schema/candidateNotificationSettings";
 import { customTimestamp, getCurrentTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
@@ -57,6 +60,18 @@ export const userRelations = relations(users, ({ one, many }) => ({
   userProfile: one(userProfiles, {
     fields: [users.id],
     references: [userProfiles.userId],
+  }),
+  userEmailNotificationSettings: one(userEmailNotificationSettings, {
+    fields: [users.id],
+    references: [userEmailNotificationSettings.userId],
+  }),
+  userPrivacySettings: one(userPrivacySettings, {
+    fields: [users.id],
+    references: [userPrivacySettings.userId],
+  }),
+  candidateNotificationSettings: one(candidateNotificationSettings, {
+    fields: [users.id],
+    references: [candidateNotificationSettings.userId],
   }),
 }));
 

@@ -1,6 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { number, object, optional, parser } from "valibot";
-import { SaveAboutInformationValidator } from "@/validators/user/profile/saveAboutInformationValidator";
+import { saveAboutInformationValidator } from "@/validation/user/profile/saveAboutInformationValidator";
 import {
   fetchUserProfileDetailsUseCase,
   fetchUserProfileUseCase,
@@ -8,7 +8,7 @@ import {
   saveAboutInformationUseCase,
   updateUserProfileUseCase,
 } from "@/features/user/profile/use-cases/userProfiles";
-import { ProfileValidator } from "@/validators/user/profile/profileValidator";
+import { profileValidator } from "@/validation/user/profile/profileValidator";
 
 const optionalUserIdValidator = optional(
   object({
@@ -24,7 +24,7 @@ export const userProfileRouter = createTRPCRouter({
       return await fetchUserProfileUseCase(userId);
     }),
   updateUserProfile: protectedProcedure
-    .input(parser(ProfileValidator))
+    .input(parser(profileValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return await updateUserProfileUseCase({
@@ -45,7 +45,7 @@ export const userProfileRouter = createTRPCRouter({
       return getAboutInformationUseCase(userId);
     }),
   saveAboutInformation: protectedProcedure
-    .input(parser(SaveAboutInformationValidator))
+    .input(parser(saveAboutInformationValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return saveAboutInformationUseCase(userId, input);

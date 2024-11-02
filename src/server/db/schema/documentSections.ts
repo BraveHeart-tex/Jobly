@@ -13,8 +13,7 @@ import {
   text,
   varchar,
 } from "drizzle-orm/mysql-core";
-import documentSectionFields from "./documentSectionFields";
-import documents from "./documents";
+import { documents, documentSectionFields } from "@/server/db/schema";
 
 export const documentSections = mysqlTable(
   "DocumentSections",
@@ -32,7 +31,6 @@ export const documentSections = mysqlTable(
       .notNull(),
     displayOrder: int("displayOrder").notNull(),
     internalSectionTag: mysqlEnum("internalSectionTag", [
-      // TODO: Refactor this to a method
       INTERNAL_SECTION_TAGS.PERSONAL_DETAILS,
       INTERNAL_SECTION_TAGS.PROFESSIONAL_SUMMARY,
       INTERNAL_SECTION_TAGS.EMPLOYMENT_HISTORY,

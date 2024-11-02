@@ -1,6 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { object, parser, string } from "valibot";
-import { SkillInsertValidator } from "@/validators/skillValidator";
+import { insertSkillValidator } from "@/validation/skillValidator";
 import {
   getSkillsByNameUseCase,
   createSkillUseCase,
@@ -19,7 +19,7 @@ export const skillsRouter = createTRPCRouter({
       return await getSkillsByNameUseCase(input.query);
     }),
   createSkill: protectedProcedure
-    .input(parser(SkillInsertValidator))
+    .input(parser(insertSkillValidator))
     .mutation(async ({ input }) => {
       return await createSkillUseCase(input);
     }),

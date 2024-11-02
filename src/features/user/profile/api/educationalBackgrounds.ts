@@ -6,16 +6,16 @@ import {
   getEducationalBackgroundsUseCase,
   updateEducationalBackgroundUseCase,
 } from "@/features/user/profile/use-cases/educationalBackgrounds";
-import { GenericIdValidator } from "@/validators/schemaUtils";
+import { genericIdValidator } from "@/validation/schemaUtils";
 import {
-  InsertEducationValidator,
-  UpdateEducationValidator,
-} from "@/validators/user/profile/educationalBackgroundValidator";
+  insertEducationValidator,
+  updateEducationValidator,
+} from "@/validation/user/profile/educationalBackgroundValidator";
 import { parser } from "valibot";
 
 export const educationalBackgroundsRouter = createTRPCRouter({
   createEducationalBackground: protectedProcedure
-    .input(parser(InsertEducationValidator))
+    .input(parser(insertEducationValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return createEducationalBackgroundUseCase({
@@ -24,19 +24,19 @@ export const educationalBackgroundsRouter = createTRPCRouter({
       });
     }),
   deleteEducationalBackground: protectedProcedure
-    .input(parser(GenericIdValidator))
+    .input(parser(genericIdValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return deleteEducationalBackgroundUseCase(userId, input.id);
     }),
   getEducationalBackground: protectedProcedure
-    .input(parser(GenericIdValidator))
+    .input(parser(genericIdValidator))
     .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return getEducationalBackgroundUseCase(userId, input.id);
     }),
   updateEducationalBackground: protectedProcedure
-    .input(parser(UpdateEducationValidator))
+    .input(parser(updateEducationValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return updateEducationalBackgroundUseCase({

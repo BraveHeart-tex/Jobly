@@ -2,8 +2,8 @@
 import FormDialog from "@/components/common/FormDialog";
 import {
   type WorkExperienceData,
-  WorkExperienceValidator,
-} from "@/validators/user/profile/workExperienceValidator";
+  workExperienceValidator,
+} from "@/validation/user/profile/workExperienceValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   Form,
@@ -24,7 +24,7 @@ import {
   employmentOptions,
   workTypeOptions,
 } from "@/features/candidate/jobs/components/JobListFilters";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import MonthYearInput from "@/components/common/MonthYearInput";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
@@ -40,7 +40,7 @@ const WorkExperienceFormDialog = () => {
   const isEditMode = !!idQuery;
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
 
-  const form = useExtendedForm<WorkExperienceData>(WorkExperienceValidator, {
+  const form = useExtendedForm<WorkExperienceData>(workExperienceValidator, {
     defaultValues: {
       id: isEditMode ? idQuery : undefined,
       jobTitle: "",

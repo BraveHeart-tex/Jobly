@@ -9,7 +9,7 @@ import {
   text,
   varchar,
 } from "drizzle-orm/mysql-core";
-import users from "./users";
+import { users } from "@/server/db/schema";
 
 const jobTrackerApplications = mysqlTable(
   "JobTrackerApplications",

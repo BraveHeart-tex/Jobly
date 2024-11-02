@@ -1,7 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { jobService } from "../services/jobService";
 import { number, object, parser } from "valibot";
-import { GetJobListingsValidator } from "@/validators/getJobListingsValidator";
+import { getJobListingsValidator } from "@/validation/user/jobListings/getJobListingsValidator";
+import { jobService } from "@/features/candidate/jobs/services/jobService";
 
 const jobIdValidator = object({
   id: number(),
@@ -9,7 +9,7 @@ const jobIdValidator = object({
 
 export const userJobListingRouter = createTRPCRouter({
   getJobListings: protectedProcedure
-    .input(parser(GetJobListingsValidator))
+    .input(parser(getJobListingsValidator))
     .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return jobService.getJobListings({

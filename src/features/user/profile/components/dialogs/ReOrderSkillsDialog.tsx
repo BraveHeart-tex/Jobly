@@ -7,7 +7,7 @@ import { useGetUserSkills } from "@/features/user/profile/hooks/useGetUserSkills
 import { useProfilePageSearchParams } from "@/features/user/profile/hooks/useProfilePageSearchParams";
 import { useSaveUserSkillOrder } from "@/features/user/profile/hooks/useSaveUserSkillOrder";
 import type { OrderedUserSkill } from "@/features/user/profile/types";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useMemo, useState } from "react";
 
 const ReOrderSkillsDialog = () => {

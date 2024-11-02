@@ -14,9 +14,7 @@ import {
   text,
   varchar,
 } from "drizzle-orm/mysql-core";
-import companies from "./companies";
-import jobPostingSkills from "./jobPostingSkills";
-import users from "./users";
+import { companies, jobPostingSkills, users } from "@/server/db/schema";
 
 const jobPostings = mysqlTable(
   "JobPostings",

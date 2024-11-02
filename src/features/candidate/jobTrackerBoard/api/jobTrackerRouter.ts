@@ -1,18 +1,18 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { jobTrackerApplications } from "@/server/db/schema";
-import { jobTrackerApplicationService } from "../services/jobTrackerApplicationService";
 import { array, number, object, parser, picklist } from "valibot";
 import {
-  JobTrackerApplicationInsertValidator,
-  JobTrackerApplicationValidator,
-} from "@/validators/jobTrackerApplicationValidator";
+  jobTrackerApplicationInsertValidator,
+  jobTrackerApplicationValidator,
+} from "@/validation/user/jobTracker/jobTrackerApplicationValidator";
+import { jobTrackerApplicationService } from "@/features/candidate/jobTrackerBoard/services/jobTrackerApplicationService";
 
 export const jobTrackerRouter = createTRPCRouter({
   getJobTrackerApplications: protectedProcedure.query(async ({ ctx }) => {
     return jobTrackerApplicationService.getApplications(ctx.user.id);
   }),
   addJobTrackerApplication: protectedProcedure
-    .input(parser(JobTrackerApplicationInsertValidator))
+    .input(parser(jobTrackerApplicationInsertValidator))
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.createApplication({
         ...input,
@@ -34,7 +34,7 @@ export const jobTrackerRouter = createTRPCRouter({
       });
     }),
   updateJobTrackerApplication: protectedProcedure
-    .input(parser(JobTrackerApplicationValidator))
+    .input(parser(jobTrackerApplicationValidator))
     .mutation(async ({ ctx, input }) => {
       return jobTrackerApplicationService.updateApplication({
         ...input,
@@ -59,7 +59,7 @@ export const jobTrackerRouter = createTRPCRouter({
     .input(
       parser(
         object({
-          data: array(JobTrackerApplicationValidator),
+          data: array(jobTrackerApplicationValidator),
         }),
       ),
     )

@@ -1,10 +1,11 @@
 import { db } from "@/server/db";
 import type { UpdateUserNameAndLastNameParams } from "@/features/user/profile/types";
-import { users } from "@/server/db/schema";
+import { companyUsers, users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import type { Transaction } from "@/lib/types";
 import type { MySqlRawQueryResult } from "drizzle-orm/mysql2";
-import type { DBUser, DBUserInsertModel } from "@/server/db/schema/users";
+import type { DBUserInsertModel } from "@/server/db/schema/users";
+import type { PersonalSettingsFormData } from "@/validation/user/settings/personalSettingsFormValidator";
 
 export const updateUserNameAndLastName = async (
   { userId, firstName, lastName }: UpdateUserNameAndLastNameParams,
@@ -48,6 +49,45 @@ export const createUser = async (data: DBUserInsertModel) => {
   return response?.id;
 };
 
-export const deleteUserById = async (id: DBUser["id"]) => {
-  return db.delete(users).where(eq(users.id, id));
+export const updatePersonalSettings = async (
+  data: PersonalSettingsFormData & { userId: number },
+  trx?: Transaction,
+) => {
+  const dbLayer = trx || db;
+  return await dbLayer
+    .update(users)
+    .set({
+      role: data.accountType,
+      firstName: data.firstName,
+      lastName: data.lastName,
+    })
+    .where(eq(users.id, data.userId));
+};
+
+export const deleteCompanyUserAssociation = async (
+  userId: number,
+  trx?: Transaction,
+) => {
+  const dbLayer = trx || db;
+  return await dbLayer
+    .delete(companyUsers)
+    .where(eq(companyUsers.userId, userId));
+};
+
+export const getUserAssociatedWithCompany = async (
+  userId: number,
+): Promise<
+  | {
+      companyId: number;
+    }
+  | undefined
+> => {
+  const [result] = await db
+    .select({
+      companyId: companyUsers.companyId,
+    })
+    .from(companyUsers)
+    .where(eq(companyUsers.userId, userId));
+
+  return result;
 };

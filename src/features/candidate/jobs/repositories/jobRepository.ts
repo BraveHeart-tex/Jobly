@@ -11,7 +11,7 @@ import type {
   JobPostingSelectModel,
 } from "@/server/db/schema/jobPostings";
 import { and, desc, eq, getTableColumns, like, or, sql } from "drizzle-orm";
-import type { GetJobListingsOutput } from "@/validators/getJobListingsValidator";
+import type { GetJobListingsOutput } from "@/validation/user/jobListings/getJobListingsValidator";
 import {
   withBookmarkJoin,
   withUserViewsJobJoin,

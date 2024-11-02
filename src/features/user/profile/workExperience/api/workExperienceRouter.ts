@@ -7,14 +7,14 @@ import {
 } from "@/features/user/profile/workExperience/use-cases/workExperiences";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
-  UpdateWorkExperienceValidator,
-  WorkExperienceValidator,
-} from "@/validators/user/profile/workExperienceValidator";
+  updateWorkExperienceValidator,
+  workExperienceValidator,
+} from "@/validation/user/profile/workExperienceValidator";
 import { minValue, number, object, parser, pipe } from "valibot";
 
 export const workExperienceRouter = createTRPCRouter({
   createWorkExperience: protectedProcedure
-    .input(parser(WorkExperienceValidator))
+    .input(parser(workExperienceValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return createWorkExperienceUseCase({
@@ -41,7 +41,7 @@ export const workExperienceRouter = createTRPCRouter({
       });
     }),
   updateWorkExperience: protectedProcedure
-    .input(parser(UpdateWorkExperienceValidator))
+    .input(parser(updateWorkExperienceValidator))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user.id;
       return updateWorkExperienceUseCase({

@@ -1,15 +1,21 @@
+import { validateEmployerRequest } from "@/actions/auth";
 import PageContainer from "@/components/common/PageContainer";
 import PageTitle from "@/components/common/PageTitle";
 import { buttonVariants } from "@/components/ui/button";
-import { validateRequestByRole } from "@/features/auth/utils";
 import EmployerJobPostingForm from "@/features/employer/jobPosting/components/EmployerJobPostingForm";
-import { EMPLOYER_ROUTES } from "@/lib/routes";
+import { EMPLOYER_ROUTES, SHARED_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const CreateNewJobPostingPage = async () => {
-  await validateRequestByRole(["employer"]);
+  const user = await validateEmployerRequest();
+
+  if (!user) {
+    redirect(SHARED_ROUTES.LOGIN);
+  }
+
   return (
     <div>
       <PageContainer>

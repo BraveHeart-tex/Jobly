@@ -1,12 +1,12 @@
 import * as documentService from "@/features/candidate/documents/services/documentService";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
-  DocumentInsertValidator,
-  DocumentUpdateValidator,
-} from "@/validators/user/document/baseDocumentValidator";
-import { DocumentSectionInsertValidator } from "@/validators/user/document/documentSectionValidators";
-import { SaveDocumentDetailsValidator } from "@/validators/user/document/saveDocumentDetailsValidator";
-import { DocumentSectionFieldInsertValidator } from "@/validators/user/document/sectionFieldValidators";
+  documentInsertValidator,
+  documentUpdateValidator,
+} from "@/validation/user/document/baseDocumentValidator";
+import { documentSectionInsertValidator } from "@/validation/user/document/documentSectionValidators";
+import { saveDocumentDetailsValidator } from "@/validation/user/document/saveDocumentDetailsValidator";
+import { DocumentSectionFieldInsertValidator } from "@/validation/user/document/sectionFieldValidators";
 import {
   array,
   minValue,
@@ -19,7 +19,7 @@ import {
 
 export const documentRouter = createTRPCRouter({
   createDocumentAndRelatedEntities: protectedProcedure
-    .input(parser(partial(DocumentInsertValidator, ["userId"])))
+    .input(parser(partial(documentInsertValidator, ["userId"])))
     .mutation(async ({ input, ctx }) => {
       return documentService.createDocumentAndRelatedEntities({
         ...input,
@@ -45,7 +45,7 @@ export const documentRouter = createTRPCRouter({
     return documentService.getUserDocuments(userId);
   }),
   updateDocument: protectedProcedure
-    .input(parser(DocumentUpdateValidator))
+    .input(parser(documentUpdateValidator))
     .mutation(async ({ input }) => {
       return documentService.updateDocument(input);
     }),
@@ -68,7 +68,7 @@ export const documentRouter = createTRPCRouter({
       });
     }),
   saveDocumentAndRelatedEntities: protectedProcedure
-    .input(parser(SaveDocumentDetailsValidator))
+    .input(parser(saveDocumentDetailsValidator))
     .mutation(async ({ input }) => {
       return documentService.saveDocumentAndRelatedEntities(input);
     }),
@@ -95,7 +95,7 @@ export const documentRouter = createTRPCRouter({
       return documentService.removeFields(input.fieldIds);
     }),
   addSectionByInternalTag: protectedProcedure
-    .input(parser(DocumentSectionInsertValidator))
+    .input(parser(documentSectionInsertValidator))
     .mutation(async ({ input }) => {
       return documentService.addSectionByInternalTag(input);
     }),

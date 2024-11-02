@@ -4,10 +4,10 @@ import {
 } from "@/features/user/profile/data-access/userProfiles";
 import { updateUserNameAndLastName } from "@/features/user/profile/data-access/users";
 import { db } from "@/server/db";
-import type { ProfileData } from "@/validators/user/profile/profileValidator";
+import type { ProfileData } from "@/validation/user/profile/profileValidator";
 import { userProfileRepository } from "@/features/user/profile/data-access/userProfileRepository";
 import type { UserProfileInformation } from "@/features/user/profile/types";
-import type { SaveAboutInformationInput } from "@/validators/user/profile/saveAboutInformationValidator";
+import type { SaveAboutInformationInput } from "@/validation/user/profile/saveAboutInformationValidator";
 
 export const fetchUserProfileUseCase = async (userId: number) => {
   return await getUserProfile(userId);

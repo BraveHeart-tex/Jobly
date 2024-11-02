@@ -1,6 +1,8 @@
+import type {
+  ColumnDragData,
+  TaskDragData,
+} from "@/features/candidate/jobTrackerBoard/types";
 import type { Active, DataRef, Over } from "@dnd-kit/core";
-import type { ColumnDragData } from "./components/BoardColumn";
-import type { TaskDragData } from "./types";
 
 type DraggableData = ColumnDragData | TaskDragData;
 

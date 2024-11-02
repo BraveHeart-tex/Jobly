@@ -1,11 +1,15 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
-import { SignUpValidator } from "@/validators/auth/signUpValidator";
+import { signUpValidator } from "@/validation/auth/signUpValidator";
 import {
-  LoginResponseValidator,
-  LoginValidator,
-} from "@/validators/auth/loginValidator";
+  loginResponseValidator,
+  loginValidator,
+} from "@/validation/auth/loginValidator";
 import {
   createSessionWithUserId,
   hashPassword,
@@ -15,10 +19,12 @@ import {
   getUserByEmailUseCase,
   createUserUseCase,
 } from "@/features/user/profile/use-cases/users";
+import { invalidateAllOtherUserSessions } from "@/lib/auth/session";
+import { deleteUserAccount } from "@/actions/auth";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure
-    .input(parser(SignUpValidator))
+    .input(parser(signUpValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({
@@ -65,8 +71,8 @@ export const authRouter = createTRPCRouter({
       };
     }),
   login: publicProcedure
-    .input(parser(LoginValidator))
-    .output(parser(LoginResponseValidator))
+    .input(parser(loginValidator))
+    .output(parser(loginResponseValidator))
     .mutation(async ({ ctx, input }) => {
       if (ctx.session ?? ctx.user) {
         throw new TRPCError({
@@ -103,4 +109,15 @@ export const authRouter = createTRPCRouter({
         message: "Successfully signed in.",
       };
     }),
+  invalidateAllOtherUserSessions: protectedProcedure.mutation(
+    async ({ ctx }) => {
+      const userId = ctx.user.id;
+      const sessionId = ctx.session.id;
+      return await invalidateAllOtherUserSessions(sessionId, userId);
+    },
+  ),
+  deleteAccount: protectedProcedure.mutation(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return await deleteUserAccount(userId);
+  }),
 });

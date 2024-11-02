@@ -1,5 +1,4 @@
 "use client";
-
 import EditorInput from "@/components/common/EditorInput";
 import SelectInput from "@/components/common/SelectInput";
 import DateInput from "@/components/common/dateInput/DateInput";
@@ -32,21 +31,20 @@ import {
   generateReadableEnumLabel,
 } from "@/lib/utils/string";
 import { DateTime } from "luxon";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
-import { useCreateJobPosting } from "../hooks/useCreateJobPosting";
-import { useCreateSkill } from "../hooks/useCreateSkill";
-import { useLoadSkillOptions } from "../hooks/useLoadSkillOptions";
-
-import { oneWeekFromNow } from "@/validators/jobPostingValidator";
+import { oneWeekFromNow } from "@/validation/employer/jobPosting/jobPostingValidator";
 import {
   type EmployerJobPostingFormOutput,
-  EmployerJobPostingFormValidator,
-} from "@/validators/jobPostingFormValidator";
+  employerJobPostingFormValidator,
+} from "@/validation/employer/jobPosting/jobPostingFormValidator";
 import type { MultiValue } from "react-select";
 import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import type { OptionType } from "@/components/common/select/types";
 import { showSuccessToast } from "@/components/toastUtils";
+import { useCreateJobPosting } from "@/features/employer/jobPosting/hooks/useCreateJobPosting";
+import { useCreateSkill } from "@/features/employer/jobPosting/hooks/useCreateSkill";
+import { useLoadSkillOptions } from "@/features/employer/jobPosting/hooks/useLoadSkillOptions";
 
 const jobPostingFormSteps: StepItem<EmployerJobPostingFormOutput>[] = [
   {
@@ -81,7 +79,7 @@ const EmployerJobPostingForm = ({
 }: EmployerJobPostingFormProps) => {
   const router = useRouter();
   const form = useExtendedForm<EmployerJobPostingFormOutput>(
-    EmployerJobPostingFormValidator,
+    employerJobPostingFormValidator,
     {
       defaultValues: {
         skills: [],

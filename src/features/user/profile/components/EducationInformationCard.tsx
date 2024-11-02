@@ -1,7 +1,7 @@
+import EditProfileRecordButton from "@/features/user/profile/components/EditProfileRecordButton";
 import { formatDateRangeWithDuration } from "@/features/user/profile/utils";
+import ExperienceDescription from "@/features/user/profile/workExperience/components/ExperienceDescription";
 import type { EducationalBackground } from "@/server/db/schema/educationalBackgrounds";
-import ExperienceDescription from "../workExperience/components/ExperienceDescription";
-import EditProfileRecordButton from "./EditProfileRecordButton";
 
 interface EducationInformationCardProps {
   educationInformation: EducationalBackground;

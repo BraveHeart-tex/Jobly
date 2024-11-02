@@ -379,6 +379,34 @@
       "when": 1730113745331,
       "tag": "0053_cold_prima",
       "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "5",
+      "when": 1730275400610,
+      "tag": "0054_harsh_cloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "5",
+      "when": 1730525739548,
+      "tag": "0055_illegal_bulldozer",
+      "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "5",
+      "when": 1730532695419,
+      "tag": "0056_special_chimera",
+      "breakpoints": true
+    },
+    {
+      "idx": 57,
+      "version": "5",
+      "when": 1730551582513,
+      "tag": "0057_grey_night_thrasher",
+      "breakpoints": true
     }
   ]
 }

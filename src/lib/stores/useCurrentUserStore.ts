@@ -1,12 +1,15 @@
-import type { ContextUserAttributes } from "@/lib/auth/session";
+import type { GetCurrentUserReturnType } from "@/actions/auth";
+import type { Nullable } from "@/lib/types";
+import type { PersonalSettingsFormData } from "@/validation/user/settings/personalSettingsFormValidator";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface CurrentUserStore {
-  user: ContextUserAttributes | null;
-  setUser: (user: ContextUserAttributes | null) => void;
+  user: Nullable<GetCurrentUserReturnType>;
+  setUser: (user: Nullable<GetCurrentUserReturnType>) => void;
   updateName: (firstName: string, lastName: string) => void;
   updateAvatarUrl: (avatarUrl: string | null) => void;
+  updatePersonalSettings: (data: PersonalSettingsFormData) => void;
 }
 
 export const useCurrentUserStore = create<
@@ -35,6 +38,16 @@ export const useCurrentUserStore = create<
           user: {
             ...prevUser,
             avatarUrl,
+          },
+        });
+      },
+      updatePersonalSettings: (data: PersonalSettingsFormData) => {
+        const prevUser = get().user;
+        if (!prevUser) return;
+        set({
+          user: {
+            ...prevUser,
+            ...data,
           },
         });
       },
