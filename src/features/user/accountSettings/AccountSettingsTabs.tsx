@@ -66,15 +66,14 @@ const AccountSettingsTabs = () => {
 
       <TabsContent value="notifications">
         <NotificationSettings
-          settings={
-            // biome-ignore lint/style/noNonNullAssertion: <explanation>
-            accountSettings?.notificationSettings!
-          }
+          settings={accountSettings?.notificationSettings || null}
         />
       </TabsContent>
 
       <TabsContent value="privacy">
-        <PrivacySettings />
+        <PrivacySettings
+          privacySettings={accountSettings?.privacySettings || null}
+        />
       </TabsContent>
     </Tabs>
   );

@@ -18,6 +18,11 @@ export const getCandidateAccountSettingsUseCase = async (
           suitableJobPostings: true,
         },
       },
+      userPrivacySettings: {
+        columns: {
+          searchableProfile: true,
+        },
+      },
       candidateNotificationSettings: {
         columns: {
           applicationStatus: true,
@@ -49,5 +54,6 @@ export const getCandidateAccountSettingsUseCase = async (
         suitableJobPostings,
       },
     },
+    privacySettings: result.userPrivacySettings,
   };
 };

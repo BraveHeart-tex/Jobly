@@ -19,6 +19,9 @@ export type EmailNotificationSettingKey = InferValueTypeFromConst<
 export interface GetCandidateAccountSettingsReturnType {
   userId: number;
   notificationSettings: CandidateNotificationSettings;
+  privacySettings: {
+    searchableProfile: boolean;
+  };
 }
 
 export interface CandidateNotificationSettings {

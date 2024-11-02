@@ -8,9 +8,10 @@ import SettingSectionTitle from "@/features/user/accountSettings/SettingSectionT
 import type { CandidateNotificationSettings } from "@/features/user/accountSettings/types";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import { useEffect, useMemo } from "react";
+import type { Nullable } from "@/lib/types";
 
 interface NotificationSettingsProps {
-  settings: CandidateNotificationSettings;
+  settings: Nullable<CandidateNotificationSettings>;
 }
 
 const NotificationSettings = ({ settings }: NotificationSettingsProps) => {

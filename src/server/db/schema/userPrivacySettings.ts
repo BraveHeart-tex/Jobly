@@ -1,5 +1,5 @@
 import { users } from "@/server/db/schema";
-import { relations } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { boolean, index, int, mysqlTable } from "drizzle-orm/mysql-core";
 
 const userPrivacySettings = mysqlTable(
@@ -19,6 +19,10 @@ const userPrivacySettings = mysqlTable(
     };
   },
 );
+
+export type InsertUserPrivacySettingsModel = InferInsertModel<
+  typeof userPrivacySettings
+>;
 
 export const userPrivacySettingsRelations = relations(
   userPrivacySettings,
