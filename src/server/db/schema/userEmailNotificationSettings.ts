@@ -1,5 +1,5 @@
 import { users } from "@/server/db/schema";
-import { relations } from "drizzle-orm";
+import { type InferInsertModel, relations } from "drizzle-orm";
 import { boolean, index, int, mysqlTable } from "drizzle-orm/mysql-core";
 
 const userEmailNotificationSettings = mysqlTable(
@@ -10,8 +10,8 @@ const userEmailNotificationSettings = mysqlTable(
       .references(() => users.id, {
         onDelete: "cascade",
       })
+      .unique()
       .notNull(),
-    enabled: boolean("enabled").default(false),
     jobAlerts: boolean("jobAlerts").default(false),
     suitableJobPostings: boolean("suitableJobPostings").default(false),
     followedJobPostingClosingDates: boolean(
@@ -24,6 +24,10 @@ const userEmailNotificationSettings = mysqlTable(
     };
   },
 );
+
+export type InsertUserEmailNotificationSettingModel = InferInsertModel<
+  typeof userEmailNotificationSettings
+>;
 
 export const userEmailNotificationSettingsRelations = relations(
   userEmailNotificationSettings,

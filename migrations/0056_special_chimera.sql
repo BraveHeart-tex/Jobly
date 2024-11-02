@@ -1,0 +1,2 @@
+ALTER TABLE `UserEmailNotificationSettings` ADD CONSTRAINT `UserEmailNotificationSettings_userId_unique` UNIQUE(`userId`);--> statement-breakpoint
+ALTER TABLE `UserEmailNotificationSettings` DROP COLUMN `enabled`;

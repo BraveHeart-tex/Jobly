@@ -101,3 +101,18 @@ export const getUniqueValuesFromMap = <T extends Record<string, unknown>>(
 export const isObjectEmpty = <T extends Record<string, unknown>>(obj: T) => {
   return Object.keys(obj).length === 0;
 };
+
+export const getChangedObjectFields = <T extends Record<string, unknown>>(
+  newData: Partial<T>,
+  existingData: T,
+): Partial<T> => {
+  const fieldsToUpdate: Partial<T> = {};
+
+  for (const key in newData) {
+    if (newData[key] !== undefined && newData[key] !== existingData[key]) {
+      fieldsToUpdate[key] = newData[key];
+    }
+  }
+
+  return fieldsToUpdate;
+};

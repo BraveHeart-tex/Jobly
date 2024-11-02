@@ -11,14 +11,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signOut } from "@/features/auth/utils";
-import { useUpdatePersonalSettings } from "@/features/user/hooks/useUpdatePersonalSettings";
+import { useUpdatePersonalSettings } from "@/features/user/accountSettings/hooks/useUpdatePersonalSettings";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
 import {
   type PersonalSettingsFormData,
   personalSettingsFormValidator,
-} from "@/validators/user/profile/settings/personalSettingsFormValidator";
+} from "@/validators/user/settings/personalSettingsFormValidator";
 import { useEffect } from "react";
 
 const PersonalSettingsForm = () => {

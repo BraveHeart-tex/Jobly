@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import type { Transaction } from "@/lib/types";
 import type { MySqlRawQueryResult } from "drizzle-orm/mysql2";
 import type { DBUserInsertModel } from "@/server/db/schema/users";
-import type { PersonalSettingsFormData } from "@/validators/user/profile/settings/personalSettingsFormValidator";
+import type { PersonalSettingsFormData } from "@/validators/user/settings/personalSettingsFormValidator";
 
 export const updateUserNameAndLastName = async (
   { userId, firstName, lastName }: UpdateUserNameAndLastNameParams,

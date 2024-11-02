@@ -88,6 +88,8 @@
     "TRPC",
     "Unsave",
     "UPLOADTHING",
+    "upsert",
+    "Upserting",
     "UPSTASH",
     "Vali",
     "valibot",
