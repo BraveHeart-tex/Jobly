@@ -1,6 +1,8 @@
 import {
   educationalBackgrounds,
   userBios,
+  userEmailNotificationSettings,
+  userPrivacySettings,
   userProfiles,
   userSkills,
   workExperiences,
@@ -57,6 +59,14 @@ export const userRelations = relations(users, ({ one, many }) => ({
   userProfile: one(userProfiles, {
     fields: [users.id],
     references: [userProfiles.userId],
+  }),
+  userEmailNotificationSetting: one(userEmailNotificationSettings, {
+    fields: [users.id],
+    references: [userEmailNotificationSettings.userId],
+  }),
+  userPrivacySetting: one(userPrivacySettings, {
+    fields: [users.id],
+    references: [userPrivacySettings.userId],
   }),
 }));
 

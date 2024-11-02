@@ -4,10 +4,16 @@ import AccountSettingContentCard from "@/features/user/accountSettings/AccountSe
 import { useUpsertEmailNotificationSettings } from "@/features/user/accountSettings/hooks/useUpsertEmailNotificationSettings";
 import SettingBlock from "@/features/user/accountSettings/SettingBlock";
 import SettingSectionTitle from "@/features/user/accountSettings/SettingSectionTitle";
+import type { CandidateNotificationSettings } from "@/features/user/accountSettings/types";
 import { useCurrentUserStore } from "@/lib/stores/useCurrentUserStore";
-import { useState } from "react";
+import type { Nullable } from "@/lib/types";
+import { useEffect, useState } from "react";
 
-const NotificationSettings = () => {
+interface NotificationSettingsProps {
+  settings: Nullable<CandidateNotificationSettings>;
+}
+
+const NotificationSettings = ({ settings }: NotificationSettingsProps) => {
   const userEmail = useCurrentUserStore((state) => state.user?.email);
   const [generalNotificationSettings, setGeneralNotificationSettings] =
     useState({
@@ -22,6 +28,22 @@ const NotificationSettings = () => {
 
   const { upsertUserEmailNotificationSettings } =
     useUpsertEmailNotificationSettings();
+
+  useEffect(() => {
+    if (!settings) return;
+
+    setGeneralNotificationSettings({
+      jobRecommendations: settings?.general?.jobRecommendations ?? false,
+      applicationStatus: settings?.general?.applicationStatus ?? false,
+    });
+
+    setEmailNotificationSettings({
+      jobAlerts: settings?.email?.jobAlerts ?? false,
+      suitableJobPostings: settings?.email?.suitableJobPostings ?? false,
+      followedJobPostingClosingDates:
+        settings?.email?.followedJobPostingClosingDates ?? false,
+    });
+  }, [settings]);
 
   const handleGeneralNotificationSettingsChange = (
     key: keyof typeof generalNotificationSettings,

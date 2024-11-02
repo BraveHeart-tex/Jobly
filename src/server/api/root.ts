@@ -13,7 +13,7 @@ import { educationalBackgroundsRouter } from "@/features/user/profile/api/educat
 import { cityRouter } from "@/features/user/profile/api/cities";
 import { userRouter } from "@/features/user/api/userRouter";
 import { userSkillsRouter } from "@/features/user/profile/api/userSkillsRouter";
-import { candidateSettingsRouter } from "@/features/user/accountSettings/api/candidateSettingsRouter";
+import { candidateSettingsRouter } from "@/features/user/accountSettings/api/userSettingsRouter";
 
 export const appRouter = createTRPCRouter({
   user: userRouter,

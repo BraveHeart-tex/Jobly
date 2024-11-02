@@ -7,12 +7,15 @@ import PersonalAccountSettings from "@/features/user/accountSettings/PersonalAcc
 import AccountSecuritySettings from "@/features/user/accountSettings/AccountSecuritySettings";
 import NotificationSettings from "@/features/user/accountSettings/NotificationSettings";
 import PrivacySettings from "@/features/user/accountSettings/PrivacySettings";
+import type { GetCandidateAccountSettingsReturnType } from "@/features/user/accountSettings/types";
+import type { Nullable } from "@/lib/types";
 
 interface AccountSettingsTabsProps {
   role: DBUser["role"];
+  accountSettings: Nullable<GetCandidateAccountSettingsReturnType>;
 }
 
-const AccountSettingsTabs = ({ role }: AccountSettingsTabsProps) => {
+const AccountSettingsTabs = ({ accountSettings }: AccountSettingsTabsProps) => {
   return (
     <Tabs defaultValue="personal" className="space-y-2">
       <TabsList className="fixed bottom-0 right-0 w-screen lg:relative grid grid-cols-4 lg:w-full h-14 lg:h-max rounded-none lg:rounded-md">
@@ -55,7 +58,11 @@ const AccountSettingsTabs = ({ role }: AccountSettingsTabsProps) => {
       </TabsContent>
 
       <TabsContent value="notifications">
-        <NotificationSettings />
+        <NotificationSettings
+          settings={
+            accountSettings ? accountSettings?.notificationSettings : null
+          }
+        />
       </TabsContent>
 
       <TabsContent value="privacy">

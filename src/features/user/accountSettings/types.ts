@@ -15,3 +15,20 @@ export const emailNotificationSettingKeys = {
 export type EmailNotificationSettingKey = InferValueTypeFromConst<
   typeof emailNotificationSettingKeys
 >;
+
+export interface GetCandidateAccountSettingsReturnType {
+  userId: number;
+  notificationSettings: CandidateNotificationSettings;
+}
+
+export interface CandidateNotificationSettings {
+  general: {
+    jobRecommendations: boolean | null;
+    applicationStatus: boolean | null;
+  };
+  email: {
+    jobAlerts: boolean | null;
+    suitableJobPostings: boolean | null;
+    followedJobPostingClosingDates: boolean | null;
+  };
+}
