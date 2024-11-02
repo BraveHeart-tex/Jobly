@@ -7,15 +7,24 @@ import NotificationSettings from "@/features/user/accountSettings/NotificationSe
 import PrivacySettings from "@/features/user/accountSettings/PrivacySettings";
 import { useGetCandidateAccountSettings } from "@/features/user/accountSettings/hooks/useGetCandidateAccountSettings";
 import SettingsSkeleton from "@/features/user/accountSettings/AccountSettingsSkeleton";
+import { useQueryState } from "nuqs";
 
 const AccountSettingsTabs = () => {
+  const [selectedTab, setSelectedTab] = useQueryState("selectedTab", {
+    defaultValue: "personal",
+  });
+
   const { accountSettings, isFetchingAccountSettings } =
     useGetCandidateAccountSettings();
 
   if (isFetchingAccountSettings) return <SettingsSkeleton />;
 
   return (
-    <Tabs defaultValue="personal" className="space-y-2">
+    <Tabs
+      value={selectedTab}
+      onValueChange={setSelectedTab}
+      className="space-y-2"
+    >
       <TabsList className="fixed bottom-0 right-0 w-screen lg:relative grid grid-cols-4 lg:w-full h-14 lg:h-max rounded-none lg:rounded-md">
         <TabsTrigger
           value="personal"
