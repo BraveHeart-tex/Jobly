@@ -66,7 +66,7 @@ export const jobPostingRouter = createTRPCRouter({
       const user = ctx.user;
       if (user.role !== "employer") {
         throw new TRPCError({
-          code: "UNAUTHORIZED",
+          code: "FORBIDDEN",
           message: "You are not authorized to perform this action.",
         });
       }

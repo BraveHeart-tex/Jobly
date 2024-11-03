@@ -26,7 +26,7 @@ export const ensureEmployerCompanyLink = async (
 ) => {
   if (user.role !== "employer") {
     throw new TRPCError({
-      code: "UNAUTHORIZED",
+      code: "FORBIDDEN",
       message: "You are not authorized to perform this action.",
     });
   }
@@ -37,7 +37,7 @@ export const ensureEmployerCompanyLink = async (
 
   if (!company) {
     throw new TRPCError({
-      code: "UNAUTHORIZED",
+      code: "FORBIDDEN",
       message: "You are not authorized to perform this action.",
     });
   }

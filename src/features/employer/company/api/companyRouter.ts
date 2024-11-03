@@ -12,7 +12,7 @@ export const companyRouter = createTRPCRouter({
       const { user } = ctx;
       if (user.role !== "employer") {
         throw new TRPCError({
-          code: "UNAUTHORIZED",
+          code: "FORBIDDEN",
           message: "You are not authorized to perform this action.",
         });
       }

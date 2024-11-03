@@ -8,12 +8,13 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import type React from "react";
 import SuperJSON from "superjson";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SHARED_ROUTES } from "@/lib/routes";
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;
@@ -27,14 +28,28 @@ const createQueryClient = () =>
     queryCache: new QueryCache({
       onError: (error) => {
         showErrorToast(error.message);
+        handleTrpcClientError(error);
       },
     }),
     mutationCache: new MutationCache({
       onError: (error) => {
         showErrorToast(error.message);
+        handleTrpcClientError(error);
       },
     }),
   });
+
+const handleTrpcClientError = (error: Error) => {
+  if (
+    error instanceof TRPCClientError &&
+    error.data?.code === "UNAUTHORIZED" &&
+    typeof window !== "undefined"
+  ) {
+    setTimeout(() => {
+      window.location.href = SHARED_ROUTES.LOGIN;
+    }, 1000);
+  }
+};
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {

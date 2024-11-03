@@ -57,7 +57,7 @@ export const protectedProcedure = t.procedure
     if (!ctx.session || !ctx.user) {
       throw new TRPCError({
         code: "UNAUTHORIZED",
-        message: "You are not authorized to perform this action.",
+        message: "You must be signed in to perform this action",
       });
     }
 
