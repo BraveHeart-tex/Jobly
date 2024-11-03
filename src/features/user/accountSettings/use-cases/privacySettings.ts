@@ -15,7 +15,9 @@ export const upsertPrivacySettingsUseCase = async (
   if (existingSettings) {
     const fieldsToUpdate = getChangedObjectFields(data, existingSettings);
 
-    await updateUserPrivacySettings(userId, fieldsToUpdate);
+    if (Object.keys(fieldsToUpdate).length > 0) {
+      await updateUserPrivacySettings(userId, fieldsToUpdate);
+    }
   } else {
     await createUserPrivacySettings({
       ...data,

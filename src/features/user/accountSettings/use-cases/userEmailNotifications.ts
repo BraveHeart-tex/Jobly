@@ -18,10 +18,12 @@ export const upsertUserEmailNotificationSettingsUseCase = async (
       existingSettings,
     );
 
-    await updateUserEmailNotificationSettings({
-      ...fieldsToUpdate,
-      userId,
-    });
+    if (Object.keys(fieldsToUpdate).length > 0) {
+      await updateUserEmailNotificationSettings({
+        ...fieldsToUpdate,
+        userId,
+      });
+    }
   } else {
     await insertUserEmailNotificationSettings({
       userId,

@@ -15,7 +15,9 @@ export const upsertNotificationSettingsUseCase = async (
   if (existingSettings) {
     const fieldsToUpdate = getChangedObjectFields(data, existingSettings);
 
-    await updateCandidateNotificationSettings(userId, fieldsToUpdate);
+    if (Object.keys(fieldsToUpdate).length > 0) {
+      await updateCandidateNotificationSettings(userId, fieldsToUpdate);
+    }
   } else {
     await insertCandidateNotificationSettings({
       userId,

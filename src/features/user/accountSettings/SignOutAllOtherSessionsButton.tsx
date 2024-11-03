@@ -27,7 +27,7 @@ const SignOutAllOtherSessionsButton = ({
 
   return (
     <Button
-      variant="destructive"
+      variant="outline"
       onClick={handleSignOutAllOtherSessions}
       disabled={disabled || isPending}
     >

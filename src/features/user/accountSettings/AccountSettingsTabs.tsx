@@ -25,7 +25,7 @@ const AccountSettingsTabs = () => {
       onValueChange={setSelectedTab}
       className="space-y-2"
     >
-      <TabsList className="fixed bottom-0 right-0 w-screen lg:relative grid grid-cols-4 lg:w-full h-14 lg:h-max rounded-none lg:rounded-md">
+      <TabsList className="fixed bottom-0 right-0 w-screen lg:relative grid grid-cols-4 lg:w-full h-14 lg:h-max rounded-none lg:rounded-md z-10">
         <TabsTrigger
           value="personal"
           className="flex flex-col lg:flex-row items-center gap-2 text-xs sm:text-sm"
@@ -56,27 +56,29 @@ const AccountSettingsTabs = () => {
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="personal">
-        <PersonalAccountSettings />
-      </TabsContent>
+      <div className="pb-14 lg:pb-0">
+        <TabsContent value="personal" className="h-full">
+          <PersonalAccountSettings />
+        </TabsContent>
 
-      <TabsContent value="security">
-        <AccountSecuritySettings
-          devices={accountSettings?.deviceSessions || null}
-        />
-      </TabsContent>
+        <TabsContent value="security" className="h-full">
+          <AccountSecuritySettings
+            devices={accountSettings?.deviceSessions || null}
+          />
+        </TabsContent>
 
-      <TabsContent value="notifications">
-        <NotificationSettings
-          settings={accountSettings?.notificationSettings || null}
-        />
-      </TabsContent>
+        <TabsContent value="notifications" className="h-full">
+          <NotificationSettings
+            settings={accountSettings?.notificationSettings || null}
+          />
+        </TabsContent>
 
-      <TabsContent value="privacy">
-        <PrivacySettings
-          privacySettings={accountSettings?.privacySettings || null}
-        />
-      </TabsContent>
+        <TabsContent value="privacy" className="h-full">
+          <PrivacySettings
+            privacySettings={accountSettings?.privacySettings || null}
+          />
+        </TabsContent>
+      </div>
     </Tabs>
   );
 };
