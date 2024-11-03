@@ -1,4 +1,4 @@
-import { getCandidateAccountSettingsUseCase } from "@/features/user/accountSettings/data-access/accountSettings";
+import { getCandidateAccountSettingsUseCase } from "@/features/user/accountSettings/use-cases/accountSettings";
 import { upsertNotificationSettingsUseCase } from "@/features/user/accountSettings/use-cases/candidateNotifications";
 import { deleteDeviceSessionUseCase } from "@/features/user/accountSettings/use-cases/deviceSessions";
 import { upsertPrivacySettingsUseCase } from "@/features/user/accountSettings/use-cases/privacySettings";
@@ -18,7 +18,9 @@ export const userSettingsRouter = createTRPCRouter({
     }),
   getCandidateAccountSettings: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.user.id;
-    return await getCandidateAccountSettingsUseCase(userId);
+    const currentSessionId = ctx.session.id;
+
+    return await getCandidateAccountSettingsUseCase(userId, currentSessionId);
   }),
   upsertNotificationSettings: protectedProcedure
     .input(parser(candidateNotificationSettingsValidator))

@@ -62,7 +62,7 @@ const AccountSecuritySettings = ({ devices }: AccountSecuritySettingsProps) => {
     });
   };
 
-  const getDeviceIcon = (deviceType: string | null | undefined) => {
+  const getDeviceIcon = (deviceType: string | null) => {
     const iconMap = {
       desktop: TabletIcon,
       mobile: SmartphoneIcon,

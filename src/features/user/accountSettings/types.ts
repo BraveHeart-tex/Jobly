@@ -1,5 +1,5 @@
 import type { InferValueTypeFromConst } from "@/lib/types";
-import type { InsertDeviceSessionModel } from "@/server/db/schema/deviceSessions";
+import type { SelectDeviceSessionModel } from "@/server/db/schema/deviceSessions";
 
 export interface UpdateEmailNotificationSettingParams {
   userId: number;
@@ -26,7 +26,10 @@ export interface GetCandidateAccountSettingsReturnType {
   deviceSessions: DeviceSession[];
 }
 
-export type DeviceSession = Omit<InsertDeviceSessionModel, "userId">;
+export interface DeviceSession
+  extends Omit<SelectDeviceSessionModel, "userId"> {
+  isCurrentSession: boolean;
+}
 
 export interface CandidateNotificationSettings {
   general: {

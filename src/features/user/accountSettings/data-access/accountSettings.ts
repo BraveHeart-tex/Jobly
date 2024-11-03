@@ -1,9 +1,11 @@
 import type { GetCandidateAccountSettingsReturnType } from "@/features/user/accountSettings/types";
 import { db } from "@/server/db";
-import { eq } from "drizzle-orm";
+import { deviceSessions } from "@/server/db/schema";
+import { eq, sql } from "drizzle-orm";
 
-export const getCandidateAccountSettingsUseCase = async (
+export const getCandidateAccountSettings = async (
   userId: number,
+  currentSessionId: string,
 ): Promise<GetCandidateAccountSettingsReturnType | null> => {
   const result = await db.query.users.findFirst({
     columns: {
@@ -39,6 +41,13 @@ export const getCandidateAccountSettingsUseCase = async (
           location: true,
           operatingSystem: true,
           sessionId: true,
+          deviceType: true,
+        },
+        extras: {
+          isCurrentSession:
+            sql<boolean>`${deviceSessions.sessionId} = ${currentSessionId}`.as(
+              "isCurrentSession",
+            ),
         },
       },
     },

@@ -1,5 +1,4 @@
 "use client";
-import { showSuccessToast } from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import { useInvalidateAllOtherSessions } from "@/features/auth/hooks/useInvalidateAllOtherSessions";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
@@ -13,11 +12,7 @@ const SignOutAllOtherSessionsButton = ({
 }: SignOutAllOtherSessionsButtonProps) => {
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
   const { invalidateAllOtherUserSessions, isPending } =
-    useInvalidateAllOtherSessions({
-      onSuccess: () => {
-        showSuccessToast("All other sessions signed out successfully.");
-      },
-    });
+    useInvalidateAllOtherSessions();
 
   const handleSignOutAllOtherSessions = async () => {
     showConfirmDialog({
