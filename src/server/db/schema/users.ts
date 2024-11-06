@@ -28,10 +28,11 @@ const users = mysqlTable(
   "Users",
   {
     id: int("id").primaryKey().autoincrement().notNull(),
+    googleId: varchar("googleId", { length: 255 }),
     email: varchar("email", { length: 255 }).unique().notNull(),
     firstName: varchar("firstName", { length: 255 }).notNull(),
     lastName: varchar("lastName", { length: 255 }).notNull(),
-    hashedPassword: varchar("hashedPassword", { length: 255 }).notNull(),
+    hashedPassword: varchar("hashedPassword", { length: 255 }),
     role: mysqlEnum("role", ["employer", "candidate"]).notNull(),
     avatarUrl: varchar("avatarUrl", { length: 2048 }),
     createdAt: customTimestamp("createdAt").$defaultFn(() =>
@@ -46,6 +47,7 @@ const users = mysqlTable(
     return {
       User_id: primaryKey({ columns: [table.id], name: "User_id" }),
       email: index("email").on(table.email),
+      googleId: index("googleId").on(table.googleId),
     };
   },
 );

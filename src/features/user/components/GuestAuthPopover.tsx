@@ -1,3 +1,4 @@
+"use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Popover,
@@ -8,10 +9,12 @@ import { SHARED_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 
 const GuestAuthPopover = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button className="flex items-center gap-1">
           <span>Login / Sign Up</span>
@@ -34,6 +37,7 @@ const GuestAuthPopover = () => {
                   variant: "outline",
                 }),
               )}
+              onClick={() => setOpen(false)}
             >
               Candidate Login
             </Link>
@@ -44,6 +48,7 @@ const GuestAuthPopover = () => {
                   variant: "default",
                 }),
               )}
+              onClick={() => setOpen(false)}
             >
               Sign Up
             </Link>
@@ -64,6 +69,7 @@ const GuestAuthPopover = () => {
                   variant: "outline",
                 }),
               )}
+              onClick={() => setOpen(false)}
             >
               Employer Login
             </Link>
@@ -74,6 +80,7 @@ const GuestAuthPopover = () => {
                   variant: "default",
                 }),
               )}
+              onClick={() => setOpen(false)}
             >
               Sign Up
             </Link>

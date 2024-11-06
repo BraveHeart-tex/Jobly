@@ -3,7 +3,7 @@ import type { ContextUserAttributes } from "@/lib/auth/session";
 import { cachedValidateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, not } from "drizzle-orm";
 
 export interface GetCurrentUserReturnType extends ContextUserAttributes {
   hasToSetupCompanyInformation?: boolean;
@@ -41,4 +41,22 @@ export const validateEmployerRequest = async () => {
 
 export const deleteUserAccount = async (userId: number) => {
   return await db.delete(users).where(eq(users.id, userId));
+};
+
+export const getUserFromGoogleId = async (googleId: string) => {
+  return await db.query.users.findFirst({
+    where: () => eq(users.googleId, googleId),
+  });
+};
+
+export const checkUserEmailAlreadyInUseByGoogleId = async (
+  email: string,
+  googleId: string,
+) => {
+  const result = await db.query.users.findFirst({
+    columns: { id: true },
+    where: () => and(eq(users.email, email), not(eq(users.googleId, googleId))),
+  });
+
+  return !!result?.id;
 };

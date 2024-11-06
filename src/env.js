@@ -19,6 +19,15 @@ export const env = createNextjsEnv({
     ),
     SECRET_CRON_KEY: pipe(string(), nonEmpty("SECRET_CRON_KEY is required")),
     ENCRYPTION_KEY: pipe(string(), nonEmpty("ENCRYPTION_KEY is required")),
+    GOOGLE_CLIENT_ID: pipe(string(), nonEmpty("GOOGLE_CLIENT_ID is required")),
+    GOOGLE_CLIENT_SECRET: pipe(
+      string(),
+      nonEmpty("GOOGLE_CLIENT_SECRET is required"),
+    ),
+    GOOGLE_REDIRECT_URI: pipe(
+      string(),
+      url("GOOGLE_REDIRECT_URI is not a valid URL"),
+    ),
   },
 
   client: {},
@@ -28,6 +37,9 @@ export const env = createNextjsEnv({
     SECRET_CRON_KEY: process.env.SECRET_CRON_KEY,
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

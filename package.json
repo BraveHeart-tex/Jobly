@@ -66,6 +66,7 @@
     "@trpc/react-query": "next",
     "@trpc/server": "next",
     "@uploadthing/react": "^7.0.3",
+    "arctic": "^2.2.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",

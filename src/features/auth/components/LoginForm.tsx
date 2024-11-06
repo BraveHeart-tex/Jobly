@@ -1,6 +1,6 @@
 "use client";
 import CapsLockIndicator from "@/components/common/CapsLockIndicator";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -22,6 +22,8 @@ import {
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import { cn } from "@/lib/utils";
+import GoogleIcon from "@/components/icons/GoogleIcon";
 
 interface LoginFormProps {
   portalType?: DBUser["role"];
@@ -116,14 +118,18 @@ const LoginForm = ({ portalType }: LoginFormProps) => {
             Sign In
           </Button>
           {portalType === "candidate" && (
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full"
-              disabled={isLoggingIn}
+            <a
+              href={`/api/login/google?portalType=${portalType}`}
+              className={cn(
+                buttonVariants({
+                  variant: "outline",
+                  className: "w-full",
+                }),
+              )}
             >
+              <GoogleIcon className="mr-2 h-4 w-4" />
               Sign In with Google
-            </Button>
+            </a>
           )}
         </div>
       </form>

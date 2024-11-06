@@ -149,6 +149,7 @@ const SignUpForm = ({ portalType }: SignUpFormProps) => {
           <Button type="submit" className="w-full" disabled={isSignUpPending}>
             Sign Up
           </Button>
+          {/* TODO: Add icon and url params */}
           {portalType === "candidate" && (
             <Button
               type="button"
