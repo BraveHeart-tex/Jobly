@@ -95,3 +95,7 @@ export {
   default as applicationDocuments,
   applicationDocumentRelations,
 } from "@/server/db/schema/applicationDocuments";
+export {
+  default as coverLetters,
+  coverLetterRelations,
+} from "@/server/db/schema/coverLetters";

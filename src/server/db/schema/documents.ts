@@ -13,6 +13,7 @@ import {
   varchar,
 } from "drizzle-orm/mysql-core";
 import { documentSections, users } from "@/server/db/schema";
+import coverLetters from "@/server/db/schema/coverLetters";
 
 const documents = mysqlTable(
   "Documents",
@@ -22,8 +23,17 @@ const documents = mysqlTable(
     userId: int("userId")
       .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
-    type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
-    source: mysqlEnum("source", ["builder", "uploaded"]).notNull(),
+    type: mysqlEnum("type", [
+      "resume",
+      "cover_letter",
+      "training_certificate",
+      "presentation",
+      "project",
+      "article",
+      "portfolio",
+      "other",
+    ]).notNull(),
+    source: mysqlEnum("source", ["builder", "upload", "rich_text"]).notNull(),
     url: varchar("url", { length: 512 }),
     createdAt: customTimestamp("createdAt")
       .$defaultFn(() => getCurrentTimestamp())
@@ -48,6 +58,10 @@ export const documentRelations = relations(documents, ({ one, many }) => ({
   user: one(users, {
     fields: [documents.userId],
     references: [users.id],
+  }),
+  coverLetter: one(coverLetters, {
+    fields: [documents.id],
+    references: [coverLetters.documentId],
   }),
   sections: many(documentSections),
 }));
