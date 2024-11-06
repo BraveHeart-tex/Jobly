@@ -34,9 +34,10 @@ export const hashPassword = async (password: string) => {
 };
 
 export const verifyPassword = async (
-  hashedPassword: string,
+  hashedPassword: string | null,
   password: string,
 ) => {
+  if (!hashedPassword) return false;
   return verify(hashedPassword, password, DEFAULT_HASH_OPTIONS);
 };
 
