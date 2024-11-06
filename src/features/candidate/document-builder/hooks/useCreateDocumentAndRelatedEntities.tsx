@@ -12,6 +12,7 @@ export const useCreateDocumentAndRelatedEntities = () => {
       title: "Untitled",
       type: documentType,
       allowedRoles: ["candidate"],
+      source: "builder",
     });
   };
 
