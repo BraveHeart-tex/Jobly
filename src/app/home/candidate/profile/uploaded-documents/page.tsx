@@ -1,11 +1,18 @@
 import PageContainer from "@/components/common/PageContainer";
-import MyDocumentsTabs from "@/features/candidate/documents/components/UploadedDocumentsPage";
+import PageTitle from "@/components/common/PageTitle";
+import UploadDocumentDialog from "@/features/candidate/documents/components/UploadDocumentDialog";
+import { api } from "@/trpc/server";
 
-const MyDocumentsPage = () => {
+const MyDocumentsPage = async () => {
+  const uploadedDocuments = await api.document.getUploadedUserDocuments();
+
   return (
     <main>
       <PageContainer>
-        <MyDocumentsTabs />
+        <div className="flex items-center justify-between">
+          <PageTitle>Uploaded Documents</PageTitle>
+          <UploadDocumentDialog />
+        </div>
       </PageContainer>
     </main>
   );

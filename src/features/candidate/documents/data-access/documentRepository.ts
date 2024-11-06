@@ -110,3 +110,10 @@ export const bulkDeleteFields = (fieldIds: DocumentSectionField["id"][]) => {
 export const updateDocumentById = (input: DocumentUpdateData) => {
   return db.update(documents).set(input).where(eq(documents.id, input.id));
 };
+
+export const getUserUploadedDocuments = async (userId: DBUser["id"]) => {
+  return await db
+    .select()
+    .from(documents)
+    .where(and(eq(documents.userId, userId), eq(documents.source, "upload")));
+};

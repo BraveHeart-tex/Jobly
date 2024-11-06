@@ -1,4 +1,4 @@
-import * as documentService from "@/features/candidate/documents/services/documentService";
+import * as documentService from "@/features/candidate/documents/use-cases/documentService";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   documentInsertValidator,
@@ -113,4 +113,8 @@ export const documentRouter = createTRPCRouter({
     .mutation(async ({ input: { sectionId } }) => {
       return documentService.deleteSection(sectionId);
     }),
+  getUploadedUserDocuments: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user.id;
+    return await documentService.getUploadedUserDocumentsUseCase(userId);
+  }),
 });

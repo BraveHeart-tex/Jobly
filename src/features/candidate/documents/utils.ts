@@ -1,4 +1,4 @@
-import type { getDocumentWithSectionsAndFields } from "@/features/candidate/documents/repositories/documentRepository";
+import type { getDocumentWithSectionsAndFields } from "@/features/candidate/documents/data-access/documentRepository";
 import {
   type INTERNAL_SECTION_TAG,
   INTERNAL_SECTION_TAGS,

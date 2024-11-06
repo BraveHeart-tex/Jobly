@@ -150,3 +150,14 @@ export const ASYNC_SELECT_OPTIONS_LIMIT = 10 as const;
 export const DEFAULT_AVATAR_URL = "/images/default-avatar.svg";
 
 export const TWO_FACTOR_AUTH_METHODS = ["email", "auth_app"] as const;
+
+export const documentTypeOptions = [
+  {
+    label: "Resume",
+    value: "resume",
+  },
+  {
+    label: "Cover Letter",
+    value: "cover_letter",
+  },
+];

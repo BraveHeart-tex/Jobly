@@ -5,11 +5,12 @@ import {
   deleteDocumentById,
   getDocumentWithSectionsAndFields,
   getDocumentsByUserId,
+  getUserUploadedDocuments,
   updateDocumentById,
   upsertDocument,
   upsertSectionFields,
   upsertSections,
-} from "@/features/candidate/documents/repositories/documentRepository";
+} from "@/features/candidate/documents/data-access/documentRepository";
 import {
   getFieldInsertTemplateBySectionTag,
   getPredefinedDocumentSectionsWithDocumentId,
@@ -225,4 +226,8 @@ export const addSectionByInternalTag = async (
 
 export const deleteSection = async (sectionId: DocumentSection["id"]) => {
   return db.delete(sectionSchema).where(eq(sectionSchema.id, sectionId));
+};
+
+export const getUploadedUserDocumentsUseCase = async (userId: number) => {
+  return await getUserUploadedDocuments(userId);
 };

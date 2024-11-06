@@ -10,7 +10,7 @@ const PageTitle = ({ children, ...props }: PageTitleProps) => {
     <h1
       {...props}
       className={cn(
-        "scroll-m-20 text-4xl font-semibold tracking-tight",
+        "scroll-m-20 text-2xl md:text-4xl font-semibold tracking-tight",
         props.className,
       )}
     >
