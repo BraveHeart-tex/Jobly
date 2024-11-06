@@ -7,7 +7,7 @@ import {
   getDocumentsByUserId,
   getUserUploadedDocuments,
   updateDocumentById,
-  upsertDocument,
+  insertDocument,
   upsertSectionFields,
   upsertSections,
 } from "@/features/candidate/documents/data-access/documentRepository";
@@ -66,7 +66,7 @@ export const createDocumentAndRelatedEntities = async (
   documentCreateInput: DocumentInsertModel,
 ) => {
   return await db.transaction(async (trx) => {
-    const documentId = await upsertDocument(trx, documentCreateInput);
+    const documentId = await insertDocument(documentCreateInput, trx);
 
     if (!documentId) {
       trx.rollback();
@@ -164,7 +164,7 @@ export const saveDocumentAndRelatedEntities = async (
 
   await db.transaction(async (trx) => {
     const documentInsertPromise = document
-      ? upsertDocument(trx, document)
+      ? insertDocument(document, trx)
       : undefined;
     const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
     const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;

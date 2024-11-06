@@ -18,11 +18,12 @@ import type { DBUser } from "@/server/db/schema/users";
 import type { DocumentUpdateData } from "@/validation/user/document/baseDocumentValidator";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 
-export const upsertDocument = async (
-  trx: Transaction,
+export const insertDocument = async (
   documentValues: DocumentInsertModel,
+  trx?: Transaction,
 ) => {
-  const [result] = await trx
+  const dbLayer = trx || db;
+  const [result] = await dbLayer
     .insert(documents)
     .values(documentValues)
     .onDuplicateKeyUpdate({

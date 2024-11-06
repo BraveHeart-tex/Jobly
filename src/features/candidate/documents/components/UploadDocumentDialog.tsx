@@ -1,5 +1,7 @@
 "use client";
+import { useState } from "react";
 import SelectInput from "@/components/common/SelectInput";
+import { showSuccessToast } from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useCreateUploadedDocument } from "@/features/candidate/documents/hooks/useCreateUploadedDocument";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { mimeTypeToExtension, useUploadThing } from "@/lib/uploadthing";
 import { generateReadableEnumLabel } from "@/lib/utils/string";
@@ -24,37 +27,20 @@ import { documents } from "@/server/db/schema";
 import { useDropzone } from "@uploadthing/react";
 import { UploadCloudIcon, XIcon } from "lucide-react";
 import { DateTime } from "luxon";
+import { useRouter } from "nextjs-toploader/app";
 import { useCallback } from "react";
 import {
   generateClientDropzoneAccept,
   generatePermittedFileTypes,
 } from "uploadthing/client";
 import {
-  file,
-  type InferOutput,
-  maxSize,
-  nonEmpty,
-  object,
-  picklist,
-  pipe,
-  string,
-} from "valibot";
-
-const uploadDocumentFormValidator = object({
-  title: pipe(string(), nonEmpty("Title is required")),
-  type: pipe(
-    picklist(documents.type.enumValues, "Type is required"),
-    nonEmpty("Type is required"),
-  ),
-  file: pipe(
-    file("Please select a file"),
-    maxSize(1024 * 1024, "File size must be less than 1 MB"),
-  ),
-});
-
-type UploadDocumentFormData = InferOutput<typeof uploadDocumentFormValidator>;
+  type UploadDocumentFormData,
+  uploadDocumentFormValidator,
+} from "@/validation/user/document/uploadedDocuments/uploadDocumentFormValidator";
 
 const UploadDocumentDialog = () => {
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
   const form = useExtendedForm<UploadDocumentFormData>(
     uploadDocumentFormValidator,
     {
@@ -72,8 +58,33 @@ const UploadDocumentDialog = () => {
     [form.setValue],
   );
 
-  const { startUpload, isUploading, routeConfig } =
-    useUploadThing("userDocuments");
+  const { createUploadedDocument, isCreatingUploadedDocument } =
+    useCreateUploadedDocument({
+      onSuccess: () => {
+        router.refresh();
+        form.reset();
+        setOpen(false);
+        showSuccessToast("Document uploaded successfully.");
+      },
+    });
+
+  const { startUpload, isUploading, routeConfig } = useUploadThing(
+    "userDocuments",
+    {
+      onClientUploadComplete: (response) => {
+        const result = response[0];
+        if (!result) return;
+        const { success, url } = result.serverData;
+        if (!success) return;
+
+        createUploadedDocument({
+          title: form.getValues("title"),
+          type: form.getValues("type"),
+          url,
+        });
+      },
+    },
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -82,12 +93,22 @@ const UploadDocumentDialog = () => {
     ),
   });
 
-  const onSubmit = (data: UploadDocumentFormData) => {};
+  const onSubmit = (data: UploadDocumentFormData) => {
+    startUpload([data.file]);
+  };
 
   const uploadedFile = form.watch("file");
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (isCreatingUploadedDocument) {
+          return;
+        }
+        setOpen(isOpen);
+      }}
+    >
       <DialogTrigger asChild>
         <Button type="button">Upload</Button>
       </DialogTrigger>
@@ -190,7 +211,10 @@ const UploadDocumentDialog = () => {
               )}
             />
             <div className="flex justify-end">
-              <Button type="submit" disabled={isUploading}>
+              <Button
+                type="submit"
+                disabled={isUploading || isCreatingUploadedDocument}
+              >
                 Save
               </Button>
             </div>

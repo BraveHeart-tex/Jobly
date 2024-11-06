@@ -1,7 +1,6 @@
 import { updateUserAvatarUrlUseCase } from "@/features/user/profile/use-cases/users";
 import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
 import { getUploadThingFileKeyFromUrl, utapi } from "@/server/uploadThing";
-
 import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 
