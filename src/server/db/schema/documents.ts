@@ -23,6 +23,8 @@ const documents = mysqlTable(
       .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
     type: mysqlEnum("type", ["resume", "cover_letter"]).notNull(),
+    source: mysqlEnum("source", ["builder", "uploaded"]).notNull(),
+    url: varchar("url", { length: 512 }),
     createdAt: customTimestamp("createdAt")
       .$defaultFn(() => getCurrentTimestamp())
       .notNull(),

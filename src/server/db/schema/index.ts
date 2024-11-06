@@ -91,3 +91,7 @@ export {
   default as deviceSessions,
   deviceSessionsRelations,
 } from "@/server/db/schema/deviceSessions";
+export {
+  default as applicationDocuments,
+  applicationDocumentRelations,
+} from "@/server/db/schema/applicationDocuments";

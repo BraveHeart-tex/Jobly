@@ -421,6 +421,20 @@
       "when": 1730571898705,
       "tag": "0059_dear_war_machine",
       "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "5",
+      "when": 1730871019898,
+      "tag": "0060_curvy_arclight",
+      "breakpoints": true
+    },
+    {
+      "idx": 61,
+      "version": "5",
+      "when": 1730871163456,
+      "tag": "0061_overconfident_aqueduct",
+      "breakpoints": true
     }
   ]
 }

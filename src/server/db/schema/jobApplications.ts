@@ -1,4 +1,5 @@
-import { users, jobPostings, documents } from "@/server/db/schema";
+import { users, jobPostings } from "@/server/db/schema";
+import applicationDocuments from "@/server/db/schema/applicationDocuments";
 import { customTimestamp } from "@/server/db/utils";
 import {
   type InferInsertModel,
@@ -25,8 +26,6 @@ const jobApplications = mysqlTable(
     jobPostingId: int("jobPostingId")
       .notNull()
       .references(() => jobPostings.id),
-    coverLetterId: int("coverLetterId").references(() => documents.id),
-    resumeId: int("resumeId").references(() => documents.id),
     status: mysqlEnum("status", [
       "pending",
       "applied",
@@ -41,7 +40,6 @@ const jobApplications = mysqlTable(
       jobId: index("jobId").on(table.jobPostingId),
       userId: index("userId").on(table.userId),
       status: index("status").on(table.status),
-      coverLetterId: index("coverLetterId").on(table.coverLetterId),
       Application_id: primaryKey({
         columns: [table.id],
         name: "JobApplication_id",
@@ -52,7 +50,7 @@ const jobApplications = mysqlTable(
 
 export const jobApplicationRelations = relations(
   jobApplications,
-  ({ one }) => ({
+  ({ one, many }) => ({
     job: one(jobPostings, {
       fields: [jobApplications.jobPostingId],
       references: [jobPostings.id],
@@ -61,6 +59,7 @@ export const jobApplicationRelations = relations(
       fields: [jobApplications.userId],
       references: [users.id],
     }),
+    documents: many(applicationDocuments),
   }),
 );
 
