@@ -129,6 +129,7 @@ export const documentRouter = createTRPCRouter({
         source: "upload",
         userId,
         url: input.url,
+        fileExtension: input.fileExtension,
       });
     }),
 });

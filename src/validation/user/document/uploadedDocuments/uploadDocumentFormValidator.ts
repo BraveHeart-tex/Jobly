@@ -26,6 +26,7 @@ export const uploadDocumentFormValidator = object({
 export const uploadFormActionValidator = object({
   ...omit(uploadDocumentFormValidator, ["file"]).entries,
   url: pipe(string(), nonEmpty("URL is required")),
+  fileExtension: pipe(string(), nonEmpty("File extension is required")),
 });
 
 export type UploadDocumentFormData = InferOutput<

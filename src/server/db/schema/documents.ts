@@ -34,6 +34,7 @@ const documents = mysqlTable(
       "other",
     ]).notNull(),
     source: mysqlEnum("source", ["builder", "upload", "rich_text"]).notNull(),
+    fileExtension: varchar("fileExtension", { length: 128 }),
     url: varchar("url", { length: 512 }),
     createdAt: customTimestamp("createdAt")
       .$defaultFn(() => getCurrentTimestamp())
@@ -50,6 +51,7 @@ const documents = mysqlTable(
         name: "Document_id",
       }),
       userId: index("userId").on(table.userId),
+      source: index("source").on(table.source),
     };
   },
 );

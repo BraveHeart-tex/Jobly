@@ -1,5 +1,5 @@
 import { updateUserAvatarUrlUseCase } from "@/features/user/profile/use-cases/users";
-import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
+import { cachedValidateRequest } from "@/lib/auth/validateRequest";
 import { getUploadThingFileKeyFromUrl, utapi } from "@/server/uploadThing";
 import { type FileRouter, createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
@@ -11,7 +11,7 @@ export const fileRouter = {
     image: { maxFileSize: "4MB" },
   })
     .middleware(async () => {
-      const { user } = await unCachedValidateRequest();
+      const { user } = await cachedValidateRequest();
 
       if (!user) {
         throw new UploadThingError(
@@ -72,7 +72,7 @@ export const fileRouter = {
     "application/rtf": { maxFileSize: "1MB" },
   })
     .middleware(async () => {
-      const { user } = await unCachedValidateRequest();
+      const { user } = await cachedValidateRequest();
 
       if (!user) {
         throw new UploadThingError(

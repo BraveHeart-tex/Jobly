@@ -81,6 +81,10 @@ const UploadDocumentDialog = () => {
           title: form.getValues("title"),
           type: form.getValues("type"),
           url,
+          fileExtension:
+            mimeTypeToExtension[
+              form.getValues("file").type as keyof typeof mimeTypeToExtension
+            ],
         });
       },
     },
@@ -121,7 +125,11 @@ const UploadDocumentDialog = () => {
             {uploadedFile ? (
               <div className="flex items-center border rounded-md gap-2">
                 <span className="uppercase bg-primary/70 h-full p-3 rounded-md rounded-r-none font-medium text-primary-foreground">
-                  {mimeTypeToExtension[uploadedFile.type]}
+                  {
+                    mimeTypeToExtension[
+                      uploadedFile.type as keyof typeof mimeTypeToExtension
+                    ]
+                  }
                 </span>
                 <div className="flex items-center justify-between flex-1">
                   <div className="flex flex-col">
