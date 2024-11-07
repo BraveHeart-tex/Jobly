@@ -46,30 +46,30 @@ export const fileRouter = {
     }),
   userDocuments: f({
     // Excel
-    "application/vnd.ms-excel": { maxFileSize: "1MB" }, // .xls
+    "application/vnd.ms-excel": { maxFileSize: "4MB" }, // .xls
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {
-      maxFileSize: "1MB",
+      maxFileSize: "4MB",
     }, // .xlsx
 
     // Word Documents
-    "application/msword": { maxFileSize: "1MB" }, // .doc
+    "application/msword": { maxFileSize: "4MB" }, // .doc
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
-      maxFileSize: "1MB",
+      maxFileSize: "4MB",
     }, // .docx
 
-    "application/vnd.ms-powerpoint": { maxFileSize: "1MB" }, // .ppt, .pps
+    "application/vnd.ms-powerpoint": { maxFileSize: "4MB" }, // .ppt, .pps
     "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-      { maxFileSize: "1MB" }, // .pptx
+      { maxFileSize: "4MB" }, // .pptx
     "application/vnd.openxmlformats-officedocument.presentationml.slideshow": {
-      maxFileSize: "1MB",
+      maxFileSize: "4MB",
     },
-    "image/bmp": { maxFileSize: "1MB" },
-    "image/jpeg": { maxFileSize: "1MB" },
-    "image/gif": { maxFileSize: "1MB" },
-    "image/png": { maxFileSize: "1MB" },
-    "application/pdf": { maxFileSize: "1MB" },
-    "text/plain": { maxFileSize: "1MB" },
-    "application/rtf": { maxFileSize: "1MB" },
+    "image/bmp": { maxFileSize: "4MB" },
+    "image/jpeg": { maxFileSize: "4MB" },
+    "image/gif": { maxFileSize: "4MB" },
+    "image/png": { maxFileSize: "4MB" },
+    "application/pdf": { maxFileSize: "4MB" },
+    "text/plain": { maxFileSize: "4MB" },
+    "application/rtf": { maxFileSize: "4MB" },
   })
     .middleware(async () => {
       const { user } = await cachedValidateRequest();

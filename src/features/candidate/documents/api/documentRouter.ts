@@ -1,4 +1,3 @@
-import { insertDocument } from "@/features/candidate/documents/data-access/documentRepository";
 import * as documentService from "@/features/candidate/documents/use-cases/documentService";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
@@ -8,7 +7,6 @@ import {
 import { documentSectionInsertValidator } from "@/validation/user/document/documentSectionValidators";
 import { saveDocumentDetailsValidator } from "@/validation/user/document/saveDocumentDetailsValidator";
 import { DocumentSectionFieldInsertValidator } from "@/validation/user/document/sectionFieldValidators";
-import { uploadFormActionValidator } from "@/validation/user/document/uploadedDocuments/uploadDocumentFormValidator";
 import {
   array,
   minValue,
@@ -119,17 +117,4 @@ export const documentRouter = createTRPCRouter({
     const userId = ctx.user.id;
     return await documentService.getUploadedUserDocumentsUseCase(userId);
   }),
-  createUploadedDocument: protectedProcedure
-    .input(parser(uploadFormActionValidator))
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.user.id;
-      return await insertDocument({
-        title: input.title,
-        type: input.type,
-        source: "upload",
-        userId,
-        url: input.url,
-        fileExtension: input.fileExtension,
-      });
-    }),
 });

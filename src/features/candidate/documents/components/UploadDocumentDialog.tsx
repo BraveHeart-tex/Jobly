@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import SelectInput from "@/components/common/SelectInput";
-import { showSuccessToast } from "@/components/toastUtils";
+import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,9 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCreateUploadedDocument } from "@/features/candidate/documents/hooks/useCreateUploadedDocument";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
-import { mimeTypeToExtension, useUploadThing } from "@/lib/uploadthing";
+import { useUploadThing } from "@/lib/uploadthing";
 import { generateReadableEnumLabel } from "@/lib/utils/string";
 import { documents } from "@/server/db/schema";
 import { useDropzone } from "@uploadthing/react";
@@ -37,8 +36,14 @@ import {
   type UploadDocumentFormData,
   uploadDocumentFormValidator,
 } from "@/validation/user/document/uploadedDocuments/uploadDocumentFormValidator";
+import { mimeTypeToExtension } from "@/lib/constants";
+import { useConfirmStore } from "@/lib/stores/useConfirmStore";
+import { isObjectEmpty } from "@/lib/utils/object";
+import { uploadDocumentUseCase } from "@/features/candidate/uploadedDocuments/use-cases/uploadedDocuments";
 
 const UploadDocumentDialog = () => {
+  const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
+  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const form = useExtendedForm<UploadDocumentFormData>(
@@ -51,6 +56,8 @@ const UploadDocumentDialog = () => {
     },
   );
 
+  const uploadedFile = form.watch("file");
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       form.setValue("file", acceptedFiles[0] as File);
@@ -58,37 +65,7 @@ const UploadDocumentDialog = () => {
     [form.setValue],
   );
 
-  const { createUploadedDocument, isCreatingUploadedDocument } =
-    useCreateUploadedDocument({
-      onSuccess: () => {
-        router.refresh();
-        form.reset();
-        setOpen(false);
-        showSuccessToast("Document uploaded successfully.");
-      },
-    });
-
-  const { startUpload, isUploading, routeConfig } = useUploadThing(
-    "userDocuments",
-    {
-      onClientUploadComplete: (response) => {
-        const result = response[0];
-        if (!result) return;
-        const { success, url } = result.serverData;
-        if (!success) return;
-
-        createUploadedDocument({
-          title: form.getValues("title"),
-          type: form.getValues("type"),
-          url,
-          fileExtension:
-            mimeTypeToExtension[
-              form.getValues("file").type as keyof typeof mimeTypeToExtension
-            ],
-        });
-      },
-    },
-  );
+  const { routeConfig } = useUploadThing("userDocuments");
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -98,19 +75,68 @@ const UploadDocumentDialog = () => {
   });
 
   const onSubmit = (data: UploadDocumentFormData) => {
-    startUpload([data.file]);
+    startTransition(async () => {
+      try {
+        const formData = new FormData();
+
+        formData.append("file", data.file);
+        formData.append("title", data.title);
+        formData.append("type", data.type);
+        formData.append("source", "upload");
+        formData.append(
+          "fileExtension",
+          mimeTypeToExtension[
+            data.file.type as keyof typeof mimeTypeToExtension
+          ],
+        );
+
+        await uploadDocumentUseCase(formData);
+
+        router.refresh();
+        form.reset();
+        setOpen(false);
+        showSuccessToast("Document uploaded successfully.");
+      } catch (error) {
+        if (error instanceof Error) {
+          showErrorToast(error.message);
+        }
+      }
+    });
   };
 
-  const uploadedFile = form.watch("file");
+  const handleDirtyFormClose = () => {
+    showConfirmDialog({
+      title: "Discard changes?",
+      message: "Are you sure you want to discard your changes?",
+      primaryActionLabel: "Discard",
+      onConfirm: () => {
+        form.reset(undefined, {
+          keepDefaultValues: true,
+        });
+        setOpen(false);
+      },
+    });
+  };
 
   return (
     <Dialog
       open={open}
       onOpenChange={(isOpen) => {
-        if (isCreatingUploadedDocument) {
+        if (isPending) {
           return;
         }
+
+        if (!isOpen && !isObjectEmpty(form.formState.dirtyFields)) {
+          handleDirtyFormClose();
+          return;
+        }
+
         setOpen(isOpen);
+        if (!isOpen) {
+          form.reset(undefined, {
+            keepDefaultValues: true,
+          });
+        }
       }}
     >
       <DialogTrigger asChild>
@@ -221,9 +247,10 @@ const UploadDocumentDialog = () => {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                disabled={isUploading || isCreatingUploadedDocument}
+                disabled={isPending}
+                className="w-fit min-w-[6.9rem]"
               >
-                Save
+                {isPending ? "Uploading..." : "Upload"}
               </Button>
             </div>
           </form>

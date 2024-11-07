@@ -5,7 +5,6 @@ import {
   maxSize,
   nonEmpty,
   object,
-  omit,
   picklist,
   pipe,
   string,
@@ -19,14 +18,8 @@ export const uploadDocumentFormValidator = object({
   ),
   file: pipe(
     file("Please select a file"),
-    maxSize(1024 * 1024, "File size must be less than 1 MB"),
+    maxSize(1024 * 1024 * 4, "File size must be less than 4 MB"),
   ),
-});
-
-export const uploadFormActionValidator = object({
-  ...omit(uploadDocumentFormValidator, ["file"]).entries,
-  url: pipe(string(), nonEmpty("URL is required")),
-  fileExtension: pipe(string(), nonEmpty("File extension is required")),
 });
 
 export type UploadDocumentFormData = InferOutput<
