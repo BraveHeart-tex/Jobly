@@ -41,8 +41,8 @@ import type { DocumentUpdateData } from "@/validation/user/document/baseDocument
 import type { SaveDocumentDetailsData } from "@/validation/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
 
-export const getUserDocuments = async (userId: DBUser["id"]) => {
-  return getDocumentsByUserId(userId);
+export const getUserDocumentBuilderDocuments = async (userId: DBUser["id"]) => {
+  return getDocumentsByUserId(userId, "builder");
 };
 
 export const deleteDocument = async ({
@@ -141,13 +141,16 @@ const insertFields = async (
 export const getDocumentDetails = async ({
   id,
   userId,
+  source,
 }: {
   id: DocumentSelectModel["id"];
   userId: DBUser["id"];
+  source: DocumentSelectModel["source"];
 }): Promise<DocumentBuilderConfig | { error: string }> => {
   const document = await getDocumentWithSectionsAndFields({
     documentId: id,
     userId,
+    source,
   });
 
   if (!document) {

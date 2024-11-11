@@ -1,5 +1,6 @@
 import * as documentService from "@/features/candidate/documents/use-cases/documentService";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { documents } from "@/server/db/schema";
 import {
   documentInsertValidator,
   documentUpdateValidator,
@@ -15,6 +16,8 @@ import {
   parser,
   pipe,
   partial,
+  picklist,
+  nonEmpty,
 } from "valibot";
 
 export const documentRouter = createTRPCRouter({
@@ -31,6 +34,13 @@ export const documentRouter = createTRPCRouter({
       parser(
         object({
           id: pipe(number(), minValue(1, "Please provide valid document id.")),
+          source: pipe(
+            picklist(
+              documents.source.enumValues,
+              "Please provide valid document source",
+            ),
+            nonEmpty("Please provide valid document source"),
+          ),
         }),
       ),
     )
@@ -38,11 +48,12 @@ export const documentRouter = createTRPCRouter({
       return documentService.getDocumentDetails({
         id: input.id,
         userId: ctx.session.userId,
+        source: input.source,
       });
     }),
-  getUserDocuments: protectedProcedure.query(async ({ ctx }) => {
+  getUserDocumentBuilderDocuments: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.user.id;
-    return documentService.getUserDocuments(userId);
+    return documentService.getUserDocumentBuilderDocuments(userId);
   }),
   updateDocument: protectedProcedure
     .input(parser(documentUpdateValidator))

@@ -64,12 +64,18 @@ export const upsertSectionFields = (
 export const getDocumentWithSectionsAndFields = ({
   documentId,
   userId,
+  source,
 }: {
   documentId: DocumentSelectModel["id"];
   userId: DBUser["id"];
+  source: DocumentSelectModel["source"];
 }) => {
   return db.query.documents.findFirst({
-    where: and(eq(documents.id, documentId), eq(documents.userId, userId)),
+    where: and(
+      eq(documents.id, documentId),
+      eq(documents.userId, userId),
+      eq(documents.source, source),
+    ),
     with: {
       sections: {
         with: {
@@ -82,11 +88,14 @@ export const getDocumentWithSectionsAndFields = ({
   });
 };
 
-export const getDocumentsByUserId = (userId: DBUser["id"]) => {
+export const getDocumentsByUserId = (
+  userId: DBUser["id"],
+  source: DocumentSelectModel["source"],
+) => {
   return db
     .select()
     .from(documents)
-    .where(eq(documents.userId, userId))
+    .where(and(eq(documents.userId, userId), eq(documents.source, source)))
     .orderBy(desc(documents.createdAt));
 };
 

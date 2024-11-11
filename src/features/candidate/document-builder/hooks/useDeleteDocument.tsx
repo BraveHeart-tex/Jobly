@@ -10,12 +10,12 @@ export const useDeleteDocument = () => {
   const { mutate: deleteDocument, isPending: isDeletingDocument } =
     api.document.deleteDocument.useMutation({
       onMutate: async ({ documentId }) => {
-        await queryClientUtils.document.getUserDocuments.cancel();
+        await queryClientUtils.document.getUserDocumentBuilderDocuments.cancel();
 
         const previousUserDocuments =
-          queryClientUtils.document.getUserDocuments.getData();
+          queryClientUtils.document.getUserDocumentBuilderDocuments.getData();
 
-        queryClientUtils.document.getUserDocuments.setData(
+        queryClientUtils.document.getUserDocumentBuilderDocuments.setData(
           undefined,
           (oldUserDocuments) => {
             if (!oldUserDocuments) return oldUserDocuments;
@@ -30,13 +30,13 @@ export const useDeleteDocument = () => {
       },
       onError: (_err, _newJob, context) => {
         showErrorToast("Something went wrong, please try again later");
-        queryClientUtils.document.getUserDocuments.setData(
+        queryClientUtils.document.getUserDocumentBuilderDocuments.setData(
           undefined,
           context?.previousUserDocuments,
         );
       },
       onSettled: () => {
-        void queryClientUtils.document.getUserDocuments.invalidate();
+        void queryClientUtils.document.getUserDocumentBuilderDocuments.invalidate();
       },
     });
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);

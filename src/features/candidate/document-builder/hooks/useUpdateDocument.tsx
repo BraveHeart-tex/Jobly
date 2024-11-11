@@ -7,12 +7,12 @@ export const useUpdateDocument = () => {
   const { mutate: updateDocument, isPending } =
     api.document.updateDocument.useMutation({
       onMutate: async (variables) => {
-        await queryClientUtils.document.getUserDocuments.cancel();
+        await queryClientUtils.document.getUserDocumentBuilderDocuments.cancel();
 
         const previousUserDocuments =
-          queryClientUtils.document.getUserDocuments.getData();
+          queryClientUtils.document.getUserDocumentBuilderDocuments.getData();
 
-        queryClientUtils.document.getUserDocuments.setData(
+        queryClientUtils.document.getUserDocumentBuilderDocuments.setData(
           undefined,
           (oldUserDocuments) => {
             if (!oldUserDocuments) return oldUserDocuments;
@@ -33,13 +33,13 @@ export const useUpdateDocument = () => {
       },
       onError: (_err, _newJob, context) => {
         showErrorToast("Something went wrong, please try again later");
-        queryClientUtils.document.getUserDocuments.setData(
+        queryClientUtils.document.getUserDocumentBuilderDocuments.setData(
           undefined,
           context?.previousUserDocuments,
         );
       },
       onSettled: () => {
-        void queryClientUtils.document.getUserDocuments.invalidate();
+        void queryClientUtils.document.getUserDocumentBuilderDocuments.invalidate();
       },
     });
 

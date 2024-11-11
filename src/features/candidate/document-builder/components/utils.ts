@@ -468,7 +468,7 @@ const makeExtraCurricularActivitiesSectionData = (
   };
 };
 
-export type CustomSection = {
+export interface CustomSection {
   customSectionItems: {
     id: string;
     name: string | undefined;
@@ -493,7 +493,7 @@ export type CustomSection = {
   itemCountPerContainer: number;
   metadata: string | null;
   shouldRenderCustomSectionItems: boolean;
-};
+}
 
 const makeCustomSectionData = (transformedData: TransformedResumeData) => {
   const customSections = transformedData.sections

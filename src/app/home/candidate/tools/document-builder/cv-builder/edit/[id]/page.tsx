@@ -14,6 +14,7 @@ import Link from "next/link";
 const EditCvPage = async ({ params }: { params: { id: string } }) => {
   const documentResponse = await api.document.getDocumentDetails({
     id: Number.parseInt(params.id),
+    source: "builder",
     allowedRoles: ["candidate"],
   });
 
