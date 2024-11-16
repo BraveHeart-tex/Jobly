@@ -62,7 +62,7 @@ const NavigationLinkItem = React.forwardRef<
 
   return (
     <li>
-      <NavigationMenuLink>
+      <NavigationMenuLink asChild>
         <Link
           href={props.href as string}
           ref={ref}
