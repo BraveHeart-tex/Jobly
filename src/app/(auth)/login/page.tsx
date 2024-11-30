@@ -11,10 +11,11 @@ interface LoginPageSearchParams {
 }
 
 interface LoginPageProps {
-  searchParams: LoginPageSearchParams;
+  searchParams: Promise<LoginPageSearchParams>;
 }
 
-const LoginPage = async ({ searchParams }: LoginPageProps) => {
+const LoginPage = async (props: LoginPageProps) => {
+  const searchParams = await props.searchParams;
   const { user } = await cachedValidateRequest();
   if (user) {
     redirect(SHARED_ROUTES.HOME);

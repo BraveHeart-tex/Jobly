@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 export const unCachedValidateRequest = async () => {
-  const sessionId = cookies().get(AUTH_COOKIE_NAME)?.value ?? null;
+  const sessionId = (await cookies()).get(AUTH_COOKIE_NAME)?.value ?? null;
   if (!sessionId)
     return {
       user: null,

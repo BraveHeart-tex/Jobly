@@ -10,12 +10,13 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 interface EditJobPostingPageParams {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const EditJobPostingPage = async ({ params }: EditJobPostingPageParams) => {
+const EditJobPostingPage = async (props: EditJobPostingPageParams) => {
+  const params = await props.params;
   const { id } = params;
   if (!id) {
     redirect(EMPLOYER_ROUTES.PUBLISHED_LISTINGS);

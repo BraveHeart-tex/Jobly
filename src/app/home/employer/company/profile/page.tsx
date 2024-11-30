@@ -11,12 +11,11 @@ interface CompanyProfilePageSearchParams {
 }
 
 interface CompanyProfilePageProps {
-  searchParams: CompanyProfilePageSearchParams;
+  searchParams: Promise<CompanyProfilePageSearchParams>;
 }
 
-const CompanyProfilePage = async ({
-  searchParams,
-}: CompanyProfilePageProps) => {
+const CompanyProfilePage = async (props: CompanyProfilePageProps) => {
+  const searchParams = await props.searchParams;
   const { hasToSetupCompanyInformation } = searchParams;
   const currentUser = await getCurrentUser();
 

@@ -43,7 +43,7 @@ export const verifyPassword = async (
 
 export const createSessionWithUserId = async (userId: DBUser["id"]) => {
   const sessionToken = generateSessionToken();
-  const headersList = headers();
+  const headersList = await headers();
   const userAgent = headersList.get("user-agent") || "";
   const deviceInfo = getDeviceInfo(userAgent);
   const clientIp = getClientIp(headersList);
@@ -64,12 +64,10 @@ export const createSessionWithUserId = async (userId: DBUser["id"]) => {
 };
 
 export const signOut = async (role: "candidate" | "employer") => {
-  const sessionId = cookies().get(AUTH_COOKIE_NAME)?.value ?? null;
+  const sessionId = (await cookies()).get(AUTH_COOKIE_NAME)?.value ?? null;
   if (!sessionId) return;
 
-  deleteSessionTokenCookie();
-
-  invalidateSession(sessionId);
+  await Promise.all([deleteSessionTokenCookie(), invalidateSession(sessionId)]);
 
   redirect(`${SHARED_ROUTES.LOGIN}?portalType=${role}`);
 };

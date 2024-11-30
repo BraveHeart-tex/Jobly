@@ -8,12 +8,7 @@ import { useJobsListPageSearchParams } from "@/features/candidate/jobs/hooks/use
 import { cn } from "@/lib/utils";
 import { exclude } from "@/lib/utils/object";
 import { api } from "@/trpc/react";
-import React, {
-  type LegacyRef,
-  type RefObject,
-  useEffect,
-  useRef,
-} from "react";
+import React, { type Ref, type RefObject, useEffect, useRef } from "react";
 import { useMedia } from "react-use";
 
 const JobsList = () => {
@@ -130,7 +125,7 @@ const JobsList = () => {
       <>
         {jobs?.map((job, index) => (
           <JobsListCard
-            ref={itemRefs?.current[index] as LegacyRef<HTMLDivElement>}
+            ref={itemRefs?.current[index] as Ref<HTMLDivElement>}
             key={job.id}
             job={job}
           />

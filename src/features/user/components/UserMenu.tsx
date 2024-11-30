@@ -62,8 +62,8 @@ const UserMenu = ({ user }: UserMenuProps) => {
     setUser(user);
   }, [setUser, user]);
 
-  const handleSignOut = () => {
-    signOut(user.role);
+  const handleSignOut = async () => {
+    await signOut(user.role);
     setUser(null);
   };
 

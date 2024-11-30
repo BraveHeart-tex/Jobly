@@ -11,10 +11,11 @@ interface SignUpPageSearchParams {
 }
 
 interface SignUpPageProps {
-  searchParams: SignUpPageSearchParams;
+  searchParams: Promise<SignUpPageSearchParams>;
 }
 
-const SignUpPage = async ({ searchParams }: SignUpPageProps) => {
+const SignUpPage = async (props: SignUpPageProps) => {
+  const searchParams = await props.searchParams;
   const { user } = await cachedValidateRequest();
 
   if (user) {

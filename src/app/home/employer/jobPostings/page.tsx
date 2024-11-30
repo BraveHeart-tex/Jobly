@@ -17,7 +17,7 @@ interface JobPostingsPageSearchParams {
 }
 
 interface JobPostingsPageProps {
-  searchParams: JobPostingsPageSearchParams;
+  searchParams: Promise<JobPostingsPageSearchParams>;
 }
 
 const jobPostingsFilterOptions = [
@@ -38,7 +38,8 @@ const jobPostingsFilterOptions = [
   },
 ];
 
-const JobPostingsPage = async ({ searchParams }: JobPostingsPageProps) => {
+const JobPostingsPage = async (props: JobPostingsPageProps) => {
+  const searchParams = await props.searchParams;
   await validateRequestByRole(["employer"]);
 
   const jobPostingStatusParam = parseEnumValue(

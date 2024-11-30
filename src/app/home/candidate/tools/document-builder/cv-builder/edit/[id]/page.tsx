@@ -11,7 +11,8 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const EditCvPage = async ({ params }: { params: { id: string } }) => {
+const EditCvPage = async (props: { params: Promise<{ id: string }> }) => {
+  const params = await props.params;
   const documentResponse = await api.document.getDocumentDetails({
     id: Number.parseInt(params.id),
     source: "builder",
