@@ -6,18 +6,16 @@ import DraggableSectionContainer from "@/features/candidate/document-builder/com
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
-import { useSectionFields } from "@/features/candidate/document-builder/selectors";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
-
-interface CvBuilderLanguagesSectionProps {
-  section: DocumentSection;
-}
 
 export const LANGUAGES_SECTION_ITEMS_COUNT = 2;
 const LANGUAGE_LEVELS = [
@@ -34,9 +32,10 @@ const LANGUAGE_LEVELS = [
   "A1",
 ];
 
-const CvBuilderLanguagesSection = ({
-  section,
-}: CvBuilderLanguagesSectionProps) => {
+const CvBuilderLanguagesSection = () => {
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.LANGUAGES,
+  );
   const fields = useSectionFields(section?.id);
 
   const { removeFields } = useRemoveFields();

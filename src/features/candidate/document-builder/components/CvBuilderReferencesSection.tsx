@@ -7,7 +7,10 @@ import DraggableSectionContainer from "@/features/candidate/document-builder/com
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
-import { useSectionFields } from "@/features/candidate/document-builder/selectors";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
@@ -15,18 +18,14 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { parseReferencesMetadata } from "@/validation/user/document/referencesSectionMetadataValidator";
-
-interface CvBuilderReferencesSectionProps {
-  section: DocumentSection;
-}
 
 export const REFERENCES_SECTION_ITEMS_COUNT = 4;
 
-const CvBuilderReferencesSection = ({
-  section,
-}: CvBuilderReferencesSectionProps) => {
+const CvBuilderReferencesSection = () => {
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.REFERENCES,
+  );
   const fields = useSectionFields(section?.id);
 
   const sectionMetadata = parseReferencesMetadata(section?.metadata);

@@ -42,24 +42,14 @@ const DocumentSectionsContainer = () => {
       [INTERNAL_SECTION_TAGS.CUSTOM]: (
         <CvBuilderCustomSection section={section} />
       ),
-      [INTERNAL_SECTION_TAGS.INTERNSHIPS]: (
-        <CvBuilderInternshipsSection section={section} />
-      ),
+      [INTERNAL_SECTION_TAGS.INTERNSHIPS]: <CvBuilderInternshipsSection />,
       [INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES]: (
-        <CvBuilderExtraCurricularSection section={section} />
+        <CvBuilderExtraCurricularSection />
       ),
-      [INTERNAL_SECTION_TAGS.HOBBIES]: (
-        <CvBuilderHobbiesSection section={section} />
-      ),
-      [INTERNAL_SECTION_TAGS.REFERENCES]: (
-        <CvBuilderReferencesSection section={section} />
-      ),
-      [INTERNAL_SECTION_TAGS.COURSES]: (
-        <CvBuilderCoursesSection section={section} />
-      ),
-      [INTERNAL_SECTION_TAGS.LANGUAGES]: (
-        <CvBuilderLanguagesSection section={section} />
-      ),
+      [INTERNAL_SECTION_TAGS.HOBBIES]: <CvBuilderHobbiesSection />,
+      [INTERNAL_SECTION_TAGS.REFERENCES]: <CvBuilderReferencesSection />,
+      [INTERNAL_SECTION_TAGS.COURSES]: <CvBuilderCoursesSection />,
+      [INTERNAL_SECTION_TAGS.LANGUAGES]: <CvBuilderLanguagesSection />,
     };
 
     return (

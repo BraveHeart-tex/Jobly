@@ -1,14 +1,16 @@
 import DocumentBuilderTextarea from "@/features/candidate/document-builder/components/DocumentBuilderTextarea";
 import DraggableSectionContainer from "@/features/candidate/document-builder/components/DraggableSectionContainer";
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
-import { useSectionField } from "@/features/candidate/document-builder/selectors";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionField,
+} from "@/features/candidate/document-builder/selectors";
+import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 
-interface CvBuilderHobbiesSectionProps {
-  section: DocumentSection;
-}
-
-const CvBuilderHobbiesSection = ({ section }: CvBuilderHobbiesSectionProps) => {
+const CvBuilderHobbiesSection = () => {
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.HOBBIES,
+  );
   const field = useSectionField(section.id);
 
   if (!field) return null;

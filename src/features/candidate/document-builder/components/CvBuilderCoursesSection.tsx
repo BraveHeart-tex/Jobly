@@ -4,7 +4,6 @@ import {
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
 import { groupEveryN } from "@/lib/utils/object";
 import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
 import CollapsibleSectionItemContainer from "@/features/candidate/document-builder/components/CollapsibleSectionItemContainer";
@@ -13,15 +12,17 @@ import DocumentBuilderDatePickerInput from "@/features/candidate/document-builde
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import AddSectionItemButton from "@/features/candidate/document-builder/components/AddSectionItemButton";
-import { useSectionFields } from "@/features/candidate/document-builder/selectors";
-
-interface CvBuilderCoursesSectionProps {
-  section: DocumentSection;
-}
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 
 export const COURSES_SECTION_ITEMS_COUNT = 4;
 
-const CvBuilderCoursesSection = ({ section }: CvBuilderCoursesSectionProps) => {
+const CvBuilderCoursesSection = () => {
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.COURSES,
+  );
   const fields = useSectionFields(section.id);
 
   const { removeFields } = useRemoveFields();

@@ -7,24 +7,23 @@ import DraggableSectionContainer from "@/features/candidate/document-builder/com
 import EditableSectionTitle from "@/features/candidate/document-builder/components/EditableSectionTitle";
 import SectionFieldsDndContext from "@/features/candidate/document-builder/components/SectionFieldsDndContext";
 import { useRemoveFields } from "@/features/candidate/document-builder/hooks/useRemoveFields";
-import { useSectionFields } from "@/features/candidate/document-builder/selectors";
+import {
+  useDocumentSectionByInternalTag,
+  useSectionFields,
+} from "@/features/candidate/document-builder/selectors";
 import {
   FIELDS_DND_INDEX_PREFIXES,
   INTERNAL_SECTION_TAGS,
 } from "@/lib/constants";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import type { DocumentSection } from "@/server/db/schema/documentSections";
-
-interface CvBuilderExtraCurricularSectionProps {
-  section: DocumentSection;
-}
 
 export const EXTRA_CURRICULAR_SECTION_ITEMS_COUNT = 6;
 
-const CvBuilderExtraCurricularSection = ({
-  section,
-}: CvBuilderExtraCurricularSectionProps) => {
+const CvBuilderExtraCurricularSection = () => {
+  const section = useDocumentSectionByInternalTag(
+    INTERNAL_SECTION_TAGS.EXTRA_CURRICULAR_ACTIVITIES,
+  );
   const fields = useSectionFields(section.id);
 
   const { removeFields } = useRemoveFields();
