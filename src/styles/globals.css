@@ -69,7 +69,7 @@ html {
     --border: 210 10% 90%;
     --input: 210 10% 90%;
     --ring: 215 80% 50%;
-    --radius: 0.5rem;
+    --radius: 0.8rem;
   }
   .dark {
     --background: 210 15% 15%;
