@@ -324,7 +324,7 @@ const LondonTemplate = ({ data }: LondonTemplateProps) => {
       <Page size="A4" style={styles.page}>
         <Text style={styles.documentTitle}>
           {firstName} {lastName}
-          {jobTitle ? `, ${jobTitle}` : null}
+          {jobTitle ? `${firstName || lastName ? "," : ""} ${jobTitle}` : null}
         </Text>
         <CommaSeparatedPDFText
           style={styles.documentDescription}
