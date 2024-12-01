@@ -1,7 +1,11 @@
 "use client";
 import DocumentListItemBase from "@/features/candidate/documents/components/DocumentListItemBase";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
-import { showErrorToast, showInfoToast } from "@/components/toastUtils";
+import {
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "@/components/toastUtils";
 import LondonTemplate from "@/features/candidate/document-builder/components/LondonTemplate";
 import { preparePdfData } from "@/features/candidate/document-builder/components/utils";
 import { useDeleteDocument } from "@/features/candidate/document-builder/hooks/useDeleteDocument";
@@ -11,6 +15,7 @@ import { api } from "@/trpc/react";
 import { FileDown, FilePen, Loader2, Trash2 } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const DocumentListItem = ({ item }: { item: DocumentSelectModel }) => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -24,37 +29,57 @@ const DocumentListItem = ({ item }: { item: DocumentSelectModel }) => {
   };
 
   const handleDownloadPDF = async () => {
-    if (item.type === "cover_letter") {
-      return showInfoToast(
-        "You can download only resumes as PDF at the moment.",
-      );
+    const loadingToastId = toast.loading("Downloading PDF...");
+    try {
+      if (item.type === "cover_letter") {
+        return showInfoToast(
+          "You can download only resumes as PDF at the moment.",
+          {
+            id: loadingToastId,
+          },
+        );
+      }
+
+      setIsDownloading(true);
+
+      const documentDataResponse =
+        await utils.document.getDocumentDetails.fetch({
+          id: item.id,
+          source: item.source,
+        });
+
+      if (isErrorObject(documentDataResponse)) {
+        showErrorToast(documentDataResponse.error, {
+          id: loadingToastId,
+        });
+        return;
+      }
+
+      const pdf = (await import("@react-pdf/renderer")).pdf;
+
+      const blob = await pdf(
+        <LondonTemplate data={preparePdfData(documentDataResponse)} />,
+      ).toBlob();
+
+      showSuccessToast("PDF downloaded successfully.", {
+        id: loadingToastId,
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${item.title}.pdf`;
+      link.click();
+
+      URL.revokeObjectURL(url);
+
+      setIsDownloading(false);
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      showErrorToast("Something went wrong, please try again later.", {
+        id: loadingToastId,
+      });
+      setIsDownloading(false);
     }
-
-    setIsDownloading(true);
-
-    const documentDataResponse = await utils.document.getDocumentDetails.fetch({
-      id: item.id,
-      source: item.source,
-    });
-
-    if (isErrorObject(documentDataResponse)) {
-      return showErrorToast(documentDataResponse.error);
-    }
-
-    const pdf = (await import("@react-pdf/renderer")).pdf;
-
-    const blob = await pdf(
-      <LondonTemplate data={preparePdfData(documentDataResponse)} />,
-    ).toBlob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${item.title}.pdf`;
-    link.click();
-
-    URL.revokeObjectURL(url);
-
-    setIsDownloading(false);
   };
 
   const documentActions = [

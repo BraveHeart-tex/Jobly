@@ -1,13 +1,13 @@
-import { toast } from "sonner";
+import { type ExternalToast, toast } from "sonner";
 
-export const showSuccessToast = (message: string) => {
-  return toast.success(message);
+export const showSuccessToast = (message: string, data?: ExternalToast) => {
+  return toast.success(message, data);
 };
 
-export const showErrorToast = (message: string) => {
-  return toast.error(message);
+export const showErrorToast = (message: string, data?: ExternalToast) => {
+  return toast.error(message, data);
 };
 
-export const showInfoToast = (message: string) => {
-  return toast.info(message);
+export const showInfoToast = (message: string, data?: ExternalToast) => {
+  return toast.info(message, data);
 };
