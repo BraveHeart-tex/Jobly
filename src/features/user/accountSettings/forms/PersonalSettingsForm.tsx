@@ -29,6 +29,13 @@ const PersonalSettingsForm = () => {
   );
   const form = useExtendedForm<PersonalSettingsFormData>(
     personalSettingsFormValidator,
+    {
+      defaultValues: {
+        accountType: user?.role || "candidate",
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+      },
+    },
   );
   const showConfirmDialog = useConfirmStore((state) => state.showConfirmDialog);
 
