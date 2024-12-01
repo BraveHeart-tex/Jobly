@@ -91,7 +91,7 @@ const BaseCreatableMultiSelect = <IsMulti extends boolean = true>(
         menuPortalTarget={menuPortalTarget}
         menuPosition="fixed"
         maxMenuHeight={200}
-        formatCreateLabel={(value) =>
+        formatCreateLabel={(value: string) =>
           showCreateLabel ? `Create "${value}"` : false
         }
       />

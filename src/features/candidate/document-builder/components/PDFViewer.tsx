@@ -1,5 +1,5 @@
 "use client";
-import { pdf } from "@react-pdf/renderer";
+import { type DocumentProps, pdf } from "@react-pdf/renderer";
 import type { ReactElement } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useAsync } from "react-use";
@@ -30,7 +30,7 @@ const PDFViewer = ({ children }: PDFViewerProps) => {
   const render = useAsync(async () => {
     if (!children) return null;
 
-    const blob = await pdf(children).toBlob();
+    const blob = await pdf(children as ReactElement<DocumentProps>).toBlob();
     const url = URL.createObjectURL(blob);
     return url;
   }, []);

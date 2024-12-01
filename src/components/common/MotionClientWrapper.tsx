@@ -1,13 +1,15 @@
 "use client";
 import { type HTMLMotionProps, motion } from "framer-motion";
-import type { HTMLAttributes, ReactHTML } from "react";
+import type { HTMLAttributes } from "react";
 
-type MotionClientWrapperProps<T extends keyof ReactHTML> = {
+type HtmlTag = keyof HTMLElementTagNameMap;
+
+type MotionClientWrapperProps<T extends HtmlTag> = {
   tag?: T; // Prop to allow dynamic tags
 } & HTMLMotionProps<T> &
   HTMLAttributes<HTMLElement>;
 
-const MotionClientWrapper = <T extends keyof ReactHTML = "div">({
+const MotionClientWrapper = <T extends HtmlTag = "div">({
   tag,
   children,
   ...props
