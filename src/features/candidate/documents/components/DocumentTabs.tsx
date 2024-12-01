@@ -12,7 +12,11 @@ import { Loader2, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "nextjs-toploader/app";
 import { useId, useState } from "react";
-import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import {
+  showErrorToast,
+  showLoadingToast,
+  showSuccessToast,
+} from "@/components/toastUtils";
 import DocumentListItem from "@/features/candidate/documents/components/DocumentListItem";
 import { useDocuments } from "@/features/candidate/documents/hooks/useDocuments";
 
@@ -62,16 +66,24 @@ const DocumentTabs = () => {
   };
 
   const handleCreateNewDocument = async () => {
+    const loadingToastId = showLoadingToast("Creating document...");
     const documentInsertId = await createDocumentAndRelatedEntities(activeTab);
 
     if (!documentInsertId) {
-      return showErrorToast(
+      showErrorToast(
         "We encountered a problem while creating the document. Please try again later.",
+        {
+          id: loadingToastId,
+        },
       );
+      return;
     }
 
     showSuccessToast(
       "Document created successfully. You are being redirected.",
+      {
+        id: loadingToastId,
+      },
     );
 
     const route = DOCUMENT_ROUTE_MAP[activeTab];

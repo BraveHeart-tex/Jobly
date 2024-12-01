@@ -11,3 +11,7 @@ export const showErrorToast = (message: string, data?: ExternalToast) => {
 export const showInfoToast = (message: string, data?: ExternalToast) => {
   return toast.info(message, data);
 };
+
+export const showLoadingToast = (message: string, data?: ExternalToast) => {
+  return toast.loading(message, data);
+};

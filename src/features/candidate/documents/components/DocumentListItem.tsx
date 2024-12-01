@@ -4,6 +4,7 @@ import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import {
   showErrorToast,
   showInfoToast,
+  showLoadingToast,
   showSuccessToast,
 } from "@/components/toastUtils";
 import LondonTemplate from "@/features/candidate/document-builder/components/LondonTemplate";
@@ -15,7 +16,6 @@ import { api } from "@/trpc/react";
 import { FileDown, FilePen, Loader2, Trash2 } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { useState } from "react";
-import { toast } from "sonner";
 
 const DocumentListItem = ({ item }: { item: DocumentSelectModel }) => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -29,7 +29,7 @@ const DocumentListItem = ({ item }: { item: DocumentSelectModel }) => {
   };
 
   const handleDownloadPDF = async () => {
-    const loadingToastId = toast.loading("Downloading PDF...");
+    const loadingToastId = showLoadingToast("Downloading PDF...");
     try {
       if (item.type === "cover_letter") {
         return showInfoToast(
