@@ -1,18 +1,24 @@
 import { showErrorToast } from "@/components/toastUtils";
 import { api } from "@/trpc/react";
 
-export const useUpdateDocument = () => {
+export type UpdateDocumentMutateFunctionKey =
+  | "getUploadedUserDocuments"
+  | "getUserDocumentBuilderDocuments";
+
+export const useUpdateDocument = (
+  functionKey: UpdateDocumentMutateFunctionKey,
+) => {
   const queryClientUtils = api.useUtils();
 
   const { mutate: updateDocument, isPending } =
     api.document.updateDocument.useMutation({
       onMutate: async (variables) => {
-        await queryClientUtils.document.getUserDocumentBuilderDocuments.cancel();
+        await queryClientUtils.document[functionKey].cancel();
 
         const previousUserDocuments =
-          queryClientUtils.document.getUserDocumentBuilderDocuments.getData();
+          queryClientUtils.document[functionKey].getData();
 
-        queryClientUtils.document.getUserDocumentBuilderDocuments.setData(
+        queryClientUtils.document[functionKey].setData(
           undefined,
           (oldUserDocuments) => {
             if (!oldUserDocuments) return oldUserDocuments;
@@ -33,13 +39,13 @@ export const useUpdateDocument = () => {
       },
       onError: (_err, _newJob, context) => {
         showErrorToast("Something went wrong, please try again later");
-        queryClientUtils.document.getUserDocumentBuilderDocuments.setData(
+        queryClientUtils.document[functionKey].setData(
           undefined,
           context?.previousUserDocuments,
         );
       },
       onSettled: () => {
-        void queryClientUtils.document.getUserDocumentBuilderDocuments.invalidate();
+        void queryClientUtils.document[functionKey].invalidate();
       },
     });
 

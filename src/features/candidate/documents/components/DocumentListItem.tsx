@@ -111,6 +111,7 @@ const DocumentListItem = ({ item }: { item: DocumentSelectModel }) => {
 
   return (
     <DocumentListItemBase
+      functionKey="getUserDocumentBuilderDocuments"
       item={item}
       actions={documentActions}
       onTitleClick={goToEditPage}

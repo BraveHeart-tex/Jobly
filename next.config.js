@@ -8,6 +8,11 @@ jiti("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   serverExternalPackages: ["@node-rs/argon2"],
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "50mb",
+    },
+  },
   images: {
     remotePatterns: [
       {

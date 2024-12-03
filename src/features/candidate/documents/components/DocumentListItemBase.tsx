@@ -1,4 +1,5 @@
 "use client";
+import ClientOnly from "@/components/common/ClientOnly";
 import { Button, type ButtonVariant } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,7 +13,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useUpdateDocument } from "@/features/candidate/document-builder/hooks/useUpdateDocument";
+import {
+  type UpdateDocumentMutateFunctionKey,
+  useUpdateDocument,
+} from "@/features/candidate/document-builder/hooks/useUpdateDocument";
 import { cn } from "@/lib/utils";
 import { formatToMediumDateTimeWithWeekday } from "@/lib/utils/date";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
@@ -32,16 +36,18 @@ interface ListItemBaseProps {
   item: DocumentSelectModel;
   actions: ListItemAction[];
   onTitleClick?: () => void;
+  functionKey: UpdateDocumentMutateFunctionKey;
 }
 
 const DocumentListItemBase = ({
   item,
   actions,
   onTitleClick,
+  functionKey,
 }: ListItemBaseProps) => {
   const [isRenaming, setIsRenaming] = useState(false);
   const renameInputRef = useRef<HTMLInputElement>(null);
-  const { updateDocument } = useUpdateDocument();
+  const { updateDocument } = useUpdateDocument(functionKey);
 
   const handleRenameInputBlur = () => {
     if (!renameInputRef.current) return;
@@ -62,13 +68,8 @@ const DocumentListItemBase = ({
 
   return (
     <article className="grid gap-2 rounded-md border p-4 bg-card group">
-      <div className="grid grid-cols-12 gap-2">
-        <div
-          className={cn(
-            "flex items-center gap-1 w-full col-span-11",
-            isRenaming && "col-span-12",
-          )}
-        >
+      <div className="flex items-center justify-between gap-2">
+        <div className={cn("flex items-center gap-1 w-full flex-1")}>
           {isRenaming ? (
             <Input
               ref={renameInputRef}
@@ -118,7 +119,7 @@ const DocumentListItemBase = ({
             <Button
               variant="ghost"
               size="icon"
-              className={cn("col-span-1", isRenaming ? "hidden" : "flex")}
+              className={cn("", isRenaming ? "hidden" : "flex")}
             >
               <Ellipsis size={18} />
             </Button>
@@ -141,9 +142,11 @@ const DocumentListItemBase = ({
           </PopoverContent>
         </Popover>
       </div>
-      <p className="text-sm text-muted-foreground">
-        Last updated: {formatToMediumDateTimeWithWeekday(item.updatedAt)}
-      </p>
+      <ClientOnly>
+        <p className="text-sm text-muted-foreground">
+          Last updated: {formatToMediumDateTimeWithWeekday(item.updatedAt)}
+        </p>
+      </ClientOnly>
     </article>
   );
 };

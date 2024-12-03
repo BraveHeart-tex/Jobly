@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { motion } from "framer-motion";
 import { Loader2, Plus } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "nextjs-toploader/app";
 import { useId, useState } from "react";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@/components/toastUtils";
 import DocumentListItem from "@/features/candidate/documents/components/DocumentListItem";
 import { useDocuments } from "@/features/candidate/documents/hooks/useDocuments";
+import EmptyListCallToAction from "@/components/common/EmptyListCallToAction";
 
 const DOCUMENT_TAB_VALUES = {
   RESUME: "resume",
@@ -191,22 +191,9 @@ const NoDocumentsFound = ({
     [DOCUMENT_TAB_VALUES.RESUME]: "New Resume",
   };
 
-  const { title, description, illustrationPath } =
-    notFoundContentMap[activeTab];
-
   return (
     <div className="flex flex-col gap-2 items-center justify-center w-full mx-auto">
-      <Image
-        alt={title}
-        src={illustrationPath}
-        width={1920}
-        height={1080}
-        className="size-[300px] dark:invert"
-      />
-      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-        {title}
-      </h3>
-      <p className="text-muted-foreground text-center">{description}</p>
+      <EmptyListCallToAction {...notFoundContentMap[activeTab]} />
       <Button
         className="flex items-center gap-1 w-max mt-4"
         onClick={onCreateNewDocumentClick}
