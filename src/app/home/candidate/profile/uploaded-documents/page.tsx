@@ -2,7 +2,6 @@ import PageContainer from "@/components/common/PageContainer";
 import PageTitle from "@/components/common/PageTitle";
 import UploadDocumentDialog from "@/features/candidate/documents/components/UploadDocumentDialog";
 import { api } from "@/trpc/server";
-import Image from "next/image";
 
 const MyDocumentsPage = async () => {
   const uploadedDocuments = await api.document.getUploadedUserDocuments();
@@ -17,13 +16,7 @@ const MyDocumentsPage = async () => {
         <div className="h-[calc(100vh-12rem)]">
           {uploadedDocuments.length === 0 ? (
             <div className="flex items-center justify-center flex-col h-full w-full">
-              <Image
-                src={"/document-not-found.svg"}
-                width={300}
-                height={300}
-                className="dark:invert"
-                alt="Uploaded Documents"
-              />
+              {/* TODO: */}
               <p className="text-muted-foreground">
                 You haven't uploaded any documents yet
               </p>
