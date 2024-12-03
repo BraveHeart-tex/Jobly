@@ -1,5 +1,5 @@
 import { jobTrackerApplications } from "@/server/db/schema";
-import { urlValidator } from "@/validation/schemaUtils";
+import { urlValidator } from "@/schemas/schemaUtils";
 import {
   type InferInput,
   type InferOutput,

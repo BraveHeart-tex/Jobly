@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { generateStateWithUserRole, google } from "@/lib/auth/oauth";
 import { users } from "@/server/db/schema";
-import { parseEnumValue } from "@/validation/schemaUtils";
+import { parseEnumValue } from "@/schemas/schemaUtils";
 import { generateCodeVerifier } from "arctic";
 import { cookies } from "next/headers";
 

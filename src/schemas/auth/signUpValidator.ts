@@ -1,5 +1,5 @@
 import { users } from "@/server/db/schema";
-import { emailValidator, passwordValidator } from "@/validation/schemaUtils";
+import { emailValidator, passwordValidator } from "@/schemas/schemaUtils";
 import {
   type InferInput,
   minLength,

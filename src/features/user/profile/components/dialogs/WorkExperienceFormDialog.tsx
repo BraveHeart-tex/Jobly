@@ -3,7 +3,7 @@ import FormDialog from "@/components/common/FormDialog";
 import {
   type WorkExperienceData,
   workExperienceValidator,
-} from "@/validation/user/profile/workExperienceValidator";
+} from "@/schemas/user/profile/workExperienceValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import {
   Form,

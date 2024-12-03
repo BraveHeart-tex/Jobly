@@ -10,7 +10,7 @@ import {
   workExperiences,
 } from "@/server/db/schema";
 import { and, desc, eq, inArray } from "drizzle-orm";
-import type { SaveAboutInformationInput } from "@/validation/user/profile/saveAboutInformationValidator";
+import type { SaveAboutInformationInput } from "@/schemas/user/profile/saveAboutInformationValidator";
 import type {
   GetAboutInformationReturnType,
   SkillWithExperience,

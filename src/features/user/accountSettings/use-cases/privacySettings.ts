@@ -4,7 +4,7 @@ import {
   updateUserPrivacySettings,
 } from "@/features/user/accountSettings/data-access/privacySettings";
 import { getChangedObjectFields } from "@/lib/utils/object";
-import type { PrivacySettingsData } from "@/validation/user/settings/privacySettingsValidator";
+import type { PrivacySettingsData } from "@/schemas/user/settings/privacySettingsValidator";
 
 export const upsertPrivacySettingsUseCase = async (
   userId: number,

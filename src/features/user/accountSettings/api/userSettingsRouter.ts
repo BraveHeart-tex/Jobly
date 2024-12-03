@@ -4,9 +4,9 @@ import { deleteDeviceSessionUseCase } from "@/features/user/accountSettings/use-
 import { upsertPrivacySettingsUseCase } from "@/features/user/accountSettings/use-cases/privacySettings";
 import { upsertUserEmailNotificationSettingsUseCase } from "@/features/user/accountSettings/use-cases/userEmailNotifications";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
-import { candidateNotificationSettingsValidator } from "@/validation/user/settings/candidateNotificationSettingsValidator";
-import { privacySettingsValidator } from "@/validation/user/settings/privacySettingsValidator";
-import { upsertEmailSettingsValidator } from "@/validation/user/settings/upsertEmailSettingsValidator";
+import { candidateNotificationSettingsValidator } from "@/schemas/user/settings/candidateNotificationSettingsValidator";
+import { privacySettingsValidator } from "@/schemas/user/settings/privacySettingsValidator";
+import { upsertEmailSettingsValidator } from "@/schemas/user/settings/upsertEmailSettingsValidator";
 import { object, parser, string } from "valibot";
 
 export const userSettingsRouter = createTRPCRouter({

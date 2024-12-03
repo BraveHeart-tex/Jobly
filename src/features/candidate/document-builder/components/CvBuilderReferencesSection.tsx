@@ -18,7 +18,7 @@ import {
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { groupEveryN } from "@/lib/utils/object";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
-import { parseReferencesMetadata } from "@/validation/user/document/referencesSectionMetadataValidator";
+import { parseReferencesMetadata } from "@/schemas/user/document/referencesSectionMetadataValidator";
 
 export const REFERENCES_SECTION_ITEMS_COUNT = 4;
 

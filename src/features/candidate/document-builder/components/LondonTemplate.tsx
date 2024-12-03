@@ -13,8 +13,8 @@ import {
 } from "@react-pdf/renderer";
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
-import { parseSkillsMetadata } from "@/validation/user/document/skillsSectionMetadataValidator";
-import { parseReferencesMetadata } from "@/validation/user/document/referencesSectionMetadataValidator";
+import { parseSkillsMetadata } from "@/schemas/user/document/skillsSectionMetadataValidator";
+import { parseReferencesMetadata } from "@/schemas/user/document/referencesSectionMetadataValidator";
 import CommaSeparatedPDFText from "@/features/candidate/document-builder/components/CommaSeparatedPDFText";
 import type {
   makeResumeTemplateData,

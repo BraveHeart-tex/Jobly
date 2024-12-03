@@ -20,8 +20,8 @@ import type {
   GetUserSkillBySkillIdParams,
 } from "@/features/user/profile/types";
 import { db } from "@/server/db";
-import type { SaveUserSkillOrderData } from "@/validation/user/profile/saveUserSkillOrderValidator";
-import type { UserSkillsData } from "@/validation/user/profile/userSkillsValidator";
+import type { SaveUserSkillOrderData } from "@/schemas/user/profile/saveUserSkillOrderValidator";
+import type { UserSkillsData } from "@/schemas/user/profile/userSkillsValidator";
 
 export const createUserSkillUseCase = async (
   userId: number,

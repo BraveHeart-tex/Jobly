@@ -9,7 +9,7 @@ import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import {
   updateWorkExperienceValidator,
   workExperienceValidator,
-} from "@/validation/user/profile/workExperienceValidator";
+} from "@/schemas/user/profile/workExperienceValidator";
 import { minValue, number, object, parser, pipe } from "valibot";
 
 export const workExperienceRouter = createTRPCRouter({

@@ -6,7 +6,7 @@ import {
   getUserFromGoogleId,
 } from "@/actions/auth";
 import { createSessionWithUserId } from "@/features/auth/utils";
-import { parseEnumValue } from "@/validation/schemaUtils";
+import { parseEnumValue } from "@/schemas/schemaUtils";
 import { users } from "@/server/db/schema";
 import { createUser } from "@/features/user/profile/data-access/users";
 

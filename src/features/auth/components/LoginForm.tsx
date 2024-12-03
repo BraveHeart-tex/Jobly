@@ -18,7 +18,7 @@ import {
   type LoginData,
   type LoginResponse,
   loginValidator,
-} from "@/validation/auth/loginValidator";
+} from "@/schemas/auth/loginValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
 import { useLogin } from "@/features/auth/hooks/useLogin";

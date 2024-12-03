@@ -4,10 +4,10 @@ import { documents } from "@/server/db/schema";
 import {
   documentInsertValidator,
   documentUpdateValidator,
-} from "@/validation/user/document/baseDocumentValidator";
-import { documentSectionInsertValidator } from "@/validation/user/document/documentSectionValidators";
-import { saveDocumentDetailsValidator } from "@/validation/user/document/saveDocumentDetailsValidator";
-import { DocumentSectionFieldInsertValidator } from "@/validation/user/document/sectionFieldValidators";
+} from "@/schemas/user/document/baseDocumentValidator";
+import { documentSectionInsertValidator } from "@/schemas/user/document/documentSectionValidators";
+import { saveDocumentDetailsValidator } from "@/schemas/user/document/saveDocumentDetailsValidator";
+import { DocumentSectionFieldInsertValidator } from "@/schemas/user/document/sectionFieldValidators";
 import {
   array,
   minValue,

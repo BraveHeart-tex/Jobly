@@ -35,7 +35,7 @@ import {
 import {
   type UploadDocumentFormData,
   uploadDocumentFormValidator,
-} from "@/validation/user/document/uploadedDocuments/uploadDocumentFormValidator";
+} from "@/schemas/user/document/uploadedDocuments/uploadDocumentFormValidator";
 import { mimeTypeToExtension } from "@/lib/constants";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import { isObjectEmpty } from "@/lib/utils/object";

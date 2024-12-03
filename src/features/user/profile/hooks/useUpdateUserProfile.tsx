@@ -1,5 +1,5 @@
 import { api } from "@/trpc/react";
-import type { ProfileData } from "@/validation/user/profile/profileValidator";
+import type { ProfileData } from "@/schemas/user/profile/profileValidator";
 
 export const useUpdateUserProfile = (options?: {
   onSuccess?: (

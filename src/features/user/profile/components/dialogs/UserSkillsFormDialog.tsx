@@ -24,7 +24,7 @@ import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import {
   type UserSkillsData,
   userSkillsValidator,
-} from "@/validation/user/profile/userSkillsValidator";
+} from "@/schemas/user/profile/userSkillsValidator";
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
 

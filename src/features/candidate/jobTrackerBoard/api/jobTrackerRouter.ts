@@ -4,7 +4,7 @@ import { array, number, object, parser, picklist } from "valibot";
 import {
   jobTrackerApplicationInsertValidator,
   jobTrackerApplicationValidator,
-} from "@/validation/user/jobTracker/jobTrackerApplicationValidator";
+} from "@/schemas/user/jobTracker/jobTrackerApplicationValidator";
 import { jobTrackerApplicationService } from "@/features/candidate/jobTrackerBoard/services/jobTrackerApplicationService";
 
 export const jobTrackerRouter = createTRPCRouter({

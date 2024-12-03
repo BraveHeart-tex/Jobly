@@ -3,7 +3,7 @@ import { insertDocument } from "@/features/candidate/documents/data-access/docum
 import { cachedValidateRequest } from "@/lib/auth/validateRequest";
 import { mimeTypeToExtension } from "@/lib/constants";
 import { utapi } from "@/server/uploadThing";
-import { uploadDocumentFormValidator } from "@/validation/user/document/uploadedDocuments/uploadDocumentFormValidator";
+import { uploadDocumentFormValidator } from "@/schemas/user/document/uploadedDocuments/uploadDocumentFormValidator";
 import { TRPCError } from "@trpc/server";
 import { safeParse } from "valibot";
 

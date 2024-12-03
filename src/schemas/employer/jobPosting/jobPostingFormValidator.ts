@@ -1,5 +1,5 @@
-import { jobPostingValidator } from "@/validation/employer/jobPosting/jobPostingValidator";
-import { skillValidator } from "@/validation/skillValidator";
+import { jobPostingValidator } from "@/schemas/employer/jobPosting/jobPostingValidator";
+import { skillValidator } from "@/schemas/skillValidator";
 import { type InferInput, type InferOutput, array, object } from "valibot";
 
 export const employerJobPostingFormValidator = object({

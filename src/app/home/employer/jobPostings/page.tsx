@@ -8,7 +8,7 @@ import { EMPLOYER_ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { jobPostings } from "@/server/db/schema";
 import { api } from "@/trpc/server";
-import { parseEnumValue } from "@/validation/schemaUtils";
+import { parseEnumValue } from "@/schemas/schemaUtils";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 

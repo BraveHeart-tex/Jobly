@@ -15,7 +15,7 @@ import type {
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
 import type { DBUser } from "@/server/db/schema/users";
-import type { DocumentUpdateData } from "@/validation/user/document/baseDocumentValidator";
+import type { DocumentUpdateData } from "@/schemas/user/document/baseDocumentValidator";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 
 export const insertDocument = async (

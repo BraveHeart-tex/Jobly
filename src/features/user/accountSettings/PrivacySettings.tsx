@@ -5,7 +5,7 @@ import { useUpsertPrivacySettings } from "@/features/user/accountSettings/hooks/
 import SettingBlock from "@/features/user/accountSettings/SettingBlock";
 import SettingSectionTitle from "@/features/user/accountSettings/SettingSectionTitle";
 import type { Nullable } from "@/lib/types";
-import type { PrivacySettingsData } from "@/validation/user/settings/privacySettingsValidator";
+import type { PrivacySettingsData } from "@/schemas/user/settings/privacySettingsValidator";
 
 interface PrivacySettingsProps {
   privacySettings: Nullable<PrivacySettingsData>;

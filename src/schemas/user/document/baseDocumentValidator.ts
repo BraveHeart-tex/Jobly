@@ -1,5 +1,5 @@
 import { documents } from "@/server/db/schema";
-import { dateTimeValidator } from "@/validation/schemaUtils";
+import { dateTimeValidator } from "@/schemas/schemaUtils";
 import {
   type InferInput,
   maxLength,

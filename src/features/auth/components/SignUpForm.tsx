@@ -17,7 +17,7 @@ import { useState } from "react";
 import {
   type SignUpData,
   signUpValidator,
-} from "@/validation/auth/signUpValidator";
+} from "@/schemas/auth/signUpValidator";
 import { useExtendedForm } from "@/lib/hook-form/useExtendedForm";
 import { showSuccessToast } from "@/components/toastUtils";
 import { useSignUp } from "@/features/auth/hooks/useSignUp";

@@ -1,6 +1,6 @@
 import { ISO_DATE_FORMAT_REGEX } from "@/lib/constants";
 import { workExperiences } from "@/server/db/schema";
-import { dateValidator } from "@/validation/schemaUtils";
+import { dateValidator } from "@/schemas/schemaUtils";
 import { DateTime } from "luxon";
 import {
   type InferOutput,

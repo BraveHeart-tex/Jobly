@@ -33,11 +33,11 @@ import {
 import { DateTime } from "luxon";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
-import { oneWeekFromNow } from "@/validation/employer/jobPosting/jobPostingValidator";
+import { oneWeekFromNow } from "@/schemas/employer/jobPosting/jobPostingValidator";
 import {
   type EmployerJobPostingFormOutput,
   employerJobPostingFormValidator,
-} from "@/validation/employer/jobPosting/jobPostingFormValidator";
+} from "@/schemas/employer/jobPosting/jobPostingFormValidator";
 import type { MultiValue } from "react-select";
 import BaseCreatableMultiSelect from "@/components/common/select/CreatableMultiSelect";
 import type { OptionType } from "@/components/common/select/types";

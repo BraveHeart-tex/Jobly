@@ -1,4 +1,4 @@
-import { urlValidator } from "@/validation/schemaUtils";
+import { urlValidator } from "@/schemas/schemaUtils";
 import {
   type InferOutput,
   check,

@@ -10,8 +10,8 @@ import userSkills, {
   type UserSkill,
   type InsertUserSkillModel,
 } from "@/server/db/schema/userSkills";
-import type { SaveUserSkillOrderData } from "@/validation/user/profile/saveUserSkillOrderValidator";
-import type { UserSkillsData } from "@/validation/user/profile/userSkillsValidator";
+import type { SaveUserSkillOrderData } from "@/schemas/user/profile/saveUserSkillOrderValidator";
+import type { UserSkillsData } from "@/schemas/user/profile/userSkillsValidator";
 import { and, desc, eq, inArray } from "drizzle-orm";
 
 export const createUserSkill = async (

@@ -4,7 +4,7 @@ import {
   updateCandidateNotificationSettings,
 } from "@/features/user/accountSettings/data-access/candidateNotificationSettings";
 import { getChangedObjectFields } from "@/lib/utils/object";
-import type { CandidateNotificationSettingsData } from "@/validation/user/settings/candidateNotificationSettingsValidator";
+import type { CandidateNotificationSettingsData } from "@/schemas/user/settings/candidateNotificationSettingsValidator";
 
 export const upsertNotificationSettingsUseCase = async (
   userId: number,

@@ -1,4 +1,4 @@
-import { emailValidator, passwordValidator } from "@/validation/schemaUtils";
+import { emailValidator, passwordValidator } from "@/schemas/schemaUtils";
 import {
   type InferInput,
   type InferOutput,

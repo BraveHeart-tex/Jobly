@@ -6,11 +6,11 @@ import {
   getEducationalBackgroundsUseCase,
   updateEducationalBackgroundUseCase,
 } from "@/features/user/profile/use-cases/educationalBackgrounds";
-import { genericIdValidator } from "@/validation/schemaUtils";
+import { genericIdValidator } from "@/schemas/schemaUtils";
 import {
   insertEducationValidator,
   updateEducationValidator,
-} from "@/validation/user/profile/educationalBackgroundValidator";
+} from "@/schemas/user/profile/educationalBackgroundValidator";
 import { parser } from "valibot";
 
 export const educationalBackgroundsRouter = createTRPCRouter({

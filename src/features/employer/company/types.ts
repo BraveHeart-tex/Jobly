@@ -2,7 +2,7 @@ import type {
   CompanyInsertModel,
   CompanySelectModel,
 } from "@/server/db/schema/companies";
-import type { EmployerJobPostingFormOutput } from "@/validation/employer/jobPosting/jobPostingFormValidator";
+import type { EmployerJobPostingFormOutput } from "@/schemas/employer/jobPosting/jobPostingFormValidator";
 
 export interface CreateCompanyParams extends CompanyInsertModel {
   userId: number;

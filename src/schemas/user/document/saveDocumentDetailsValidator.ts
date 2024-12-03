@@ -1,6 +1,6 @@
-import { documentInsertValidator } from "@/validation/user/document/baseDocumentValidator";
-import { documentSectionInsertValidator } from "@/validation/user/document/documentSectionValidators";
-import { DocumentSectionFieldInsertValidator } from "@/validation/user/document/sectionFieldValidators";
+import { documentInsertValidator } from "@/schemas/user/document/baseDocumentValidator";
+import { documentSectionInsertValidator } from "@/schemas/user/document/documentSectionValidators";
+import { DocumentSectionFieldInsertValidator } from "@/schemas/user/document/sectionFieldValidators";
 import { array, object, optional, type InferOutput } from "valibot";
 
 export const saveDocumentDetailsValidator = object({

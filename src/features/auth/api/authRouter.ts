@@ -5,11 +5,11 @@ import {
 } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
-import { signUpValidator } from "@/validation/auth/signUpValidator";
+import { signUpValidator } from "@/schemas/auth/signUpValidator";
 import {
   loginResponseValidator,
   loginValidator,
-} from "@/validation/auth/loginValidator";
+} from "@/schemas/auth/loginValidator";
 import {
   createSessionWithUserId,
   hashPassword,

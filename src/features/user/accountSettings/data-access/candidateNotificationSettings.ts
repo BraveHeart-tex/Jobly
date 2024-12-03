@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { candidateNotificationSettings } from "@/server/db/schema";
 import type { InsertCandidateNotificationSettingsModel } from "@/server/db/schema/candidateNotificationSettings";
-import type { CandidateNotificationSettingsData } from "@/validation/user/settings/candidateNotificationSettingsValidator";
+import type { CandidateNotificationSettingsData } from "@/schemas/user/settings/candidateNotificationSettingsValidator";
 import { eq } from "drizzle-orm";
 
 export const getCandidateNotificationSettings = async (userId: number) => {

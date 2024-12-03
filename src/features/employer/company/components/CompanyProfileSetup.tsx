@@ -27,7 +27,7 @@ import { api } from "@/trpc/react";
 import {
   companyProfileValidator,
   type CompanyProfileOutput,
-} from "@/validation/employer/companyProfile/companyProfileSetupValidator";
+} from "@/schemas/employer/companyProfile/companyProfileSetupValidator";
 import { useRouter } from "nextjs-toploader/app";
 import type { FieldErrors } from "react-hook-form";
 
