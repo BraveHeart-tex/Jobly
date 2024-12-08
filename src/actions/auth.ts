@@ -1,6 +1,6 @@
 import { getUserAssociatedWithCompanyUseCase } from "@/features/user/profile/use-cases/users";
 import type { ContextUserAttributes } from "@/lib/auth/session";
-import { cachedValidateRequest } from "@/lib/auth/validateRequest";
+import { validateRequest } from "@/lib/auth/validateRequest";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { and, eq, not } from "drizzle-orm";
@@ -12,7 +12,7 @@ export interface GetCurrentUserReturnType extends ContextUserAttributes {
 
 export const getCurrentUser =
   async (): Promise<GetCurrentUserReturnType | null> => {
-    const result = await cachedValidateRequest();
+    const result = await validateRequest();
     if (!result.user) return null;
 
     const ctxUser: GetCurrentUserReturnType = result.user;

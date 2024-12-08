@@ -4,7 +4,7 @@ import { AUTH_COOKIE_NAME } from "@/lib/constants";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
-export const unCachedValidateRequest = async () => {
+export const validateRequest = cache(async () => {
   const sessionId = (await cookies()).get(AUTH_COOKIE_NAME)?.value ?? null;
   if (!sessionId)
     return {
@@ -22,6 +22,4 @@ export const unCachedValidateRequest = async () => {
   }
 
   return { user, session };
-};
-
-export const cachedValidateRequest = cache(unCachedValidateRequest);
+});

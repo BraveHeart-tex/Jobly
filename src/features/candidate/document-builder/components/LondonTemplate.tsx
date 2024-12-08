@@ -1,4 +1,3 @@
-"use client";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { exclude } from "@/lib/utils/object";
 import { removeHTMLTags } from "@/lib/utils/string";
@@ -30,29 +29,29 @@ Font.register({
   family: "EB Garamond",
   fonts: [
     {
-      src: "/fonts/EBGaramond-Regular.ttf",
+      src: `${"http://localhost:3000"}/fonts/EBGaramond-Regular.ttf`,
       fontWeight: 400,
     },
     {
-      src: "/fonts/EBGaramond-Medium.ttf",
+      src: `${"http://localhost:3000"}/fonts/EBGaramond-Medium.ttf`,
       fontWeight: 500,
     },
     {
-      src: "/fonts/EBGaramond-Bold.ttf",
+      src: `${"http://localhost:3000"}/fonts/EBGaramond-Bold.ttf`,
       fontWeight: 600,
     },
     {
-      src: "/fonts/EBGaramond-Italic.ttf",
+      src: `${"http://localhost:3000"}/fonts/EBGaramond-Italic.ttf`,
       fontWeight: 400,
       fontStyle: "italic",
     },
     {
-      src: "/fonts/EBGaramond-MediumItalic.ttf",
+      src: `${"http://localhost:3000"}/fonts/EBGaramond-MediumItalic.ttf`,
       fontWeight: 500,
       fontStyle: "italic",
     },
     {
-      src: "/fonts/EBGaramond-BoldItalic.ttf",
+      src: `${"http://localhost:3000"}/fonts/EBGaramond-BoldItalic.ttf`,
       fontWeight: 600,
       fontStyle: "italic",
     },

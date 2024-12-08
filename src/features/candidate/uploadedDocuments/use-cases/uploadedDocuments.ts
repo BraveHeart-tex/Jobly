@@ -1,6 +1,6 @@
 "use server";
 import { insertDocument } from "@/features/candidate/documents/data-access/documentRepository";
-import { cachedValidateRequest } from "@/lib/auth/validateRequest";
+import { validateRequest } from "@/lib/auth/validateRequest";
 import { mimeTypeToExtension } from "@/lib/constants";
 import { utapi } from "@/server/uploadThing";
 import { uploadDocumentFormValidator } from "@/schemas/user/document/uploadedDocuments/uploadDocumentFormValidator";
@@ -8,7 +8,7 @@ import { TRPCError } from "@trpc/server";
 import { safeParse } from "valibot";
 
 export const uploadDocumentUseCase = async (formData: FormData) => {
-  const { user } = await cachedValidateRequest();
+  const { user } = await validateRequest();
 
   if (!user) {
     throw new Error("You must be logged in to upload a document");

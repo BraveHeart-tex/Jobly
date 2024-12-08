@@ -7,7 +7,7 @@ jiti("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  serverExternalPackages: ["@node-rs/argon2"],
+  serverExternalPackages: ["@node-rs/argon2", "@react-pdf/renderer"],
   experimental: {
     serverActions: {
       bodySizeLimit: "50mb",

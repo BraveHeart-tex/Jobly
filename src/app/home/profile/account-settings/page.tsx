@@ -1,12 +1,12 @@
 import PageContainer from "@/components/common/PageContainer";
 import PageTitle from "@/components/common/PageTitle";
 import AccountSettingsTabs from "@/features/user/accountSettings/AccountSettingsTabs";
-import { cachedValidateRequest } from "@/lib/auth/validateRequest";
+import { validateRequest } from "@/lib/auth/validateRequest";
 import { SHARED_ROUTES } from "@/lib/routes";
 import { redirect } from "next/navigation";
 
 const AccountSettingsPage = async () => {
-  const { user } = await cachedValidateRequest();
+  const { user } = await validateRequest();
   if (!user) {
     redirect(SHARED_ROUTES.LOGIN);
   }

@@ -24,7 +24,8 @@
   "resolutions": {
     "@react-pdf/layout": "3.11.5",
     "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "restructure": "3.0.0"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

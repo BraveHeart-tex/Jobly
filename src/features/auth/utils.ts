@@ -14,7 +14,7 @@ import {
   getDeviceInfo,
   getLocationData,
 } from "@/lib/auth/userAgent";
-import { unCachedValidateRequest } from "@/lib/auth/validateRequest";
+import { validateRequest } from "@/lib/auth/validateRequest";
 import { AUTH_COOKIE_NAME } from "@/lib/constants";
 import { SHARED_ROUTES } from "@/lib/routes";
 import type { DBUser } from "@/server/db/schema/users";
@@ -73,7 +73,7 @@ export const signOut = async (role: "candidate" | "employer") => {
 };
 
 export const validateRequestByRole = async (allowedRoles: DBUser["role"][]) => {
-  const { session, user } = await unCachedValidateRequest();
+  const { session, user } = await validateRequest();
   if (!session || !user) {
     return redirect(SHARED_ROUTES.LOGIN);
   }
