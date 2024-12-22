@@ -1,6 +1,14 @@
+import CommaSeparatedPDFText from "@/features/candidate/document-builder/components/CommaSeparatedPDFText";
+import type {
+  CustomSection,
+  MakeResumeDataReturn,
+  makeResumeTemplateData,
+} from "@/features/candidate/document-builder/components/utils";
 import { INTERNAL_SECTION_TAGS } from "@/lib/constants";
 import { exclude } from "@/lib/utils/object";
 import { removeHTMLTags } from "@/lib/utils/string";
+import { parseReferencesMetadata } from "@/schemas/user/document/referencesSectionMetadataValidator";
+import { parseSkillsMetadata } from "@/schemas/user/document/skillsSectionMetadataValidator";
 import {
   Document,
   Font,
@@ -12,46 +20,40 @@ import {
 } from "@react-pdf/renderer";
 import type { HtmlRenderers } from "node_modules/react-pdf-html/dist/types/render";
 import Html from "react-pdf-html";
-import { parseSkillsMetadata } from "@/schemas/user/document/skillsSectionMetadataValidator";
-import { parseReferencesMetadata } from "@/schemas/user/document/referencesSectionMetadataValidator";
-import CommaSeparatedPDFText from "@/features/candidate/document-builder/components/CommaSeparatedPDFText";
-import type {
-  makeResumeTemplateData,
-  MakeResumeDataReturn,
-  CustomSection,
-} from "@/features/candidate/document-builder/components/utils";
 
 export const PDF_BODY_FONT_SIZE = 11 as const;
 const DOCUMENT_TITLE_FONT_SIZE = 14 as const;
 const SECTION_LABEL_FONT_SIZE = 9 as const;
 
+const baseFontUrl = process.env.VERCEL_URL || "http://localhost:3000";
+
 Font.register({
   family: "EB Garamond",
   fonts: [
     {
-      src: `${"http://localhost:3000"}/fonts/EBGaramond-Regular.ttf`,
+      src: `${baseFontUrl}/fonts/EBGaramond-Regular.ttf`,
       fontWeight: 400,
     },
     {
-      src: `${"http://localhost:3000"}/fonts/EBGaramond-Medium.ttf`,
+      src: `${baseFontUrl}/fonts/EBGaramond-Medium.ttf`,
       fontWeight: 500,
     },
     {
-      src: `${"http://localhost:3000"}/fonts/EBGaramond-Bold.ttf`,
+      src: `${baseFontUrl}/fonts/EBGaramond-Bold.ttf`,
       fontWeight: 600,
     },
     {
-      src: `${"http://localhost:3000"}/fonts/EBGaramond-Italic.ttf`,
+      src: `${baseFontUrl}/fonts/EBGaramond-Italic.ttf`,
       fontWeight: 400,
       fontStyle: "italic",
     },
     {
-      src: `${"http://localhost:3000"}/fonts/EBGaramond-MediumItalic.ttf`,
+      src: `${baseFontUrl}/fonts/EBGaramond-MediumItalic.ttf`,
       fontWeight: 500,
       fontStyle: "italic",
     },
     {
-      src: `${"http://localhost:3000"}/fonts/EBGaramond-BoldItalic.ttf`,
+      src: `${baseFontUrl}/fonts/EBGaramond-BoldItalic.ttf`,
       fontWeight: 600,
       fontStyle: "italic",
     },
