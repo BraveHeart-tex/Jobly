@@ -6,8 +6,8 @@ import {
   getDocumentWithSectionsAndFields,
   getDocumentsByUserId,
   getUserUploadedDocuments,
-  updateDocumentById,
   insertDocument,
+  updateDocumentById,
   upsertSectionFields,
   upsertSections,
 } from "@/features/candidate/documents/data-access/documentRepository";
@@ -19,6 +19,8 @@ import {
 } from "@/features/candidate/documents/utils";
 import type { INTERNAL_SECTION_TAG } from "@/lib/constants";
 import type { Transaction } from "@/lib/types";
+import type { DocumentUpdateData } from "@/schemas/user/document/baseDocumentValidator";
+import type { SaveDocumentDetailsData } from "@/schemas/user/document/saveDocumentDetailsValidator";
 import { db } from "@/server/db";
 import {
   documentSectionFields as fieldSchema,
@@ -37,8 +39,6 @@ import type {
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
 import type { DBUser } from "@/server/db/schema/users";
-import type { DocumentUpdateData } from "@/schemas/user/document/baseDocumentValidator";
-import type { SaveDocumentDetailsData } from "@/schemas/user/document/saveDocumentDetailsValidator";
 import { eq } from "drizzle-orm";
 
 export const getUserDocumentBuilderDocuments = async (userId: DBUser["id"]) => {
@@ -169,8 +169,12 @@ export const saveDocumentAndRelatedEntities = async (
     const documentInsertPromise = document
       ? insertDocument(document, trx)
       : undefined;
-    const sectionInserts = sections ? upsertSections(trx, sections) : undefined;
-    const fieldInserts = fields ? upsertSectionFields(trx, fields) : undefined;
+    const sectionInserts = sections?.length
+      ? upsertSections(trx, sections)
+      : undefined;
+    const fieldInserts = fields?.length
+      ? upsertSectionFields(trx, fields)
+      : undefined;
 
     await Promise.all([documentInsertPromise, sectionInserts, fieldInserts]);
   });

@@ -42,9 +42,18 @@ interface DocumentBuilderActions {
   setFields: (fields: DocumentSectionField[]) => void;
   setSections: (sections: DocumentSection[]) => void;
   setFieldValue: (fieldId: DocumentSectionField["id"], value: string) => void;
+  syncToServer: () => void;
 }
 
 type DocumentBuilderStore = DocumentBuilderState & DocumentBuilderActions;
+
+let isSyncing = false;
+let syncTimeout: NodeJS.Timeout | null = null;
+const changesToSync = {
+  fields: [] as DocumentSectionField[],
+  sections: [] as DocumentSection[],
+  document: {} as DocumentSelectModel,
+};
 
 export const useDocumentBuilderStore = create<
   DocumentBuilderStore,
@@ -111,38 +120,39 @@ export const useDocumentBuilderStore = create<
         set({
           document,
         });
-        await appDb.documents.put(document);
-        get().callSaveDocumentDetailsFn({
-          document,
-        });
+
         get().callPdfUpdaterCallback();
+
+        await appDb.documents.put(document);
+        addToSyncQueue(document);
+        get().syncToServer();
       },
       setSectionValue: ({ sectionId, key, value }) => {
         const sectionToUpdate = get().sections.find(
           (section) => section.id === sectionId,
         );
+
         if (!sectionToUpdate) return;
+
+        const updatedSection = {
+          ...sectionToUpdate,
+          [key]: value,
+        };
 
         set({
           sections: get().sections.map((section) => {
             if (section.id === sectionId) {
-              return {
-                ...section,
-                [key]: value,
-              };
+              return updatedSection;
             }
             return section;
           }),
         });
-        get().callSaveDocumentDetailsFn({
-          sections: [
-            {
-              ...sectionToUpdate,
-              [key]: value,
-            },
-          ],
-        });
+
         get().callPdfUpdaterCallback();
+
+        appDb.documentSections.put(updatedSection);
+        addToSyncQueue(updatedSection);
+        get().syncToServer();
       },
 
       addSection: async (section) => {
@@ -205,9 +215,30 @@ export const useDocumentBuilderStore = create<
         });
 
         get().callPdfUpdaterCallback();
-        get().callSaveDocumentDetailsFn({
-          fields: [updatedField],
-        });
+
+        addToSyncQueue(updatedField);
+        get().syncToServer();
+      },
+      syncToServer: async () => {
+        if (isSyncing) return;
+        if (syncTimeout) clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(async () => {
+          isSyncing = true;
+
+          try {
+            const fieldsToSync = changesToSync.fields;
+            const sectionsToSync = changesToSync.sections;
+
+            get().callSaveDocumentDetailsFn({
+              fields: fieldsToSync,
+              sections: sectionsToSync,
+            });
+          } catch (error) {
+            console.error("error syncing to server");
+          } finally {
+            isSyncing = false;
+          }
+        }, 1000);
       },
     }),
     {
@@ -215,3 +246,19 @@ export const useDocumentBuilderStore = create<
     },
   ),
 );
+
+function addToSyncQueue(
+  change: DocumentSectionField | DocumentSection | DocumentSelectModel,
+) {
+  if ("sectionId" in change) {
+    changesToSync.fields.push(change);
+    return;
+  }
+
+  if ("documentId" in change) {
+    changesToSync.sections.push(change);
+    return;
+  }
+
+  changesToSync.document = change;
+}

@@ -1,4 +1,5 @@
 import type { Transaction } from "@/lib/types";
+import type { DocumentUpdateData } from "@/schemas/user/document/baseDocumentValidator";
 import { buildConflictUpdateColumns, db } from "@/server/db";
 import {
   documentSectionFields,
@@ -15,7 +16,6 @@ import type {
   DocumentSelectModel,
 } from "@/server/db/schema/documents";
 import type { DBUser } from "@/server/db/schema/users";
-import type { DocumentUpdateData } from "@/schemas/user/document/baseDocumentValidator";
 import { and, asc, desc, eq, inArray } from "drizzle-orm";
 
 export const insertDocument = async (
@@ -37,6 +37,7 @@ export const upsertSections = (
   trx: Transaction,
   sectionValues: DocumentSectionInsertModel[],
 ) => {
+  if (sectionValues.length === 0) return;
   return trx
     .insert(documentSections)
     .values(sectionValues)
@@ -49,6 +50,7 @@ export const upsertSectionFields = (
   trx: Transaction,
   fields: DocumentSectionFieldInsertModel[],
 ) => {
+  if (fields.length === 0) return [];
   return trx
     .insert(documentSectionFields)
     .values(fields)

@@ -2,12 +2,9 @@
 import { useLeavePageConfirm } from "@/hooks/useLeavePageConfirm";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import { api } from "@/trpc/react";
-import debounce from "lodash.debounce";
 import { Check, Cloud, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useNetworkState } from "react-use";
-
-const SAVE_DOCUMENT_DEBOUNCE_DURATION = 500 as const;
 
 const DebouncedDocumentSaver = () => {
   const { online, previous } = useNetworkState();
@@ -26,13 +23,8 @@ const DebouncedDocumentSaver = () => {
       return;
     }
 
-    const debouncedSaveDocumentDetails = debounce(
-      saveDocumentAndRelatedEntities,
-      SAVE_DOCUMENT_DEBOUNCE_DURATION,
-    );
-
     useDocumentBuilderStore.setState({
-      saveDocumentDetailsFn: debouncedSaveDocumentDetails,
+      saveDocumentDetailsFn: saveDocumentAndRelatedEntities,
     });
   }, [userLostConnection, saveDocumentAndRelatedEntities]);
 

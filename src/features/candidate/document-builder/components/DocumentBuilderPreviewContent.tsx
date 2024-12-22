@@ -1,14 +1,14 @@
 "use client";
 
+import LondonTemplate from "@/features/candidate/document-builder/components/LondonTemplate";
+import PDFViewer from "@/features/candidate/document-builder/components/PDFViewer";
+import { preparePdfData } from "@/features/candidate/document-builder/components/utils";
 import { useDocumentBuilderStore } from "@/lib/stores/useDocumentBuilderStore";
 import debounce from "lodash.debounce";
 import { useEffect, useState } from "react";
 import { useNetworkState } from "react-use";
-import LondonTemplate from "@/features/candidate/document-builder/components/LondonTemplate";
-import PDFViewer from "@/features/candidate/document-builder/components/PDFViewer";
-import { preparePdfData } from "@/features/candidate/document-builder/components/utils";
 
-const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 500 as const;
+const UPDATE_PDF_PROPS_DEBOUNCE_DURATION = 300 as const;
 
 const DocumentBuilderPreviewContent = () => {
   const [reRender, setReRender] = useState(0);
@@ -23,6 +23,7 @@ const DocumentBuilderPreviewContent = () => {
       updatePdfProps,
       UPDATE_PDF_PROPS_DEBOUNCE_DURATION,
     );
+
     useDocumentBuilderStore.setState({
       pdfUpdaterCallback: debouncedUpdatePdfProps,
     });
