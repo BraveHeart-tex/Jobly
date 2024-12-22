@@ -1,6 +1,7 @@
 "use client";
 
 import { showErrorToast, showSuccessToast } from "@/components/toastUtils";
+import { deleteLocalDocumentById } from "@/lib/appDb/documentBuilder";
 import { useConfirmStore } from "@/lib/stores/useConfirmStore";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
 import { api } from "@/trpc/react";
@@ -35,7 +36,8 @@ export const useDeleteDocument = () => {
           context?.previousUserDocuments,
         );
       },
-      onSettled: () => {
+      onSettled: async (_arg1, _arg2, data) => {
+        await deleteLocalDocumentById(data.documentId);
         void queryClientUtils.document.getUserDocumentBuilderDocuments.invalidate();
       },
     });

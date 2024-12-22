@@ -26,6 +26,7 @@ const EmptyListCallToAction = ({
           darkIllustrationPath && "dark:hidden",
           !darkIllustrationPath && "dark:invert",
         )}
+        priority
       />
       {darkIllustrationPath && (
         <Image

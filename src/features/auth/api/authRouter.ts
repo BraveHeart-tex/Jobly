@@ -1,3 +1,19 @@
+import { deleteUserAccount } from "@/actions/auth";
+import {
+  createSessionWithUserId,
+  hashPassword,
+  verifyPassword,
+} from "@/features/auth/utils";
+import {
+  createUserUseCase,
+  getUserByEmailUseCase,
+} from "@/features/user/profile/use-cases/users";
+import { invalidateAllOtherUserSessions } from "@/lib/auth/session";
+import {
+  loginResponseValidator,
+  loginValidator,
+} from "@/schemas/auth/loginValidator";
+import { signUpValidator } from "@/schemas/auth/signUpValidator";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -5,22 +21,6 @@ import {
 } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
 import { parser } from "valibot";
-import { signUpValidator } from "@/schemas/auth/signUpValidator";
-import {
-  loginResponseValidator,
-  loginValidator,
-} from "@/schemas/auth/loginValidator";
-import {
-  createSessionWithUserId,
-  hashPassword,
-  verifyPassword,
-} from "@/features/auth/utils";
-import {
-  getUserByEmailUseCase,
-  createUserUseCase,
-} from "@/features/user/profile/use-cases/users";
-import { invalidateAllOtherUserSessions } from "@/lib/auth/session";
-import { deleteUserAccount } from "@/actions/auth";
 
 export const authRouter = createTRPCRouter({
   signUp: publicProcedure

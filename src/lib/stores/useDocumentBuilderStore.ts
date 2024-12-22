@@ -1,8 +1,9 @@
 import type { DocumentBuilderConfig } from "@/features/candidate/document-builder/types";
+import appDb from "@/lib/appDb";
+import type { SaveDocumentDetailsData } from "@/schemas/user/document/saveDocumentDetailsValidator";
 import type { DocumentSectionField } from "@/server/db/schema/documentSectionFields";
 import type { DocumentSection } from "@/server/db/schema/documentSections";
 import type { DocumentSelectModel } from "@/server/db/schema/documents";
-import type { SaveDocumentDetailsData } from "@/schemas/user/document/saveDocumentDetailsValidator";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
@@ -67,7 +68,33 @@ export const useDocumentBuilderStore = create<
           fields: get().fields,
         });
       },
-      initializeState: (initialState) => {
+      initializeState: async (initialState) => {
+        const document = await appDb.documents.get({
+          id: initialState.document.id,
+        });
+
+        if (!document) {
+          appDb.documents.add(initialState.document);
+        }
+
+        const sections = await appDb.documentSections
+          .where("documentId")
+          .equals(initialState.document.id)
+          .toArray();
+
+        if (!sections || sections.length === 0) {
+          appDb.documentSections.bulkAdd(initialState.sections);
+        }
+
+        const fields = await appDb.documentSectionFields
+          .where("sectionId")
+          .anyOf(initialState.sections.map((s) => s.id))
+          .toArray();
+
+        if (!fields || fields.length === 0) {
+          appDb.documentSectionFields.bulkAdd(initialState.fields);
+        }
+
         set({
           ...initialState,
           initialized: true,
@@ -76,7 +103,7 @@ export const useDocumentBuilderStore = create<
       setDocumentObject: (document) => {
         set({ document });
       },
-      setDocumentValue: (key, value) => {
+      setDocumentValue: async (key, value) => {
         const document = {
           ...get().document,
           [key]: value,
@@ -84,6 +111,7 @@ export const useDocumentBuilderStore = create<
         set({
           document,
         });
+        await appDb.documents.put(document);
         get().callSaveDocumentDetailsFn({
           document,
         });
@@ -117,10 +145,12 @@ export const useDocumentBuilderStore = create<
         get().callPdfUpdaterCallback();
       },
 
-      addSection: (section) => {
+      addSection: async (section) => {
+        await appDb.documentSections.add(section);
         set({ sections: [...get().sections, section] });
       },
-      addField: (field) => {
+      addField: async (field) => {
+        await appDb.documentSectionFields.add(field);
         set({ fields: [...get().fields, field] });
       },
 
@@ -131,13 +161,19 @@ export const useDocumentBuilderStore = create<
         set({ fields: newFields });
         get().callPdfUpdaterCallback();
       },
-      removeSection: (sectionId) => {
+      removeSection: async (sectionId) => {
         const newSections = get().sections.filter(
           (section) => section.id !== sectionId,
         );
         const newFields = get().fields.filter(
           (field) => field.sectionId !== sectionId,
         );
+
+        await appDb.documentSections.delete(sectionId);
+        await appDb.documentSectionFields
+          .where("sectionId")
+          .equals(sectionId)
+          .delete();
 
         set({
           sections: newSections,
@@ -156,19 +192,21 @@ export const useDocumentBuilderStore = create<
           sections: sections,
         });
       },
-      setFieldValue: (fieldId, value) => {
+      setFieldValue: async (fieldId, value) => {
         const field = get().fields.find((field) => field.id === fieldId);
         if (!field) return;
+        const updatedField = { ...field, value };
+        await appDb.documentSectionFields.put(updatedField);
 
         set({
-          fields: get().fields.map((field) =>
-            field.id === fieldId ? { ...field, value } : field,
+          fields: get().fields.map((f) =>
+            f.id === fieldId ? updatedField : f,
           ),
         });
 
         get().callPdfUpdaterCallback();
         get().callSaveDocumentDetailsFn({
-          fields: [{ ...field, value }],
+          fields: [updatedField],
         });
       },
     }),
