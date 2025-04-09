@@ -1,29 +1,21 @@
-# Create T3 App
+<h1>Jobly - A Modern Job Portal (Discontinued)</h1>
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Jobly began as a visual resume builder, but quickly grew into a much larger and more ambitious project. Over time, I added more and more features, which turned the app into a full-fledged job portal — and a bit of a monster to maintain.
 
-## What's next? How do I make an app with this?
+## 🧩 Features
+Although the project has been discontinued, it included a wide range of modules and capabilities:
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- 🌐 Resume Builder
+- 👤 User Profiles (Similar to linkedIN)
+- 📄 Job Postings
+- ⚙️ User Settings & Preferences
+- 🔐 Session Management
+- 🔑 Two-Factor Authentication (2FA)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+After 900+ commits, I decided to sunset the project. The resume builder — the original inspiration — lives on as a standalone application:
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+👉 <a href="https://github.com/BraveHeart-tex/ZenCV">ZenCV</a>
 
-## Learn More
+## Lessons Learned
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+While Jobly is no longer developed, it was an incredible tool for experimenting with technologies, patterns, and most importantly — understanding what not to do when planning an application end-to-end.
